@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ipower verion="1.0" xmlns="http://ipower.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ipower.org/ iPowerSchema.xsd ">
+  <system id="EOA000000" sign="examw.oa" name="中华考试网办公系统" description="中华考试网办公系统">
+  	<module id="EOA000001"  icon="" name="系统管理" uri="" order="1">
+  		<module id="EOA000101" icon="" name="菜单设置" uri="/security/menu" order="1"/>
+  		<module id="EOA000201" icon="" name="基础权限" uri="/security/right" order="2"/>
+  		<module id="EOA000301" icon="" name="菜单权限" uri="/security/menu/right" order="3"/>
+  		<module id="EOA000401" icon="" name="角色设置" uri="/security/role" order="4"/>
+  		<module id="EOA000601" icon="" name="登录日志" uri="/security/log" order="5"/>
+  	</module>
+  </system>
+</ipower>
