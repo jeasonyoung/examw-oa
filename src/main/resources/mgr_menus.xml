@@ -8,5 +8,12 @@
   		<module id="EOA000401" icon="" name="角色设置" uri="/security/role" order="4"/>
   		<module id="EOA000601" icon="" name="登录日志" uri="/security/log" order="5"/>
   	</module>
+  	<module id="EOA000001"  icon="" name="组织架构" uri="" order="1">
+  		<module id="EOA000101" icon="" name="岗位信息" uri="/org/position" order="1"/>
+  		<module id="EOA000201" icon="" name="等级信息" uri="//" order="2"/>
+  		<module id="EOA000301" icon="" name="部门信息" uri="//" order="3"/>
+  		<module id="EOA000401" icon="" name="员工信息" uri="//" order="4"/>
+  		
+  	</module>
   </system>
 </ipower>

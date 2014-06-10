@@ -8,8 +8,8 @@ import com.examw.model.DataGrid;
 import com.examw.oa.service.IBaseDataService;
 /**
  * 数据服务抽象类.
- * @author 杨勇.
- * @since 2013-11-27.
+ * @author
+ * @since .
  * */
 public abstract class BaseDataServiceImpl<K,T> implements IBaseDataService<T> {
 	/**
