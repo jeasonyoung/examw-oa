@@ -45,6 +45,7 @@ public class RightController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<RightInfo> datagrid(RightInfo info){
+		
 		return this.rightService.datagrid(info);
 	}
 	/**

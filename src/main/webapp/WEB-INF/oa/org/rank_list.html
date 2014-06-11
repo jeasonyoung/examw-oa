@@ -18,17 +18,11 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"time",
+		sortName:"id",
 		sortOrder:"desc",
 		columns:[[{
 			field:"id",
 			checkbox:true
-		},{
-			title:"等级ID",
-			field:"id",
-			width:30,
-			align:"left",
-			sortable:true
 		},{
 			title:"等级名称",
 			field:"name",
@@ -50,13 +44,13 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			code:$("#${dg}_toobar input[name='code']").val()
+			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
 	${dg}_delete = function(){
-		var rows = dg.datagrid("getId");
+		var rows = dg.datagrid("getChecked");
 		if(rows && rows.length > 0){
 			$.messager.confirm("确认","您是否确认删除选中的数据?",function(r){
 				if(!r)return;
@@ -103,6 +97,6 @@ $(function(){
 	<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
 	<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 	<!-- </shiro.hasPermission> -->
-	<label>等级编号：<input name="account" type="text" style="width:198px;"/></label>
+	<label>等级名称：<input name="name" type="text" style="width:198px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

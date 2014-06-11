@@ -10,4 +10,23 @@
 		<!--等级编号 -->
 		<property name="code"  type="integer"  length="45"/>
 	</class>
+	<!-- 部门数据 -->
+	<class name="Depart"  table="tbl_Examw_OA_Org_Depart">
+		<!--部门ID -->
+		<id name="id"  type="string"  length="64" />
+		<!-- 部门编号 -->
+		<property name="code"  type="string"  length="32"/>
+		<!--部门名称-->
+		<property name="name"  type="string"  length="32"  not-null="true"/>
+		<!-- 部门创建时间-->
+		<property name="createTime"  type="timestamp" length="255" />
+		<!-- 排序 -->
+		<property name="orderNo"  type="integer" />
+		<!-- 下级部门集合 -->
+		<set name="children"  inverse="true"  cascade="save-update"  order-by="orderNo asc">
+				<!-- <cache usage="read-write"/> -->
+				<key  column="pid"/>
+				<one-to-many class="Depart"/>
+		</set>
+	</class>
 </hibernate-mapping>

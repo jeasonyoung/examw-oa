@@ -13,6 +13,7 @@ import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.model.org.RankInfo;
+
 import com.examw.oa.service.org.IRankService;
 
 /**
@@ -38,11 +39,12 @@ public class RankContoller {
 	 * 查询数据。
 	 * @return
 	 */
-	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
-	@ResponseBody
-	public DataGrid<RankInfo> datagrid(RankInfo info){
-		return this.rankservice.datagrid(info);
-	}
+	//@RequiresPermissions({ModuleConstant.SECURITY_RIGHT + ":" + Right.VIEW})
+		@RequestMapping(value="/datagrid", method = RequestMethod.POST)
+		@ResponseBody
+		public DataGrid<RankInfo> datagrid(RankInfo info){
+			return this.rankservice.datagrid(info);
+		}
 	/**
 	 * 删除数据。
 	 * @param id

@@ -1,7 +1,11 @@
 package com.examw.oa.model.org;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+
 import com.examw.model.Paging;
 
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class RankInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	public String id,name;

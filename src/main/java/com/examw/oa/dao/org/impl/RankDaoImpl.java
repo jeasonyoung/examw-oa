@@ -17,11 +17,11 @@ public class RankDaoImpl extends BaseDaoImpl<Rank> implements IRankDao {
 	 */
 	@Override
 	public List<Rank> findRank(RankInfo info) {
-		String hql = "from Rank l where 1=1 ";
+		String hql = "from Rank r where 1=1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
-			hql += " order by l." + info.getSort() + " " + info.getOrder();
+			hql += " order by r." + info.getSort() + " " + info.getOrder();
 		}
 		return this.find(hql, parameters, info.getPage(), info.getRows());
 	}
@@ -31,16 +31,16 @@ public class RankDaoImpl extends BaseDaoImpl<Rank> implements IRankDao {
 	 */
 	@Override
 	public Long total(RankInfo info) {
-		String hql = "select count(*) from Rank l where 1 = 1 ";
+		String hql = "select count(*) from Rank r where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		return this.count(hql, parameters);
 	}
 
 	protected String addWhere(RankInfo info, String hql, Map<String, Object> parameters){
-		if(!StringUtils.isEmpty(info.getCode())){
-			hql += " and (l.code like :code)";
-			parameters.put("code", "%" + info.getCode() + "%");
+		if(!StringUtils.isEmpty(info.getName())){
+			hql += " and (r.name like :name)";
+			parameters.put("name", info.getName());
 		}
 		return hql;
 	}

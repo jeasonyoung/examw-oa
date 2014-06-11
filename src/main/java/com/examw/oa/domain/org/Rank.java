@@ -8,8 +8,8 @@ import java.io.Serializable;
  */
 public class Rank implements Serializable {
 	private static final long serialVersionUID = 1L;
-	public String id,name;
-	public Integer code;
+	private String id,name;
+	private Integer code;
 	/**
 	 * 获取等级信息ID。
 	 * @return

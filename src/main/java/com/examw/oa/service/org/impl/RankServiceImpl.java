@@ -52,9 +52,8 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	
 	public RankInfo update(RankInfo info) {
 		if(info == null) return null;
-		boolean isAdded = false;
 		Rank data = StringUtils.isEmpty(info.getId()) ? null : this.rankdao.load(Rank.class, info.getId());
-		if(isAdded = (data == null)){
+		if((data == null)){
 			if(StringUtils.isEmpty(info.getId())){
 				info.setId(UUID.randomUUID().toString());
 			}
