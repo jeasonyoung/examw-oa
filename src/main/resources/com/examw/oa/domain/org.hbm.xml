@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.examw.oa.domain.org">
-	<!-- 等级数据 -->
+	<!-- 员工级别 -->
 	<class name="Rank" table="tbl_oa_org_rank">
-		<!-- 等级ID -->
+		<!-- 员工级别ID -->
 		<id name="id"  type="string"  length="64" />
-		<!-- 等级名称 -->
+		<!--员工级别代码 -->
+		<property name="code"  type="string"  length="32"/>
+		<!--员工级别名称 -->
 		<property name="name"  type="string"  length="45" />
-		<!--等级编号 -->
-		<property name="code"  type="integer"  length="45"/>
 	</class>
 	<!-- 部门数据 -->
 	<class name="Depart"  table="tbl_Examw_OA_Org_Depart">
