@@ -4,6 +4,7 @@
 	<!-- service -->
 	<!--  系统管理 服务接口实现-->
 	<import resource="spring-examw-oa-service-security.xml"/>
-	<!-- 职位服务接口实现 -->
+	<!--  组织架构 服务接口实现-->
 	<import resource="spring-examw-oa-service-org.xml"/>
+	
 </beans>

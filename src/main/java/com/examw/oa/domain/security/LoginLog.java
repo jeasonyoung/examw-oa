@@ -14,6 +14,7 @@ import com.examw.oa.support.CustomDateSerializer;
  */
 public class LoginLog implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
 	private String id,account,ip,browser;
 	private Date time;
 	/**
