@@ -10,66 +10,94 @@ import org.springframework.util.StringUtils;
 
 
 
-
 import com.examw.oa.dao.org.IDepartDao;
 import com.examw.oa.domain.org.Depart;
-
 import com.examw.oa.model.org.DepartInfo;
 
+import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.security.impl.MenuServiceImpl;
 /**
  * 部门服务。
  * @author lq
- * @since 2014-06-11.
+ * @since 2014-06-12.
  */
-public class DepartServiceImpl implements IDepartService {
+public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> implements IDepartService {
 	private static Logger logger = Logger.getLogger(MenuServiceImpl.class);
 	private IDepartDao departdao;
 	//private static Map<String, ModuleSystem> mapSystemCache = Collections.synchronizedMap(new HashMap<String,ModuleSystem>());
 	/**
 	 * 设置部门数据接口。
-	 * @param menuDao
+	 * @param 
 	 * 部门数据接口。
 	 */
 	public void setDepartdao(IDepartDao departdao) {
 		this.departdao = departdao;
 	}
-	//加载部门数据
+	/*
+	 * 查询数据。
+	 * @see com.examw.netplatform.service.impl.BaseDataServiceImpl#find(java.lang.Object)
+	 */
 	@Override
-	public List<DepartInfo> loadDepart() {
-		List<DepartInfo> results = new ArrayList<>();
-		List<Depart> list = this.departdao.findDepart();
-		if(list != null && list.size() > 0){
-			for(int i = 0; i < list.size(); i++){
-				DepartInfo info = this.changeModel(list.get(i));
-				if(info != null) results.add(info);
-			}
-		}
-		return results;
+	protected List<Depart> find(DepartInfo info) {
+		return this.departdao.findDepart(info);
 	}
-	//类型转换
+	/*
+	 * 类型转换。
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#changeModel(java.lang.Object)
+	 */
+	@Override
 	protected DepartInfo changeModel(Depart data) {
 		if(data == null) return null;
 		DepartInfo info = new DepartInfo();
-		BeanUtils.copyProperties(data, info);
+		BeanUtils.copyProperties(data, info, new String[] {"children"});
+		if(data.getChildren() != null && data.getChildren().size() > 0){
+			List<DepartInfo> children = new ArrayList<>();
+			for(Depart m : data.getChildren()){
+				DepartInfo c = this.changeModel(m);
+				if(c != null){
+					c.setPid(data.getId());
+					children.add(c);
+				}
+			}
+		}
 		return info;
 	}
-	//更新数据
+	/*
+	 *  统计查询数据。
+	 * @see com.examw.netplatform.service.impl.BaseDataServiceImpl#total(java.lang.Object)
+	 */
+	@Override
+	protected Long total(DepartInfo info) {
+		return this.departdao.total(info);
+	}
+	/*
+	 * 更新数据。
+	 * @see com.examw.netplatform.service.impl.BaseDataServiceImpl#update(java.lang.Object)
+	 */
 	@Override
 	public DepartInfo update(DepartInfo info) {
-		if(info == null) return null;
-		Depart data = StringUtils.isEmpty(info.getId()) ? null : this.departdao.load(Depart.class, info.getId());
-		if((data == null)){
+		if(info == null || StringUtils.isEmpty(info.getId())) return null;
+		boolean isAdded = false;
+		Depart data = this.departdao.load(Depart.class, info.getId());
+		if(isAdded = (data == null)){
 			if(StringUtils.isEmpty(info.getId())){
 				info.setId(UUID.randomUUID().toString());
 			}
 			data = new Depart();
 		}
 		BeanUtils.copyProperties(info, data);
+		if(!StringUtils.isEmpty(info.getPid()) && (data.getParent() == null || !data.getParent().getId().equalsIgnoreCase(info.getPid()))){
+			Depart parent = this.departdao.load(Depart.class, info.getPid());
+			if(parent != null)data.setParent(parent);
+		}
+		if(isAdded) this.departdao.save(data);
 		return info;
 	}
-	//删除部门
+	/*
+	 * 删除数据。
+	 * @see com.examw.netplatform.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
+	 */
 	@Override
 	public void delete(String[] ids) {
 		if(ids == null || ids.length == 0) return;
@@ -81,20 +109,19 @@ public class DepartServiceImpl implements IDepartService {
 			}
 		}
 	}
-	//数据初始化
+	/**
+	 * 加载部门数据。
+	 */
 	@Override
-	public void init() throws Exception {
-		logger.info("开始初始化菜单数据...");
-		String msg = null;
-		DepartInfo depart = (DepartInfo) this.loadDepart();
-		if(depart == null || depart.getPid() == null || depart.getChildren().size() == 0){
-			logger.info(msg = "菜单文件中没有系统信息或菜单数据信息！");
-			throw new Exception(msg);
+	public List<DepartInfo> loadDeparts() {
+		List<DepartInfo> results = new ArrayList<>();
+		List<Depart> list = this.departdao.findDeparts();
+		if(list != null && list.size() > 0){
+			for(int i = 0; i < list.size(); i++){
+				DepartInfo info = this.changeModel(list.get(i));
+				if(info != null) results.add(info);
+			}
 		}
-		logger.info("初始化完成！");
-		
+		return results;
 	}
-	
-	
-	
 }

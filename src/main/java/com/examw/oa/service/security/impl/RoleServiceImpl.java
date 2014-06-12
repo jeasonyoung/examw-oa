@@ -122,6 +122,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 		}
 		if(isAdded) this.roleDao.save(data);
 		return info;
+		
 	}
 	/*
 	 * 删除数据。

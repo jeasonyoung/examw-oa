@@ -12,9 +12,7 @@ import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.org.IRankDao;
 import com.examw.oa.domain.org.Rank;
-
 import com.examw.oa.model.org.RankInfo;
-
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IRankService;
 /**
@@ -27,6 +25,10 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	public void setRankdao(IRankDao rankdao) {
 		this.rankdao = rankdao;
 	}
+	/*
+	 * (non-Javadoc)
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#find(java.lang.Object)
+	 */
 	//查询等级信息
 	@Override
 	protected List<Rank> find(RankInfo info) {
@@ -52,14 +54,17 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	
 	public RankInfo update(RankInfo info) {
 		if(info == null) return null;
+		boolean isAdded = false;
 		Rank data = StringUtils.isEmpty(info.getId()) ? null : this.rankdao.load(Rank.class, info.getId());
-		if((data == null)){
-			if(StringUtils.isEmpty(info.getId())){
+		if(isAdded = (data == null)){
+			if(StringUtils.isEmpty(info.getId())) {
 				info.setId(UUID.randomUUID().toString());
 			}
 			data = new Rank();
 		}
 		BeanUtils.copyProperties(info, data);
+		
+		if(isAdded) this.rankdao.save(data);
 		return info;
 	}
 	//等级信息删除
@@ -72,5 +77,5 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 		}
 		
 	}
-
+	
 }

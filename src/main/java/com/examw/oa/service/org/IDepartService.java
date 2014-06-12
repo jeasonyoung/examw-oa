@@ -3,36 +3,21 @@ package com.examw.oa.service.org;
 import java.util.List;
 
 
+
+
+
+
 import com.examw.oa.model.org.DepartInfo;
 
+import com.examw.oa.service.IBaseDataService;
 
 
-public interface IDepartService {
-	
-	
+
+public interface IDepartService extends IBaseDataService<DepartInfo>{
 	/**
-	 * 加载部门数据。
+	 * 加载菜单数据。
 	 * @return
-	 * 部门数据集合。
+	 * 菜单数据集合。
 	 */
-	List<DepartInfo> loadDepart();
-	/**
-	 * 更新部门数据。
-	 * @param info
-	 * 源部门。
-	 * @return
-	 * 更新后部门数据。
-	 */
-	DepartInfo update(DepartInfo info);
-	/**
-	 * 删除数据。
-	 * @param ids
-	 * 部门ID数组。
-	 */
-	void delete(String[] ids);
-	/**
-	 * 初始化。
-	 * @throws Exception
-	 */
-	void init() throws Exception;
+	List<DepartInfo> loadDeparts();
 }

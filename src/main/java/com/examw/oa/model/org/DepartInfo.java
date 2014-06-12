@@ -1,22 +1,20 @@
 package com.examw.oa.model.org;
 
-import java.io.Serializable;
+
 import java.util.Date;
 import java.util.List;
 
+import com.examw.model.Paging;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-
-
-
 /**
  * 部门信息。
  * @author yangyong.
  * @since 2014-05-17.
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class DepartInfo implements Serializable {
+public class DepartInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String pid,id,name,code;
 	private int orderNo;
@@ -138,4 +136,5 @@ public class DepartInfo implements Serializable {
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
+
 }

@@ -14,7 +14,8 @@ import com.examw.model.Paging;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class RankInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,code,name;
+	private String id,name,code;
+	 
 	/**
 	 * 获取员工级别ID。
 	 * @return

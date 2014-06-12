@@ -13,7 +13,6 @@ import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.model.org.RankInfo;
-
 import com.examw.oa.service.org.IRankService;
 
 /**
@@ -64,4 +63,37 @@ public class RankContoller {
 		}
 		return result;
 	}
+	/**
+	 * 获取编辑页面。
+	 * @return
+	 * 编辑页面。
+	 */
+	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	@RequestMapping(value="/edit", method = RequestMethod.GET)
+	public String edit(Model model){
+		return "org/rank_edit";
+	}
+	/**
+	 * 更新数据。
+	 * @param info
+	 * 更新源数据。
+	 * @return
+	 * 更新后数据。
+	 */
+	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	@RequestMapping(value="/update", method = RequestMethod.POST)
+	@ResponseBody
+	public Json update(RankInfo info){
+		Json result = new Json();
+		try {
+			result.setData(this.rankservice.update(info));
+			result.setSuccess(true);
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setMsg(e.getMessage());
+			logger.error("更新角色数据发生异常", e);
+		}
+		return result;
+	}
+	
 }
