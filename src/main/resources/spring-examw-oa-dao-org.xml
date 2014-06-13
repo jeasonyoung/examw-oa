@@ -9,4 +9,8 @@
 	<bean id="departdao" class="com.examw.oa.dao.org.impl.DepartDaoImpl">
 	<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	<!-- 岗位dao -->
+	<bean id="postdao" class="com.examw.oa.dao.org.impl.PostDaoImpl">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 </beans>

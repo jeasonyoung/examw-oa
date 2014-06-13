@@ -26,7 +26,7 @@ import com.examw.oa.service.org.IDepartService;
  */
 @Controller
 @RequestMapping(value = "/org/depart")
-public class DepartContoller {
+public class DepartController {
 	private static Logger logger = Logger.getLogger(MenuController.class);
 	@Resource
 	private IDepartService departservice;
@@ -51,23 +51,6 @@ public class DepartContoller {
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
 	public String edit(Model model){
 		return "org/depart_edit";
-	}
-	/**
-	 * 获取全部的角色数据。
-	 * @return
-	 */
-	@RequestMapping(value="/all", method = {RequestMethod.GET, RequestMethod.POST })
-	@ResponseBody
-	public List<DepartInfo> all(){
-		DataGrid<DepartInfo> grid = this.departservice.datagrid(new DepartInfo(){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Integer getPage(){return null;}
-			@Override
-			public Integer getRows(){return null;}
-		});
-		
-		return grid.getRows();
 	}
 	/**
 	 * 查询数据。
@@ -99,7 +82,6 @@ public class DepartContoller {
 			result.setMsg(e.getMessage());
 			logger.error("更新角色数据发生异常", e);
 		}
-		System.out.println(info+"llllllllllllllll");
 		return result;
 	}
 	/**

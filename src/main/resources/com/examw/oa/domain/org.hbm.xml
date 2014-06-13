@@ -31,4 +31,15 @@
 				<one-to-many class="Depart"/>
 		</set>
 	</class>
+	<!-- 岗位信息 -->
+	<class name="Post"  table="tbl_Examw_OA_Org_Post">
+		<!-- 岗位ID -->
+		<id  name="id"  type="string"  length="64" />
+		<!-- 岗位名称 -->
+		<property name="name" type="string" length="32"/>
+		<!-- 岗位编号 -->
+		<property name="code" type="string" length="32" not-null="true"  unique="true"/>
+		<!-- 所属部门 -->
+		<many-to-one name="depart" column="dept_id"  class="Depart"  unique-key="depart_unique" />
+	</class>
 </hibernate-mapping>

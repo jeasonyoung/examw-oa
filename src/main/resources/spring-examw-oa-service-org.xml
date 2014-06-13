@@ -9,4 +9,9 @@
 	<bean id="departservice" class="com.examw.oa.service.org.impl.DepartServiceImpl">
 		<property name="departdao" ref="departdao"/>
 	</bean>
+	<!-- 岗位信息 -->
+	<bean id="postservice" class="com.examw.oa.service.org.impl.PostServiceImpl">
+		<property name="postdao" ref="postdao"/>
+		<property name="departdao" ref="departdao"/>
+	</bean>
 </beans>

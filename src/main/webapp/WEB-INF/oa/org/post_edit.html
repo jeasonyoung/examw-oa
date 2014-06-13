@@ -1,14 +1,15 @@
-<#--等级编辑-->
-<#assign module="org_rank"/>
+<#--岗位编辑-->
+<#assign module="org_post"/>
 <#assign form="${module}_edit_form"/>
 <form id="${form}" method="POST">
 	<div style="float:left;margin-top:10px;width:100%;">
-		<label style="width:75px;">等级名称：</label>
+		<label style="width:75px;">岗位名称：</label>
 		<input type="text" name="name" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
 		<input type="hidden" name="id"/>
+		<input type="hidden" name="deptId" value="${deptId}"/>
 	</div>
 	<div style="float:left;margin-top:10px;width:100%;">
-		<label style="width:75px;">等级代号：</label>
+		<label style="width:75px;">岗位代号：</label>
 		<input type="text" name="code" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
 	</div>
 </form>

@@ -78,7 +78,7 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 			hql += " and (d.name like :Name)";
 			parameters.put("Name", "%" + info.getName() + "%");
 		}
-		if(!StringUtils.isEmpty(info.getPid())){
+		if(!StringUtils.isEmpty(info.getCode())){
 			hql += " and (d.code like :Code)";
 			parameters.put("Code", "%" + info.getCode()+ "%");
 		}

@@ -1,4 +1,4 @@
-<#--菜单权限列表-->
+<#--部门列表-->
 <#include "ftl/comm.ftl"/>
 <#assign module="org_depart"/>
 <#assign dg="${module}_dg"/>
@@ -6,17 +6,21 @@
 <!--
 $(function(){
 	var current_Id = "";
+	var current_Code = "";
+	
 	//tree
-	var t = $("#${module}_list_menu_tree").tree({
+	var t = $("#${module}_list_depart_tree").tree({
 		url:"<@s.url '/org/depart/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onBeforeLoad:function(){
 			current_Id = "";
+			current_Code = "";
 		},
 		onClick:function(node){
 			current_Id = node.id;
+			current_Code =node.code;
 			${dg}_search();
 		}
 	});
@@ -133,7 +137,10 @@ $(function(){
 	};
 	//search
 	${dg}_search = function(){
+		console.info(current_Id,current_Code);
 		dg.datagrid("load",{
+			  id:current_Id,
+			  code:current_Code,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
@@ -187,8 +194,8 @@ $(function(){
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-	 <div data-options="region:'west',title:'菜单',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_menu_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-	 	<ul id="${module}_list_menu_tree"></ul>
+	 <div data-options="region:'west',title:'菜单',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_depart_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+	 	<ul id="${module}_list_depart_tree"></ul>
 	 </div>
 	<div data-options="region:'center',title:'机构部门'">
 		<table id="${dg}"></table>

@@ -22,7 +22,7 @@ import com.examw.oa.service.org.IRankService;
  */
 @Controller
 @RequestMapping(value = "/org/rank")
-public class RankContoller {
+public class RankController {
 	private static Logger logger = Logger.getLogger(LogController.class);
 	@Resource
 	private IRankService rankservice;

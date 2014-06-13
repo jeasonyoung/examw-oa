@@ -10,10 +10,11 @@ import org.springframework.util.StringUtils;
 
 
 
+
+
 import com.examw.oa.dao.org.IDepartDao;
 import com.examw.oa.domain.org.Depart;
 import com.examw.oa.model.org.DepartInfo;
-
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.security.impl.MenuServiceImpl;
@@ -53,13 +54,14 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 		BeanUtils.copyProperties(data, info, new String[] {"children"});
 		if(data.getChildren() != null && data.getChildren().size() > 0){
 			List<DepartInfo> children = new ArrayList<>();
-			for(Depart m : data.getChildren()){
-				DepartInfo c = this.changeModel(m);
+			for(Depart d : data.getChildren()){
+				DepartInfo c = this.changeModel(d);
 				if(c != null){
 					c.setPid(data.getId());
 					children.add(c);
 				}
 			}
+			info.setChildren(children);
 		}
 		return info;
 	}

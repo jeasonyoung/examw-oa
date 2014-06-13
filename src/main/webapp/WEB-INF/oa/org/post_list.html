@@ -1,28 +1,28 @@
-<#--菜单权限列表-->
+<#--岗位列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="security_menuright"/>
+<#assign module="org_post"/>
 <#assign dg="${module}_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_menuId = "";
+	var current_deptId = "";
 	//tree
 	var t = $("#${module}_list_menu_tree").tree({
-		url:"<@s.url '/security/menu/tree'/>",
+		url:"<@s.url '/org/depart/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onBeforeLoad:function(){
-			current_menuId = "";
+			current_deptId = "";
 		},
 		onClick:function(node){
-			current_menuId = node.id;
+			current_deptId = node.id;
 			${dg}_search();
 		}
 	});
 	//dg
 	var dg=$("#${dg}").datagrid({
-		url:"<@s.url '/security/menu/right/datagrid'/>",
+		url:"<@s.url '/org/post/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -33,26 +33,32 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"menu.id",
+		sortName:"depart.name",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
 			checkbox:true
 		},{
-			title:"菜单名称",
-			field:"menuName",
+			title:"岗位名称",
+			field:"name",
 			width:40,
 			align:"left",
 			sortable:true
 		},{
-			title:"权限名称",
-			field:"rightName",
+			title:"岗位代号",
+			field:"code",
 			width:30,
 			align:"left",
 			sortable:true
 		},{
-			title:"菜单权限代码",
-			field:"code",
+			title:"部门代号",
+			field:"deptId",
+			width:30,
+			align:"left",
+			sortable:true
+		},{
+			title:"部门名称",
+			field:"departName",
 			width:50,
 			align:"right",
 			sortable:true
@@ -66,9 +72,9 @@ $(function(){
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
-			width:600,
-			height:400,
-			href:"<@s.url '/security/menu/right/add'/>?menuId=" + current_menuId,
+			width:400,
+			height:260,
+			href:"<@s.url '/org/post/add'/>?deptId=" + current_deptId,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -76,7 +82,36 @@ $(function(){
 				text:"保存",
 				iconCls:"icon-save",
 				handler:function(){
-					${module}_add_save(d,dg);
+					$.messager.progress();
+					$("#${module}_edit_form").form("submit",{
+						url:"<@s.url '/org/post/update'/>",
+						onSubmit: function(){
+							var isValid = $(this).form("validate");
+							if (!isValid)$.messager.progress("close");
+							return isValid;
+						},
+						onLoadError:function(e){
+							$.messager.progress("close");
+							<@error_dialog "e"/>
+						},
+						success:function(data){
+							$.messager.progress("close");
+							var data = $.parseJSON(data);
+							if(data.success){
+								dg.datagrid(row ? "updateRow" : "insertRow",{
+									index:index,
+									row:data.data
+								});
+								dg_fields_format();
+								d.dialog("close");
+							}else{
+								$.messager.show({
+									title:"保存异常",
+									msg:data.msg
+								});
+							}
+						}
+					});
 				}
 			},
 			/* </shiro.hasPermission> */
@@ -89,20 +124,22 @@ $(function(){
 			}],
 			onClose:function(){
 				$(this).dialog("destroy");
+			},
+			onLoad:function(){
+				if(row) $("#${module}_edit_form").form("load",row);
 			}
 	  });
 	};
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			menuId:current_menuId,
-			menuName:$("#${dg}_toobar input[name='menuName']").val(),
-			rightName:$("#${dg}_toobar input[name='rightName']").val()
+			deptId:current_deptId,
+			Name:$("#${dg}_toobar input[name='name']").val(),
 		});
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("添加菜单权限",0,null);
+		edit_window("添加岗位信息",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
@@ -117,7 +154,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/security/menu/right/delete'/>",
+					url:"<@s.url '/org/post/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")
@@ -153,7 +190,7 @@ $(function(){
 	 <div data-options="region:'west',title:'菜单',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_menu_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
 	 	<ul id="${module}_list_menu_tree"></ul>
 	 </div>
-	<div data-options="region:'center',title:'菜单权限'">
+	<div data-options="region:'center',title:'岗位信息'">
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
 			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
@@ -164,9 +201,7 @@ $(function(){
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 			<!-- </shiro.hasPermission> -->
 			
-			<label>菜单名称：<input name="menuName" type="text" style="width:198px;"/></label>
-			<label>权限名称：<input name="rightName" type="text" style="width:198px;"/></label>
-			
+			<label>岗位名称：<input name="name" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 		</div>
 	</div>
