@@ -66,14 +66,24 @@ $(function(){
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		toolbar:"#${dg}_toobar"
+		toolbar:"#${dg}_toobar",
+		onLoadSuccess:function(data){
+			dg_fields_format();
+		},
+		onDblClickRow:function(rowIndex,rowData){
+			edit_window("编辑角色",rowIndex,rowData);
+		}
 	});
+	//format dg
+	function dg_fields_format(){
+		$(".role-list-dg-opt-right").linkbutton({text:"授权",plain:true,iconCls:"icon-edit"});
+	};
 	//edit
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
-			height:260,
+			height:160,
 			href:"<@s.url '/org/post/add'/>?deptId=" + current_deptId,
 			modal:true,
 			buttons:[

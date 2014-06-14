@@ -10,8 +10,8 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 /**
  * 部门信息。
- * @author yangyong.
- * @since 2014-05-17.
+ * @author lq.
+ * @since 2014-06-11.
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class DepartInfo extends Paging {

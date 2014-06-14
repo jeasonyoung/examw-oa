@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,7 +50,8 @@ public class DepartController {
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
-	public String edit(Model model){
+	public String edit(String Ids,Model model){
+		model.addAttribute("Ids", StringUtils.isEmpty(Ids) ? "" : Ids);
 		return "org/depart_edit";
 	}
 	/**
@@ -75,6 +77,7 @@ public class DepartController {
 	public Json update(DepartInfo info){
 		Json result = new Json();
 		try {
+			
 			result.setData(this.departservice.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {

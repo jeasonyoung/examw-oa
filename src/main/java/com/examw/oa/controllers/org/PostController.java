@@ -79,6 +79,11 @@ public class PostController {
 	public Json update(PostInfo info){
 		Json result = new Json();
 		try {
+			if(StringUtils.isEmpty(info.getDeptId())){
+				result.setSuccess(false);
+				result.setMsg("未获取部门ID数据！");
+				return result;
+			}
 			result.setData(this.postservice.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {

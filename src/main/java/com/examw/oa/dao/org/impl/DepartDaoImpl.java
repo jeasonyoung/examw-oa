@@ -70,17 +70,13 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	 * HQL
 	 */
 	protected String addWhere(DepartInfo info, String hql, Map<String, Object> parameters){
-		if(!StringUtils.isEmpty(info.getId())){
-			hql += " and (d.id = :Id or d.parent.id = :Id)";
-			parameters.put("Id", info.getId());
+		if(!StringUtils.isEmpty(info.getPid())){
+			hql += " and (d.parent.id = :pid)";
+			parameters.put("pid", info.getPid());
 		}
 		if(!StringUtils.isEmpty(info.getName())){
 			hql += " and (d.name like :Name)";
 			parameters.put("Name", "%" + info.getName() + "%");
-		}
-		if(!StringUtils.isEmpty(info.getCode())){
-			hql += " and (d.code like :Code)";
-			parameters.put("Code", "%" + info.getCode()+ "%");
 		}
 		return hql;
 	}

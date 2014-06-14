@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.examw.oa.domain.org">
 	<!-- 员工级别 -->
-	<class name="Rank" table="tbl_oa_org_rank">
+	<class name="Rank" table="tbl_Examw_OA_Org_rank">
 		<!-- 员工级别ID -->
 		<id name="id"  type="string"  length="64" />
 		<!--员工级别代码 -->
@@ -41,5 +41,48 @@
 		<property name="code" type="string" length="32" not-null="true"  unique="true"/>
 		<!-- 所属部门 -->
 		<many-to-one name="depart" column="dept_id"  class="Depart"  unique-key="depart_unique" />
+	</class>
+	<!--员工信息 -->
+	<class name="Empl"  table="tbl_Examw_OA_Org_Empl">
+		<!-- 员工ID -->
+		<id  name="id"  type="string"  length="64" />
+		<!-- 员工名称 -->
+		<property name="name" type="string" length="32"/>
+		<!-- 员工编号 -->
+		<property name="code" type="string" length="32" not-null="true"  unique="true"/>
+		<!-- 员工性别 -->
+		<property name="gender" type="integer" length="32"/>
+		<!-- 员工手机号码 -->
+		<property name="phone" type="string" length="32"/>
+		<!-- 员工邮箱地址 -->
+		<property name="email" type="string" length="32"/>
+		<!-- 员工身份证号码 -->
+		<property name="idCard" type="string" length="32"/>
+		<!-- 员工出生日期 -->
+		<property name="brithday"  type="timestamp" length="255" />
+		<!-- 员工入职时间 -->
+		<property name="joinTime"  type="timestamp" length="255" />
+		<!-- 状态 0-离职，1-在职，2-限制登录-->
+		<property name="status"  type="integer" />
+		<!-- 创建时间 -->
+		<property name="createTime"  type="timestamp" length="255" />
+		<!-- 员工 密码 -->
+		<property name="password"  type="string"  length="512" />
+		<!-- 所属部门 -->
+		<many-to-one name="depart" column="dept_id"  class="Depart"  unique-key="depart_unique" />
+		<!-- 岗位集合 -->
+		<set name="posts"  inverse="true"  table="tbl_Examw_OA_Org_Post">
+			<!-- 员工ID -->
+			<key column="empl_id" />
+			<!-- 岗位ID -->
+			<many-to-many class="Post"  column="post_id" />
+		</set>
+		<!-- 等级集合 -->
+		<set name="ranks"  inverse="true"  table="tbl_Examw_OA_Org_Rank">
+			<!-- 员工ID -->
+			<key column="empl_id" />
+			<!-- 等级ID -->
+			<many-to-many class="Rank"  column="rank_id" />
+		</set>
 	</class>
 </hibernate-mapping>

@@ -7,7 +7,6 @@
 $(function(){
 	var current_Id = "";
 	var current_Code = "";
-	
 	//tree
 	var t = $("#${module}_list_depart_tree").tree({
 		url:"<@s.url '/org/depart/tree'/>",
@@ -71,15 +70,25 @@ $(function(){
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		toolbar:"#${dg}_toobar"
+		toolbar:"#${dg}_toobar",
+		onLoadSuccess:function(data){
+			dg_fields_format();
+		},
+		onDblClickRow:function(rowIndex,rowData){
+			edit_window("编辑角色",rowIndex,rowData);
+		}
 	});
+	//format dg
+	function dg_fields_format(){
+		$(".role-list-dg-opt-right").linkbutton({text:"授权",plain:true,iconCls:"icon-edit"});
+	};
 	//edit
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
-			height:260,
-			href:"<@s.url '/org/depart/edit'/>",
+			height:220,
+			href:"<@s.url '/org/depart/edit'/>?Ids=" + current_Id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -139,7 +148,7 @@ $(function(){
 	${dg}_search = function(){
 		console.info(current_Id,current_Code);
 		dg.datagrid("load",{
-			  id:current_Id,
+			  pid:current_Id,
 			  code:current_Code,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});

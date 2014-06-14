@@ -1,12 +1,14 @@
 package com.examw.oa.service.org.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
+
 
 
 
@@ -75,19 +77,21 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 	}
 	/*
 	 * 更新数据。
-	 * @see com.examw.netplatform.service.impl.BaseDataServiceImpl#update(java.lang.Object)
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#update(java.lang.Object)
 	 */
 	@Override
 	public DepartInfo update(DepartInfo info) {
-		if(info == null || StringUtils.isEmpty(info.getId())) return null;
+		if(info == null) return null;
 		boolean isAdded = false;
 		Depart data = this.departdao.load(Depart.class, info.getId());
 		if(isAdded = (data == null)){
 			if(StringUtils.isEmpty(info.getId())){
 				info.setId(UUID.randomUUID().toString());
 			}
+			info.setCreateTime(new Date());
 			data = new Depart();
 		}
+		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);
 		if(!StringUtils.isEmpty(info.getPid()) && (data.getParent() == null || !data.getParent().getId().equalsIgnoreCase(info.getPid()))){
 			Depart parent = this.departdao.load(Depart.class, info.getPid());
@@ -98,7 +102,7 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 	}
 	/*
 	 * 删除数据。
-	 * @see com.examw.netplatform.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
 	 */
 	@Override
 	public void delete(String[] ids) {
