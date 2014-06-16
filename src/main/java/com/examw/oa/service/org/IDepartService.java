@@ -4,7 +4,11 @@ import java.util.List;
 import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.service.IBaseDataService;
 
-
+/**
+ * 部门服务。
+ * @author lq.
+ * @since 2014-06-16.
+ */
 
 public interface IDepartService extends IBaseDataService<DepartInfo>{
 	/**

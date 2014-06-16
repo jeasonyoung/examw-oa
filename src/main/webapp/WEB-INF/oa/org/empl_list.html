@@ -1,6 +1,6 @@
 <#--岗位列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="org_post"/>
+<#assign module="org_empl"/>
 <#assign dg="${module}_dg"/>
 <script type="text/javascript">
 <!--
@@ -22,7 +22,7 @@ $(function(){
 	});
 	//dg
 	var dg=$("#${dg}").datagrid({
-		url:"<@s.url '/org/post/datagrid'/>",
+		url:"<@s.url '/org/empl/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -39,22 +39,58 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"岗位名称",
+			title:"员工名称",
 			field:"name",
 			width:40,
 			align:"left",
 			sortable:true
 		},{
-			title:"岗位代号",
+			title:"员工代号",
 			field:"code",
 			width:30,
 			align:"left",
 			sortable:true
 		},{
-			title:"部门代号",
-			field:"deptId",
+			title:"手机号码",
+			field:"phone",
 			width:30,
 			align:"left",
+			sortable:true
+		},{
+			title:"邮箱地址",
+			field:"email",
+			width:30,
+			align:"left",
+			sortable:true
+		},{
+			title:"身份证号码",
+			field:"idCard",
+			width:30,
+			align:"left",
+			sortable:true
+		},{
+			title:"入职时间",
+			field:"joinTime",
+			width:30,
+			align:"left",
+			sortable:true
+		},{
+			title:"状态",
+			field:"status",
+			width:30,
+			align:"left",
+			sortable:true
+		},{
+			title:"等级名称",
+			field:"rankName",
+			width:50,
+			align:"right",
+			sortable:true
+		},{
+			title:"岗位名称",
+			field:"postName",
+			width:50,
+			align:"right",
 			sortable:true
 		},{
 			title:"部门名称",
@@ -83,8 +119,8 @@ $(function(){
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
-			height:160,
-			href:"<@s.url '/org/post/add'/>?deptId=" + current_deptId,
+			height:400,
+			href:"<@s.url '/org/empl/add'/>?deptId=" + current_deptId,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -94,7 +130,7 @@ $(function(){
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/org/post/update'/>",
+						url:"<@s.url '/org/empl/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -144,7 +180,7 @@ $(function(){
 	${dg}_search = function(){
 		dg.datagrid("load",{
 			deptId:current_deptId,
-			Name:$("#${dg}_toobar input[name='name']").val(),
+			code:$("#${dg}_toobar input[name='code']").val(),
 		});
 	};
 	//add
@@ -164,7 +200,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/org/post/delete'/>",
+					url:"<@s.url '/org/empl/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")
@@ -200,7 +236,7 @@ $(function(){
 	 <div data-options="region:'west',title:'菜单',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_menu_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
 	 	<ul id="${module}_list_menu_tree"></ul>
 	 </div>
-	<div data-options="region:'center',title:'岗位信息'">
+	<div data-options="region:'center',title:'员工信息'">
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
 			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
@@ -211,7 +247,7 @@ $(function(){
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 			<!-- </shiro.hasPermission> -->
 			
-			<label>岗位称名：<input name="name" type="text" style="width:198px;"/></label>
+			<label>员工编号：<input name="code" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 		</div>
 	</div>

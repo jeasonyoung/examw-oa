@@ -14,4 +14,11 @@
 		<property name="postdao" ref="postdao"/>
 		<property name="departdao" ref="departdao"/>
 	</bean>
+	<!-- 员工信息 -->
+	<bean id="emplservice" class="com.examw.oa.service.org.impl.EmplServiceImpl">
+		<property name="empldao" ref="empldao"/>
+		<property name="postdao" ref="postdao"/>
+		<property name="departdao" ref="departdao"/>
+		<property name="rankdao" ref="rankdao"/>
+	</bean>
 </beans>

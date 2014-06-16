@@ -1,28 +1,21 @@
-package com.examw.oa.model.org;
+package com.examw.oa.domain.org;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.examw.model.Paging;
-import com.examw.oa.support.CustomDateSerializer;
 /**
  * 员工信息。
  * @author lq.
- * @since 2014-06-16
+ * @since 2014-06-16.
  */
-@JsonSerialize(include = Inclusion.NON_NULL)
-public class EmplInfo extends Paging {
+public class Empl implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String id,name,code,phone,email,idCard,password,departId,departName,postId,postName,rankId,rankName;
+	private String id,name,code,phone,email,idCard,password;
 	private int gender,status;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date brithday;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date joinTime;
-	private Date createTime;
+	private Date brithday,joinTime,createTime;
+	private Depart depart;
+	private Post post;
+	private Rank rank;
 	/**
 	 * 获取员工信息ID。
 	 * @return
@@ -172,7 +165,6 @@ public class EmplInfo extends Paging {
 	 * @return
 	 * 出生。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getBrithday() {
 		return brithday;
 	}
@@ -189,7 +181,6 @@ public class EmplInfo extends Paging {
 	 * @return
 	 * 入职时间。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getJoinTime() {
 		return joinTime;
 	}
@@ -218,100 +209,51 @@ public class EmplInfo extends Paging {
 		this.createTime = createTime;
 	}
 	/**
-	 * 获取所属部门ID。
-	 * @param departId
-	 * 所属部门ID。
+	 * 获取所属部门。
+	 * @return
+	 * 所属部门。
 	 */
-	public String getDepartId() {
-		return departId;
+	public Depart getDepart() {
+		return depart;
 	}
 	/**
-	 * 设置所属部门ID。
-	 * @param departId
-	 * 所属部门ID。
+	 * 设置所属部门。
+	 * @return
+	 * 所属部门。
 	 */
-	public void setDepartId(String departId) {
-		this.departId = departId;
+	public void setDepart(Depart depart) {
+		this.depart = depart;
 	}
 	/**
-	 * 获取所属部门名称。
-	 * @param departName
-	 * 所属部门名称。
+	 * 获取所属岗位。
+	 * @return
+	 * 所属岗位。
 	 */
-	public String getDepartName() {
-		return departName;
+	public Post getPost() {
+		return post;
 	}
 	/**
-	 * 设置所属部门名称。
-	 * @param departName
-	 * 所属部门名称。
+	 * 设置所属岗位。
+	 * @return
+	 * 所属岗位。
 	 */
-	public void setDepartName(String departName) {
-		this.departName = departName;
+	public void setPost(Post post) {
+		this.post = post;
 	}
 	/**
-	 * 获取所属岗位ID。
-	 * @param postId
-	 * 所属岗位ID。
+	 * 获取所属等级。
+	 * @return
+	 * 所属等级。
 	 */
-	public String getPostId() {
-		return postId;
+	public Rank getRank() {
+		return rank;
 	}
 	/**
-	 * 设置所属岗位ID。
-	 * @param postId
-	 * 所属岗位ID。
+	 * 设置所属等级。
+	 * @return
+	 * 所属等级。
 	 */
-	public void setPostId(String postId) {
-		this.postId = postId;
+	public void setRank(Rank rank) {
+		this.rank = rank;
 	}
-	/**
-	 * 获取所属岗位名称。
-	 * @param postName
-	 * 所属岗位名称。
-	 */
-	public String getPostName() {
-		return postName;
-	}
-	/**
-	 * 设置所属岗位名称。
-	 * @param postName
-	 * 所属岗位名称。
-	 */
-	public void setPostName(String postName) {
-		this.postName = postName;
-	}
-	/**
-	 * 获取所属等级ID。
-	 * @param rankId
-	 * 所属等级ID。
-	 */
-	public String getRankId() {
-		return rankId;
-	}
-	/**
-	 * 设置所属等级ID。
-	 * @param rankId
-	 * 所属等级ID。
-	 */
-	public void setRankId(String rankId) {
-		this.rankId = rankId;
-	}
-	/**
-	 * 获取所属等级名称。
-	 * @param rankName
-	 * 所属等级名称。
-	 */
-	public String getRankName() {
-		return rankName;
-	}
-	/**
-	 * 设置所属等级名称。
-	 * @param rankName
-	 * 所属等级名称。
-	 */
-	public void setRankName(String rankName) {
-		this.rankName = rankName;
-	}
-	
 }

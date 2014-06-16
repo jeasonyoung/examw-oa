@@ -13,4 +13,8 @@
 	<bean id="postdao" class="com.examw.oa.dao.org.impl.PostDaoImpl">
 	<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
+	<!-- 员工dao -->
+	<bean id="empldao" class="com.examw.oa.dao.org.impl.EmplDaoImpl">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 </beans>

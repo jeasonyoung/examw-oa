@@ -83,7 +83,7 @@ public class DepartController {
 		} catch (Exception e) {
 			result.setSuccess(false);
 			result.setMsg(e.getMessage());
-			logger.error("更新角色数据发生异常", e);
+			logger.error("更新部门数据发生异常", e);
 		}
 		return result;
 	}

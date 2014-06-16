@@ -12,29 +12,39 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
-import com.examw.oa.controllers.security.MenuController;
+import com.examw.oa.controllers.security.MenuRightController;
+import com.examw.oa.model.org.EmplInfo;
 import com.examw.oa.model.org.PostInfo;
-import com.examw.oa.service.org.IDepartService;
+import com.examw.oa.model.org.RankInfo;
+
+import com.examw.oa.service.org.IEmplService;
 import com.examw.oa.service.org.IPostService;
+import com.examw.oa.service.org.IRankService;
+
 /**
- * 岗位信息控制器。
+ * 员工信息控制器。
  * @author lq.
- * @since 2014-06-13.
+ * @since 2014-06-16.
  */
 @Controller
-@RequestMapping(value = "/org/post")
-public class PostController {
-	private static Logger logger = Logger.getLogger(MenuController.class);
+@RequestMapping(value = "/org/empl")
+public class EmplController {
+	private static Logger logger = Logger.getLogger(MenuRightController.class);
 	/**
-	 * 岗位。
+	 *岗位信息服务。
 	 */
 	@Resource
 	private IPostService postservice;
 	/**
-	 * 部门。
+	 * 等级信息服务。
 	 */
 	@Resource
-	private IDepartService departservice;
+	private IRankService rankservice;
+	/**
+	 * 员工信息服务。
+	 */
+	@Resource
+	private IEmplService emplservice;
 	/**
 	 * 列表页面。
 	 * @return
@@ -42,9 +52,7 @@ public class PostController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
-		//model.addAttribute("PER_UPDATE", ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE);
-		//model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.DELETE);
-		return "org/post_list";
+		return "org/empl_list";
 	}
 	/**
 	 * 添加页面。
@@ -53,9 +61,23 @@ public class PostController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String edit(String deptId, Model model){
-		model.addAttribute("deptId", StringUtils.isEmpty(deptId) ? "" : deptId);
-		return "org/post_edit";
-	}
+		 model.addAttribute("posts", this.postservice.datagrid(new PostInfo(){
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Integer getPage(){return null;}
+				@Override
+				public Integer getRows(){return null;}
+			}).getRows());
+		 model.addAttribute("ranks", this.rankservice.datagrid(new RankInfo(){
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Integer getPage(){return null;}
+				@Override
+				public Integer getRows(){return null;}
+			}).getRows());
+		 model.addAttribute("deptId", StringUtils.isEmpty(deptId) ? "" : deptId);
+		return "org/empl_edit";
+   }
 	/**
 	 * 查询数据。
 	 * @return
@@ -63,8 +85,8 @@ public class PostController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
-	public DataGrid<PostInfo> datagrid(PostInfo info){
-		return this.postservice.datagrid(info);
+	public DataGrid<EmplInfo> datagrid(EmplInfo info){
+		return this.emplservice.datagrid(info);
 	}
 	/**
 	 * 更新数据。
@@ -76,20 +98,16 @@ public class PostController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(PostInfo info){
+	public Json update(EmplInfo info){
 		Json result = new Json();
 		try {
-			if(StringUtils.isEmpty(info.getDeptId())){
-				result.setSuccess(false);
-				result.setMsg("未获取部门ID数据！");
-				return result;
-			}
-			result.setData(this.postservice.update(info));
+			
+			result.setData(this.emplservice.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);
 			result.setMsg(e.getMessage());
-			logger.error("更新岗位数据发生异常", e);
+			logger.error("更新部门数据发生异常", e);
 		}
 		return result;
 	}
@@ -104,7 +122,7 @@ public class PostController {
 	public Json delete(String id){
 		Json result = new Json();
 		try {
-			this.postservice.delete(id.split("\\|"));
+			this.emplservice.delete(id.split("\\|"));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);

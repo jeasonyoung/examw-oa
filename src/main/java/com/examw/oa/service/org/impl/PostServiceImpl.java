@@ -28,26 +28,30 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 	private IDepartDao departdao;
 	/**
 	 * 设置岗位信息数据接口。
-	 * @param menuRightDao
+	 * @param postdao
 	 * 岗位信息数据接口。
 	 */
 	public void setPostdao(IPostDao postdao) {
 		this.postdao = postdao;
 	}
-
-	@Override
-	protected List<Post> find(PostInfo info) {
-		
-		return this.postdao.findPosts(info);
-	}
 	/**
 	 * 设置部门数据接口。
-	 * @param menuRightDao
+	 * @param departdao
 	 * 部门数据接口。
 	 */
 	public void setDepartdao(IDepartDao departdao) {
 		this.departdao = departdao;
 	}
+	/*
+	 * 查询所有。
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
+	 */
+	@Override
+	protected List<Post> find(PostInfo info) {
+		
+		return this.postdao.findPosts(info);
+	}
+	
 	/*
 	 * 类型转换。
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
@@ -82,7 +86,6 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 		boolean isAdded = false;
 		Post data = StringUtils.isEmpty(info.getId()) ? null : this.postdao.load(Post.class, info.getId());
 		if(isAdded = (data == null)){
-			
 			if(StringUtils.isEmpty(info.getId())) {
 				info.setId(UUID.randomUUID().toString());
 			}

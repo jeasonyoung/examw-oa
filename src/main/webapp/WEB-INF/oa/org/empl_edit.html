@@ -1,0 +1,64 @@
+<#--部门编辑-->
+<#assign module="org_empl"/>
+<#assign form="${module}_edit_form"/>
+<form id="${form}" method="POST">
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">员工代号：</label>
+		<input type="text" name="code" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+		<input type="hidden" name="id"/>
+		<input type="hidden" name="departId" value="${deptId}"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">员工名称：</label>
+		<input type="text" name="name" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">性别：</label>
+		<input type="text" name="gender" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">手机号码：</label>
+		<input type="text" name="phone" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">邮箱：</label>
+		<input type="text" name="email" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">身份证号码：</label>
+		<input type="text" name="idCard" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">出生日期：</label>
+		<input type="text" name="brithday" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">入职时间：</label>
+		<input type="text" name="joinTime" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">员工密码：</label>
+		<input type="text" name="password" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:75px;">状态：</label>
+		<input type="text" name="status" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:90%;">
+		<label style="width:75px;">岗位：</label>
+		<select name="postId">
+			<#list posts as p>
+				<option value="${p.id}">${p.name}</option>
+			</#list>
+		</select>	
+	</div>
+	<div  style="float:left;margin-top:10px;width:90%;">
+		<label style="width:75px;">等级：</label>
+			<select name="rankId">
+				<#list ranks as r>
+					<option value="${r.id}">${r.name}</option>
+				</#list>
+			</select>		
+	</div>
+</form>

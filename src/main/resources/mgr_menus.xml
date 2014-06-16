@@ -12,7 +12,7 @@
   		<module id="EOA000102" icon="" name="部门信息" uri="/org/depart" order="1"/>
   		<module id="EOA000202" icon="" name="等级信息" uri="/org/rank" order="2"/>
   		<module id="EOA000302" icon="" name="岗位信息" uri="/org/post" order="3"/>
-  		<module id="EOA000402" icon="" name="员工信息" uri="" order="4"/>
+  		<module id="EOA000402" icon="" name="员工信息" uri="/org/empl" order="4"/>
   		
   	</module>
   </system>
