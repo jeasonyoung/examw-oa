@@ -39,14 +39,14 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"员工名称",
-			field:"name",
+			title:"员工代号",
+			field:"code",
 			width:40,
 			align:"left",
 			sortable:true
 		},{
-			title:"员工代号",
-			field:"code",
+			title:"员工名称",
+			field:"name",
 			width:30,
 			align:"left",
 			sortable:true
@@ -71,12 +71,6 @@ $(function(){
 		},{
 			title:"入职时间",
 			field:"joinTime",
-			width:30,
-			align:"left",
-			sortable:true
-		},{
-			title:"状态",
-			field:"status",
 			width:30,
 			align:"left",
 			sortable:true
@@ -107,7 +101,7 @@ $(function(){
 			dg_fields_format();
 		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑角色",rowIndex,rowData);
+			edit_window("编辑员工信息",rowIndex,rowData);
 		}
 	});
 	//format dg
@@ -118,8 +112,8 @@ $(function(){
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
-			width:400,
-			height:400,
+			width:500,
+			height:480,
 			href:"<@s.url '/org/empl/add'/>?deptId=" + current_deptId,
 			modal:true,
 			buttons:[
@@ -178,14 +172,15 @@ $(function(){
 	};
 	//search
 	${dg}_search = function(){
+		console.info(current_deptId);
 		dg.datagrid("load",{
-			deptId:current_deptId,
+			departId:current_deptId,
 			code:$("#${dg}_toobar input[name='code']").val(),
-		});
+	});
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("添加岗位信息",0,null);
+		edit_window("添加员工信息",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
@@ -247,7 +242,7 @@ $(function(){
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 			<!-- </shiro.hasPermission> -->
 			
-			<label>员工编号：<input name="code" type="text" style="width:198px;"/></label>
+			<label>员工代号：<input name="code" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 		</div>
 	</div>

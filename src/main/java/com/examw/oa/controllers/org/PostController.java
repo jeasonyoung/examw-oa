@@ -64,6 +64,7 @@ public class PostController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<PostInfo> datagrid(PostInfo info){
+		System.out.println(info.getDeptId()+"llllllllllllllllllllllllllllllllll"+info.getCode());
 		return this.postservice.datagrid(info);
 	}
 	/**

@@ -69,10 +69,10 @@
 		<!-- 员工 密码 -->
 		<property name="password"  type="string"  length="512" />
 		<!-- 所属部门 -->
-		<many-to-one name="depart" column="dept_id"  class="Depart"  unique-key="depart_unique" />
+		<many-to-one name="depart" column="dept_id"  class="Depart" />
 		<!-- 岗位集合 -->
-		<many-to-one name="post" column="post_id"  class="Post"  unique-key="post_unique" />
+		<many-to-one name="post" column="post_id"  class="Post" />
 		<!-- 等级集合 -->
-		<many-to-one name="rank" column="rank_id"  class="Rank"  unique-key="rank_unique" />
+		<many-to-one name="rank" column="rank_id"  class="Rank"/>
 	</class>
 </hibernate-mapping>

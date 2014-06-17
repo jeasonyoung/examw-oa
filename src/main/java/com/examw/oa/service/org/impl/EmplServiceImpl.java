@@ -111,13 +111,14 @@ public class EmplServiceImpl extends BaseDataServiceImpl<Empl,EmplInfo> implemen
 	public EmplInfo update(EmplInfo info) {
 		if(info == null) return null;
 		boolean isAdded = false;
-		Empl data =  this.empldao.load(info);
+		Empl data = this.empldao.load(Empl.class, info.getId());
 		if(isAdded = (data == null)){
-			info.setId(UUID.randomUUID().toString());
+			if(StringUtils.isEmpty(info.getId())){
+				info.setId(UUID.randomUUID().toString());
+			}
+			info.setCreateTime(new Date());
+			data = new Empl();
 		}
-		info.setCreateTime(new Date());
-		data = new Empl();
-		data.setId(info.getId());
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);
 		if(!StringUtils.isEmpty(info.getDepartId()) && (data.getDepart() == null || !data.getDepart().getId().equalsIgnoreCase(info.getDepartId()))){

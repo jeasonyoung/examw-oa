@@ -75,10 +75,8 @@ public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 	@Override
 	public Post load(PostInfo info) {
 		if(info == null) return null;
-		
 		Post data = StringUtils.isEmpty(info.getId()) ?  null : this.load(Post.class, info.getId());
 		if(data != null) return data;
-		
 		final String hql = "from Post p where p.depart.id = :deptId";
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("deptId", info.getDeptId());

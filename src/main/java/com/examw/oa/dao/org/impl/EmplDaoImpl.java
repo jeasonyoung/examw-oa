@@ -63,14 +63,14 @@ public class EmplDaoImpl extends BaseDaoImpl<Empl> implements IEmplDao {
 	 */
 	@Override
 	public List<Empl> findEmpls(String departId) {
-		final String hql = "from Empl e where e.depart.id = :departId";
+		final String hql = "from Empl e where e.depart.id = :deptId";
 		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("departId", departId);
+		parameters.put("deptId", departId);
 		return this.find(hql, parameters, null, null);
 	}
 	/*
      * 查询数据总数。
-     * @see com.examw.oa.dao.admin.IEmplDao#total(com.examw.oa.model.admin.MenuRightInfo)
+     * @see com.examw.oa.dao.admin.IEmplDao#total(com.examw.oa.model.admin.EmplInfo)
      */
 	@Override
 	public Long total(EmplInfo info) {
@@ -92,8 +92,8 @@ public class EmplDaoImpl extends BaseDaoImpl<Empl> implements IEmplDao {
 	 */
 	protected String addWhere(EmplInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getDepartId())){
-			hql += " and (e.depart.id = :departId or e.depart.parent.id = :departId)";
-			parameters.put("departId", info.getDepartId());
+			hql += " and (e.depart.id = :deptId or e.depart.parent.id = :deptId)";
+			parameters.put("deptId", info.getDepartId());
 		}
 		if(!StringUtils.isEmpty(info.getCode())){
 			hql += " and (e.code like :code)";
@@ -101,6 +101,4 @@ public class EmplDaoImpl extends BaseDaoImpl<Empl> implements IEmplDao {
 		}
 		return hql;
 	}
-
-
 }

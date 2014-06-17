@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.MenuRightController;
+
 import com.examw.oa.model.org.EmplInfo;
 import com.examw.oa.model.org.PostInfo;
 import com.examw.oa.model.org.RankInfo;
@@ -86,6 +87,7 @@ public class EmplController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<EmplInfo> datagrid(EmplInfo info){
+		System.out.println(info.getDepartId()+"llllllllllllllllllllllllllllllllll"+info.getCode());
 		return this.emplservice.datagrid(info);
 	}
 	/**
