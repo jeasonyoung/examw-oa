@@ -125,7 +125,7 @@ public class EmplServiceImpl extends BaseDataServiceImpl<Empl,EmplInfo> implemen
 			Depart depart = this.departdao.load(Depart.class, info.getDepartId());
 			if(depart != null) {
 				if(depart.getChildren() != null && depart.getChildren().size() > 0){
-					throw new RuntimeException("必须！");
+					throw new RuntimeException("必须选择部门下的机构！");
 				}
 				data.setDepart(depart);
 				info.setDepartName(depart.getName());
@@ -149,7 +149,6 @@ public class EmplServiceImpl extends BaseDataServiceImpl<Empl,EmplInfo> implemen
 		if(StringUtils.isEmpty(info.getDepartName()) && data.getDepart() != null){
 			info.setDepartName(data.getDepart().getName());
 		}
-		
 		if(StringUtils.isEmpty(info.getPostName()) && data.getPost() != null){
 			info.setPostName(data.getPost().getName());
 		}

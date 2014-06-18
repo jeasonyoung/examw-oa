@@ -52,6 +52,13 @@ public class DepartController {
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
 	public String edit(String Ids,Model model){
 		model.addAttribute("Ids", StringUtils.isEmpty(Ids) ? "" : Ids);
+		model.addAttribute("departs", this.departservice.datagrid(new DepartInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Integer getPage(){return null;}
+			@Override
+			public Integer getRows(){return null;}
+		}).getRows());
 		return "org/depart_edit";
 	}
 	/**

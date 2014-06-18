@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.MenuController;
+import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.model.org.PostInfo;
 import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.org.IPostService;
@@ -54,6 +55,13 @@ public class PostController {
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String edit(String deptId, Model model){
 		model.addAttribute("deptId", StringUtils.isEmpty(deptId) ? "" : deptId);
+		model.addAttribute("departs", this.departservice.datagrid(new DepartInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Integer getPage(){return null;}
+			@Override
+			public Integer getRows(){return null;}
+		}).getRows());
 		return "org/post_edit";
 	}
 	/**
@@ -64,7 +72,6 @@ public class PostController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<PostInfo> datagrid(PostInfo info){
-		System.out.println(info.getDeptId()+"llllllllllllllllllllllllllllllllll"+info.getCode());
 		return this.postservice.datagrid(info);
 	}
 	/**

@@ -51,7 +51,6 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 		
 		return this.postdao.findPosts(info);
 	}
-	
 	/*
 	 * 类型转换。
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
@@ -96,7 +95,7 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 			Depart depart = this.departdao.load(Depart.class, info.getDeptId());
 			if(depart != null) {
 				if(depart.getChildren() != null && depart.getChildren().size() > 0){
-					throw new RuntimeException("必须！");
+					throw new RuntimeException("必须选择部门下的机构！");
 				}
 				data.setDepart(depart);
 				info.setDepartName(depart.getName());

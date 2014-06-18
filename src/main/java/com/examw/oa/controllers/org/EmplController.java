@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.MenuRightController;
-
+import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.model.org.EmplInfo;
 import com.examw.oa.model.org.PostInfo;
 import com.examw.oa.model.org.RankInfo;
-
+import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.org.IEmplService;
 import com.examw.oa.service.org.IPostService;
 import com.examw.oa.service.org.IRankService;
@@ -31,6 +31,8 @@ import com.examw.oa.service.org.IRankService;
 @RequestMapping(value = "/org/empl")
 public class EmplController {
 	private static Logger logger = Logger.getLogger(MenuRightController.class);
+	@Resource
+	private IDepartService departservice;
 	/**
 	 *岗位信息服务。
 	 */
@@ -76,8 +78,15 @@ public class EmplController {
 				@Override
 				public Integer getRows(){return null;}
 			}).getRows());
-		 model.addAttribute("deptId", StringUtils.isEmpty(deptId) ? "" : deptId);
-		return "org/empl_edit";
+		 	model.addAttribute("departs", this.departservice.datagrid(new DepartInfo(){
+				private static final long serialVersionUID = 1L;
+				@Override
+				public Integer getPage(){return null;}
+				@Override
+				public Integer getRows(){return null;}
+			}).getRows());
+		 	model.addAttribute("deptId", StringUtils.isEmpty(deptId) ? "" : deptId);
+		 	return "org/empl_edit";
    }
 	/**
 	 * 查询数据。
@@ -87,7 +96,6 @@ public class EmplController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<EmplInfo> datagrid(EmplInfo info){
-		System.out.println(info.getDepartId()+"llllllllllllllllllllllllllllllllll"+info.getCode());
 		return this.emplservice.datagrid(info);
 	}
 	/**

@@ -6,10 +6,17 @@
 		<label style="width:75px;">岗位代号：</label>
 		<input type="text" name="code" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
 		<input type="hidden" name="id"/>
-		<input type="hidden" name="deptId" value="${deptId}"/>
 	</div>
 	<div style="float:left;margin-top:10px;width:100%;">
 		<label style="width:75px;">岗位名称：</label>
 		<input type="text" name="name" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	</div>
+	<div  style="float:left;margin-top:10px;width:90%;">
+		<label style="width:75px;">部门：</label>
+			<select class="easyui-combobox" name="deptId" style="width:160px;">
+				<#list departs as d>
+					<option value="${d.id}" selected>${d.name}</option>
+				</#list>
+			</select>		
 	</div>
 </form>

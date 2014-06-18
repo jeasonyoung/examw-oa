@@ -89,6 +89,7 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 				info.setId(UUID.randomUUID().toString());
 			}
 			info.setCreateTime(new Date());
+			
 			data = new Depart();
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());

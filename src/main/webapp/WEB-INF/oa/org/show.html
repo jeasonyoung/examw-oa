@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<HTML>
+    <HEAD>
+        <title>Ajax实现无刷新三联动下拉框</title>
+        <meta content="Microsoft Visual Studio .NET 7.1" name="GENERATOR">
+        <meta content="C#" name="CODE_LANGUAGE">
+        <meta content="JavaScript" name="vs_defaultClientScript">
+        <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+        <SCRIPT language="javascript">           
+            //城市------------------------------
+            function cityResult()
+            {
+                var city=document.getElementByIdx("DropDownList1");
+                AjaxMethod.GetCityList(city.value,get_city_Result_CallBack);
+            }
+           
+            function get_city_Result_CallBack(response)
+            {
+                if (response.value != null)
+                {                   
+                    //debugger;
+                    document.all("DropDownList2").length=0;　　　　           
+　　　　            var ds = response.value;
+                    if(ds != null && typeof(ds) == "object" && ds.Tables != null)
+                    {                   
+                        for(var i=0; i<ds.Tables[0].Rows.length; i++)
+　　　　                {
+　　　　                    var name=ds.Tables[0].Rows[i].city;
+　　　　　　                var id=ds.Tables[0].Rows[i].cityID;
+　　　　　　                document.all("DropDownList2").options.add(new Option(name,id));
+　　　　                }
+                    }
+                }               
+                return
+            }
+            //市区----------------------------------------
+            function areaResult()
+            {
+                var area=document.getElementByIdx("DropDownList2");
+                AjaxMethod.GetAreaList(area.value,get_area_Result_CallBack);
+            }
+            function get_area_Result_CallBack(response)
+            {
+                if (response.value != null)
+                {                   
+                    document.all("DropDownList3").length=0;　　　　           
+　　　　            var ds = response.value;
+                    if(ds != null && typeof(ds) == "object" && ds.Tables != null)
+                    {                   
+                        for(var i=0; i<ds.Tables[0].Rows.length; i++)
+　　　　                {
+　　　　　　                var name=ds.Tables[0].Rows[i].area;
+　　　　　　                var id=ds.Tables[0].Rows[i].areaID;
+　　　　　　                document.all("DropDownList3").options.add(new Option(name,id));
+　　　　                }               
+                    }
+                }
+                return
+            }
+            function getData()
+            {
+                var province=document.getElementByIdx("DropDownList1");
+                var pindex = province.selectedIndex;
+                var pValue = province.options[pindex].value;
+                var pText  = province.options[pindex].text;
+               
+                var city=document.getElementByIdx("DropDownList2");
+                var cindex = city.selectedIndex;
+                var cValue = city.options[cindex].value;
+                var cText  = city.options[cindex].text;
+               
+                var area=document.getElementByIdx("DropDownList3");
+                var aindex = area.selectedIndex;
+                var aValue = area.options[aindex].value;
+                var aText  = area.options[aindex].text;
+               
+                var txt=document.getElementByIdx("TextBox1");                               
+
+                document.getElementByIdx("<%=TextBox1.ClientID%>").innerText="省:"+pValue+"|"+pText+"市:"+cValue+"|"+cText+"区:"+aValue+"|"+aText;
+            }
+        </SCRIPT>
+    </HEAD>
+    <body ms_positioning="GridLayout">
+        <form id="Form1" method="post" runat="server">
+            <TABLE id="Table1" style="Z-INDEX: 101; LEFT: 96px; POSITION: absolute; TOP: 32px" cellSpacing="1"
+                cellPadding="1" width="300" border="1" bgColor="#ccff66">
+                <TR>
+                    <TD>省市</TD>
+                    <TD><asp:dropdownlist id="DropDownList1" runat="server"></asp:dropdownlist></TD>
+                </TR>
+                <TR>
+                    <TD>城市</TD>
+                    <TD><asp:dropdownlist id="DropDownList2" runat="server"></asp:dropdownlist></TD>
+                </TR>
+                <TR>
+                    <TD>市区</TD>
+                    <TD><asp:dropdownlist id="DropDownList3" runat="server"></asp:dropdownlist></TD>
+                </TR>
+            </TABLE>
+            <asp:TextBox id="TextBox1" style="Z-INDEX: 102; LEFT: 416px; POSITION: absolute; TOP: 48px" runat="server"
+                Width="424px"></asp:TextBox><INPUT style="Z-INDEX: 103; LEFT: 456px; WIDTH: 56px; POSITION: absolute; TOP: 96px; HEIGHT: 24px"
+                type="button" value="test" onclick="getData();">
+        </form>
+    </body>
+</HTML>

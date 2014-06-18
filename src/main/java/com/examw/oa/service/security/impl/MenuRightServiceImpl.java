@@ -108,7 +108,6 @@ public class MenuRightServiceImpl extends BaseDataServiceImpl<MenuRight, MenuRig
 				info.setMenuName(menu.getName());
 			}
 		}
-		
 		if(!StringUtils.isEmpty(info.getRightId()) && (data.getRight() == null || !data.getRight().getId().equalsIgnoreCase(info.getRightId()))){
 			Right right = this.rightDao.load(Right.class, info.getRightId());
 			if(right != null){
