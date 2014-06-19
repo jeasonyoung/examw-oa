@@ -1,22 +1,22 @@
-<#--岗位列表-->
+<#--部门列表-->
 <#include "ftl/comm.ftl"/>
 <#assign module="org_post"/>
 <#assign dg="${module}_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_deptId = "";
+	var current_id = "";
 	//tree
-	var t = $("#${module}_list_menu_tree").tree({
+	var t = $("#${module}_list_tree").tree({
 		url:"<@s.url '/org/depart/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		onBeforeLoad:function(){
-			current_deptId = "";
+		onLoadSuccess:function(n,data){
+			current_id = "";
 		},
 		onClick:function(node){
-			current_deptId = node.id;
+			current_id = node.id;
 			${dg}_search();
 		}
 	});
@@ -33,7 +33,7 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"depart.name",
+		sortName:"code",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
@@ -41,44 +41,43 @@ $(function(){
 		},{
 			title:"部门名称",
 			field:"departName",
-			width:40,
+			width:15,
 			align:"left",
 			sortable:true
 		},{
 			title:"岗位代号",
 			field:"code",
-			width:30,
+			width:20,
 			align:"left",
 			sortable:true
 		},{
+
 			title:"岗位名称",
 			field:"name",
-			width:50,
-			align:"right",
+			width:20,
+			align:"left",
 			sortable:true
 		}]],
+		toolbar:"#${dg}_toobar",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		toolbar:"#${dg}_toobar",
-		onLoadSuccess:function(data){
-			dg_fields_format();
-		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑角色",rowIndex,rowData);
+			edit_window("编辑中...",rowIndex,rowData);
 		}
 	});
-	//format dg
-	function dg_fields_format(){
-		$(".role-list-dg-opt-right").linkbutton({text:"授权",plain:true,iconCls:"icon-edit"});
-	};
 	//edit
 	function edit_window(title,index,row){
+		var ignore = "";
+		if(row && row.id){
+			current_id = "";
+			ignore = row.id;
+		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
-			height:200,
-			href:"<@s.url '/org/post/add'/>?deptId=" + current_deptId,
+			height:220,
+			href:"<@s.url '/org/post/add'/>?ignore="+ignore+"&deptId=" + current_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -106,7 +105,7 @@ $(function(){
 									index:index,
 									row:data.data
 								});
-								dg_fields_format();
+								t.tree("reload");
 								d.dialog("close");
 							}else{
 								$.messager.show({
@@ -137,13 +136,13 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			deptId:current_deptId,
-			Name:$("#${dg}_toobar input[name='name']").val(),
+			  deptId:current_id,
+			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("添加岗位信息",0,null);
+		edit_window("添加岗位",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
@@ -173,6 +172,7 @@ $(function(){
 						if(data.success){
 							dg.datagrid("load");
 							dg.datagrid("unselectAll");
+							t.tree("reload");
 						}else{
 							$.messager.show({
 								title:"提示",
@@ -191,8 +191,8 @@ $(function(){
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-	 <div data-options="region:'west',title:'菜单',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_menu_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-	 	<ul id="${module}_list_menu_tree"></ul>
+	 <div data-options="region:'west',title:'部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+	 	<ul id="${module}_list_tree"></ul>
 	 </div>
 	<div data-options="region:'center',title:'岗位信息'">
 		<table id="${dg}"></table>
@@ -205,7 +205,7 @@ $(function(){
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 			<!-- </shiro.hasPermission> -->
 			
-			<label>岗位称名：<input name="name" type="text" style="width:198px;"/></label>
+			<label>岗位名称：<input name="name" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 		</div>
 	</div>

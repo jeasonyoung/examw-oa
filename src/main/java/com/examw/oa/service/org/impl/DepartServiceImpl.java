@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 
 
+
 import com.examw.oa.dao.org.IDepartDao;
 import com.examw.oa.domain.org.Depart;
 import com.examw.oa.model.org.DepartInfo;
@@ -54,6 +55,7 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 		if(data == null) return null;
 		DepartInfo info = new DepartInfo();
 		BeanUtils.copyProperties(data, info, new String[] {"children"});
+		info.setFullName(this.loadFullName(data));
 		if(data.getChildren() != null && data.getChildren().size() > 0){
 			List<DepartInfo> children = new ArrayList<>();
 			for(Depart d : data.getChildren()){
@@ -68,8 +70,21 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 		return info;
 	}
 	/*
+	 * 部门全称。
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
+	 */
+	private String loadFullName(Depart data){
+		if(data == null) return null;
+		if(data.getParent() == null) return data.getName();
+		StringBuilder sb = new StringBuilder(data.getName());
+		if(data.getParent() != null){
+			sb.insert(0, this.loadFullName(data.getParent()) + ">");
+		}
+		return sb.toString();
+	}
+	/*
 	 *  统计查询数据。
-	 * @see com.examw.netplatform.service.impl.BaseDataServiceImpl#total(java.lang.Object)
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
 	 */
 	@Override
 	protected Long total(DepartInfo info) {
@@ -96,7 +111,14 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 		BeanUtils.copyProperties(info, data);
 		if(!StringUtils.isEmpty(info.getPid()) && (data.getParent() == null || !data.getParent().getId().equalsIgnoreCase(info.getPid()))){
 			Depart parent = this.departdao.load(Depart.class, info.getPid());
-			if(parent != null)data.setParent(parent);
+			if(parent != null){
+				if(info.getPid().equals(info.getId())){
+					throw new RuntimeException("不能选择相同的机构！");
+				}
+				data.setParent(parent);
+			}
+				
+			
 		}
 		if(isAdded) this.departdao.save(data);
 		return info;

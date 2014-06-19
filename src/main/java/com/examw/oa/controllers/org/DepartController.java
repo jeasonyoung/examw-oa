@@ -50,15 +50,9 @@ public class DepartController {
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
-	public String edit(String Ids,Model model){
-		model.addAttribute("Ids", StringUtils.isEmpty(Ids) ? "" : Ids);
-		model.addAttribute("departs", this.departservice.datagrid(new DepartInfo(){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Integer getPage(){return null;}
-			@Override
-			public Integer getRows(){return null;}
-		}).getRows());
+	public String edit(String id,String ignore,Model model){
+		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(id) ? "" : id);
+		model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
 		return "org/depart_edit";
 	}
 	/**
@@ -120,28 +114,39 @@ public class DepartController {
 	 */
 	@RequestMapping(value = "/tree", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public synchronized List<TreeNode> tree(){
+	public synchronized List<TreeNode> tree(String ignore){
 		List<TreeNode> result = new ArrayList<>();
 		List<DepartInfo> list = this.departservice.loadDeparts();
-		if(list != null && list.size() > 0){
-			for(int i = 0; i < list.size(); i++){
-				TreeNode tv = this.createTreeNode(list.get(i));
-				if(tv != null){
-					result.add(tv);
+		if(list != null){
+			for(DepartInfo info: list){
+				if(info == null || (!StringUtils.isEmpty(ignore) && info.getId().equalsIgnoreCase(ignore))){
+					continue;
+				}
+				TreeNode node = this.createTreeNode(info, ignore);
+				if(node != null){
+					result.add(node);
 				}
 			}
 		}
 		return result;
 	}
-	private TreeNode createTreeNode(DepartInfo info){
-		if(info == null) return null;
+	/**
+	 * 
+	 * @param info
+	 * @param ignore
+	 * @return
+	 */
+	private TreeNode createTreeNode(DepartInfo info, String ignore){
+		if(info == null || (!StringUtils.isEmpty(ignore) && info.getId().equalsIgnoreCase(ignore)))
+			return null;
+		
 		TreeNode tv = new TreeNode();
 		tv.setId(info.getId());
 		tv.setText(info.getName());
 		if(info.getChildren() != null && info.getChildren().size() > 0){
 			List<TreeNode> childs = new ArrayList<>();
 			 for(DepartInfo m : info.getChildren()){
-				  TreeNode node = this.createTreeNode(m);
+				  TreeNode node = this.createTreeNode(m,ignore);
 				  if(node != null) childs.add(node);
 			 }
 			 tv.setChildren(childs);

@@ -24,7 +24,7 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	 */
 	@Override
 	public List<Depart> findDeparts() {
-		String hql =  "from Depart d  where d.parent is null order by d.orderNo";
+		String hql =  "from Depart d where d.parent is null order by d.orderNo";
 		return this.find(hql, null, null, null);
 	}
 	/*
@@ -37,15 +37,9 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
-			if(info.getSort().equalsIgnoreCase("id")){
-				info.setSort("id");
-			}
-			if(info.getSort().equalsIgnoreCase("code")){
-				info.setSort("code");
-			}
 			hql += " order by d." + info.getSort() + " " + info.getOrder();
 		}
-		return  this.find(hql, parameters, info.getPage(), info.getRows());
+		return this.find(hql, parameters, info.getPage(), info.getRows());
 	}
 	/*
 	 * 查询数据总数。
@@ -69,10 +63,11 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	 * @return
 	 * HQL
 	 */
+
 	protected String addWhere(DepartInfo info, String hql, Map<String, Object> parameters){
-		if(!StringUtils.isEmpty(info.getPid())){
-			hql += " and (d.parent.id = :pid)";
-			parameters.put("pid", info.getPid());
+		if(!StringUtils.isEmpty(info.getId())){
+			hql += " and (d.id = :id or d.parent.id = :id)";
+			parameters.put("id", info.getId());
 		}
 		if(!StringUtils.isEmpty(info.getName())){
 			hql += " and (d.name like :Name)";

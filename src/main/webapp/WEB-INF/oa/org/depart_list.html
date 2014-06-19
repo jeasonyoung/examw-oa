@@ -5,21 +5,18 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_Id = "";
-	var current_Code = "";
+	var current_id = "";
 	//tree
-	var t = $("#${module}_list_depart_tree").tree({
+	var t = $("#${module}_list_tree").tree({
 		url:"<@s.url '/org/depart/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		onBeforeLoad:function(){
-			current_Id = "";
-			current_Code = "";
+		onLoadSuccess:function(n,data){
+			current_id = "";
 		},
 		onClick:function(node){
-			current_Id = node.id;
-			current_Code =node.code;
+			current_id = node.id;
 			${dg}_search();
 		}
 	});
@@ -44,51 +41,55 @@ $(function(){
 		},{
 			title:"部门代号",
 			field:"code",
-			width:40,
+			width:15,
 			align:"left",
 			sortable:true
 		},{
 			title:"部门名称",
 			field:"name",
-			width:30,
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"部门全称",
+			field:"fullName",
+			width:20,
 			align:"left",
 			sortable:true
 		},{
 			title:"成立时间",
 			field:"createTime",
-			width:50,
-			align:"right",
+			width:15,
+			align:"center",
 			sortable:true
 		}
 		,{
 			title:"排序",
 			field:"orderNo",
-			width:50,
+			width:10,
 			align:"right",
 			sortable:true
 		}]],
+		toolbar:"#${dg}_toobar",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		toolbar:"#${dg}_toobar",
-		onLoadSuccess:function(data){
-			dg_fields_format();
-		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑角色",rowIndex,rowData);
+			edit_window("编辑中...",rowIndex,rowData);
 		}
 	});
-	//format dg
-	function dg_fields_format(){
-		$(".role-list-dg-opt-right").linkbutton({text:"授权",plain:true,iconCls:"icon-edit"});
-	};
 	//edit
 	function edit_window(title,index,row){
+		var ignore = "";
+		if(row && row.id){
+			current_id = "";
+			ignore = row.id;
+		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
 			height:220,
-			href:"<@s.url '/org/depart/edit'/>?Ids=" + current_Id,
+			href:"<@s.url '/org/depart/edit'/>?ignore="+ignore+"&id=" + current_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -116,7 +117,7 @@ $(function(){
 									index:index,
 									row:data.data
 								});
-								dg_fields_format();
+								t.tree("reload");
 								d.dialog("close");
 							}else{
 								$.messager.show({
@@ -146,10 +147,8 @@ $(function(){
 	};
 	//search
 	${dg}_search = function(){
-		console.info(current_Id,current_Code);
 		dg.datagrid("load",{
-			  pid:current_Id,
-			  code:current_Code,
+			  id:current_id,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
@@ -185,6 +184,7 @@ $(function(){
 						if(data.success){
 							dg.datagrid("load");
 							dg.datagrid("unselectAll");
+							t.tree("reload");
 						}else{
 							$.messager.show({
 								title:"提示",
@@ -203,8 +203,8 @@ $(function(){
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-	 <div data-options="region:'west',title:'菜单',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_depart_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-	 	<ul id="${module}_list_depart_tree"></ul>
+	 <div data-options="region:'west',title:'部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+	 	<ul id="${module}_list_tree"></ul>
 	 </div>
 	<div data-options="region:'center',title:'机构部门'">
 		<table id="${dg}"></table>

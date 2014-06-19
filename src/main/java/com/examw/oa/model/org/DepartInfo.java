@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.examw.model.Paging;
+import com.examw.oa.support.CustomDateSerializer;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
@@ -16,7 +17,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class DepartInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String pid,id,name,code;
+	private String pid,id,name,code,fullName;
 	private int orderNo;
 	private Date createTime;
 	private List<DepartInfo> children;
@@ -72,6 +73,23 @@ public class DepartInfo extends Paging {
 		this.name = name;
 	}
 	/**
+	 * 获取部门全称。
+	 * @return
+	 * 	部门全称。
+	 */
+	public String getFullName() {
+		return fullName;
+	}
+	/**
+	 * 设置部门全称。
+	 * @return
+	 * 	部门全称。
+	 */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	/**
 	 * 获取部门编号。
 	 * @return
 	 * 	部门编号。
@@ -109,6 +127,7 @@ public class DepartInfo extends Paging {
 	 * @return
 	 * 	创建时间。
 	 */
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.MenuController;
-import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.model.org.PostInfo;
 import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.org.IPostService;
@@ -53,15 +52,9 @@ public class PostController {
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String edit(String deptId, Model model){
-		model.addAttribute("deptId", StringUtils.isEmpty(deptId) ? "" : deptId);
-		model.addAttribute("departs", this.departservice.datagrid(new DepartInfo(){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Integer getPage(){return null;}
-			@Override
-			public Integer getRows(){return null;}
-		}).getRows());
+	public String edit(String ignore,String deptId, Model model){
+		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
+		model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
 		return "org/post_edit";
 	}
 	/**

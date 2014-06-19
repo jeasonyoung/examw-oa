@@ -62,6 +62,14 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 			}
 			data = new Rank();
 		}
+		int sum=0;
+		if(StringUtils.isEmpty(info.getCode())){
+				for(int i=0;i<10000000;i++){
+					sum=i++;
+				}
+		}
+		String code=String.valueOf("S-"+sum);
+		info.setCode(code);
 		BeanUtils.copyProperties(info, data);
 		
 		if(isAdded) this.rankdao.save(data);
@@ -75,7 +83,5 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 			Rank data = this.rankdao.load(Rank.class, ids[i]);
 			if(data != null) this.rankdao.delete(data);
 		}
-		
 	}
-	
 }
