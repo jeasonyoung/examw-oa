@@ -1,5 +1,8 @@
 package com.examw.oa.controllers.org;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -113,5 +116,23 @@ public class PostController {
 			logger.error("删除数据["+id+"]时发生异常:", e);
 		}
 		return result;
+	}
+	/**
+	 * 返回考试类别下的所有考试
+	 * @return
+	 */
+	@RequestMapping(value={"/all"}, method = RequestMethod.POST)
+	@ResponseBody
+	public List<PostInfo> all(final String departId){
+		if(StringUtils.isEmpty(departId)) return new ArrayList<PostInfo>();
+		 return this.postservice.datagrid(new PostInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Integer getPage(){return null;}
+			@Override
+			public Integer getRows(){return null;}
+			@Override
+			public String getDeptId(){return departId;}
+		 }).getRows();
 	}
 }

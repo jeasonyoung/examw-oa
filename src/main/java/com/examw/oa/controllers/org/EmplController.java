@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.MenuRightController;
+import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.model.org.EmplInfo;
-import com.examw.oa.model.org.PostInfo;
-import com.examw.oa.model.org.RankInfo;
 import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.org.IEmplService;
 import com.examw.oa.service.org.IPostService;
@@ -61,25 +60,16 @@ public class EmplController {
 	 * @return
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String edit(String departId, String ignore,Model model){
-		 model.addAttribute("ranks", this.rankservice.datagrid(new RankInfo(){
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Integer getPage(){return null;}
-				@Override
-				public Integer getRows(){return null;}
-			}).getRows());
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public String edit(String departId,String postId,String ignore,Model model){
+		 if(!StringUtils.isEmpty(postId)){
+				DepartInfo info = this.postservice.loadDept(postId);
+				if(info != null) departId = info.getId();
+			}
 		 	model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(departId) ? "" : departId);
-			model.addAttribute("posts", this.postservice.datagrid(new PostInfo(){
-				private static final long serialVersionUID = 1L;
-				@Override
-				public Integer getPage(){return null;}
-				@Override
-				public Integer getRows(){return null;}
-			}).getRows());
-			model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
-		 	return "org/empl_edit";
+		 	model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
+		 	model.addAttribute("CURRENT_POST_ID", StringUtils.isEmpty(postId) ? "" : postId);
+		 return "org/empl_edit";
    }
 	/**
 	 * 查询数据。

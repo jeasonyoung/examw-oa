@@ -2,19 +2,14 @@ package com.examw.oa.service.org.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 import java.util.List;
+
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
-
-
-
-
-
-
-
 import com.examw.oa.dao.org.IDepartDao;
 import com.examw.oa.domain.org.Depart;
 import com.examw.oa.model.org.DepartInfo;
@@ -153,4 +148,5 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 		}
 		return results;
 	}
+	
 }

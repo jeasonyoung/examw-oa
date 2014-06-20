@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
-
 import com.examw.oa.dao.org.IDepartDao;
 import com.examw.oa.dao.org.IEmplDao;
 import com.examw.oa.dao.org.IPostDao;
@@ -171,4 +170,5 @@ public class EmplServiceImpl extends BaseDataServiceImpl<Empl,EmplInfo> implemen
 			if(data != null) this.empldao.delete(data);
 		}	
 	}
+	
 }

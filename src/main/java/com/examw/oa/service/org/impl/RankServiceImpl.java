@@ -51,7 +51,6 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	}
 	//等级信息更新
 	@Override
-	
 	public RankInfo update(RankInfo info) {
 		if(info == null) return null;
 		boolean isAdded = false;
@@ -62,16 +61,7 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 			}
 			data = new Rank();
 		}
-		int sum=0;
-		if(StringUtils.isEmpty(info.getCode())){
-				for(int i=0;i<10000000;i++){
-					sum=i++;
-				}
-		}
-		String code=String.valueOf("S-"+sum);
-		info.setCode(code);
-		BeanUtils.copyProperties(info, data);
-		
+		BeanUtils.copyProperties(info, data);	
 		if(isAdded) this.rankdao.save(data);
 		return info;
 	}

@@ -7,6 +7,7 @@ import java.util.UUID;
 
 
 
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
@@ -14,7 +15,7 @@ import com.examw.oa.dao.org.IDepartDao;
 import com.examw.oa.dao.org.IPostDao;
 import com.examw.oa.domain.org.Depart;
 import com.examw.oa.domain.org.Post;
-
+import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.model.org.PostInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IPostService;
@@ -116,5 +117,18 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 			if(data != null) this.postdao.delete(data);
 		}
 		
+	}
+	/*
+	 * 根据部门设置ID获取岗位信息
+	 * @see com.examw.netplatform.service.admin.settings.ISubjectService#loadSubject(java.lang.String)
+	 */
+	@Override
+	public DepartInfo loadDept(String postId) {
+		 if(StringUtils.isEmpty(postId)) return null;
+		 Post data = this.postdao.load(Post.class, postId);
+		 if(data == null || data.getDepart() == null) return null;
+		 DepartInfo info = new DepartInfo();
+		 BeanUtils.copyProperties(data.getDepart(), info);
+		 return info;
 	}
 }

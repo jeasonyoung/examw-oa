@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.model.TreeNode;
+
 import com.examw.oa.controllers.security.MenuController;
 import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.service.org.IDepartService;
@@ -139,7 +140,6 @@ public class DepartController {
 	private TreeNode createTreeNode(DepartInfo info, String ignore){
 		if(info == null || (!StringUtils.isEmpty(ignore) && info.getId().equalsIgnoreCase(ignore)))
 			return null;
-		
 		TreeNode tv = new TreeNode();
 		tv.setId(info.getId());
 		tv.setText(info.getName());

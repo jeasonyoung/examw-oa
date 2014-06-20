@@ -66,6 +66,10 @@ public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 			hql += " and (p.name like :Name)";
 			parameters.put("Name", "%" + info.getName() + "%");
 		}
+		if(!StringUtils.isEmpty(info.getDeptId())){
+			hql += " and (p.depart.id = :departId)";
+			parameters.put("departId", info.getDeptId());
+		}
 		return hql;
 	}
 	/*

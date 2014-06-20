@@ -1,6 +1,8 @@
 package com.examw.oa.service.org;
 
 import java.util.List;
+
+
 import com.examw.oa.model.org.DepartInfo;
 import com.examw.oa.service.IBaseDataService;
 
@@ -25,4 +27,5 @@ public interface IDepartService extends IBaseDataService<DepartInfo>{
 	 * 更新后菜单数据。
 	 */
 	DepartInfo update(DepartInfo info);
+	
 }
