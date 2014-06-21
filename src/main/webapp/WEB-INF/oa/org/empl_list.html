@@ -113,7 +113,7 @@ $(function(){
 		}
 		var d = $("<div/>").dialog({
 			title:title,
-			width:500,
+			width:520,
 			height:380,
 			href:"<@s.url '/org/empl/edit'/>?ignore="+ignore+"&departId=" + current_id,
 			modal:true,
@@ -230,10 +230,10 @@ $(function(){
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-	 <div data-options="region:'west',title:'部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-	 	<ul id="${module}_list_tree"></ul>
-	 </div>
-	<div data-options="region:'center',title:'机构部门'">
+		 <div data-options="region:'west',title:'部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+		 		<ul id="${module}_list_tree"></ul>
+		 </div>
+	 <div data-options="region:'center',title:'机构部门'">
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
 			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->

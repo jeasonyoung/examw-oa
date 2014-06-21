@@ -27,11 +27,11 @@ public interface IEmplDao extends IBaseDao<Empl>{
 	 */
 	 List<Empl> findEmpls(EmplInfo info);
 	 /**
-	  * 查询菜单ID下的所有权限。
+	  * 查询部门ID下的所有员工信息。
 	  * @param menuId
-	  * 菜单ID
+	  * 部门ID
 	  * @return
-	  * 菜单权限集合。
+	  * 员工集合。
 	  */
 	 List<Empl> findEmpls(String departId);
 	 /**

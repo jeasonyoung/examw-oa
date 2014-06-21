@@ -10,6 +10,11 @@ import com.examw.oa.dao.impl.BaseDaoImpl;
 import com.examw.oa.dao.org.IRankDao;
 import com.examw.oa.domain.org.Rank;
 import com.examw.oa.model.org.RankInfo;
+/**
+ * 等级信息数据接口。
+ * @author lq.
+ * @since 2014-06-11.
+ */
 public class RankDaoImpl extends BaseDaoImpl<Rank> implements IRankDao {
 	/*
 	 * 查询数据。
@@ -36,7 +41,6 @@ public class RankDaoImpl extends BaseDaoImpl<Rank> implements IRankDao {
 		hql = this.addWhere(info, hql, parameters);
 		return this.count(hql, parameters);
 	}
-
 	protected String addWhere(RankInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getName())){
 			hql += " and (r.name like :name)";
@@ -44,5 +48,4 @@ public class RankDaoImpl extends BaseDaoImpl<Rank> implements IRankDao {
 		}
 		return hql;
 	}
-
 }

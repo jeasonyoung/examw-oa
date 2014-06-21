@@ -29,12 +29,12 @@ import com.examw.oa.service.org.IPostService;
 public class PostController {
 	private static Logger logger = Logger.getLogger(MenuController.class);
 	/**
-	 * 岗位。
+	 * 岗位信息服务。
 	 */
 	@Resource
 	private IPostService postservice;
 	/**
-	 * 部门。
+	 * 部门信息服务。
 	 */
 	@Resource
 	private IDepartService departservice;
@@ -118,7 +118,7 @@ public class PostController {
 		return result;
 	}
 	/**
-	 * 返回考试类别下的所有考试
+	 * 返回部门下的所有岗位
 	 * @return
 	 */
 	@RequestMapping(value={"/all"}, method = RequestMethod.POST)

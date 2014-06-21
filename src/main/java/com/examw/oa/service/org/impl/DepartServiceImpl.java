@@ -24,7 +24,6 @@ import com.examw.oa.service.security.impl.MenuServiceImpl;
 public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> implements IDepartService {
 	private static Logger logger = Logger.getLogger(MenuServiceImpl.class);
 	private IDepartDao departdao;
-	//private static Map<String, ModuleSystem> mapSystemCache = Collections.synchronizedMap(new HashMap<String,ModuleSystem>());
 	/**
 	 * 设置部门数据接口。
 	 * @param 
@@ -66,7 +65,7 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 	}
 	/*
 	 * 部门全称。
-	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#loadFullName(java.lang.Object)
 	 */
 	private String loadFullName(Depart data){
 		if(data == null) return null;
@@ -112,8 +111,6 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 				}
 				data.setParent(parent);
 			}
-				
-			
 		}
 		if(isAdded) this.departdao.save(data);
 		return info;
@@ -148,5 +145,4 @@ public class DepartServiceImpl extends BaseDataServiceImpl<Depart, DepartInfo> i
 		}
 		return results;
 	}
-	
 }

@@ -2,10 +2,12 @@ package com.examw.oa.service.org.impl;
 
 import java.util.Date;
 import java.util.List;
+
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
+
 import com.examw.oa.dao.org.IDepartDao;
 import com.examw.oa.dao.org.IEmplDao;
 import com.examw.oa.dao.org.IPostDao;
@@ -130,7 +132,6 @@ public class EmplServiceImpl extends BaseDataServiceImpl<Empl,EmplInfo> implemen
 				info.setDepartName(depart.getName());
 			}
 		}
-		
 		if(!StringUtils.isEmpty(info.getPostId()) && (data.getPost() == null || !data.getPost().getId().equalsIgnoreCase(info.getPostId()))){
 			Post post = this.postdao.load(Post.class, info.getPostId());
 			if(post != null){
@@ -155,7 +156,6 @@ public class EmplServiceImpl extends BaseDataServiceImpl<Empl,EmplInfo> implemen
 			info.setRankName(data.getRank().getName());
 		}
 		if(isAdded)this.empldao.save(data);
-		
 		return info;
 	}
 	/*
@@ -170,5 +170,4 @@ public class EmplServiceImpl extends BaseDataServiceImpl<Empl,EmplInfo> implemen
 			if(data != null) this.empldao.delete(data);
 		}	
 	}
-	
 }

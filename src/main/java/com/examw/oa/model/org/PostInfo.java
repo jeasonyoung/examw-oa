@@ -4,7 +4,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 import com.examw.model.Paging;
-
 /**
  * 员工岗位信息。
  * @author lq.

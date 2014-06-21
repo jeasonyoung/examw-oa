@@ -11,7 +11,6 @@ import com.examw.oa.model.org.PostInfo;
  * @author lq.
  * @since 2014-06-13.
  */
-
 public interface IPostDao extends IBaseDao<Post>{
 	/**
 	 * 加载数据。
@@ -28,11 +27,11 @@ public interface IPostDao extends IBaseDao<Post>{
 	 */
 	 List<Post> findPosts(PostInfo info);
 	 /**
-	  * 查询菜单ID下的所有权限。
+	  * 查询部门ID下的所有岗位。
 	  * @param departId
-	  * 菜单ID
+	  * 部门ID
 	  * @return
-	  * 菜单权限集合。
+	  * 岗位集合。
 	  */
 	 List<Post> findPosts(String menuId);
 	 /**

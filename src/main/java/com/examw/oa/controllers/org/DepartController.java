@@ -30,6 +30,9 @@ import com.examw.oa.service.org.IDepartService;
 @RequestMapping(value = "/org/depart")
 public class DepartController {
 	private static Logger logger = Logger.getLogger(MenuController.class);
+	/**
+	 *部门信息服务。
+	 */
 	@Resource
 	private IDepartService departservice;
 	/**
@@ -110,7 +113,7 @@ public class DepartController {
 		return result;
 	}
 	/**
-	 * 菜单树结构数据。
+	 * 部门树结构数据。
 	 * @return
 	 */
 	@RequestMapping(value = "/tree", method = {RequestMethod.GET,RequestMethod.POST})
@@ -132,7 +135,7 @@ public class DepartController {
 		return result;
 	}
 	/**
-	 * 
+	 * 空值判断
 	 * @param info
 	 * @param ignore
 	 * @return

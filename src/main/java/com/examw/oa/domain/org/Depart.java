@@ -3,8 +3,6 @@ package com.examw.oa.domain.org;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-
-
 /**
  * 部门数据
  * @author lq.
@@ -130,7 +128,4 @@ public class Depart implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
-	
-
 }

@@ -20,7 +20,7 @@ import com.examw.oa.model.org.DepartInfo;
 public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	/*
 	 * 查询所有数据。
-	 * @see com.examw.oa.dao.admin.IDepartDao#findRoles(com.examw.netplatform.model.admin.departInfo)
+	 * @see com.examw.oa.dao.admin.IDepartDao#findDeparts(com.examw.netplatform.model.admin.departInfo)
 	 */
 	@Override
 	public List<Depart> findDeparts() {
@@ -29,7 +29,7 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	}
 	/*
 	 * 查询数据。
-	 * @see com.examw.oa.dao.admin.IDepartDao#findRoles(com.examw.netplatform.model.admin.departInfo)
+	 * @see com.examw.oa.dao.admin.IDepartDao#findDepart(com.examw.netplatform.model.admin.departInfo)
 	 */
 	@Override
 	public List<Depart> findDepart(DepartInfo info) {
@@ -75,5 +75,4 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 		}
 		return hql;
 	}
-	
 }

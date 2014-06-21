@@ -11,7 +11,6 @@ import com.examw.oa.model.org.DepartInfo;
  * @author lq.
  * @since 2014-06-11.
  */
-
 public interface IDepartDao extends IBaseDao<Depart>{
 	/**
 	 * 查询数据。

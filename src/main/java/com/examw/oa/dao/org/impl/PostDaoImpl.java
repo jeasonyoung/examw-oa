@@ -11,16 +11,15 @@ import com.examw.oa.dao.org.IPostDao;
 import com.examw.oa.domain.org.Post;
 
 import com.examw.oa.model.org.PostInfo;
-
 /**
  * 岗位信息数据接口。
- * @author yangyong.
- * @since 2014-04-17.
+ * @author lq.
+ * @since 2014-06-12.
  */
 public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 	/*
 	 * 查询数据。
-	 * @see com.examw.oa.dao.admin.IMenuRightDao#findMenuRights(com.examw.netplatform.model.admin.MenuRightInfo)
+	 * @see com.examw.oa.dao.admin.IPostDao#findPosts(com.examw.oa.model.admin.PostInfo)
 	 */
 	@Override
 	public List<Post> findPosts(PostInfo info) {
@@ -37,7 +36,7 @@ public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 	}
     /*
      * 查询数据总数。
-     * @see com.examw.oa.dao.admin.IMenuRightDao#total(com.examw.netplatform.model.admin.MenuRightInfo)
+     * @see com.examw.oa.dao.admin.IPostDao#total(com.examw.oa.model.admin.PostInfo)
      */
 	@Override
 	public Long total(PostInfo info) {
@@ -74,7 +73,7 @@ public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 	}
 	/*
 	 * 加载数据。
-	 * @see com.examw.netplatform.dao.admin.IMenuRightDao#load(com.examw.netplatform.model.admin.MenuInfo)
+	 * @see com.examw.oa.dao.admin.IPostDao#load(com.examw.oa.model.admin.PostInfo)
 	 */
 	@Override
 	public Post load(PostInfo info) {
@@ -91,8 +90,8 @@ public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 		return null;
 	}
 	/*
-	 * 查询菜单下的权限。
-	 * @see com.examw.netplatform.dao.admin.IMenuRightDao#findMenuRights(java.lang.String)
+	 * 查询部门下的岗位。
+	 * @see com.examw.oa.dao.admin.IPostDao#findPosts(java.lang.String)
 	 */
 	@Override
 	public List<Post> findPosts(String deptId) {
@@ -101,5 +100,4 @@ public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 		parameters.put("deptId", deptId);
 		return this.find(hql, parameters, null, null);
 	}
-	
 }

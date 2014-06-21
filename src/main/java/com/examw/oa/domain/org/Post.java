@@ -74,5 +74,4 @@ public class Post implements Serializable {
 	public void setDepart(Depart depart) {
 		this.depart = depart;
 	}
-	
 }

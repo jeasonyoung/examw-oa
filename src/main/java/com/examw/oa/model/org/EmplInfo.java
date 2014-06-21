@@ -312,6 +312,5 @@ public class EmplInfo extends Paging {
 	 */
 	public void setRankName(String rankName) {
 		this.rankName = rankName;
-	}
-	
+	}	
 }

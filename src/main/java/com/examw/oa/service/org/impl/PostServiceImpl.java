@@ -49,7 +49,6 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 	 */
 	@Override
 	protected List<Post> find(PostInfo info) {
-		
 		return this.postdao.findPosts(info);
 	}
 	/*
@@ -116,7 +115,6 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 			Post data = this.postdao.load(Post.class, ids[i]);
 			if(data != null) this.postdao.delete(data);
 		}
-		
 	}
 	/*
 	 * 根据部门设置ID获取岗位信息

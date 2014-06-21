@@ -19,7 +19,6 @@ import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.org.IEmplService;
 import com.examw.oa.service.org.IPostService;
 import com.examw.oa.service.org.IRankService;
-
 /**
  * 员工信息控制器。
  * @author lq.
@@ -29,6 +28,9 @@ import com.examw.oa.service.org.IRankService;
 @RequestMapping(value = "/org/empl")
 public class EmplController {
 	private static Logger logger = Logger.getLogger(MenuRightController.class);
+	/**
+	 *部门信息服务。
+	 */
 	@Resource
 	private IDepartService departservice;
 	/**
@@ -69,7 +71,7 @@ public class EmplController {
 		 	model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(departId) ? "" : departId);
 		 	model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
 		 	model.addAttribute("CURRENT_POST_ID", StringUtils.isEmpty(postId) ? "" : postId);
-		 return "org/empl_edit";
+		  return "org/empl_edit";
    }
 	/**
 	 * 查询数据。

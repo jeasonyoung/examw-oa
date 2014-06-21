@@ -155,5 +155,4 @@ public class DepartInfo extends Paging {
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
-
 }

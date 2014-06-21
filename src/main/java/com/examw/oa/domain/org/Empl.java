@@ -2,7 +2,6 @@ package com.examw.oa.domain.org;
 
 import java.io.Serializable;
 import java.util.Date;
-
 /**
  * 员工信息。
  * @author lq.

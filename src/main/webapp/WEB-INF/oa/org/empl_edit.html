@@ -3,12 +3,6 @@
 <#assign form="${module}_edit_form"/>
 <script type="text/javascript">
 <!--
-function disable(){
-	$('#dd').datebox('disable');
-}
-function enable(){
-	$('#dd').datebox('enable');
-}
 $(function(){
 	var current_depart_select = false;
 	var t = $("#${form} input[name='departId']").combotree({
@@ -25,7 +19,6 @@ $(function(){
 			}
 		}
 	});
-	//exam_tree
 	var e_t = $("#${form} input[name='postId']").combobox({
 		url:"<@s.url '/org/post/all'/>?departId=${CURRENT_DEPT_ID}",
 		valueField:"id",
@@ -43,11 +36,11 @@ $(function(){
 		<div style="float: left; margin-top: 20px; width: 100%;">
 			<div style="float:left;">
 				<label style="width:75px;">工号：</label>
-			<input type="text" name="code" style="width:150px;" class="easyui-validatebox"  data-options="required:true,validType:'length[0,10]'"/>
+				<input type="text" name="code" class="easyui-validatebox" style="width:150px;" data-options="required:true,validType:'length[0,10]'"/>
 				<input type="hidden" name="id"/>
 			</div>
 			<div style="float: left;">
-				<label style="width:75px;">姓名：</label>
+				<label style="width:65px;">姓名：</label>
 				<input type="text" name="name" class="easyui-validatebox"  style="width:150px;" data-options="required:true,validType:'length[0,20]'"/>
 			</div>
 		</div>
@@ -57,9 +50,8 @@ $(function(){
 				<input type="radio" name="gender" value="1" checked="checked" />男
 				<input type="radio" name="gender" value="2" checked="checked" />女
 			</div>
-				
-				<div style="float:left;">
-				<label style="width:75px;"> 状态：</label>
+			<div style="float:left;">
+				<label style="width:135px;"> 状态：</label>
 				<input type="radio" name="status" value="0" checked="checked" />离职	
 				<input type="radio" name="status" value="1" checked="checked" />在职	
 				<input type="radio" name="status" value="2" checked="checked" />限制登录
@@ -67,18 +59,18 @@ $(function(){
 		</div>
 		<div  style="float:left;margin-top: 20px; width: 100%;">
 			<label style="width:75px;">等级：</label>
-				<input type="text" name="rankId"  style="width:130px;"/>
+			<input type="text" name="rankId" style="width:160px;"/>
 		</div>
 		<div style="float: left; margin-top: 15px; width: 100%;">
 			<div  style="float:left;">
-					<label style="width:75px;">所属部门：</label>
-					<input type="text" name="departId" style="width:160px;"/>
-					<input type="text" name="postId"  style="width:130px;"/>	
+				<label style="width:75px;">所属部门：</label>
+				<input type="text" name="departId" style="width:160px;"/>
+				<input type="text" name="postId"  style="width:130px;"/>	
 			</div>
 		</div>
 		<div style="float: left; margin-top: 15px; width: 100%;">
 			<div style="float: left;">
-				<label style="width: 75px;">手机号码：</label>
+				 <label style="width: 75px;">手机号码：</label>
 				 <input type="text" name="phone" class="easyui-validatebox" style="width: 145px;" data-options="required:true,validType:'length[0,11]'" />
 			</div>
 			<div style="float: left;">
@@ -99,11 +91,11 @@ $(function(){
 		<div style="float: left; margin-top: 15px; width: 100%;">
 			<div style="float:left;">
 				<label style="width:75px;">出生日期：</label>
-				<input id="dd" name="brithday" type="text" class="easyui-datebox" required="required" currentText="currentText" style="width:150px;">
+				<input id="dd"  name="brithday" type="text" class="easyui-datebox" required="required" style="width:150px;">
 			</div>
 			<div style="float:left">
 				<label style="width:75px;">入职时间：</label>
-				<input id="dd" name="joinTime" type="text" class="easyui-datebox" required="required" currentText="currentText" style="width:150px;">
+				<input id="dd"  name="joinTime" type="text" class="easyui-datebox" required="required" style="width:150px;">
 			</div>
 		</div>
 </form>

@@ -24,6 +24,9 @@ import com.examw.oa.service.org.IRankService;
 @RequestMapping(value = "/org/rank")
 public class RankController {
 	private static Logger logger = Logger.getLogger(LogController.class);
+	/**
+	 *等级信息服务。
+	 */
 	@Resource
 	private IRankService rankservice;
 	/**
@@ -95,5 +98,4 @@ public class RankController {
 		}
 		return result;
 	}
-	
 }
