@@ -2,23 +2,29 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- 岗位信息 -->
-	<bean id="rankservice" class="com.examw.oa.service.org.impl.RankServiceImpl">
-		<property name="rankdao" ref="rankdao"/>
+	<bean id="rankService" class="com.examw.oa.service.org.impl.RankServiceImpl">
+		<property name="rankDao" ref="rankDao"/>
 	</bean>
 	<!-- 部门信息 -->
-	<bean id="departservice" class="com.examw.oa.service.org.impl.DepartServiceImpl">
-		<property name="departdao" ref="departdao"/>
+	<bean id="departmentService" class="com.examw.oa.service.org.impl.DepartmentServiceImpl">
+		<property name="departmentDao" ref="departmentDao"/>
 	</bean>
 	<!-- 岗位信息 -->
-	<bean id="postservice" class="com.examw.oa.service.org.impl.PostServiceImpl">
-		<property name="postdao" ref="postdao"/>
-		<property name="departdao" ref="departdao"/>
+	<bean id="postService" class="com.examw.oa.service.org.impl.PostServiceImpl">
+		<!-- 部门岗位数据接口 -->
+		<property name="postDao" ref="postDao"/>
+		<!-- 部门数据接口 -->
+		<property name="departmentDao" ref="departmentDao"/>
 	</bean>
 	<!-- 员工信息 -->
-	<bean id="emplservice" class="com.examw.oa.service.org.impl.EmplServiceImpl">
-		<property name="empldao" ref="empldao"/>
-		<property name="postdao" ref="postdao"/>
-		<property name="departdao" ref="departdao"/>
-		<property name="rankdao" ref="rankdao"/>
+	<bean id="employeeService" class="com.examw.oa.service.org.impl.EmployeeServiceImpl">
+		<!-- 员工数据接口 -->
+		<property name="employeeDao" ref="employeeDao" />
+		<!-- 部门数据接口 -->
+		<property name="departmentDao" ref="departmentDao" />
+		<!-- 部门岗位数据接口 -->
+		<property name="postDao" ref="postDao" />
+		<!-- 员工级别数据接口 -->
+		<property name="rankDao" ref="rankDao" />
 	</bean>
 </beans>

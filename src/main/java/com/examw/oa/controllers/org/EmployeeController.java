@@ -4,50 +4,30 @@ import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.Model; 
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
-import com.examw.model.Json;
-import com.examw.oa.controllers.security.MenuRightController;
-import com.examw.oa.model.org.DepartInfo;
-import com.examw.oa.model.org.EmplInfo;
-import com.examw.oa.service.org.IDepartService;
-import com.examw.oa.service.org.IEmplService;
-import com.examw.oa.service.org.IPostService;
-import com.examw.oa.service.org.IRankService;
+import com.examw.model.Json; 
+import com.examw.oa.model.org.EmployeeInfo; 
+import com.examw.oa.service.org.IEmployeeService; 
 /**
  * 员工信息控制器。
  * @author lq.
  * @since 2014-06-16.
  */
 @Controller
-@RequestMapping(value = "/org/empl")
-public class EmplController {
-	private static Logger logger = Logger.getLogger(MenuRightController.class);
+@RequestMapping(value = "/org/emp")
+public class EmployeeController {
+	private static Logger logger = Logger.getLogger(EmployeeController.class);
 	/**
-	 *部门信息服务。
+	 * 员工服务接口。
 	 */
 	@Resource
-	private IDepartService departservice;
-	/**
-	 *岗位信息服务。
-	 */
-	@Resource
-	private IPostService postservice;
-	/**
-	 * 等级信息服务。
-	 */
-	@Resource
-	private IRankService rankservice;
-	/**
-	 * 员工信息服务。
-	 */
-	@Resource
-	private IEmplService emplservice;
+	private IEmployeeService employeeService;
 	/**
 	 * 列表页面。
 	 * @return
@@ -55,7 +35,7 @@ public class EmplController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
-		return "org/empl_list";
+		return "org/emp_list";
 	}
 	/**
 	 * 添加页面。
@@ -63,15 +43,9 @@ public class EmplController {
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(String departId,String postId,String ignore,Model model){
-		 if(!StringUtils.isEmpty(postId)){
-				DepartInfo info = this.postservice.loadDept(postId);
-				if(info != null) departId = info.getId();
-			}
-		 	model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(departId) ? "" : departId);
-		 	model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
-		 	model.addAttribute("CURRENT_POST_ID", StringUtils.isEmpty(postId) ? "" : postId);
-		  return "org/empl_edit";
+	public String edit(String deptId,Model model){
+		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);  
+		return "org/emp_edit";
    }
 	/**
 	 * 查询数据。
@@ -80,8 +54,8 @@ public class EmplController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
-	public DataGrid<EmplInfo> datagrid(EmplInfo info){
-		return this.emplservice.datagrid(info);
+	public DataGrid<EmployeeInfo> datagrid(EmployeeInfo info){
+		return this.employeeService.datagrid(info);
 	}
 	/**
 	 * 更新数据。
@@ -93,11 +67,10 @@ public class EmplController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(EmplInfo info){
+	public Json update(EmployeeInfo info){
 		Json result = new Json();
 		try {
-			
-			result.setData(this.emplservice.update(info));
+			result.setData(this.employeeService.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);
@@ -117,7 +90,7 @@ public class EmplController {
 	public Json delete(String id){
 		Json result = new Json();
 		try {
-			this.emplservice.delete(id.split("\\|"));
+			this.employeeService.delete(id.split("\\|"));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);

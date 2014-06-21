@@ -1,11 +1,11 @@
 <#--部门编辑-->
-<#assign module="org_depart"/>
+<#assign module="org_dept"/>
 <#assign form="${module}_edit_form"/>
 <script type="text/javascript">
 <!--
 $(function(){
 	var t = $("#${form} input[name='pid']").combotree({
-		url:"<@s.url '/org/depart/tree?ignore=${CURRENT_IGNORE}'/>",
+		url:"<@s.url '/org/dept/tree?ignore=${CURRENT_IGNORE}'/>",
 		onLoadSuccess:function(n,d){
 			var pid = "${CURRENT_DEPT_ID}";
 			if(pid.trim() == "")return;

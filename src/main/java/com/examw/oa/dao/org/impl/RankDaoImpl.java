@@ -41,10 +41,17 @@ public class RankDaoImpl extends BaseDaoImpl<Rank> implements IRankDao {
 		hql = this.addWhere(info, hql, parameters);
 		return this.count(hql, parameters);
 	}
+	/**
+	 * 查询条件。
+	 * @param info
+	 * @param hql
+	 * @param parameters
+	 * @return
+	 */
 	protected String addWhere(RankInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getName())){
-			hql += " and (r.name like :name)";
-			parameters.put("name", info.getName());
+			hql += " and ((r.name like :name) or (r.code like :name))";
+			parameters.put("name", "%" + info.getName() + "%");
 		}
 		return hql;
 	}

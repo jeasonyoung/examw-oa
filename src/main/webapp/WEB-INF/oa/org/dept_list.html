@@ -1,28 +1,28 @@
 <#--部门列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="org_depart"/>
+<#assign module="org_dept"/>
 <#assign dg="${module}_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_id = "";
+	var current_dept_id = "";
 	//tree
 	var t = $("#${module}_list_tree").tree({
-		url:"<@s.url '/org/depart/tree'/>",
+		url:"<@s.url '/org/dept/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(n,data){
-			current_id = "";
+			current_dept_id = "";
 		},
 		onClick:function(node){
-			current_id = node.id;
+			current_dept_id = node.id;
 			${dg}_search();
 		}
 	});
 	//dg
 	var dg=$("#${dg}").datagrid({
-		url:"<@s.url '/org/depart/datagrid'/>",
+		url:"<@s.url '/org/dept/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -75,21 +75,20 @@ $(function(){
 			<@error_dialog "e"/>
 		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑中...",rowIndex,rowData);
+			edit_window("编辑部门",rowIndex,rowData);
 		}
 	});
 	//edit
 	function edit_window(title,index,row){
 		var ignore = "";
 		if(row && row.id){
-			current_id = "";
 			ignore = row.id;
 		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
 			height:220,
-			href:"<@s.url '/org/depart/edit'/>?ignore="+ignore+"&id=" + current_id,
+			href:"<@s.url '/org/dept/edit'/>?ignore="+ignore+"&id=" + current_dept_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -99,7 +98,7 @@ $(function(){
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/org/depart/update'/>",
+						url:"<@s.url '/org/dept/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -148,7 +147,7 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  id:current_id,
+			  id:current_dept_id,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
@@ -169,7 +168,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/org/depart/delete'/>",
+					url:"<@s.url '/org/dept/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")
@@ -216,7 +215,6 @@ $(function(){
 			<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 			<!-- </shiro.hasPermission> -->
-			
 			<label>部门名称：<input name="name" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 		</div>

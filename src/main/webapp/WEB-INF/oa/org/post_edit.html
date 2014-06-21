@@ -4,8 +4,8 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var t = $("#${form} input[name='deptId']").combotree({
-		url:"<@s.url '/org/depart/tree?ignore=${CURRENT_IGNORE}'/>",
+	var t = $("#${form} input[name='departmentId']").combotree({
+		url:"<@s.url '/org/dept/tree'/>",
 		onLoadSuccess:function(n,d){
 			var deptId = "${CURRENT_DEPT_ID}";
 			if(deptId.trim() == "")return;
@@ -18,10 +18,10 @@ $(function(){
 <form id="${form}" method="POST">
 <div  style="float:left;margin-top:10px;width:90%;">
 		<label style="width:75px;">所属部门：</label>
-		<input type="text" name="deptId" style="width:268px;"/>	
+		<input type="text" name=departmentId style="width:268px;"/>	
 	</div>
 	<div style="float:left;margin-top:10px;width:100%;">
-		<label style="width:75px;">岗位代号：</label>
+		<label style="width:75px;">岗位编号：</label>
 		<input type="text" name="code" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
 		<input type="hidden" name="id"/>
 	</div>

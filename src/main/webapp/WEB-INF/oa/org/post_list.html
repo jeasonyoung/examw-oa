@@ -5,18 +5,18 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_id = "";
+	var current_dept_id = "";
 	//tree
 	var t = $("#${module}_list_tree").tree({
-		url:"<@s.url '/org/depart/tree'/>",
+		url:"<@s.url '/org/dept/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(n,data){
-			current_id = "";
+			current_dept_id = "";
 		},
 		onClick:function(node){
-			current_id = node.id;
+			current_dept_id = node.id;
 			${dg}_search();
 		}
 	});
@@ -39,21 +39,21 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"部门名称",
-			field:"departName",
-			width:15,
+			title:"所属部门",
+			field:"departmentName",
+			width:20,
 			align:"left",
 			sortable:true
 		},{
-			title:"岗位代号",
+			title:"岗位编号",
 			field:"code",
-			width:20,
+			width:15,
 			align:"left",
 			sortable:true
 		},{
 			title:"岗位名称",
 			field:"name",
-			width:20,
+			width:40,
 			align:"left",
 			sortable:true
 		}]],
@@ -62,21 +62,19 @@ $(function(){
 			<@error_dialog "e"/>
 		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑中...",rowIndex,rowData);
+			edit_window("编辑部门岗位",rowIndex,rowData);
 		}
 	});
 	//edit
-	function edit_window(title,index,row){
-		var ignore = "";
+	function edit_window(title,index,row){ 
 		if(row && row.id){
-			current_id = "";
-			ignore = row.id;
+			current_dept_id = "";
 		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
 			height:220,
-			href:"<@s.url '/org/post/add'/>?ignore="+ignore+"&deptId=" + current_id,
+			href:"<@s.url '/org/post/edit'/>?deptId=" + current_dept_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -135,13 +133,13 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  deptId:current_id,
+			  departmentId:current_dept_id,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("添加岗位",0,null);
+		edit_window("添加部门岗位",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete

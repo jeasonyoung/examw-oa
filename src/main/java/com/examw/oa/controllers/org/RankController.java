@@ -38,35 +38,6 @@ public class RankController {
 		return "org/rank_list";
 	}
 	/**
-	 * 查询数据。
-	 * @return
-	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_RIGHT + ":" + Right.VIEW})
-		@RequestMapping(value="/datagrid", method = RequestMethod.POST)
-		@ResponseBody
-		public DataGrid<RankInfo> datagrid(RankInfo info){
-			return this.rankservice.datagrid(info);
-		}
-	/**
-	 * 删除数据。
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value="/delete", method = RequestMethod.POST)
-	@ResponseBody
-	public Json delete(String id){
-		Json result = new Json();
-		try {
-			this.rankservice.delete(id.split("\\|"));
-			result.setSuccess(true);
-		} catch (Exception e) {
-			result.setSuccess(false);
-			result.setMsg(e.getMessage());
-			logger.error("删除数据["+id+"]时发生异常:", e);
-		}
-		return result;
-	}
-	/**
 	 * 获取编辑页面。
 	 * @return
 	 * 编辑页面。
@@ -75,6 +46,16 @@ public class RankController {
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
 	public String edit(Model model){
 		return "org/rank_edit";
+	}
+	/**
+	 * 查询数据。
+	 * @return
+	 */
+	//@RequiresPermissions({ModuleConstant.SECURITY_RIGHT + ":" + Right.VIEW})
+	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
+	@ResponseBody
+	public DataGrid<RankInfo> datagrid(RankInfo info){
+		return this.rankservice.datagrid(info);
 	}
 	/**
 	 * 更新数据。
@@ -95,6 +76,25 @@ public class RankController {
 			result.setSuccess(false);
 			result.setMsg(e.getMessage());
 			logger.error("更新等级数据发生异常", e);
+		}
+		return result;
+	}
+	/**
+	 * 删除数据。
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value="/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public Json delete(String id){
+		Json result = new Json();
+		try {
+			this.rankservice.delete(id.split("\\|"));
+			result.setSuccess(true);
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setMsg(e.getMessage());
+			logger.error("删除数据["+id+"]时发生异常:", e);
 		}
 		return result;
 	}

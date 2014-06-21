@@ -1,31 +1,28 @@
 <#--部门列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="org_empl"/>
+<#assign module="org_emp"/>
 <#assign dg="${module}_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_id = "";
-	var current_post_id="";
+	var current_dept_id = "";
 	//tree
 	var t = $("#${module}_list_tree").tree({
-		url:"<@s.url '/org/depart/tree'/>",
+		url:"<@s.url '/org/dept/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(n,data){
-			current_id = "";
-			current_post_id = "";
+			current_dept_id = "";
 		},
 		onClick:function(node){
-			current_id = node.id;
-			current_post_id = node.postId;
+			current_dept_id = node.id;
 			${dg}_search();
 		}
 	});
 	//dg
 	var dg=$("#${dg}").datagrid({
-		url:"<@s.url '/org/empl/datagrid'/>",
+		url:"<@s.url '/org/emp/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -36,8 +33,8 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"depart.name",
-		sortOrder:"asc",
+		sortName:"createTime",
+		sortOrder:"desc",
 		columns:[[{
 			field:"id",
 			checkbox:true
@@ -106,16 +103,14 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
-		var ignore = "";
 		if(row && row.id){
-			current_id = "";
-			ignore = row.id;
+			current_dept_id = "";
 		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:520,
 			height:380,
-			href:"<@s.url '/org/empl/edit'/>?ignore="+ignore+"&departId=" + current_id,
+			href:"<@s.url '/org/emp/edit'/>?deptId=" + current_dept_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -125,7 +120,7 @@ $(function(){
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/org/empl/update'/>",
+						url:"<@s.url '/org/emp/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -174,9 +169,8 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  departId:current_id,
-			  postId:current_post_id,
-			  name:$("#${dg}_toobar input[name='name']").val()
+			departmentId:current_dept_id,
+			name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	//add
@@ -196,7 +190,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/org/empl/delete'/>",
+					url:"<@s.url '/org/emp/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")

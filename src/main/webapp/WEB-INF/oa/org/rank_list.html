@@ -18,13 +18,13 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"id",
+		sortName:"name",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
 			checkbox:true
 		},{
-			title:"等级代号",
+			title:"等级编码",
 			field:"code",
 			width:10,
 			align:"left",
@@ -40,17 +40,10 @@ $(function(){
 			<@error_dialog "e"/>
 		},
 		toolbar:"#${dg}_toobar",
-		onLoadSuccess:function(data){
-			dg_fields_format();
-		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑",rowIndex,rowData);
+			edit_window("编辑员工等级",rowIndex,rowData);
 		}
 	});
-	//format dg
-	function dg_fields_format(){
-		$(".role-list-dg-opt-right").linkbutton({text:"授权",plain:true,iconCls:"icon-edit"});
-	};
 	//edit
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
@@ -85,7 +78,6 @@ $(function(){
 									index:index,
 									row:data.data
 								});
-								dg_fields_format();
 								d.dialog("close");
 							}else{
 								$.messager.show({
@@ -121,7 +113,7 @@ $(function(){
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("新增等级",0,null);
+		edit_window("新增员工等级",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete

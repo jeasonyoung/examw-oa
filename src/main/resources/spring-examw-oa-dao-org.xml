@@ -2,19 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- 岗位dao -->
-	<bean id="rankdao" class="com.examw.oa.dao.org.impl.RankDaoImpl">
-	<property name="sessionFactory" ref="sessionFactory"></property>
+	<bean id="rankDao" class="com.examw.oa.dao.org.impl.RankDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!-- 部门dao -->
-	<bean id="departdao" class="com.examw.oa.dao.org.impl.DepartDaoImpl">
-	<property name="sessionFactory" ref="sessionFactory"></property>
+	<bean id="departmentDao" class="com.examw.oa.dao.org.impl.DepartmentDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!-- 岗位dao -->
-	<bean id="postdao" class="com.examw.oa.dao.org.impl.PostDaoImpl">
-	<property name="sessionFactory" ref="sessionFactory"></property>
+	<bean id="postDao" class="com.examw.oa.dao.org.impl.PostDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!-- 员工dao -->
-	<bean id="empldao" class="com.examw.oa.dao.org.impl.EmplDaoImpl">
-	<property name="sessionFactory" ref="sessionFactory"></property>
+	<bean id="employeeDao" class="com.examw.oa.dao.org.impl.EmployeeDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>

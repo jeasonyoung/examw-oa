@@ -2,60 +2,59 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.examw.oa.domain.org">
 	<!-- 员工级别 -->
-	<class name="Rank" table="tbl_Examw_OA_Org_rank">
+	<class name="Rank" table="tbl_Examw_OA_Org_Rank">
 		<!-- 员工级别ID -->
 		<id name="id"  type="string"  length="64" />
-		<!--员工级别代码 -->
+		<!--员工级别编码 -->
 		<property name="code"  type="string"  length="32"/>
 		<!--员工级别名称 -->
-		<property name="name"  type="string"  length="45" />
+		<property name="name"  type="string"  length="32" />
 	</class>
 	<!-- 部门数据 -->
-	<class name="Depart"  table="tbl_Examw_OA_Org_Depart">
+	<class name="Department"  table="tbl_Examw_OA_Org_Department">
 		<!--部门ID -->
 		<id name="id"  type="string"  length="64" />
-		<!-- 部门编号 -->
+		<!-- 部门编码 -->
 		<property name="code"  type="string"  length="32"/>
 		<!--部门名称-->
 		<property name="name"  type="string"  length="32"  not-null="true"/>
-		<!-- 部门创建时间-->
-		<property name="createTime"  type="timestamp" length="255" />
+		<!--部门创建时间-->
+		<property name="createTime"  type="timestamp" />
 		<!-- 排序 -->
 		<property name="orderNo"  type="integer" />
 		<!-- 上级部门 -->
-		<many-to-one name="parent"  column="pid"  class="Depart"/>
+		<many-to-one name="parent"  column="pid"  class="Department"/>
 		<!-- 下级部门集合 -->
 		<set name="children"  inverse="true"  cascade="save-update"  order-by="orderNo asc">
-				<!-- <cache usage="read-write"/> -->
 				<key  column="pid"/>
-				<one-to-many class="Depart"/>
+				<one-to-many class="Department"/>
 		</set>
 	</class>
 	<!-- 岗位信息 -->
 	<class name="Post"  table="tbl_Examw_OA_Org_Post">
 		<!-- 岗位ID -->
 		<id  name="id"  type="string"  length="64" />
-		<!-- 岗位名称 -->
-		<property name="name" type="string" length="32"/>
 		<!-- 岗位编号 -->
-		<property name="code" type="string" length="32" not-null="true"  unique="true"/>
+		<property name="code" type="string" length="32" unique="true"/>
+		<!-- 岗位名称 -->
+		<property name="name" type="string" length="32" unique="true"/>
 		<!-- 所属部门 -->
-		<many-to-one name="depart" column="dept_id"  class="Depart"  />
+		<many-to-one name="department" column="dept_id"  class="Department"  />
 	</class>
 	<!--员工信息 -->
-	<class name="Empl"  table="tbl_Examw_OA_Org_Empl">
+	<class name="Employee"  table="tbl_Examw_OA_Org_Employee">
 		<!-- 员工ID -->
 		<id  name="id"  type="string"  length="64" />
 		<!-- 员工名称 -->
 		<property name="name" type="string" length="32"/>
 		<!-- 员工编号 -->
-		<property name="code" type="string" length="32" />
+		<property name="code" type="string" length="32" unique="true"/>
 		<!-- 员工性别 -->
 		<property name="gender" type="integer" length="32"/>
 		<!-- 员工手机号码 -->
 		<property name="phone" type="string" length="32"/>
 		<!-- 员工邮箱地址 -->
-		<property name="email" type="string" length="32"/>
+		<property name="email" type="string" length="32" unique="true"/>
 		<!-- 员工身份证号码 -->
 		<property name="idCard" type="string" length="32"/>
 		<!-- 员工出生日期 -->
@@ -69,10 +68,10 @@
 		<!-- 员工 密码 -->
 		<property name="password"  type="string"  length="512" />
 		<!-- 所属部门 -->
-		<many-to-one name="depart" column="dept_id"  class="Depart" />
-		<!-- 岗位集合 -->
+		<many-to-one name="department" column="dept_id"  class="Department" />
+		<!-- 所属部门岗位 -->
 		<many-to-one name="post" column="post_id"  class="Post" />
-		<!-- 等级集合 -->
+		<!-- 所属等级 -->
 		<many-to-one name="rank" column="rank_id"  class="Rank"/>
 	</class>
 </hibernate-mapping>

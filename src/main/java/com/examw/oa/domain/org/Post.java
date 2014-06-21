@@ -2,14 +2,14 @@ package com.examw.oa.domain.org;
 
 import java.io.Serializable;
 /**
- * 岗位信息。
+ * 部门岗位。
  * @author lq.
  * @since 2014-06-13.
  */
 public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String id,name,code;
-	private Depart depart;
+	private String id,code,name;
+	private Department department;
 	/**
 	 * 获取岗位ID。
 	 * @return
@@ -63,15 +63,15 @@ public class Post implements Serializable {
 	 * @return
 	 * 所属部门。
 	 */
-	public Depart getDepart() {
-		return depart;
+	public Department getDepartment() {
+		return department;
 	}
 	/**
 	 * 设置所属部门。
 	 * @return
 	 * 所属部门。
 	 */
-	public void setDepart(Depart depart) {
-		this.depart = depart;
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 }

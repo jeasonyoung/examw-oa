@@ -1,11 +1,6 @@
 package com.examw.oa.service.org.impl;
 
 import java.util.List;
-
-
-
-
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -17,28 +12,18 @@ import com.examw.oa.model.org.RankInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IRankService;
 /**
- * 等级信息实现。
+ * 员工等级服务实现。
  * @author lq.
  * @since 2014-06-11.
  */
 public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> implements IRankService {
-	private IRankDao rankdao;
-	private Map<String, String> typeRanks;
+	private IRankDao rankDao;
 	/**
-	 * 设置等级类型名称。
-	 * @param typeNames
-	 * 等级类型名称。
+	 * 设置
+	 * @param rankDao
 	 */
-	public void setTypeRanks(Map<String, String> typeRanks) {
-		this.typeRanks = typeRanks;
-	}
-	/**
-	 * 设置等级数据接口。
-	 * @param roleDao
-	 * 等级数据接口。
-	 */
-	public void setRankdao(IRankDao rankdao) {
-		this.rankdao = rankdao;
+	public void setRankDao(IRankDao rankDao) {
+		this.rankDao = rankDao;
 	}
 	/*
 	 * 查询数据。
@@ -46,7 +31,7 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	 */
 	@Override
 	protected List<Rank> find(RankInfo info) {
-		return this.rankdao.findRank(info);
+		return this.rankDao.findRank(info);
 	}
 	/*
 	 * 类型装换。
@@ -65,7 +50,7 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	 */
 	@Override
 	protected Long total(RankInfo info) {
-		return this.rankdao.total(info);
+		return this.rankDao.total(info);
 	}
 	/*
 	 * 更新数据。
@@ -75,7 +60,7 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	public RankInfo update(RankInfo info) {
 		if(info == null) return null;
 		boolean isAdded = false;
-		Rank data = StringUtils.isEmpty(info.getId()) ? null : this.rankdao.load(Rank.class, info.getId());
+		Rank data = StringUtils.isEmpty(info.getId()) ? null : this.rankDao.load(Rank.class, info.getId());
 		if(isAdded = (data == null)){
 			if(StringUtils.isEmpty(info.getId())) {
 				info.setId(UUID.randomUUID().toString());
@@ -83,7 +68,7 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 			data = new Rank();
 		}
 		BeanUtils.copyProperties(info, data);	
-		if(isAdded) this.rankdao.save(data);
+		if(isAdded) this.rankDao.save(data);
 		return info;
 	}
 	/*
@@ -94,16 +79,9 @@ public class RankServiceImpl extends BaseDataServiceImpl<Rank, RankInfo> impleme
 	public void delete(String[] ids) {
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length; i++){
-			Rank data = this.rankdao.load(Rank.class, ids[i]);
-			if(data != null) this.rankdao.delete(data);
+			if(StringUtils.isEmpty(ids[i])) continue;
+			Rank data = this.rankDao.load(Rank.class, ids[i]);
+			if(data != null) this.rankDao.delete(data);
 		}
-	}
-	/*
-	 * 加载等级类型集合。
-	 * @see com.examw.oa.service.admin.IEmplService#loadRankTypes()
-	 */
-	@Override
-	public Map<String, String> loadRankTypes() {
-		return this.typeRanks;
 	}
 }

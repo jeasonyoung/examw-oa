@@ -4,7 +4,6 @@ import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
@@ -14,65 +13,61 @@ import com.examw.oa.support.CustomDateSerializer;
  * @since 2014-06-16
  */
 @JsonSerialize(include = Inclusion.NON_NULL)
-public class EmplInfo extends Paging {
+public class EmployeeInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,name,code,phone,email,idCard,password,departId,departName,postId,postName,rankId,rankName;
-	private int gender,status;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date brithday;
-	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date joinTime;
-	private Date createTime;
+	private String id,code,name,phone,email,idCard,password,departmentId,departmentName,postId,postName,rankId,rankName;
+	private Integer gender,status;
+	private Date brithday, joinTime,createTime;
 	/**
-	 * 获取员工信息ID。
+	 * 获取员工ID。
 	 * @return
-	 * 员工信息ID。
+	 * 员工ID。
 	 */
 	public String getId() {
 		return id;
 	}
 	/**
-	 * 设置员工信息ID。
+	 * 设置员工ID。
 	 * @return
-	 * 员工信息ID。
+	 * 员工ID。
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	/**
-	 * 获取员工名称。
+	 * 获取工号。
 	 * @return
-	 * 员工名称。
-	 */
-	public String getName() {
-		return name;
-	}
-	/**
-	 * 设置员工名称。
-	 * @return
-	 * 员工名称。
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	/**
-	 * 获取员工编号。
-	 * @return
-	 * 员工编号。
+	 *  工号。
 	 */
 	public String getCode() {
 		return code;
 	}
 	/**
-	 * 设置员工编号。
+	 * 设置工号。
 	 * @return
-	 * 员工编号。
+	 * 工号。
 	 */
 	public void setCode(String code) {
 		this.code = code;
 	}
 	/**
-	 * 获取员工手机号码。
+	 * 获取姓名。
+	 * @return
+	 * 姓名。
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * 设置姓名。
+	 * @return
+	 * 姓名。
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	/**
+	 * 获取手机号码。
 	 * @return
 	 * 手机号码。
 	 */
@@ -80,7 +75,7 @@ public class EmplInfo extends Paging {
 		return phone;
 	}
 	/**
-	 * 设置员工手机号码。
+	 * 设置手机号码。
 	 * @return
 	 * 手机号码。
 	 */
@@ -88,7 +83,7 @@ public class EmplInfo extends Paging {
 		this.phone = phone;
 	}
 	/**
-	 * 获取员工邮箱地址。
+	 * 获取邮箱地址。
 	 * @return
 	 * 邮箱地址。
 	 */
@@ -96,7 +91,7 @@ public class EmplInfo extends Paging {
 		return email;
 	}
 	/**
-	 * 设置员工邮箱地址。
+	 * 设置邮箱地址。
 	 * @return
 	 * 邮箱地址。
 	 */
@@ -104,7 +99,7 @@ public class EmplInfo extends Paging {
 		this.email = email;
 	}
 	/**
-	 * 获取员工身份证号码。
+	 * 获取身份证号码。
 	 * @return
 	 * 身份证号码。
 	 */
@@ -112,9 +107,9 @@ public class EmplInfo extends Paging {
 		return idCard;
 	}
 	/**
-	 * 设置员工邮箱地址。
+	 * 设置身份证号码。
 	 * @return
-	 * 邮箱地址。
+	 * 身份证号码。
 	 */
 	public void setIdCard(String idCard) {
 		this.idCard = idCard;
@@ -136,56 +131,56 @@ public class EmplInfo extends Paging {
 		this.password = password;
 	}
 	/**
-	 * 获取员工性别。
+	 * 获取性别。
 	 * @return
 	 * 性别。
 	 */
-	public int getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 	/**
-	 * 设置员工性别。
+	 * 设置性别。
 	 * @return
 	 * 性别。
 	 */
-	public void setGender(int gender) {
+	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
 	/**
-	 * 获取员工状态。
+	 * 获取状态。
 	 * @return
 	 * 状态。
 	 */
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 	/**
-	 * 设置员工状态。
+	 * 设置状态。
 	 * @return
 	 * 状态。
 	 */
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	/**
-	 * 获取员工出生。
+	 * 获取出生日期。
 	 * @return
-	 * 出生。
+	 * 出生日期。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getBrithday() {
 		return brithday;
 	}
 	/**
-	 * 设置员工出生。
+	 * 设置出生日期。
 	 * @return
-	 * 出生。
+	 * 出生日期。
 	 */
 	public void setBrithday(Date brithday) {
 		this.brithday = brithday;
 	}
 	/**
-	 * 获取员工入职时间。
+	 * 获取入职时间。
 	 * @return
 	 * 入职时间。
 	 */
@@ -194,7 +189,7 @@ public class EmplInfo extends Paging {
 		return joinTime;
 	}
 	/**
-	 * 设置员工入职时间。
+	 * 设置入职时间。
 	 * @return
 	 * 入职时间。
 	 */
@@ -219,35 +214,35 @@ public class EmplInfo extends Paging {
 	}
 	/**
 	 * 获取所属部门ID。
-	 * @param departId
+	 * @param departmentId
 	 * 所属部门ID。
 	 */
-	public String getDepartId() {
-		return departId;
+	public String getDepartmentId() {
+		return departmentId;
 	}
 	/**
 	 * 设置所属部门ID。
-	 * @param departId
+	 * @param departmentId
 	 * 所属部门ID。
 	 */
-	public void setDepartId(String departId) {
-		this.departId = departId;
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
 	}
 	/**
 	 * 获取所属部门名称。
-	 * @param departName
+	 * @param departmentName
 	 * 所属部门名称。
 	 */
-	public String getDepartName() {
-		return departName;
+	public String getDepartmentName() {
+		return departmentName;
 	}
 	/**
 	 * 设置所属部门名称。
-	 * @param departName
+	 * @param departmentName
 	 * 所属部门名称。
 	 */
-	public void setDepartName(String departName) {
-		this.departName = departName;
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
 	}
 	/**
 	 * 获取所属岗位ID。

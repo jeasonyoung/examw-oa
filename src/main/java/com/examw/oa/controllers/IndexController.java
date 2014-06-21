@@ -50,7 +50,8 @@ public class IndexController implements IUserAware {
 	 * @return
 	 */
 	@RequestMapping(value = {"","index","/"}, method = RequestMethod.GET)
-	public String index(Model model){ 
+	public String index(Model model){
+		model.addAttribute("systemName", this.menuService.loadSystemName());
 		return "index";
 	}
 	/**

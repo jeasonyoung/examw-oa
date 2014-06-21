@@ -3,19 +3,13 @@ package com.examw.oa.service.org.impl;
 import java.util.List;
 import java.util.UUID;
 
-
-
-
-
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import com.examw.oa.dao.org.IDepartDao;
+import com.examw.oa.dao.org.IDepartmentDao;
 import com.examw.oa.dao.org.IPostDao;
-import com.examw.oa.domain.org.Depart;
-import com.examw.oa.domain.org.Post;
-import com.examw.oa.model.org.DepartInfo;
+import com.examw.oa.domain.org.Department;
+import com.examw.oa.domain.org.Post; 
 import com.examw.oa.model.org.PostInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IPostService;
@@ -25,65 +19,64 @@ import com.examw.oa.service.org.IPostService;
  * @since 2014-06-13.
  */
 public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> implements IPostService {
-	private IPostDao postdao;
-	private IDepartDao departdao;
+	private IPostDao postDao;
+	private IDepartmentDao departmentDao;
 	/**
-	 * 设置岗位信息数据接口。
-	 * @param postdao
-	 * 岗位信息数据接口。
+	 * 设置部门岗位数据接口。
+	 * @param postDao
+	 * 部门岗位数据接口。
 	 */
-	public void setPostdao(IPostDao postdao) {
-		this.postdao = postdao;
+	public void setPostDao(IPostDao postDao) {
+		this.postDao = postDao;
 	}
 	/**
 	 * 设置部门数据接口。
-	 * @param departdao
+	 * @param departmentDao
 	 * 部门数据接口。
 	 */
-	public void setDepartdao(IDepartDao departdao) {
-		this.departdao = departdao;
+	public void setDepartmentDao(IDepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
 	}
 	/*
-	 * 查询所有。
-	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
+	 * 查询数据。
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#find(java.lang.Object)
 	 */
 	@Override
 	protected List<Post> find(PostInfo info) {
-		return this.postdao.findPosts(info);
+		 return this.postDao.findPosts(info);
+	}
+	/*
+	 * 查询数据统计。
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
+	 */
+	@Override
+	protected Long total(PostInfo info) {
+		return this.postDao.total(info);
 	}
 	/*
 	 * 类型转换。
-	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#changeModel(java.lang.Object)
 	 */
 	@Override
 	protected PostInfo changeModel(Post data) {
 		if(data == null) return null;
 		PostInfo info = new PostInfo();
-		info.setId(data.getId());
-		info.setCode(data.getCode());
-		info.setName(data.getName());
-		info.setDeptId(data.getDepart().getId());
-		info.setDepartName(data.getDepart().getName());
+		BeanUtils.copyProperties(data, info);
+		if(data.getDepartment() != null){
+			info.setDepartmentId(data.getDepartment().getId());
+			info.setDepartmentName(data.getDepartment().getName());
+		}
 		return info;
 	}
 	/*
-	 * 查询总数据。
-	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
-	 */
-	
-	@Override
-	protected Long total(PostInfo info) {
-		return this.postdao.total(info);
-	}
-	/*
 	 * 更新数据。
-	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#delete(java.lang.String[])
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#update(java.lang.Object)
 	 */
 	@Override
 	public PostInfo update(PostInfo info) {
 		if(info == null) return null;
 		boolean isAdded = false;
-		Post data = StringUtils.isEmpty(info.getId()) ? null : this.postdao.load(Post.class, info.getId());
+		Post data = StringUtils.isEmpty(info.getId()) ? null : this.postDao.load(Post.class, info.getId());
 		if(isAdded = (data == null)){
 			if(StringUtils.isEmpty(info.getId())) {
 				info.setId(UUID.randomUUID().toString());
@@ -91,17 +84,14 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 			data = new Post();
 		}
 		BeanUtils.copyProperties(info, data);
-		if(!StringUtils.isEmpty(info.getDeptId()) && (data.getDepart() == null || !data.getDepart().getId().equalsIgnoreCase(info.getDeptId()))){
-			Depart depart = this.departdao.load(Depart.class, info.getDeptId());
-			if(depart != null) {
-				if(depart.getChildren() != null && depart.getChildren().size() > 0){
-					throw new RuntimeException("必须选择部门下的机构！");
-				}
-				data.setDepart(depart);
-				info.setDepartName(depart.getName());
-			}
+		if(!StringUtils.isEmpty(info.getDepartmentId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getDepartmentId()))){
+			Department d = this.departmentDao.load(Department.class, info.getDepartmentId());
+			if(d != null) data.setDepartment(d);
 		}
-		if(isAdded) this.postdao.save(data);
+		if(data.getDepartment() != null){
+			info.setDepartmentName(data.getDepartment().getName());
+		}
+		if(isAdded)this.postDao.save(data);
 		return info;
 	}
 	/*
@@ -112,21 +102,17 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 	public void delete(String[] ids) {
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length; i++){
-			Post data = this.postdao.load(Post.class, ids[i]);
-			if(data != null) this.postdao.delete(data);
+			if(StringUtils.isEmpty(ids[i])) continue;
+			Post data = this.postDao.load(Post.class, ids[i]);
+			if(data != null) this.postDao.delete(data);
 		}
 	}
 	/*
-	 * 根据部门设置ID获取岗位信息
-	 * @see com.examw.netplatform.service.admin.settings.ISubjectService#loadSubject(java.lang.String)
+	 * 根据部门ID加载岗位集合。
+	 * @see com.examw.oa.service.org.IPostService#loadPosts(java.lang.String)
 	 */
 	@Override
-	public DepartInfo loadDept(String postId) {
-		 if(StringUtils.isEmpty(postId)) return null;
-		 Post data = this.postdao.load(Post.class, postId);
-		 if(data == null || data.getDepart() == null) return null;
-		 DepartInfo info = new DepartInfo();
-		 BeanUtils.copyProperties(data.getDepart(), info);
-		 return info;
+	public List<PostInfo> loadPosts(String departmentId) {
+		return this.changeModel(this.postDao.loadPosts(departmentId));
 	}
 }

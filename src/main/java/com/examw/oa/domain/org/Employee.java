@@ -7,12 +7,12 @@ import java.util.Date;
  * @author lq.
  * @since 2014-06-16.
  */
-public class Empl implements Serializable {
+public class Employee implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,name,code,phone,email,idCard,password;
 	private int gender,status;
 	private Date brithday,joinTime,createTime;
-	private Depart depart;
+	private Department department;
 	private Post post;
 	private Rank rank;
 	/**
@@ -212,16 +212,16 @@ public class Empl implements Serializable {
 	 * @return
 	 * 所属部门。
 	 */
-	public Depart getDepart() {
-		return depart;
+	public Department getDepartment() {
+		return department;
 	}
 	/**
 	 * 设置所属部门。
 	 * @return
 	 * 所属部门。
 	 */
-	public void setDepart(Depart depart) {
-		this.depart = depart;
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 	/**
 	 * 获取所属岗位。

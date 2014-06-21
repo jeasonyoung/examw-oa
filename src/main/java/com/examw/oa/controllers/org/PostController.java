@@ -1,6 +1,5 @@
 package com.examw.oa.controllers.org;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
-import com.examw.oa.controllers.security.MenuController;
 import com.examw.oa.model.org.PostInfo;
-import com.examw.oa.service.org.IDepartService;
 import com.examw.oa.service.org.IPostService;
 /**
  * 岗位信息控制器。
@@ -27,17 +24,12 @@ import com.examw.oa.service.org.IPostService;
 @Controller
 @RequestMapping(value = "/org/post")
 public class PostController {
-	private static Logger logger = Logger.getLogger(MenuController.class);
+	private static Logger logger = Logger.getLogger(PostController.class);
 	/**
 	 * 岗位信息服务。
 	 */
 	@Resource
-	private IPostService postservice;
-	/**
-	 * 部门信息服务。
-	 */
-	@Resource
-	private IDepartService departservice;
+	private IPostService postService;
 	/**
 	 * 列表页面。
 	 * @return
@@ -54,10 +46,9 @@ public class PostController {
 	 * @return
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
-	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String edit(String ignore,String deptId, Model model){
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public String edit(String deptId, Model model){
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
-		model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
 		return "org/post_edit";
 	}
 	/**
@@ -68,7 +59,7 @@ public class PostController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<PostInfo> datagrid(PostInfo info){
-		return this.postservice.datagrid(info);
+		return this.postService.datagrid(info);
 	}
 	/**
 	 * 更新数据。
@@ -83,12 +74,7 @@ public class PostController {
 	public Json update(PostInfo info){
 		Json result = new Json();
 		try {
-			if(StringUtils.isEmpty(info.getDeptId())){
-				result.setSuccess(false);
-				result.setMsg("未获取部门ID数据！");
-				return result;
-			}
-			result.setData(this.postservice.update(info));
+			result.setData(this.postService.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);
@@ -108,7 +94,7 @@ public class PostController {
 	public Json delete(String id){
 		Json result = new Json();
 		try {
-			this.postservice.delete(id.split("\\|"));
+			this.postService.delete(id.split("\\|"));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);
@@ -123,16 +109,7 @@ public class PostController {
 	 */
 	@RequestMapping(value={"/all"}, method = RequestMethod.POST)
 	@ResponseBody
-	public List<PostInfo> all(final String departId){
-		if(StringUtils.isEmpty(departId)) return new ArrayList<PostInfo>();
-		 return this.postservice.datagrid(new PostInfo(){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public Integer getPage(){return null;}
-			@Override
-			public Integer getRows(){return null;}
-			@Override
-			public String getDeptId(){return departId;}
-		 }).getRows();
+	public List<PostInfo> all(String deptId){
+		 return this.postService.loadPosts(deptId);
 	}
 }

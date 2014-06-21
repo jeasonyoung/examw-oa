@@ -1,32 +1,38 @@
 <#--员工编辑-->
-<#assign module="org_empl"/>
+<#include "ftl/comm.ftl"/>
+<#assign module="org_emp"/>
 <#assign form="${module}_edit_form"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_depart_select = false;
-	var t = $("#${form} input[name='departId']").combotree({
-		url:"<@s.url '/org/depart/tree?ignore=${CURRENT_IGNORE}'/>",
+	var current_dept_select = false;
+	//department
+	var t = $("#${form} input[name='departmentId']").combotree({
+		url:"<@s.url '/org/dept/tree'/>",
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
 		onLoadSuccess:function(n,d){
-			var departId = "${CURRENT_DEPT_ID}";
-			if(departId.trim() == "")return;
-			t.combotree("setValue",departId);
+			var d = "${CURRENT_DEPT_ID}";
+			if(d.trim() == "")return;
+			t.combotree("setValue",d);
 		},
 		onSelect:function(record){
-			if(e_t){
-				current_depart_select = true;
-				e_t.combobox("reload","<@s.url '/org/post/all'/>?departId="+record.id);
+			if(p_t){
+				current_dept_select = true;
+				p_t.combobox("reload",post_url+record.id);
 			}
 		}
 	});
-	var e_t = $("#${form} input[name='postId']").combobox({
-		url:"<@s.url '/org/post/all'/>?departId=${CURRENT_DEPT_ID}",
+	//post url
+	var post_url = "<@s.url '/org/post/all'/>?deptId=";
+	//post
+	var p_t = $("#${form} input[name='postId']").combobox({
+		url:post_url + "${CURRENT_DEPT_ID}",
 		valueField:"id",
 		textField:"name",
-		onLoadSuccess:function(){
-			//var postId = "${CURRENT_POST_ID}";
-			//if($.trim(postId) == "" || current_catalog_select) return;
-			//e_t.combotree("setValue",postId);
+		onLoadError:function(e){
+			<@error_dialog "e"/>
 		}
 	});
 });
@@ -64,7 +70,7 @@ $(function(){
 		<div style="float: left; margin-top: 15px; width: 100%;">
 			<div  style="float:left;">
 				<label style="width:75px;">所属部门：</label>
-				<input type="text" name="departId" style="width:160px;"/>
+				<input type="text" name="departmentId" style="width:160px;"/>
 				<input type="text" name="postId"  style="width:130px;"/>	
 			</div>
 		</div>

@@ -8,23 +8,23 @@ import java.util.Map;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.impl.BaseDaoImpl;
-import com.examw.oa.dao.org.IDepartDao;
-import com.examw.oa.domain.org.Depart;
-import com.examw.oa.model.org.DepartInfo;
+import com.examw.oa.dao.org.IDepartmentDao;
+import com.examw.oa.domain.org.Department;
+import com.examw.oa.model.org.DepartmentInfo;
 
 /**
  * 部门数据操作实现类。
  * @author lq
  * @since 2014-06-12.
  */
-public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
+public class DepartmentDaoImpl extends BaseDaoImpl<Department> implements IDepartmentDao {
 	/*
-	 * 查询所有数据。
-	 * @see com.examw.oa.dao.admin.IDepartDao#findDeparts(com.examw.netplatform.model.admin.departInfo)
+	 * 加载一级部门数据集合。
+	 * @see com.examw.oa.dao.org.IDepartmentDao#loadFristDepartments()
 	 */
 	@Override
-	public List<Depart> findDeparts() {
-		String hql =  "from Depart d where d.parent is null order by d.orderNo";
+	public List<Department> loadFristDepartments() {
+		final String hql = "from Department d where d.parent is null ";
 		return this.find(hql, null, null, null);
 	}
 	/*
@@ -32,8 +32,8 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	 * @see com.examw.oa.dao.admin.IDepartDao#findDepart(com.examw.netplatform.model.admin.departInfo)
 	 */
 	@Override
-	public List<Depart> findDepart(DepartInfo info) {
-		String hql = "from Depart d where 1 = 1 ";
+	public List<Department> findDepartments(DepartmentInfo info) {
+		String hql = "from Department d where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
@@ -46,8 +46,8 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	 * @see com.examw.oa.dao.admin.IDepartDao#total(com.examw.oa.model.admin.DepartInfo)
 	 */
 	@Override
-	public Long total(DepartInfo info) {
-		String hql = "select count(*) from Depart d where 1 = 1 ";
+	public Long total(DepartmentInfo info) {
+		String hql = "select count(*) from Department d where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		return this.count(hql, parameters);
@@ -63,16 +63,30 @@ public class DepartDaoImpl extends BaseDaoImpl<Depart> implements IDepartDao {
 	 * @return
 	 * HQL
 	 */
-
-	protected String addWhere(DepartInfo info, String hql, Map<String, Object> parameters){
+	protected String addWhere(DepartmentInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getId())){
 			hql += " and (d.id = :id or d.parent.id = :id)";
 			parameters.put("id", info.getId());
 		}
 		if(!StringUtils.isEmpty(info.getName())){
-			hql += " and (d.name like :Name)";
-			parameters.put("Name", "%" + info.getName() + "%");
+			hql += " and (d.name like :name)";
+			parameters.put("name", "%" + info.getName() + "%");
 		}
 		return hql;
+	}
+	/*
+	 * 删除数据。
+	 * @see com.examw.oa.dao.impl.BaseDaoImpl#delete(java.lang.Object)
+	 */
+	@Override
+	public void delete(Department data){
+		if(data == null) return;
+		if(data.getChildren() != null){
+			for(Department d : data.getChildren()){
+				if(d == null) continue;
+				this.delete(d);
+			}
+		}
+		super.delete(data);
 	}
 }

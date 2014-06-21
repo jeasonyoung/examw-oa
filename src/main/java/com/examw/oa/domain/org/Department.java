@@ -1,42 +1,50 @@
-package com.examw.oa.model.org;
+package com.examw.oa.domain.org;
 
-
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-
-import com.examw.model.Paging;
-import com.examw.oa.support.CustomDateSerializer;
-
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import java.util.Set;
 /**
- * 部门信息。
+ * 部门数据
  * @author lq.
  * @since 2014-06-11.
  */
-@JsonSerialize(include = Inclusion.NON_NULL)
-public class DepartInfo extends Paging {
+public class Department implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private String pid,id,name,code,fullName;
-	private int orderNo;
+	private String id,name,code;
+	private Integer orderNo;
 	private Date createTime;
-	private List<DepartInfo> children;
-	
+	private Department parent;
+	private Set<Department> children;
+	/**
+	 * 获取上级菜单。
+	 * @return
+	 * 	上级菜单。
+	 */
+	public Department getParent() {
+		return parent;
+	}
+	/**
+	 * 设置上级菜单。
+	 * @return
+	 * 	上级菜单。
+	 */
+	public void setParent(Department parent) {
+		this.parent = parent;
+	}
 	/**
 	 * 获取子菜单集合。
 	 * @return
 	 * 	子菜单集合。
 	 */
-	public List<DepartInfo> getChildren() {
+	public Set<Department> getChildren() {
 		return children;
 	}
-	
 	/**
 	 * 设置子部门集合。
 	 * @return
 	 * 	子部门集合。
 	 */
-	public void setChildren(List<DepartInfo> children) {
+	public void setChildren(Set<Department> children) {
 		this.children = children;
 	}
 	/**
@@ -47,7 +55,6 @@ public class DepartInfo extends Paging {
 	public String getId() {
 		return id;
 	}
-	
 	/**
 	 * 设置部门id。
 	 * @return
@@ -73,23 +80,6 @@ public class DepartInfo extends Paging {
 		this.name = name;
 	}
 	/**
-	 * 获取部门全称。
-	 * @return
-	 * 	部门全称。
-	 */
-	public String getFullName() {
-		return fullName;
-	}
-	/**
-	 * 设置部门全称。
-	 * @return
-	 * 	部门全称。
-	 */
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	/**
 	 * 获取部门编号。
 	 * @return
 	 * 	部门编号。
@@ -105,13 +95,12 @@ public class DepartInfo extends Paging {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	
 	/**
 	 * 获取排序。
 	 * @return
 	 * 	排序。
 	 */
-	public int getOrderNo() {
+	public Integer getOrderNo() {
 		return orderNo;
 	}
 	/**
@@ -119,7 +108,7 @@ public class DepartInfo extends Paging {
 	 * @return
 	 * 	排序。
 	 */
-	public void setOrderNo(int orderNo) {
+	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
 	}
 	/**
@@ -127,7 +116,6 @@ public class DepartInfo extends Paging {
 	 * @return
 	 * 	创建时间。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -138,21 +126,5 @@ public class DepartInfo extends Paging {
 	 */
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-	}
-	/**
-	 * 获取上级部门ID。
-	 * @return
-	 * 上级部门ID。
-	 */
-	public String getPid() {
-		return pid;
-	}
-	/**
-	 * 设置上级部门ID。
-	 * @return
-	 * 上级部门ID。
-	 */
-	public void setPid(String pid) {
-		this.pid = pid;
 	}
 }

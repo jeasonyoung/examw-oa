@@ -1,6 +1,5 @@
 package com.examw.oa.controllers.org;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -18,8 +17,8 @@ import com.examw.model.Json;
 import com.examw.model.TreeNode;
 
 import com.examw.oa.controllers.security.MenuController;
-import com.examw.oa.model.org.DepartInfo;
-import com.examw.oa.service.org.IDepartService;
+import com.examw.oa.model.org.DepartmentInfo;
+import com.examw.oa.service.org.IDepartmentService;
 
 /**
  * 部门信息控制器。
@@ -27,14 +26,14 @@ import com.examw.oa.service.org.IDepartService;
  * @since 2014-06-11.
  */
 @Controller
-@RequestMapping(value = "/org/depart")
-public class DepartController {
+@RequestMapping(value = "/org/dept")
+public class DepartmentController {
 	private static Logger logger = Logger.getLogger(MenuController.class);
 	/**
 	 *部门信息服务。
 	 */
 	@Resource
-	private IDepartService departservice;
+	private IDepartmentService departservice;
 	/**
 	 * 获取列表页面。
 	 * @return
@@ -44,7 +43,7 @@ public class DepartController {
 	public String list(Model model){
 		//model.addAttribute("PER_UPDATE", ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE);
 		//model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_ROLE + ":" + Right.DELETE);
-		return "org/depart_list";
+		return "org/dept_list";
 	}
 	
 	/**
@@ -57,7 +56,7 @@ public class DepartController {
 	public String edit(String id,String ignore,Model model){
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(id) ? "" : id);
 		model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
-		return "org/depart_edit";
+		return "org/dept_edit";
 	}
 	/**
 	 * 查询数据。
@@ -66,7 +65,7 @@ public class DepartController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
-	public DataGrid<DepartInfo> datagrid(DepartInfo info){
+	public DataGrid<DepartmentInfo> datagrid(DepartmentInfo info){
 		return this.departservice.datagrid(info);
 	}
 	/**
@@ -79,10 +78,9 @@ public class DepartController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(DepartInfo info){
+	public Json update(DepartmentInfo info){
 		Json result = new Json();
 		try {
-			
 			result.setData(this.departservice.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
@@ -118,42 +116,7 @@ public class DepartController {
 	 */
 	@RequestMapping(value = "/tree", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public synchronized List<TreeNode> tree(String ignore){
-		List<TreeNode> result = new ArrayList<>();
-		List<DepartInfo> list = this.departservice.loadDeparts();
-		if(list != null){
-			for(DepartInfo info: list){
-				if(info == null || (!StringUtils.isEmpty(ignore) && info.getId().equalsIgnoreCase(ignore))){
-					continue;
-				}
-				TreeNode node = this.createTreeNode(info, ignore);
-				if(node != null){
-					result.add(node);
-				}
-			}
-		}
-		return result;
-	}
-	/**
-	 * 空值判断
-	 * @param info
-	 * @param ignore
-	 * @return
-	 */
-	private TreeNode createTreeNode(DepartInfo info, String ignore){
-		if(info == null || (!StringUtils.isEmpty(ignore) && info.getId().equalsIgnoreCase(ignore)))
-			return null;
-		TreeNode tv = new TreeNode();
-		tv.setId(info.getId());
-		tv.setText(info.getName());
-		if(info.getChildren() != null && info.getChildren().size() > 0){
-			List<TreeNode> childs = new ArrayList<>();
-			 for(DepartInfo m : info.getChildren()){
-				  TreeNode node = this.createTreeNode(m,ignore);
-				  if(node != null) childs.add(node);
-			 }
-			 tv.setChildren(childs);
-		}
-		return tv;
+	public List<TreeNode> tree(String ignore){
+		return this.departservice.loadDepartments(ignore);
 	}
 }
