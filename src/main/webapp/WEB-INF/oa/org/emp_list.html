@@ -39,15 +39,44 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"员工工号",
-			field:"code",
+			title:"所属部门",
+			field:"departmentName",
 			width:30,
 			align:"left",
 			sortable:true
 		},{
-			title:"员工名称",
-			field:"name",
+			title:"所属岗位",
+			field:"postName",
 			width:30,
+			align:"left",
+			sortable:true
+		},{
+			title:"工号",
+			field:"code",
+			width:15,
+			align:"left",
+			sortable:true
+		},{
+			title:"姓名",
+			field:"name",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"性别",
+			field:"gender",
+			width:10,
+			align:"center",
+			formatter:function(value,row,index){
+				if(value == ${GENDER_MALE_VALUE}) return "${GENDER_MALE_NAME}";
+				if(value == ${GENDER_FEMALE_VALUE}) return "${GENDER_FEMALE_NAME}";
+				return value;
+			},
+			sortable:true
+		},{
+			title:"所属等级",
+			field:"rankName",
+			width:20,
 			align:"left",
 			sortable:true
 		},{
@@ -57,40 +86,27 @@ $(function(){
 			align:"left",
 			sortable:true
 		},{
-			title:"邮箱地址",
-			field:"email",
-			width:50,
-			align:"left",
-			sortable:true
-		},{
-			title:"身份证号码",
-			field:"idCard",
-			width:40,
+			title:"出生日期",
+			field:"brithday",
+			width:25,
 			align:"center",
+			formatter:function(value,row,index){
+				if(!value) return "";
+				if(value && value.trim() == "") return "";
+				if(value.length > 10) return value.substring(0,10);
+				return value;
+			},
 			sortable:true
 		},{
 			title:"入职时间",
 			field:"joinTime",
-			width:50,
+			width:25,
 			align:"center",
-			sortable:true
-		},{
-			title:"等级名称",
-			field:"rankName",
-			width:30,
-			align:"left",
-			sortable:true
-		},{
-			title:"岗位名称",
-			field:"postName",
-			width:30,
-			align:"left",
-			sortable:true
-		},{
-			title:"部门名称",
-			field:"departName",
-			width:30,
-			align:"left",
+			formatter:function(value,row,index){
+				if(value && value.trim() == "") return;
+				if(value.length > 10) return value.substring(0,10);
+				return value;
+			},
 			sortable:true
 		}]],
 		toolbar:"#${dg}_toobar",
@@ -103,14 +119,16 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
-		if(row && row.id){
-			current_dept_id = "";
+		var dept_id = current_dept_id,post_id = "";
+		if(row){
+			dept_id = row.departmentId;
+			post_id = row.postId;
 		}
 		var d = $("<div/>").dialog({
 			title:title,
-			width:520,
-			height:380,
-			href:"<@s.url '/org/emp/edit'/>?deptId=" + current_dept_id,
+			width:600,
+			height:400,
+			href:"<@s.url '/org/emp/edit'/>?deptId=" + dept_id + "&postId=" + post_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */

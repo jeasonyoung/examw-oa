@@ -1,5 +1,7 @@
 package com.examw.oa.controllers.org;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -78,6 +80,21 @@ public class RankController {
 			logger.error("更新等级数据发生异常", e);
 		}
 		return result;
+	}
+	/**
+	 * 岗位级别数据。
+	 * @return
+	 */
+	@RequestMapping(value="/all", method = RequestMethod.POST)
+	@ResponseBody
+	public List<RankInfo> all(){
+		return this.rankservice.datagrid(new RankInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "code";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
 	}
 	/**
 	 * 删除数据。

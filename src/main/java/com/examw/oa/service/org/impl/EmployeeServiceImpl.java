@@ -2,6 +2,7 @@ package com.examw.oa.service.org.impl;
  
 import java.util.Date;
 import java.util.List; 
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	private IDepartmentDao departmentDao;
 	private IPostDao postDao;
 	private IRankDao rankDao;
+	private Map<Integer, String> gendersMap,statusMap;
 	/**
 	 * 设置员工数据接口。
 	 * @param employeeDao
@@ -58,6 +60,40 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	public void setRankDao(IRankDao rankDao) {
 		this.rankDao = rankDao;
+	}
+	/**
+	 * 设置性别集合。
+	 * @param gendersMap
+	 * 性别集合。
+	 */
+	public void setGendersMap(Map<Integer, String> gendersMap) {
+		this.gendersMap = gendersMap;
+	}
+	/**
+	 * 设置状态集合。
+	 * @param statusMap
+	 * 状态集合。
+	 */
+	public void setStatusMap(Map<Integer, String> statusMap) {
+		this.statusMap = statusMap;
+	}
+	/*
+	 * 加载性别名称。
+	 * @see com.examw.oa.service.org.IEmployeeService#loadGenderName(java.lang.Integer)
+	 */
+	@Override
+	public String loadGenderName(Integer gender) {
+		if(this.gendersMap == null || gender == null) return null;
+		return this.gendersMap.get(gender);
+	}
+	/*
+	 * 加载状态名称。
+	 * @see com.examw.oa.service.org.IEmployeeService#loadStatusName(java.lang.Integer)
+	 */
+	@Override
+	public String loadStatusName(Integer status) {
+		if(this.statusMap == null || status == null) return null;
+		return this.statusMap.get(status);
 	}
 	/*
 	 * 查询数据。

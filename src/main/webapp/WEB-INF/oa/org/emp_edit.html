@@ -5,21 +5,22 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_dept_select = false;
+	var current_dept_select = false,current_dept_id = "${CURRENT_DEPT_ID}",current_post_id = "${CURRENT_POST_ID}";
 	//department
 	var t = $("#${form} input[name='departmentId']").combotree({
 		url:"<@s.url '/org/dept/tree'/>",
+		required:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(n,d){
-			var d = "${CURRENT_DEPT_ID}";
-			if(d.trim() == "")return;
-			t.combotree("setValue",d);
+			if(current_dept_id.trim() == "")return;
+			if(current_post_id.trim() == "") t.combotree("setValue",current_dept_id);
 		},
 		onSelect:function(record){
 			if(p_t){
 				current_dept_select = true;
+				p_t.combobox("clear");
 				p_t.combobox("reload",post_url+record.id);
 			}
 		}
@@ -31,6 +32,22 @@ $(function(){
 		url:post_url + "${CURRENT_DEPT_ID}",
 		valueField:"id",
 		textField:"name",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(){
+			if(current_dept_select) return;
+			if(current_post_id.trim() == "")return;
+			p_t.combobox("setValue",current_post_id);
+		}
+	});
+	//rank 
+	var r_t = $("#${form} input[name='rankId']").combobox({
+		url:"<@s.url '/org/rank/all'/>",
+		valueField:"id",
+		textField:"name",
+		required:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		}
@@ -38,70 +55,70 @@ $(function(){
 });
 //-->
 </script>
-<form id="${form}" method="post" class="easyui-layout" data-options="fit:true,border:false" >
-		<div style="float: left; margin-top: 20px; width: 100%;">
+<form id="${form}" method="POST" style="padding:10px;">
+		<div style="float:left; margin-top:2px; width:100%;">
 			<div style="float:left;">
 				<label style="width:75px;">工号：</label>
-				<input type="text" name="code" class="easyui-validatebox" style="width:150px;" data-options="required:true,validType:'length[0,10]'"/>
+				<input type="text" name="code" class="easyui-validatebox" data-options="required:true" style="width:168px;"/>
 				<input type="hidden" name="id"/>
 			</div>
-			<div style="float: left;">
-				<label style="width:65px;">姓名：</label>
-				<input type="text" name="name" class="easyui-validatebox"  style="width:150px;" data-options="required:true,validType:'length[0,20]'"/>
-			</div>
-		</div>
-		<div style="float: left; margin-top: 10px; width: 100%;">
 			<div style="float:left;">
-				<label style="width:75px;">性别：</label>
-				<input type="radio" name="gender" value="1" checked="checked" />男
-				<input type="radio" name="gender" value="2" checked="checked" />女
+				<label style="width:75px;">姓名：</label>
+				<input type="text" name="name" class="easyui-validatebox" data-options="required:true" style="width:168px;"/>
 			</div>
+		</div>
+		<div style="float:left; margin-top:12px; width:100%;">
+			<label style="margin-top:8px;width:75px;">性别：</label>
+			<div style="float:left;width:172px;">
+				<label><input type="radio" name="gender" value="1" checked="checked" />${GENDER_MALE_NAME}</label>
+				<label><input type="radio" name="gender" value="2" />${GENDER_FEMALE_NAME}</label>
+			</div>
+		</div>
+		<div style="float:left; margin-top:12px; width:100%;">
+			<label style="width:75px;">所属部门：</label>
+			<input type="text" name="departmentId" style="width:218px;"/>
+			<input type="text" name="postId"  style="width:198px;"/>	
+		</div>
+		<div  style="float:left;margin-top:12px; width:100%;">
 			<div style="float:left;">
-				<label style="width:135px;"> 状态：</label>
-				<input type="radio" name="status" value="0" checked="checked" />离职	
-				<input type="radio" name="status" value="1" checked="checked" />在职	
-				<input type="radio" name="status" value="2" checked="checked" />限制登录
+				<label style="width:75px;">所属级别：</label>
+				<input type="text" name="rankId" style="width:172px;"/>
 			</div>
-		</div>
-		<div  style="float:left;margin-top: 20px; width: 100%;">
-			<label style="width:75px;">等级：</label>
-			<input type="text" name="rankId" style="width:160px;"/>
-		</div>
-		<div style="float: left; margin-top: 15px; width: 100%;">
-			<div  style="float:left;">
-				<label style="width:75px;">所属部门：</label>
-				<input type="text" name="departmentId" style="width:160px;"/>
-				<input type="text" name="postId"  style="width:130px;"/>	
-			</div>
-		</div>
-		<div style="float: left; margin-top: 15px; width: 100%;">
 			<div style="float: left;">
 				 <label style="width: 75px;">手机号码：</label>
-				 <input type="text" name="phone" class="easyui-validatebox" style="width: 145px;" data-options="required:true,validType:'length[0,11]'" />
-			</div>
-			<div style="float: left;">
-				<label style="width: 75px;">邮箱地址：</label>
-				 <input type="text" name="email" class="easyui-validatebox" style="width: 150px;" data-options="required:true,validType:'length[0,45]'" />
+				 <input type="text" name="phone" style="width:168px;" />
 			</div>
 		</div>
-		<div style="float: left; margin-top: 15px; width: 100%;">
+		<div  style="float:left;margin-top:12px; width:100%;">
 			<div style="float:left;">
 				<label style="width:75px;">身份证码：</label>
-				<input type="text" name="idCard" class="easyui-validatebox"  style="width:145px;" data-options="required:true,validType:'length[0,20]'"/>
+				<input type="text" name="idCard" style="width:168px;"/>
 			</div>
-			<div style="float:left;">
-				<label style="width:75px;">员工密码：</label>
-				<input type="text" name="password" class="easyui-validatebox"  style="width:150px;" data-options="required:true,validType:'length[0,15]'"/>
-			</div>
-		</div>
-		<div style="float: left; margin-top: 15px; width: 100%;">
 			<div style="float:left;">
 				<label style="width:75px;">出生日期：</label>
-				<input id="dd"  name="brithday" type="text" class="easyui-datebox" required="required" style="width:150px;">
+				<input name="brithday" type="text" class="easyui-datebox" style="width:172px;">
 			</div>
-			<div style="float:left">
+		</div>
+		<div style="float:left; margin-top:12px; width:100%;">
+			<label style="width:75px;">邮箱地址：</label>
+			<input type="text" name="email" style="width:416px;"/>
+		</div>
+		<div style="float:left; margin-top:12px; width: 100%;">
+			<div style="float:left;"> 
 				<label style="width:75px;">入职时间：</label>
-				<input id="dd"  name="joinTime" type="text" class="easyui-datebox" required="required" style="width:150px;">
+				<input type="text" name="joinTime" class="easyui-datebox" required="required" style="width:168px;">
+			</div>
+			<div style="float:left;margin-left:3px;">
+				<label style="width:75px;">登录密码：</label>
+				<input type="text" name="password" class="easyui-validatebox"  data-options="required:true" style="width:168px;"/>
+			</div>
+		</div>
+		<div style="float:left; margin-top:10px; width:100%;">
+			<label style="margin-top:8px;width:75px;">状态：</label>
+			<div style="float:left;">
+				<label><input type="radio" name="status" value="1" checked="checked" />${STATUS_ON_NAME}</label>
+				<label><input type="radio" name="status" value="-1" />${STATUS_LIMIT_NAME}</label>
+				<label><input type="radio" name="status" value="0" />${STATUS_OUT_NAME}</label>
 			</div>
 		</div>
 </form>

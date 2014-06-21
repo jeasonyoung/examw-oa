@@ -8,5 +8,20 @@ import com.examw.oa.service.IBaseDataService;
  * @since 2014-06-16.
  */
 public interface IEmployeeService extends IBaseDataService<EmployeeInfo>{
-	
+	/**
+	 * 加载性别名称。
+	 * @param gender
+	 * 性别值。
+	 * @return
+	 * 性别名称。
+	 */
+	String loadGenderName(Integer gender);
+	/**
+	 * 加载状态名称。
+	 * @param status
+	 * 状态值。
+	 * @return
+	 * 状态名称。
+	 */
+	String loadStatusName(Integer status);
 }

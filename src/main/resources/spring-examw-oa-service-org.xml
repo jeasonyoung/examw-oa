@@ -26,5 +26,25 @@
 		<property name="postDao" ref="postDao" />
 		<!-- 员工级别数据接口 -->
 		<property name="rankDao" ref="rankDao" />
+		<!-- 性别集合 -->
+		<property name="gendersMap">
+			<map>
+				<!-- 男性 -->
+				<entry key="1" value="${GENDER_MALE}" />
+				<!-- 女性 -->
+				<entry key="2" value="${GENDER_FEMALE}" />
+			</map>
+		</property>
+		<!-- 状态集合 -->
+		<property name="statusMap">
+			<map>
+				<!-- 离职 -->
+				<entry key="0" value="${STATUS_OUT}" />
+				<!-- 在职 -->
+				<entry key="1" value="${STATUS_ON}" />
+				<!-- 限制登录 -->
+				<entry key="-1" value="${STATUS_LIMIT}" />
+			</map>
+		</property>
 	</bean>
 </beans>

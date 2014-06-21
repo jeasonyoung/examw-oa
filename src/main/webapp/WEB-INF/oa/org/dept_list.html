@@ -39,7 +39,7 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"部门代号",
+			title:"部门编码",
 			field:"code",
 			width:15,
 			align:"left",
@@ -153,7 +153,7 @@ $(function(){
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("添加部门",0,null);
+		edit_window("新增部门",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
@@ -209,7 +209,7 @@ $(function(){
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
 			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
-			<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">添加</a>
+			<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
 			<!-- </shiro.hasPermission> -->
 			<span>|</span>
 			<!-- <shiro.hasPermission name="${PER_DELETE}"> -->

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
@@ -17,6 +18,7 @@ public class EmployeeInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,code,name,phone,email,idCard,password,departmentId,departmentName,postId,postName,rankId,rankName;
 	private Integer gender,status;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date brithday, joinTime,createTime;
 	/**
 	 * 获取员工ID。

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json; 
+import com.examw.oa.domain.org.Employee;
 import com.examw.oa.model.org.EmployeeInfo; 
 import com.examw.oa.service.org.IEmployeeService; 
 /**
@@ -35,6 +36,10 @@ public class EmployeeController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		model.addAttribute("GENDER_MALE_VALUE",Employee.GENDER_MALE);
+		model.addAttribute("GENDER_MALE_NAME", this.employeeService.loadGenderName(Employee.GENDER_MALE));
+		model.addAttribute("GENDER_FEMALE_VALUE",Employee.GENDER_FEMALE);
+		model.addAttribute("GENDER_FEMALE_NAME", this.employeeService.loadGenderName(Employee.GENDER_FEMALE));
 		return "org/emp_list";
 	}
 	/**
@@ -43,8 +48,17 @@ public class EmployeeController {
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(String deptId,Model model){
-		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);  
+	public String edit(String deptId,String postId, Model model){
+		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
+		model.addAttribute("CURRENT_POST_ID", StringUtils.isEmpty(postId) ? "" : postId);
+
+		model.addAttribute("GENDER_MALE_NAME", this.employeeService.loadGenderName(Employee.GENDER_MALE));
+		model.addAttribute("GENDER_FEMALE_NAME", this.employeeService.loadGenderName(Employee.GENDER_FEMALE));
+		
+		model.addAttribute("STATUS_OUT_NAME", this.employeeService.loadStatusName(Employee.STATUS_OUT));
+		model.addAttribute("STATUS_ON_NAME", this.employeeService.loadStatusName(Employee.STATUS_ON));
+		model.addAttribute("STATUS_LIMIT_NAME", this.employeeService.loadStatusName(Employee.STATUS_LIMIT));
+		
 		return "org/emp_edit";
    }
 	/**

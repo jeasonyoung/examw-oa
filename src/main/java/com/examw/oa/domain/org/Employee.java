@@ -16,6 +16,26 @@ public class Employee implements Serializable {
 	private Post post;
 	private Rank rank;
 	/**
+	 * 性别－男性。
+	 */
+	public static final Integer GENDER_MALE = 1;
+	/**
+	 * 性别－女性。
+	 */
+	public static final Integer GENDER_FEMALE = 2;
+	/**
+	 * 状态－离职。
+	 */
+	public static final Integer STATUS_OUT = 0;
+	/**
+	 * 状态-在职。
+	 */
+	public static final Integer STATUS_ON = 1;
+	/**
+	 * 状态－限制登录。
+	 */
+	public static final Integer STATUS_LIMIT = -1;
+	/**
 	 * 获取员工信息ID。
 	 * @return
 	 * 员工信息ID。

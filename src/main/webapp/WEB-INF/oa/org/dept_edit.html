@@ -15,21 +15,21 @@ $(function(){
 });
 //-->
 </script>
-<form id="${form}" method="POST">
-	<div  style="float:left;margin-top:10px;width:90%;">
+<form id="${form}" method="POST" style="padding:10px;">
+	<div  style="float:left;margin-top:2px;width:90%;">
 		<label style="width:75px;">上级部门：</label>
-		<input type="text" name="pid" style="width:268px;"/>	
+		<input type="text" name="pid" style="width:198px;"/>	
 	</div>
-	<div style="float:left;margin-top:10px;width:100%;">
-		<label style="width:75px;">部门代号：</label>
-		<input type="text" name="code" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">部门编码：</label>
+		<input type="text" name="code" class="easyui-validatebox" data-options="required:true" style="width:198px;"/>
 		<input type="hidden" name="id"/>
 	</div>
-	<div style="float:left;margin-top:10px;width:100%;">
+	<div style="float:left;margin-top:12px;width:100%;">
 		<label style="width:75px;">部门名称：</label>
-		<input type="text" name="name" class="easyui-validatebox"  style="width:268px;" data-options="required:true"/>
+		<input type="text" name="name" class="easyui-validatebox" data-options="required:true" style="width:198px;"/>
 	</div>
-	<div style="float:left;margin-top:10px;width:100%;">
+	<div style="float:left;margin-top:12px;width:100%;">
 		<label style="width:75px;">排序号：</label>
 		<input type="text" name="orderNo" class="easyui-numberspinner" data-options="required:true,min:1,max:100,value:1,editable:false" style="width:80px;" />
 	</div>
