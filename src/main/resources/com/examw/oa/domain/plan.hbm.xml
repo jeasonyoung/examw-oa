@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.examw.oa.domain.plan">
+	<!-- 员工报告设置 -->
+	<class name="Settings" table="tbl_Examw_OA_Plan_Settings">
+	   	<!-- 报告设置ID -->
+		<id name="id" column="employee_id">
+			<generator class="foreign">
+				<param name="property">employee</param>
+			</generator>
+		</id>
+		<!-- 所属员工 -->
+		<one-to-one name="employee"  class="com.examw.oa.domain.org.Employee"/>
+		<!-- 报告类型（位运算:1-日报,2-周报,4-月报） -->
+		<property name="type" type="integer" />
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time"  type="timestamp"/>
+	</class>
+	<!-- 业务系统设置 -->
+	<class name="Business" table="tbl_Examw_OA_Plan_Business">
+		<!-- 业务系统ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 业务系统名称 -->
+		<property name="name" type="string" length="128" />
+		<!-- 业务系统URL -->
+		<property name="url" type="string" length="1024" />
+		<!-- 业务系统状态(0-停用，1-正常，2-测试)-->
+		<property name="status" type="integer" />
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time"  type="timestamp"/>
+		<!-- 关联报告明细集合 -->
+		<set name="details" inverse="true"  table="tbl_Examw_OA_Plan_Detail_Business">
+			<!-- 业务系统ID -->
+			<key column="business_id" />
+			<!-- 报告明细ID -->
+			<many-to-many class="Detail"  column="detail_id"/>
+		</set>
+	</class>
+	<!-- 员工报告 -->
+	<class name="Report" table="tbl_Examw_OA_Plan_Report">
+		<!-- 报告ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 所属员工 -->
+		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee" />
+		<!-- 报告类型 (1-日报,2-周报,4-月报)-->
+		<property name="type" type="integer" />
+		<!-- 报告状态(0-未提交,1-已提交,2-已审阅,3-迟交,4-缺交) -->
+		<property name="status" type="integer" />
+		<!-- 明细集合 -->
+		<set name="details" inverse="false"  cascade="save-update"  table="tbl_Examw_OA_Plan_Report_Detail">
+			<!-- 报告ID -->
+			<key column="report_id" />
+			<!-- 报告明细ID -->
+			<many-to-many class="Detail"  column="detail_id"/>
+		</set>
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time" type="timestamp" />
+		<!-- 提交时间 -->
+		<property name="postTime" column="post_time" type="timestamp" />
+		<!-- 最后提交时间 -->
+		<property name="lastPostTime" column="last_post_time" type="timestamp" />
+	</class>
+	<!-- 员工报告明细 -->
+	<class name="Detail" table="tbl_Examw_OA_Plan_Detail">
+		<!-- 明细ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 类型 -->
+		<property name="type" type="integer" />
+		<!-- 内容 -->
+		<property name="content" type="text" />
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time" type="timestamp" />
+		<!-- 关联业务系统集合。 -->
+		<set name="businesses" inverse="false"  cascade="save-update"  table="tbl_Examw_OA_Plan_Detail_Business">
+			<!-- 明细ID -->
+			<key column="detail_id" />
+			<!-- 业务系统ID -->
+			<many-to-many class="Business"  column="business_id"/>
+		</set>
+	</class>
+</hibernate-mapping>
