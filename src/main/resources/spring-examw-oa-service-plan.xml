@@ -3,6 +3,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- 业务系统信息 -->
 	<bean id="businessService" class="com.examw.oa.service.plan.impl.BusinessServiceImpl">
+		<!-- 业务系统数据接口 -->
 		<property name="businessDao" ref="businessDao"/>
+		<!-- 状态集合 -->
+		<property name="statusMap">
+				<map>
+					<!-- 停用 -->
+					<entry key="0" value="${STATUS_STOP}"/>
+					<!-- 正常 -->
+					<entry key="1" value="${STATUS_NORMAL}"/>
+					<!-- 测试 -->
+					<entry key="2" value="${STATUS_TEST}"/>
+				</map>
+		</property>
 	</bean>
 </beans>

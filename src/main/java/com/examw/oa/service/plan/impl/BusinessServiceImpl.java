@@ -2,6 +2,8 @@ package com.examw.oa.service.plan.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
@@ -12,9 +14,22 @@ import com.examw.oa.domain.plan.Business;
 import com.examw.oa.model.plan.BusinessInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.plan.IBusinessService;
-
+/**
+ * 业务系统服务接口。
+ * @author lq.
+ * @since 2014-06-24.
+ */
 public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessInfo> implements IBusinessService {
 	private IBusinessDao businessDao;
+	private Map<Integer, String> statusMap;
+	/**
+	 * 设置状态集合。
+	 * @param statusMap
+	 * 状态集合。
+	 */
+	public void setStatusMap(Map<Integer, String> statusMap) {
+		this.statusMap = statusMap;
+	}
 	/**
 	 * 设置业务系统数据接口。
 	 * @param businessDao
@@ -32,7 +47,7 @@ public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessIn
 		return this.businessDao.findBusiness(info);
 	}
 	/*
-	 * (类型转换
+	 * 类型转换
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#changeModel(java.lang.Object)
 	 */
 	@Override
@@ -67,7 +82,7 @@ public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessIn
 			data = new Business();
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
-		BeanUtils.copyProperties(info, data);	
+		BeanUtils.copyProperties(info, data);
 		if(isAdded) this.businessDao.save(data);
 		return info;
 	}
@@ -83,5 +98,14 @@ public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessIn
 			Business data = this.businessDao.load(Business.class, ids[i]);
 			if(data != null) this.businessDao.delete(data);
 		}
+	}
+	/*
+	 * 加载状态名称。
+	 * @see com.examw.oa.service.org.IEmployeeService#loadStatusName(java.lang.Integer)
+	 */
+	@Override
+	public String loadStatusName(Integer status) {
+		if(this.statusMap == null || status == null) return null;
+		return this.statusMap.get(status);
 	}
 }

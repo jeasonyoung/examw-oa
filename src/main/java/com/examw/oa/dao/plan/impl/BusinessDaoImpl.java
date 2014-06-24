@@ -10,7 +10,11 @@ import com.examw.oa.dao.impl.BaseDaoImpl;
 import com.examw.oa.dao.plan.IBusinessDao;
 import com.examw.oa.domain.plan.Business;
 import com.examw.oa.model.plan.BusinessInfo;
-
+/**
+ * 业务系统数据接口实现。
+ * @author lq.
+ * @since 2014-06-24.
+ */
 public class BusinessDaoImpl extends BaseDaoImpl<Business> implements IBusinessDao {
 	/*
 	 * 查询数据。

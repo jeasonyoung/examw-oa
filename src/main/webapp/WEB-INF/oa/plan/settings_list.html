@@ -1,13 +1,13 @@
 <#--业务系统列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="plan_business"/>
+<#assign module="plan_settings"/>
 <#assign dg="${module}_list_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
 	//dg
 	var dg = $("#${dg}").datagrid({
-		url:"<@s.url '/plan/business/datagrid'/>",
+		url:"<@s.url '/plan/settings/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -18,34 +18,28 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"name",
+		sortName:"createTime",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
 			checkbox:true
 		},{
-			title:"名称",
+			title:"员工工号",
+			field:"code",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"员工名称",
 			field:"name",
 			width:20,
 			align:"left",
 			sortable:true
 		},{
-			title:"状态",
-			field:"status",
-			width:20,
+			title:"计划总结类型",
+			field:"type",
+			width:30,
 			align:"center",
-			formatter:function(value,row,index){
-				if(value == ${STATUS_STOP_VALUE}) return "${STATUS_STOP_NAME}";
-				if(value == ${STATUS_NORMAL_VALUE}) return "${STATUS_NORMAL_NAME}";
-				if(value == ${STATUS_TEST_VALUE}) return "${STATUS_TEST_NAME}";
-				return value;
-			},
-			sortable:true
-		},{
-			title:"路径",
-			field:"url",
-			width:20,
-			align:"left",
 			sortable:true
 		},{
 			title:"创建时间",
@@ -68,7 +62,7 @@ $(function(){
 			title:title,
 			width:300,
 			height:250,
-			href:"<@s.url '/plan/business/edit'/>",
+			href:"<@s.url '/plan/settings/edit'/>",
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -78,7 +72,7 @@ $(function(){
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/plan/business/update'/>",
+						url:"<@s.url '/plan/settings/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -146,7 +140,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/plan/business/delete'/>",
+					url:"<@s.url '/plan/settings/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")

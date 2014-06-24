@@ -4,10 +4,10 @@ import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
-
 /**
  * 业务系统设置信息。
  * @author lq.
@@ -18,6 +18,7 @@ public class BusinessInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,name,url;
 	private int status;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
 	 * 获取业务系统ID。

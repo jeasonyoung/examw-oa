@@ -5,7 +5,11 @@ import java.util.List;
 import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.plan.Business;
 import com.examw.oa.model.plan.BusinessInfo;
-
+/**
+ * 业务系统设置数据接口。
+ * @author lq.
+ * @since 2014-06-23.
+ */
 public interface IBusinessDao extends IBaseDao<Business>{
 	/**
 	 * 查询数据。

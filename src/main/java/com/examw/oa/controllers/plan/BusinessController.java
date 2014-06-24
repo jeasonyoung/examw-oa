@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
+import com.examw.oa.domain.plan.Business;
 import com.examw.oa.model.plan.BusinessInfo;
 import com.examw.oa.service.plan.IBusinessService;
 /**
@@ -35,6 +36,14 @@ public class BusinessController {
 	 */
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		model.addAttribute("STATUS_STOP_VALUE",Business.STATUS_STOP);
+		model.addAttribute("STATUS_STOP_NAME", this.businessService.loadStatusName(Business.STATUS_STOP));
+		
+		model.addAttribute("STATUS_NORMAL_VALUE",Business.STATUS_NORMAL);
+		model.addAttribute("STATUS_NORMAL_NAME", this.businessService.loadStatusName(Business.STATUS_NORMAL));
+		
+		model.addAttribute("STATUS_TEST_VALUE",Business.STATUS_TEST);
+		model.addAttribute("STATUS_TEST_NAME", this.businessService.loadStatusName(Business.STATUS_TEST));
 		return "plan/business_list";
 	}
 	/**
@@ -45,6 +54,9 @@ public class BusinessController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
 	public String edit(Model model){
+		model.addAttribute("STATUS_STOP_NAME", this.businessService.loadStatusName(Business.STATUS_STOP));
+		model.addAttribute("STATUS_NORMAL_NAME", this.businessService.loadStatusName(Business.STATUS_NORMAL));
+		model.addAttribute("STATUS_TEST_NAME", this.businessService.loadStatusName(Business.STATUS_TEST));
 		return "plan/business_edit";
 	}
 	/**
