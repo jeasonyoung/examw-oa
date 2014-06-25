@@ -183,4 +183,12 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 			if(e != null) this.employeeDao.delete(e);
 		}
 	}
+	/*
+	 * 根据部门ID加载员工集合。
+	 * @see com.examw.oa.service.org.IEmployeeService#loadPosts(java.lang.String)
+	 */
+	@Override
+	public List<EmployeeInfo> loadEmployee(String departmentId) {
+		return this.changeModel(this.employeeDao.loadEmployee(departmentId));
+	}
 }

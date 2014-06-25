@@ -1,12 +1,27 @@
-<#--业务系统列表-->
+<#--员工报表列表-->
 <#include "ftl/comm.ftl"/>
 <#assign module="plan_settings"/>
-<#assign dg="${module}_list_dg"/>
+<#assign dg="${module}_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
+	var current_dept_id = "";
+	//tree
+	var t = $("#${module}_list_tree").tree({
+		url:"<@s.url '/org/dept/tree'/>",
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(n,data){
+			current_dept_id = "";
+		},
+		onClick:function(node){
+			current_dept_id = node.id;
+			${dg}_search();
+		}
+	});
 	//dg
-	var dg = $("#${dg}").datagrid({
+	var dg=$("#${dg}").datagrid({
 		url:"<@s.url '/plan/settings/datagrid'/>",
 		fit:true,
 		fitColumns:true,
@@ -19,50 +34,48 @@ $(function(){
 		striped:true,
 		idField:"id",
 		sortName:"createTime",
-		sortOrder:"asc",
+		sortOrder:"desc",
 		columns:[[{
 			field:"id",
 			checkbox:true
 		},{
-			title:"员工工号",
-			field:"code",
-			width:20,
-			align:"left",
-			sortable:true
-		},{
 			title:"员工名称",
-			field:"name",
-			width:20,
+			field:"employeeName",
+			width:30,
 			align:"left",
 			sortable:true
 		},{
-			title:"计划总结类型",
+			title:"类型",
 			field:"type",
-			width:30,
-			align:"center",
+			width:20,
+			align:"left",
 			sortable:true
 		},{
 			title:"创建时间",
 			field:"createTime",
 			width:30,
-			align:"center",
+			align:"left",
 			sortable:true
 		}]],
+		toolbar:"#${dg}_toobar",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑业务系统",rowIndex,rowData);
+			edit_window("编辑",rowIndex,rowData);
 		}
 	});
 	//edit
 	function edit_window(title,index,row){
+		var emp_id = "";
+		if(row){
+			emp_id = row.employeeId;
+		}
 		var d = $("<div/>").dialog({
 			title:title,
-			width:300,
-			height:250,
-			href:"<@s.url '/plan/settings/edit'/>",
+			width:270,
+			height:200,
+			href:"<@s.url '/plan/settings/edit'/>?deptId=" + current_dept_id + "&empId=" + emp_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -90,6 +103,7 @@ $(function(){
 									index:index,
 									row:data.data
 								});
+								t.tree("reload");
 								d.dialog("close");
 							}else{
 								$.messager.show({
@@ -120,12 +134,13 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  name:$("#${dg}_toobar input[name='name']").val()
+			//departmentId:current_dept_id,
+			name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("新增业务系统",0,null);
+		edit_window("添加员工报表信息",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
@@ -155,6 +170,7 @@ $(function(){
 						if(data.success){
 							dg.datagrid("load");
 							dg.datagrid("unselectAll");
+							t.tree("reload");
 						}else{
 							$.messager.show({
 								title:"提示",
@@ -172,15 +188,23 @@ $(function(){
 });
 //-->
 </script>
-<table id="${dg}"></table>
-<div id="${dg}_toobar">
-	<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
-	<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
-	<!-- </shiro.hasPermission> -->
-	<span>|</span>
-	<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
-	<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
-	<!-- </shiro.hasPermission> -->
-	<label>名称：<input name="name" type="text" style="width:198px;"/></label>
-	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+<div class="easyui-layout" data-options="fit:true">
+		 <div data-options="region:'west',title:'部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+		 		<ul id="${module}_list_tree"></ul>
+		 </div>
+	 <div data-options="region:'center',title:'员工报表信息'">
+		<table id="${dg}"></table>
+		<div id="${dg}_toobar">
+			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
+			<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">添加</a>
+			<!-- </shiro.hasPermission> -->
+			<span>|</span>
+			<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
+			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
+			<!-- </shiro.hasPermission> -->
+			
+			<label>部门名称：<input name="name" type="text" style="width:198px;"/></label>
+			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+		</div>
+	</div>
 </div>

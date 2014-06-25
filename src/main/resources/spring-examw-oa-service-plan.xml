@@ -17,4 +17,8 @@
 				</map>
 		</property>
 	</bean>
+	<!-- 员工报表信息 -->
+	<bean id="settingsService" class="com.examw.oa.service.plan.impl.SettingsServiceImpl">
+		<property name="settingsDao" ref="settingsDao"/>
+	</bean>
 </beans>

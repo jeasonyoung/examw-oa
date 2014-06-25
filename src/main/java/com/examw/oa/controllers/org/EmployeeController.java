@@ -1,5 +1,7 @@
 package com.examw.oa.controllers.org;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -112,5 +114,14 @@ public class EmployeeController {
 			logger.error("删除数据["+id+"]时发生异常:", e);
 		}
 		return result;
+	}
+	/**
+	 * 返回部门下的所有岗位
+	 * @return
+	 */
+	@RequestMapping(value={"/all"}, method = RequestMethod.POST)
+	@ResponseBody
+	public List<EmployeeInfo> all(String deptId){
+		 return this.employeeService.loadEmployee(deptId);
 	}
 }

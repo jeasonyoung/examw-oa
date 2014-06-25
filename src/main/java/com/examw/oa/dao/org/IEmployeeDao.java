@@ -27,4 +27,11 @@ public interface IEmployeeDao extends IBaseDao<Employee>{
 		 * 数据总数。
 		 */
 	 Long total(EmployeeInfo info);
+	 /**
+	  * 加载部门ID下的岗位集合。
+	  * @param departmentId
+	  * 部门ID。
+	  * @return
+	  */
+	 List<Employee> loadEmployee(String departmentId);
 }

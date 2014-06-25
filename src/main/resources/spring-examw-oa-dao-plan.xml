@@ -5,4 +5,8 @@
 	<bean id="businessDao" class="com.examw.oa.dao.plan.impl.BusinessDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!-- 员工报表dao -->
+	<bean id="settingsDao" class="com.examw.oa.dao.plan.impl.SettingsDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 </beans>

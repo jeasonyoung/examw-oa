@@ -70,4 +70,18 @@ public class EmployeeDaoImpl extends BaseDaoImpl<Employee> implements IEmployeeD
 		}
 		return hql;
 	}
+	/*
+	 * 部门ID查询员工信息
+	 * @see com.examw.oa.dao.org.IEmployeeDao#loadEmployee(java.lang.String)
+	 */
+	@Override
+	public List<Employee> loadEmployee(String departmentId) {
+		Map<String, Object> parameters = new HashMap<>();
+		String hql = "from Employee e where 1=1 ";
+		if(!StringUtils.isEmpty(departmentId)){
+			hql +=" and (e.department.id = :departmentId)";
+			parameters.put("departmentId", departmentId);
+		}
+		return this.find(hql, parameters, null, null);
+	}
 }
