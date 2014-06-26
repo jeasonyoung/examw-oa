@@ -1,0 +1,140 @@
+<#--业务系统列表-->
+<#include "ftl/comm.ftl"/>
+<#assign module="plan_report"/>
+<#assign dg="${module}_list_dg"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	//dg
+	var dg = $("#${dg}").datagrid({
+		url:"<@s.url '/plan/report/datagrid'/>",
+		fit:true,
+		fitColumns:true,
+		rownumbers:true,
+		pagination:true,
+		pagePosition:"bottom",
+		pageSize:20,
+		pageList:[20,30,40],
+		border:true,
+		striped:true,
+		idField:"id",
+		sortName:"name",
+		sortOrder:"asc",
+		columns:[[{
+			field:"id",
+			checkbox:true
+		},{
+			title:"类型",
+			field:"type",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"状态",
+			field:"status",
+			width:20,
+			align:"center",
+			formatter:function(value,row,index){
+				if(value == ${STATUS_STOP_VALUE}) return "${STATUS_STOP_NAME}";
+				if(value == ${STATUS_NORMAL_VALUE}) return "${STATUS_NORMAL_NAME}";
+				if(value == ${STATUS_TEST_VALUE}) return "${STATUS_TEST_NAME}";
+				return value;
+			},
+			sortable:true
+		},{
+			title:"创建时间",
+			field:"createTime",
+			width:30,
+			align:"center",
+			sortable:true
+		},{
+			title:"提交时间",
+			field:"postTime",
+			width:20,
+			align:"left",
+			sortable:true
+		}]],
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		toolbar:"#${dg}_toobar",
+		onDblClickRow:function(rowIndex,rowData){
+			edit_window("编辑业务系统",rowIndex,rowData);
+		}
+	});
+	//edit
+	function edit_window(title,index,row){
+		var d = $("<div/>").dialog({
+			title:title,
+			width:300,
+			height:250,
+			href:"<@s.url '/plan/report/edit'/>",
+			modal:true,
+			buttons:[
+			/* <shiro.hasPermission name="${PER_UPDATE}"> */
+			{
+				text:"保存",
+				iconCls:"icon-save",
+				handler:function(){
+					$.messager.progress();
+					$("#${module}_edit_form").form("submit",{
+						url:"<@s.url '/plan/report/update'/>",
+						onSubmit: function(){
+							var isValid = $(this).form("validate");
+							if (!isValid)$.messager.progress("close");
+							return isValid;
+						},
+						onLoadError:function(e){
+							$.messager.progress("close");
+							<@error_dialog "e"/>
+						},
+						success:function(data){
+							$.messager.progress("close");
+							var data = $.parseJSON(data);
+							if(data.success){
+								dg.datagrid(row ? "updateRow" : "insertRow",{
+									index:index,
+									row:data.data
+								});
+								d.dialog("close");
+							}else{
+								$.messager.show({
+									title:"保存异常",
+									msg:data.msg
+								});
+							}
+						}
+					});
+				}
+			},
+			/* </shiro.hasPermission> */
+			{
+				text:"关闭",
+				iconCls:"icon-cancel",
+				handler:function(){
+					d.dialog("close");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			},
+			onLoad:function(){
+				if(row) $("#${module}_edit_form").form("load",row);
+			}
+	  });
+	};
+	//search
+	${dg}_search = function(){
+		dg.datagrid("load",{
+			  name:$("#${dg}_toobar input[name='name']").val()
+		});
+	};
+});
+//-->
+</script>
+<table id="${dg}"></table>
+<div id="${dg}_toobar">
+	<!-- </shiro.hasPermission> -->
+	<label>名称：<input name="time" type="text" style="width:198px;"/></label>
+	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+</div>

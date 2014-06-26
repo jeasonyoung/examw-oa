@@ -20,5 +20,17 @@
 	<!-- 员工报表信息 -->
 	<bean id="settingsService" class="com.examw.oa.service.plan.impl.SettingsServiceImpl">
 		<property name="settingsDao" ref="settingsDao"/>
+		<property name="employeeDao" ref="employeeDao"/>
+		<!-- 类型集合 -->
+		<property name="typeMap">
+				<map>
+					<!-- 日报 -->
+					<entry key="1" value="${TYPE_DAY}"/>
+					<!-- 周报 -->
+					<entry key="2" value="${TYPE_WEEK}"/>
+					<!-- 月报 -->
+					<entry key="4" value="${TYPE_MONTH}"/>
+				</map>
+		</property>
 	</bean>
 </beans>

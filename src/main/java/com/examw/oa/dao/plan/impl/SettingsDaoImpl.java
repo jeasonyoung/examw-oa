@@ -54,7 +54,10 @@ public class SettingsDaoImpl extends BaseDaoImpl<Settings> implements ISettingsD
 	 * HQL
 	 */
 	protected String addWhere(SettingsInfo info, String hql, Map<String, Object> parameters){
-		
+		if(!StringUtils.isEmpty(info.getId())){
+			hql += " and ((s.employee.department.id = :id) or (s.employee.department.parent.id = :id))";
+			parameters.put("id", info.getId());
+		}
 		if(!StringUtils.isEmpty(info.getEmployeeName())){
 			hql += " and (s.employee.name like :employeeName)";
 			parameters.put("employeeName", "%" + info.getEmployeeName() + "%");

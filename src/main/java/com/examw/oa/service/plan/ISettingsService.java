@@ -8,5 +8,12 @@ import com.examw.oa.service.IBaseDataService;
  * @since 2014-06-24.
  */
 public interface ISettingsService extends IBaseDataService<SettingsInfo>{
-
+	/**
+	 * 加载类型名称。
+	 * @param type
+	 * 类型值。
+	 * @return
+	 * 类型名称。
+	 */
+	String loadTypeName(Integer type);
 }

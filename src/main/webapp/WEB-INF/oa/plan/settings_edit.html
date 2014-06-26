@@ -1,11 +1,29 @@
 <#--员工报表编辑-->
 <#include "ftl/comm.ftl"/>
-<#assign module="org_emp"/>
+<#assign module="plan_settings"/>
 <#assign form="${module}_edit_form"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_dept_select = false,current_empl_id="${CURRENT_EMP_ID}";
+	var current_dept_select = false,current_dept_id = "${CURRENT_DEPT_ID}",current_empl_id="${CURRENT_EMP_ID}";
+	var t = $("#${form} input[name='departmentId']").combotree({
+		url:"<@s.url '/org/dept/tree'/>",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(n,d){
+			if(current_dept_id.trim() == "")return;
+			if(current_empl_id.trim() == "") t.combotree("setValue",current_dept_id);
+		},
+		onSelect:function(record){
+			if(p_t){
+				current_dept_select = true;
+				p_t.combobox("clear");
+				p_t.combobox("reload",empl_url+record.id);
+			}
+		}
+	});
 	var empl_url = "<@s.url '/org/emp/all'/>?deptId=";
 	var p_t = $("#${form} input[name='employeeId']").combobox({
 		url:empl_url + "${CURRENT_DEPT_ID}",
@@ -28,15 +46,15 @@ $(function(){
 		<div style="float:left; margin-top:10px; width:100%;">
 			<div style="float:left;">
 				<label style="width:75px;">员工名称：</label>
-				<input type="text" name="employeeId"  style="width:138px;"/>
+				<input type="text" name="departmentId"  style="width:120px;"/>
+				<input type="text" name="employeeId"  style="width:120px;"/>
 			</div>
 		</div>
-		
-		<div style="float:left; margin-top:20px; width:100%;">
+		<div style="float:left; margin-top:10px; width:100%;">
 			<label style="width:75px;">报告类型：</label>
-			<input type="checkbox" name="type" style="width:10px;" value="1" checked="checked"/>日报
-			<input type="checkbox" name="type" style="width:10px;" value="2"/>周报
-			<input type="checkbox" name="type" style="width:10px;" value="4"/>月报
-			<input type="hidden" name="employeeId" value="${CURRENT_EMP_ID}"/>
+			<label><input type="checkbox" name="type" value="1" checked="checked"/>${TYPE_DAY_NAME}</label>
+			<label><input type="checkbox" name="type" value="2"  />${TYPE_WEEK_NAME}</label>
+			<label><input type="checkbox" name="type" value="4" />${TYPE_MONTH_NAME}</label>
+			<input type="hidden" name="id">
 		</div>
 </form>

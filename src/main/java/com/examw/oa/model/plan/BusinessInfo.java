@@ -17,7 +17,7 @@ import com.examw.oa.support.CustomDateSerializer;
 public class BusinessInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,name,url;
-	private int status;
+	private Integer status;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
@@ -73,7 +73,7 @@ public class BusinessInfo extends Paging {
 	 * @return
 	 * 业务系统状态。
 	 */
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 	/**
@@ -81,7 +81,7 @@ public class BusinessInfo extends Paging {
 	 * @return
 	 * 业务系统状态。
 	 */
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	/**

@@ -39,14 +39,14 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"员工名称",
+			title:"员工姓名",
 			field:"employeeName",
 			width:30,
 			align:"left",
 			sortable:true
 		},{
 			title:"类型",
-			field:"type",
+			field:"typeName",
 			width:20,
 			align:"left",
 			sortable:true
@@ -73,8 +73,8 @@ $(function(){
 		}
 		var d = $("<div/>").dialog({
 			title:title,
-			width:270,
-			height:200,
+			width:370,
+			height:180,
 			href:"<@s.url '/plan/settings/edit'/>?deptId=" + current_dept_id + "&empId=" + emp_id,
 			modal:true,
 			buttons:[
@@ -134,8 +134,8 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			//departmentId:current_dept_id,
-			name:$("#${dg}_toobar input[name='name']").val()
+			id:current_dept_id,
+			employeeName:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	//add
@@ -203,7 +203,7 @@ $(function(){
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 			<!-- </shiro.hasPermission> -->
 			
-			<label>部门名称：<input name="name" type="text" style="width:198px;"/></label>
+			<label>员工姓名：<input name="name" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 		</div>
 	</div>

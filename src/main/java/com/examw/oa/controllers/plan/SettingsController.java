@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
+import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 import com.examw.oa.service.plan.ISettingsService;
 /**
@@ -37,6 +38,15 @@ public class SettingsController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		model.addAttribute("TYPE_DAY_VALUE",Settings.TYPE_DAY);
+		model.addAttribute("TYPE_DAY_NAME", this.settingsService.loadTypeName(Settings.TYPE_DAY));
+		
+		model.addAttribute("TYPE_WEEK_VALUE",Settings.TYPE_WEEK);
+		model.addAttribute("TYPE_WEEK_NAME", this.settingsService.loadTypeName(Settings.TYPE_WEEK));
+		
+		model.addAttribute("TYPE_MONTH_VALUE",Settings.TYPE_MONTH);
+		model.addAttribute("TYPE_MONTH_NAME", this.settingsService.loadTypeName(Settings.TYPE_MONTH));
+		
 		return "plan/settings_list";
 	}
 	/**
@@ -48,6 +58,10 @@ public class SettingsController {
 	public String edit(String deptId,String empId, Model model){
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
 		model.addAttribute("CURRENT_EMP_ID", StringUtils.isEmpty(empId) ? "" : empId);
+		
+		model.addAttribute("TYPE_DAY_NAME", this.settingsService.loadTypeName(Settings.TYPE_DAY));
+		model.addAttribute("TYPE_WEEK_NAME",this.settingsService.loadTypeName(Settings.TYPE_WEEK));
+		model.addAttribute("TYPE_MONTH_NAME", this.settingsService.loadTypeName(Settings.TYPE_MONTH));
 		return "plan/settings_edit";
    }
 	/**
@@ -73,12 +87,13 @@ public class SettingsController {
 	public Json update(SettingsInfo info){
 		Json result = new Json();
 		try {
+			System.out.println(info.getEmployeeId()+"kkkkkkk"+info.getType()+"kkkkkkkk"+info.getId());
 			result.setData(this.settingsService.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);
 			result.setMsg(e.getMessage());
-			logger.error("更新部门数据发生异常", e);
+			logger.error("更新员工报表信息数据发生异常", e);
 		}
 		return result;
 	}
