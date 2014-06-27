@@ -18,7 +18,7 @@ import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 import com.examw.oa.service.plan.ISettingsService;
 /**
- * 员工报表控制器。
+ * 员工计划总结控制器。
  * @author lq.
  * @since 2014-06-24.
  */
@@ -87,7 +87,6 @@ public class SettingsController {
 	public Json update(SettingsInfo info){
 		Json result = new Json();
 		try {
-			System.out.println(info.getEmployeeId()+"kkkkkkk"+info.getType()+"kkkkkkkk"+info.getId());
 			result.setData(this.settingsService.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {

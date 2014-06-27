@@ -33,4 +33,34 @@
 				</map>
 		</property>
 	</bean>
+	<bean id="reportSerivce" class="com.examw.oa.service.plan.impl.ReportServiceImpl">
+		<property name="reportDao" ref="reportDao"/>
+		<property name="employeeDao" ref="employeeDao"/>
+		<!-- 类型集合 -->
+		<property name="typeMap">
+				<map>
+					<!-- 日报 -->
+					<entry key="1" value="${TYPE_DAY}"/>
+					<!-- 周报 -->
+					<entry key="2" value="${TYPE_WEEK}"/>
+					<!-- 月报 -->
+					<entry key="4" value="${TYPE_MONTH}"/>
+				</map>
+		</property>
+		<!-- 状态集合 -->
+		<property name="statusMap">
+				<map>
+					<!-- 未提交 -->
+					<entry key="0" value="${STATUS_NONE}"/>
+					<!-- 已提交 -->
+					<entry key="1" value="${STATUS_POST}"/>
+					<!-- 已审阅 -->
+					<entry key="2" value="${STATUS_AUDIT}"/>
+					<!-- 迟交 -->
+					<entry key="3" value="${STATUS_LATE}"/>
+					<!-- 缺交 -->
+					<entry key="4" value="${STATUS_LACK}"/>
+				</map>
+		</property>
+	</bean>
 </beans>

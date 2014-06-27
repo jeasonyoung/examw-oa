@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
 /**
- * 员工报表设置信息。
+ * 员工计划总结类型设置信息。
  * @author lq.
  * @since 2014-06-24
  */
@@ -20,9 +20,19 @@ public class SettingsInfo extends Paging {
 	private Integer[] type;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
+	/**
+	 * 获取员工计划总结类型ID
+	 * @return
+	 * 员工计划总结类型ID
+	 */
 	public String getId() {
 		return id;
 	}
+	/**
+	 * 设置员工计划总结类型ID
+	 * @return
+	 * 员工计划总结类型ID
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -51,9 +61,19 @@ public class SettingsInfo extends Paging {
 	public Integer[] getType() {
 		return type;
 	}	
+	/**
+	 * 获取员工报表类型名称
+	 * @return
+	 * 员工报表类型名称
+	 */
 	public String getTypeName() {
 		return typeName;
 	}
+	/**
+	 * 设置员工报表类型名称
+	 * @return
+	 * 员工报表类型名称
+	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}

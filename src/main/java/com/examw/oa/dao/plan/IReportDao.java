@@ -3,14 +3,14 @@ package com.examw.oa.dao.plan;
 import java.util.List;
 
 import com.examw.oa.dao.IBaseDao;
-import com.examw.oa.domain.plan.Settings;
-import com.examw.oa.model.plan.SettingsInfo;
+import com.examw.oa.domain.plan.Report;
+import com.examw.oa.model.plan.ReportInfo;
 /**
- * 员工计划总结设置数据接口。
+ * 员工报表数据接口
  * @author lq.
- * @since 2014-06-24.
+ * @since 2014-06-27.
  */
-public interface ISettingsDao extends IBaseDao<Settings>{
+public interface IReportDao extends IBaseDao<Report>{
 	/**
 	 * 查询数据。
 	 * @param info
@@ -18,7 +18,7 @@ public interface ISettingsDao extends IBaseDao<Settings>{
 	 * @return
 	 * 查询结果。
 	 */
-	 List<Settings> findSettings(SettingsInfo info);
+	 List<Report> findReports(ReportInfo info);
 	 /**
 	  * 查询数据总数。
 	  * @param info
@@ -26,5 +26,5 @@ public interface ISettingsDao extends IBaseDao<Settings>{
 	  * @return
 	  * 数据总数。
 	  */
-	 Long total(SettingsInfo info);
+	 Long total(ReportInfo info);
 }

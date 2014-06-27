@@ -17,7 +17,7 @@
   	<module id="EOA000003"  icon="" name="计划/总结" uri="" order="3">
   		<module id="EOA000103" icon="" name="业务系统设置" uri="/plan/business" order="1"/>
   		<module id="EOA000203" icon="" name="员工报告设置" uri="/plan/settings" order="2"/>
-  		<module id="EOA000303" icon="" name="我的报告" uri="" order="3"/>
+  		<module id="EOA000303" icon="" name="我的报告" uri="/plan/report" order="3"/>
   		<module id="EOA000403" icon="" name="报告审阅" uri="" order="4"/>
   		<module id="EOA000503" icon="" name="报告查询" uri="" order="5"/>
   		<module id="EOA000603" icon="" name="报告统计" uri="" order="6"/>

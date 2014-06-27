@@ -18,14 +18,17 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"name",
+		sortName:"createTime",
 		sortOrder:"asc",
 		columns:[[{
-			field:"id",
-			checkbox:true
+			title:"姓名",
+			field:"employeeName",
+			width:20,
+			align:"left",
+			sortable:true
 		},{
 			title:"类型",
-			field:"type",
+			field:"typeName",
 			width:20,
 			align:"left",
 			sortable:true
@@ -33,11 +36,13 @@ $(function(){
 			title:"状态",
 			field:"status",
 			width:20,
-			align:"center",
+			align:"left",
 			formatter:function(value,row,index){
-				if(value == ${STATUS_STOP_VALUE}) return "${STATUS_STOP_NAME}";
-				if(value == ${STATUS_NORMAL_VALUE}) return "${STATUS_NORMAL_NAME}";
-				if(value == ${STATUS_TEST_VALUE}) return "${STATUS_TEST_NAME}";
+				if(value == ${STATUS_NONE_VALUE}) return "${STATUS_NONE_NAME}";
+				if(value == ${STATUS_POST_VALUE}) return "${STATUS_POST_NAME}";
+				if(value == ${STATUS_AUDIT_VALUE}) return "${STATUS_AUDIT_NAME}";
+				if(value == ${STATUS_LATE_VALUE}) return "${STATUS_LATE_NAME}";
+				if(value == ${STATUS_LACK_VALUE}) return "${STATUS_LACK_NAME}";
 				return value;
 			},
 			sortable:true
@@ -50,8 +55,14 @@ $(function(){
 		},{
 			title:"提交时间",
 			field:"postTime",
-			width:20,
-			align:"left",
+			width:30,
+			align:"center",
+			sortable:true
+		},{
+			title:"最后提交时间",
+			field:"lastPostTime",
+			width:30,
+			align:"center",
 			sortable:true
 		}]],
 		onLoadError:function(e){
@@ -59,7 +70,7 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑业务系统",rowIndex,rowData);
+			edit_window("编辑员工报表信息",rowIndex,rowData);
 		}
 	});
 	//edit
@@ -126,7 +137,7 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  name:$("#${dg}_toobar input[name='name']").val()
+			createTime:$("#${dg}_toobar input[name='time']").val()
 		});
 	};
 });
@@ -135,6 +146,6 @@ $(function(){
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
 	<!-- </shiro.hasPermission> -->
-	<label>名称：<input name="time" type="text" style="width:198px;"/></label>
+	<label>创建时间：<input name="time" type="text" style="width:198px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>
