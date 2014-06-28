@@ -27,4 +27,9 @@ public interface ISettingsDao extends IBaseDao<Settings>{
 	  * 数据总数。
 	  */
 	 Long total(SettingsInfo info);
+	 /**
+	  * 查询所有数据
+	  * @return
+	  */
+	 List<Settings> findSettings();
 }

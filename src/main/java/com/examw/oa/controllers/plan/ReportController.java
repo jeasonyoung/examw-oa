@@ -97,18 +97,4 @@ public class ReportController {
 		}
 		return result;
 	}
-	/**
-	 * 定时器
-	 */
-	public void listenJob(){
-		Json result = new Json();
-			try{
-				result.setData(null);
-				result.setSuccess(true);
-			}catch(Exception e){
-				result.setSuccess(false);
-				result.setMsg(e.getMessage());
-				logger.error("更新员工报表信息数据发生异常", e);
-			}
-	}
 }

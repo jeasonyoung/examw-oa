@@ -3,7 +3,9 @@ package com.examw.oa.dao.plan.impl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.springframework.util.StringUtils;
+
 import com.examw.oa.dao.impl.BaseDaoImpl;
 import com.examw.oa.dao.plan.ISettingsDao;
 import com.examw.oa.domain.plan.Settings;
@@ -64,4 +66,15 @@ public class SettingsDaoImpl extends BaseDaoImpl<Settings> implements ISettingsD
 		}
 		return hql;
 	}
+	/*
+	 * 查询所有数据
+	 * @see com.examw.oa.dao.plan.ISettingsDao#findSettings()
+	 */
+	@Override
+	public List<Settings> findSettings() {
+		Map<String, Object> parameters = new HashMap<>();
+		String hql = "from Employee e ";
+		return this.find(hql, parameters, null, null);
+	}
+
 }

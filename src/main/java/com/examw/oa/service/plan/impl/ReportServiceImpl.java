@@ -1,22 +1,28 @@
 package com.examw.oa.service.plan.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
+
 import com.examw.oa.dao.org.IEmployeeDao;
 import com.examw.oa.dao.plan.IReportDao;
+import com.examw.oa.dao.plan.ISettingsDao;
 import com.examw.oa.domain.org.Employee;
 import com.examw.oa.domain.plan.Report;
+import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.plan.IReportService;
 
 public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> implements IReportService {
-	private IReportDao reportDao;
+	private IReportDao   reportDao;
 	private IEmployeeDao employeeDao;
+	private ISettingsDao settingsDao;
 	private Map<Integer, String> typeMap;
 	private Map<Integer, String> statusMap;
 	/**
@@ -37,8 +43,13 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 * 设置类型集合
 	 * @param typeMap
 	 */
+	
 	public void setTypeMap(Map<Integer, String> typeMap) {
 		this.typeMap = typeMap;
+	}
+	
+	public void setSettingsDao(ISettingsDao settingsDao) {
+		this.settingsDao = settingsDao;
 	}
 	/**
 	 * 设置状态集合
@@ -110,6 +121,37 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		return info;
 	}
 	/*
+	 * 定时器
+	 */
+	public ReportInfo listener(Report data){
+		//日报
+		ReportInfo info=new ReportInfo();
+		try{
+			//将Settings中的值赋到Report中去
+			List<Settings> settings=settingsDao.findSettings();
+			BeanUtils.copyProperties(settings, data);
+			BeanUtils.copyProperties(data, info);
+			//开始判断
+			//提交
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			if(df.format(info.getPostTime())==df.format(new Date())){
+					info.setStatus(1);
+			}
+			//迟交
+			if(!(df.format(info.getPostTime()) == (df.format(new Date())))){
+					info.setStatus(3);
+			}
+			//缺交
+			if(df.format(info.getPostTime()) == null){
+					info.setStatus(4);
+			}
+		}catch(Exception e){
+			
+		}
+		
+		return info;
+	}
+	/*
 	 * 转换为汉字
 	 */
 	private String loadTypeNameFromValue(Integer type){
@@ -159,4 +201,5 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		if(this.typeMap == null || type == null) return null;
 		return this.typeMap.get(type);
 	}
+	
 }
