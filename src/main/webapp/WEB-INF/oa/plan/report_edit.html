@@ -1,20 +1,10 @@
-<#--等级编辑-->
+<#--计划总结编辑-->
 <#assign module="plan_report"/>
 <#assign form="${module}_edit_form"/>
 <form id="${form}"  method="POST" style="padding:10px">
 		<div style="float:left;margin-top:2px;width:100%;">
-			<label style="width:75px;">姓名：</label>
-			<input type="text" name="name" class="easyui-validatebox"  data-options="required:true" style="width:128px;"/>
-			<input type="hidden" name="id"/>
 		</div>
 		<div style="float:left; margin-top:12px; width:100%;">
-				<label style="margin-top:8px;width:75px;">报告状态：</label>
-				<div style="float:left;">
-					<label><input type="radio" name="status" value="0" checked="checked"/>${STATUS_NONE_NAME}</label>
-					<label><input type="radio" name="status" value="1"  />${STATUS_POST_NAME}</label>
-					<label><input type="radio" name="status" value="2" />${STATUS_AUDIT_NAME}</label>
-					<label><input type="radio" name="status" value="3"  />${STATUS_LATE_NAME}</label>
-					<label><input type="radio" name="status" value="4" />${STATUS_LACK_NAME}</label>
-				</div>
+				<label style="margin-top:8px;width:75px;">计划总结内容：</label>
 		</div>
 </form>

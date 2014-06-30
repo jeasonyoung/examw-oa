@@ -7,46 +7,36 @@
 		<property name="businessDao" ref="businessDao"/>
 		<!-- 状态集合 -->
 		<property name="statusMap">
-				<map>
-					<!-- 停用 -->
-					<entry key="0" value="${STATUS_STOP}"/>
-					<!-- 正常 -->
-					<entry key="1" value="${STATUS_NORMAL}"/>
-					<!-- 测试 -->
-					<entry key="2" value="${STATUS_TEST}"/>
-				</map>
+			<map>
+				<!-- 停用 -->
+				<entry key="0" value="${STATUS_STOP}"/>
+				<!-- 正常 -->
+				<entry key="1" value="${STATUS_NORMAL}"/>
+				<!-- 测试 -->
+				<entry key="2" value="${STATUS_TEST}"/>
+			</map>
 		</property>
 	</bean>
 	<!-- 员工报表信息 -->
 	<bean id="settingsService" class="com.examw.oa.service.plan.impl.SettingsServiceImpl">
+		<!--  -->
 		<property name="settingsDao" ref="settingsDao"/>
-		<property name="employeeDao" ref="employeeDao"/>
+		<property name="employeeDao" ref="employeeDao" />
 		<!-- 类型集合 -->
 		<property name="typeMap">
-				<map>
-					<!-- 日报 -->
-					<entry key="1" value="${TYPE_DAY}"/>
-					<!-- 周报 -->
-					<entry key="2" value="${TYPE_WEEK}"/>
-					<!-- 月报 -->
-					<entry key="4" value="${TYPE_MONTH}"/>
-				</map>
+			<map>
+				<!-- 日报 -->
+				<entry key="1" value="${TYPE_DAY}"/>
+				<!-- 周报 -->
+				<entry key="2" value="${TYPE_WEEK}"/>
+				<!-- 月报 -->
+				<entry key="4" value="${TYPE_MONTH}"/>
+			</map>
 		</property>
 	</bean>
 	<bean id="reportSerivce" class="com.examw.oa.service.plan.impl.ReportServiceImpl">
 		<property name="reportDao" ref="reportDao"/>
-		<property name="employeeDao" ref="employeeDao"/>
-		<!-- 类型集合 -->
-		<property name="typeMap">
-				<map>
-					<!-- 日报 -->
-					<entry key="1" value="${TYPE_DAY}"/>
-					<!-- 周报 -->
-					<entry key="2" value="${TYPE_WEEK}"/>
-					<!-- 月报 -->
-					<entry key="4" value="${TYPE_MONTH}"/>
-				</map>
-		</property>
+		<property name="settingsService" ref="settingsService" />
 		<!-- 状态集合 -->
 		<property name="statusMap">
 				<map>

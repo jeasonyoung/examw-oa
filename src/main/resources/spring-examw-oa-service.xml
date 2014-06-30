@@ -2,11 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- service -->
-	<!--  系统管理 服务接口实现-->
+	<!-- 系统管理 服务接口实现-->
 	<import resource="spring-examw-oa-service-security.xml"/>
-	<!--  组织架构 服务接口实现-->
+	<!-- 组织架构 服务接口实现-->
 	<import resource="spring-examw-oa-service-org.xml"/>
-	<!--  计划总结 服务接口实现-->
+	<!-- 计划总结 服务接口实现-->
 	<import resource="spring-examw-oa-service-plan.xml"/>
-	
+	<!-- 定时器 -->
+	<import resource="spring-examw-oa-timer-quartz.xml"/>
 </beans>

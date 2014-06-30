@@ -13,12 +13,9 @@ public interface IReportService extends IBaseDataService<ReportInfo>{
 	 */
 	String loadStatusName(Integer status);
 	/**
-	 * 加载类型名称。
-	 * @param type
-	 * 类型值。
-	 * @return
-	 * 类型名称。
+	 * 
 	 */
-	String loadTypeName(Integer type);
-	
+	void taskDaily();
+	void taskWeek();
+	void taskMonth();
 }

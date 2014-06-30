@@ -1,29 +1,30 @@
 package com.examw.oa.service.plan.impl;
+ 
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
+import java.util.Map; 
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
-import com.examw.oa.dao.org.IEmployeeDao;
-import com.examw.oa.dao.plan.IReportDao;
-import com.examw.oa.dao.plan.ISettingsDao;
-import com.examw.oa.domain.org.Employee;
-import com.examw.oa.domain.plan.Report;
+import com.examw.oa.dao.plan.IReportDao; 
+import com.examw.oa.domain.plan.Report; 
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.plan.IReportService;
+import com.examw.oa.service.plan.ISettingsService;
 
 public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> implements IReportService {
-	private IReportDao   reportDao;
-	private IEmployeeDao employeeDao;
-	private ISettingsDao settingsDao;
-	private Map<Integer, String> typeMap;
+	private static Logger logger = Logger.getLogger(ReportServiceImpl.class);
+	private IReportDao reportDao;
+	private ISettingsService settingsService;
 	private Map<Integer, String> statusMap;
 	/**
 	 * 设置员工报表数据接口
@@ -32,24 +33,9 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	public void setReportDao(IReportDao reportDao) {
 		this.reportDao = reportDao;
 	}
-	/**
-	 * 设置员工数据接口
-	 * @param employeeDao
-	 */
-	public void setEmployeeDao(IEmployeeDao employeeDao) {
-		this.employeeDao = employeeDao;
-	}
-	/**
-	 * 设置类型集合
-	 * @param typeMap
-	 */
 	
-	public void setTypeMap(Map<Integer, String> typeMap) {
-		this.typeMap = typeMap;
-	}
-	
-	public void setSettingsDao(ISettingsDao settingsDao) {
-		this.settingsDao = settingsDao;
+	public void setSettingsService(ISettingsService settingsService) {
+		this.settingsService = settingsService;
 	}
 	/**
 	 * 设置状态集合
@@ -79,7 +65,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
 		}
-		info.setTypeName(this.loadTypeNameFromValue(data.getType()));
+		info.setTypeName(this.settingsService.loadTypeName(data.getType()));
 		return info;
 	}
 	/*
@@ -97,78 +83,18 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	@Override
 	public ReportInfo update(ReportInfo info) {
 		if(info == null) return null;
-		boolean isAdded = false;
-		Report data = StringUtils.isEmpty(info.getId()) ? null : this.reportDao.load(Report.class, info.getId());
-		if(isAdded = (data == null)){
-			if(StringUtils.isEmpty(info.getId())) {
-				info.setId(UUID.randomUUID().toString());
-				info.setCreateTime(new Date());			
-			}
-			data = new Report();
+		Report data = this.reportDao.load(Report.class, info.getId());
+		if(data == null){
+			throw new RuntimeException("报告不存在！"+ info.getId());
 		}
-		if(!isAdded)info.setCreateTime(data.getCreateTime());
-		
-		BeanUtils.copyProperties(info, data);
-		if(!StringUtils.isEmpty(info.getEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEmployeeId()))){
-				Employee e = this.employeeDao.load(Employee.class, info.getEmployeeId());
-				if(e != null) data.setEmployee(e);	
-		}
+		info.setPostTime(new Date());
+		BeanUtils.copyProperties(info, data, new String[]{"createTime","lastPostTime","type"});
+		data.setStatus((data.getLastPostTime().getTime() - data.getPostTime().getTime() > 0) ? Report.STATUS_POST : Report.STATUS_LATE);
 		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
 		}
-		if(isAdded)this.reportDao.save(data);
-		info.setTypeName(this.loadTypeNameFromValue(data.getType()));
+		info.setTypeName(this.settingsService.loadTypeName(data.getType()));
 		return info;
-	}
-	/*
-	 * 定时器
-	 */
-	public ReportInfo listener(Report data){
-		//日报
-		ReportInfo info=new ReportInfo();
-		try{
-			//将Settings中的值赋到Report中去
-			List<Settings> settings=settingsDao.findSettings();
-			BeanUtils.copyProperties(settings, data);
-			BeanUtils.copyProperties(data, info);
-			//开始判断
-			//提交
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			if(df.format(info.getPostTime())==df.format(new Date())){
-					info.setStatus(1);
-			}
-			//迟交
-			if(!(df.format(info.getPostTime()) == (df.format(new Date())))){
-					info.setStatus(3);
-			}
-			//缺交
-			if(df.format(info.getPostTime()) == null){
-					info.setStatus(4);
-			}
-		}catch(Exception e){
-			
-		}
-		
-		return info;
-	}
-	/*
-	 * 转换为汉字
-	 */
-	private String loadTypeNameFromValue(Integer type){
-		if(type ==  null) return null;
-		StringBuilder sb = new StringBuilder();
-		if((type & Report.TYPE_DAILY) == Report.TYPE_DAILY){
-			sb.append(",").append(this.loadTypeName(Report.TYPE_DAILY));
-		}
-		if((type & Report.TYPE_WEEKLY) == Report.TYPE_WEEKLY){
-			sb.append(",").append(this.loadTypeName(Report.TYPE_WEEKLY));
-		}
-		if((type & Report.TYPE_MONTHLY) == Report.TYPE_MONTHLY){
-			sb.append(",").append(this.loadTypeName(Report.TYPE_MONTHLY));
-		}
-		if(sb.length() > 0) 
-			return sb.substring(1);
-		return null;
 	}
 	/*
 	 * 数据删除
@@ -193,13 +119,157 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		return this.statusMap.get(status);
 	}
 	/*
-	 * 加载类型名称
-	 * @see com.examw.oa.service.plan.IReportService#loadTypeName(java.lang.Integer)
+	 * 日报
+	 * @see com.examw.oa.service.plan.IReportService#taskDaily()
 	 */
 	@Override
-	public String loadTypeName(Integer type) {
-		if(this.typeMap == null || type == null) return null;
-		return this.typeMap.get(type);
+	public void taskDaily() {
+		if(logger.isDebugEnabled()) logger.debug("定时器调用生成日报记录...");
+		//1.将未提交的报告变成缺交；
+		List<Report> reports = this.reportDao.findReports(Report.TYPE_DAILY);
+		if(reports != null && reports.size() > 0){
+			if(logger.isDebugEnabled()) logger.debug("将未提交的报告["+reports.size()+"]变成缺交...");
+			for(int i = 0; i < reports.size();i++){
+				Report report = reports.get(i);
+				if(report == null || report.getStatus() != Report.STATUS_NONE)continue;
+				report.setStatus(Report.STATUS_LACK);
+				if(logger.isDebugEnabled()) logger.debug((i+1) + ".将未提交的报告["+report.getId()+"]变成缺交");
+			}
+		}
+		//2.根据设置生成新的报告；
+		List<Settings> settings = this.settingsService.findSettings(Settings.TYPE_DAY);
+		if(settings == null || settings.size() == 0){
+			if(logger.isDebugEnabled()) logger.debug("未查询到日报设置");
+			return;
+		}
+		if(logger.isDebugEnabled()) logger.debug("开始生成日报记录...");
+		Date create_time = new Date(),last_post_time = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(last_post_time);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		last_post_time = cal.getTime();
+		
+		List<Report> list = new ArrayList<>();
+		for(int k = 0; k < settings.size(); k++){
+			try{
+				Settings setting = settings.get(k);
+				if(setting == null || setting.getEmployee() == null) continue;
+				Report data = new Report();
+				data.setId(UUID.randomUUID().toString());
+				data.setEmployee(setting.getEmployee());
+				data.setType(Report.TYPE_DAILY);
+				data.setStatus(Report.STATUS_NONE);
+				data.setCreateTime(create_time);
+				data.setLastPostTime(last_post_time);
+				list.add(data);
+			}catch(Exception e){
+				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
+				logger.error(e);
+			}
+		}
+		//保存数据。
+		this.reportDao.saveReports(list);
 	}
-	
+	/*
+	 * 周报
+	 * @see com.examw.oa.service.plan.IReportService#taskWeek()
+	 */
+	@Override
+	public void taskWeek() {
+		if(logger.isDebugEnabled()) logger.debug("定时器调用生成周报记录...");
+		//1.将未提交的报告变成缺交；
+		List<Report> reports = this.reportDao.findReports(Report.TYPE_WEEKLY);
+		if(reports != null && reports.size() > 0){
+			if(logger.isDebugEnabled()) logger.debug("将未提交的报告["+reports.size()+"]变成缺交...");
+			for(int i = 0; i < reports.size();i++){
+				Report report = reports.get(i);
+				if(report == null || report.getStatus() != Report.STATUS_NONE)continue;
+				report.setStatus(Report.STATUS_LACK);
+				if(logger.isDebugEnabled()) logger.debug((i+1) + ".将未提交的报告["+report.getId()+"]变成缺交");
+			}
+		}
+		//2.根据设置生成新的报告；
+		List<Settings> settings = this.settingsService.findSettings(Settings.TYPE_WEEK);
+		if(settings == null || settings.size() == 0){
+			if(logger.isDebugEnabled()) logger.debug("未查询到周报设置");
+			return;
+		}
+		if(logger.isDebugEnabled()) logger.debug("开始生成周报记录...");
+		Date create_time = new Date();
+		Calendar c = new GregorianCalendar();
+		c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek()+5); // 每周星期五 
+		List<Report> list = new ArrayList<>();
+		for(int k = 0; k < settings.size(); k++){
+			try{
+				Settings setting = settings.get(k);
+				if(setting == null || setting.getEmployee() == null) continue;
+				Report data = new Report();
+				data.setId(UUID.randomUUID().toString());
+				data.setEmployee(setting.getEmployee());
+				data.setType(Report.TYPE_WEEKLY);
+				data.setStatus(Report.STATUS_NONE);
+				data.setCreateTime(create_time);
+				data.setLastPostTime(c.getTime());
+				list.add(data);
+			}catch(Exception e){
+				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
+				logger.error(e);
+			}
+		}
+		//保存数据。
+		this.reportDao.saveReports(list);
+		
+	}
+	/*
+	 * 月报
+	 * @see com.examw.oa.service.plan.IReportService#taskMonth()
+	 */
+	@Override
+	public void taskMonth() {
+		if(logger.isDebugEnabled()) logger.debug("定时器调用生成月报记录...");
+		//1.将未提交的报告变成缺交；
+		List<Report> reports = this.reportDao.findReports(Report.TYPE_MONTHLY);
+		if(reports != null && reports.size() > 0){
+			if(logger.isDebugEnabled()) logger.debug("将未提交的报告["+reports.size()+"]变成缺交...");
+			for(int i = 0; i < reports.size();i++){
+				Report report = reports.get(i);
+				if(report == null || report.getStatus() != Report.STATUS_NONE)continue;
+				report.setStatus(Report.STATUS_LACK);
+				if(logger.isDebugEnabled()) logger.debug((i+1) + ".将未提交的报告["+report.getId()+"]变成缺交");
+			}
+		}
+		//2.根据设置生成新的报告；
+		List<Settings> settings = this.settingsService.findSettings(Settings.TYPE_MONTH);
+		if(settings == null || settings.size() == 0){
+			if(logger.isDebugEnabled()) logger.debug("未查询到月报设置");
+			return;
+		}
+		if(logger.isDebugEnabled()) logger.debug("开始生成月报记录...");
+		Date create_time = new Date();
+		Calendar calendar = new GregorianCalendar();
+		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));//本月最后一天
+		List<Report> list = new ArrayList<>();
+		for(int k = 0; k < settings.size(); k++){
+			try{
+				Settings setting = settings.get(k);
+				if(setting == null || setting.getEmployee() == null) continue;
+				Report data = new Report();
+				data.setId(UUID.randomUUID().toString());
+				data.setEmployee(setting.getEmployee());
+				data.setType(Report.TYPE_MONTHLY);
+				data.setStatus(Report.STATUS_NONE);
+				data.setCreateTime(create_time);
+				data.setLastPostTime(calendar.getTime());
+				list.add(data);
+			}catch(Exception e){
+				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
+				logger.error(e);
+			}
+		}
+		//保存数据。
+		this.reportDao.saveReports(list);
+		
+	}
 }

@@ -11,8 +11,7 @@ import com.examw.oa.support.CustomDateSerializer;
 public class ReportInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,typeName,employeeId,employeeName;
-	private Integer[] type;
-	private Integer Status;
+	private Integer type,Status;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime,postTime,lastPostTime;
 	/**
@@ -75,7 +74,7 @@ public class ReportInfo extends Paging {
 	 * @return
 	 * 员工报表类型
 	 */
-	public Integer[] getType() {
+	public Integer getType() {
 		return type;
 	}
 	/**
@@ -83,7 +82,7 @@ public class ReportInfo extends Paging {
 	 * @param type
 	 * 员工报表类型
 	 */
-	public void setType(Integer[] type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 	/**
@@ -153,5 +152,4 @@ public class ReportInfo extends Paging {
 	public void setLastPostTime(Date lastPostTime) {
 		this.lastPostTime = lastPostTime;
 	}
-	
 }

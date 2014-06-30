@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.impl.BaseDaoImpl;
@@ -61,5 +62,39 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 			parameters.put("type", "%" + info.getType() + "%");
 		}
 		return hql;
+	}
+	@Override
+	public List<Report> findReports(Integer type) {
+		final String hql = "from Report r where (r.type = :type) and (r.status = :status)";
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("type", type);
+		parameters.put("status",Report.STATUS_NONE);
+		return this.find(hql, parameters, null, null);
+	}
+	@Override
+	public void saveReports(List<Report> reports) {
+		if(reports == null || reports.size() == 0) return;
+		Session session = null;
+		try{
+			session = this.getCurrentSession();
+			if(session == null)return;
+			session.beginTransaction();
+			Report data = null;
+			for(int i = 0; i < reports.size();i++){
+				data = reports.get(i);
+				if(data == null) continue;
+				session.save(data);
+				if(i % 10 == 0){
+					session.flush();
+					session.clear();
+				}
+			}
+			session.getTransaction().commit();
+		}catch(Exception e){
+			if(session != null){
+				session.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
 	}
 }

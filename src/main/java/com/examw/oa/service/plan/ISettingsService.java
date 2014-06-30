@@ -1,5 +1,8 @@
 package com.examw.oa.service.plan;
 
+import java.util.List;
+
+import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
@@ -16,4 +19,5 @@ public interface ISettingsService extends IBaseDataService<SettingsInfo>{
 	 * 类型名称。
 	 */
 	String loadTypeName(Integer type);
+	List<Settings> findSettings(Integer type);
 }

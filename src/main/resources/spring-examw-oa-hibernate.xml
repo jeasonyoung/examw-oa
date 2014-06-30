@@ -61,7 +61,7 @@
 				<!-- 缓存提供类 -->
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
 				<!--是否启用二级缓存 -->
-				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
 				<!-- 是否开启查询缓存 -->
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<!-- 配置RegionFactory为Ehcache的RegionFactory -->

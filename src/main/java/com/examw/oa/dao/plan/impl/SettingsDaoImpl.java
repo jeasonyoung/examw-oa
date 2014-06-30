@@ -56,25 +56,18 @@ public class SettingsDaoImpl extends BaseDaoImpl<Settings> implements ISettingsD
 	 * HQL
 	 */
 	protected String addWhere(SettingsInfo info, String hql, Map<String, Object> parameters){
-		if(!StringUtils.isEmpty(info.getId())){
-			hql += " and ((s.employee.department.id = :id) or (s.employee.department.parent.id = :id))";
-			parameters.put("id", info.getId());
-		}
+//		if(!StringUtils.isEmpty(info.getId())){
+//			hql += " and ((s.employee.department.id = :id) or (s.employee.department.parent.id = :id))";
+//			parameters.put("id", info.getId());
+//		}
 		if(!StringUtils.isEmpty(info.getEmployeeName())){
 			hql += " and (s.employee.name like :employeeName)";
 			parameters.put("employeeName", "%" + info.getEmployeeName() + "%");
 		}
+		if(info.getType() != null && info.getType().length == 1){
+			hql += " and ((s.type & :type) = :type)";
+			parameters.put("type", info.getType()[0]);
+		}
 		return hql;
 	}
-	/*
-	 * 查询所有数据
-	 * @see com.examw.oa.dao.plan.ISettingsDao#findSettings()
-	 */
-	@Override
-	public List<Settings> findSettings() {
-		Map<String, Object> parameters = new HashMap<>();
-		String hql = "from Employee e ";
-		return this.find(hql, parameters, null, null);
-	}
-
 }

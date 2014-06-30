@@ -65,7 +65,7 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
 		}
-		info.setTypeName(this.loadTypeNameFromValue(data.getType()));
+		info.setTypeName(this.loadTypeName(data.getType()));
 		return info;
 	}
 	/*
@@ -98,15 +98,14 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 		data.setType(this.calTypeValue(info.getType()));
 		
 		if(!StringUtils.isEmpty(info.getEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEmployeeId()))){
-				Employee e = this.employeeDao.load(Employee.class, info.getEmployeeId());
-				if(e != null) data.setEmployee(e);	
+			Employee e = this.employeeDao.load(Employee.class, info.getEmployeeId());
+			if(e != null) data.setEmployee(e);	
 		}
 		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
 		}
-		
 		if(isAdded)this.settingsDao.save(data);
-		info.setTypeName(this.loadTypeNameFromValue(data.getType()));
+		info.setTypeName(this.loadTypeName(data.getType()));
 		return info;
 	}
 	/*
@@ -123,25 +122,6 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 				result |= types[i];
 		}
 		return result;
-	}
-	/*
-	 * 转换为汉字
-	 */
-	private String loadTypeNameFromValue(Integer type){
-		if(type ==  null) return null;
-		StringBuilder sb = new StringBuilder();
-		if((type & Settings.TYPE_DAY) == Settings.TYPE_DAY){
-			sb.append(",").append(this.loadTypeName(Settings.TYPE_DAY));
-		}
-		if((type & Settings.TYPE_WEEK) == Settings.TYPE_WEEK){
-			sb.append(",").append(this.loadTypeName(Settings.TYPE_WEEK));
-		}
-		if((type & Settings.TYPE_MONTH) == Settings.TYPE_MONTH){
-			sb.append(",").append(this.loadTypeName(Settings.TYPE_MONTH));
-		}
-		if(sb.length() > 0) 
-			return sb.substring(1);
-		return null;
 	}
 	/*
 	 * 数据删除
@@ -162,7 +142,26 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 	 */
 	@Override
 	public String loadTypeName(Integer type) {
-		if(this.typeMap == null || type == null) return null;
-		return this.typeMap.get(type);
+		if(this.typeMap == null || type == null) return null; 
+		StringBuilder sb = new StringBuilder();
+		if((type & Settings.TYPE_DAY) == Settings.TYPE_DAY){
+			sb.append(",").append(this.typeMap.get(Settings.TYPE_DAY));
+		}
+		if((type & Settings.TYPE_WEEK) == Settings.TYPE_WEEK){
+			sb.append(",").append(this.typeMap.get(Settings.TYPE_WEEK));
+		}
+		if((type & Settings.TYPE_MONTH) == Settings.TYPE_MONTH){
+			sb.append(",").append(this.typeMap.get(Settings.TYPE_MONTH));
+		}
+		if(sb.length() > 0) 
+			return sb.substring(1);
+		return null;
+	}
+	@Override
+	public List<Settings> findSettings(final Integer type) {
+		 return this.find(new SettingsInfo(){
+			private static final long serialVersionUID = 1L;
+			public Integer[] getType(){ return new Integer[]{ type};}
+		 });
 	}
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <!-- 配置触发器 -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+       <!-- 添加触发器 -->
+       <property name="triggers">
+           <list>
+              	<!-- 日报 每天的00:00触发-->
+			    <bean class="org.springframework.scheduling.quartz.CronTriggerBean">
+			       <property name="jobDetail">
+				     <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+				       <property name="targetObject">
+				           <ref bean="reportSerivce" />
+				       </property>
+				       <property name="targetMethod">
+				           <value>taskDaily</value>
+				       </property>
+				    </bean>
+			      </property>
+			       <property name="cronExpression">
+			           <value>0 43 17 * * ?</value>
+			       </property>
+				 </bean>
+              	 <!-- 周报 每周周一的00:00触发 -->
+              <!-- <bean class="org.springframework.scheduling.quartz.CronTriggerBean">
+			       <property name="jobDetail">
+			           <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+					       <property name="targetObject">
+					           <ref bean="reportSerivce" />
+					       </property>
+					       <property name="targetMethod">
+					           <value>taskWeek</value>
+					       </property>
+					    </bean>
+			       </property>
+			       <property name="cronExpression">
+			           <value></value>
+			       </property>
+				</bean> -->
+				<!-- 月报 第一天的00:00触发-->
+				<!-- <bean class="org.springframework.scheduling.quartz.CronTriggerBean">
+			       <property name="jobDetail">
+			           <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+					       <property name="targetObject">
+					           <ref bean="reportSerivce" />
+					       </property>
+					       <property name="targetMethod">
+					           <value>taskMonth</value>
+					       </property>
+					    </bean>
+			       </property>
+			       <property name="cronExpression">
+			           <value></value>
+			       </property>
+				</bean> -->
+           </list>
+       </property>
+    </bean>
+</beans>
