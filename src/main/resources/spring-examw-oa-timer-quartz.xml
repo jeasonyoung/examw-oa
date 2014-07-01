@@ -14,12 +14,12 @@
 				           <ref bean="reportSerivce" />
 				       </property>
 				       <property name="targetMethod">
-				           <value>taskDaily</value>
+				           <value>addTaskDaily</value>
 				       </property>
 				    </bean>
 			      </property>
 			       <property name="cronExpression">
-			           <value>0 43 17 * * ?</value>
+			           <value>0 6 8 * * ?</value>
 			       </property>
 				 </bean>
               	 <!-- 周报 每周周一的00:00触发 -->

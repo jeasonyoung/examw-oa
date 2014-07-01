@@ -123,7 +123,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 * @see com.examw.oa.service.plan.IReportService#taskDaily()
 	 */
 	@Override
-	public void taskDaily() {
+	public void addTaskDaily() {
 		if(logger.isDebugEnabled()) logger.debug("定时器调用生成日报记录...");
 		//1.将未提交的报告变成缺交；
 		List<Report> reports = this.reportDao.findReports(Report.TYPE_DAILY);
@@ -177,7 +177,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 * @see com.examw.oa.service.plan.IReportService#taskWeek()
 	 */
 	@Override
-	public void taskWeek() {
+	public void addTaskWeek() {
 		if(logger.isDebugEnabled()) logger.debug("定时器调用生成周报记录...");
 		//1.将未提交的报告变成缺交；
 		List<Report> reports = this.reportDao.findReports(Report.TYPE_WEEKLY);
@@ -227,7 +227,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 * @see com.examw.oa.service.plan.IReportService#taskMonth()
 	 */
 	@Override
-	public void taskMonth() {
+	public void addTaskMonth() {
 		if(logger.isDebugEnabled()) logger.debug("定时器调用生成月报记录...");
 		//1.将未提交的报告变成缺交；
 		List<Report> reports = this.reportDao.findReports(Report.TYPE_MONTHLY);

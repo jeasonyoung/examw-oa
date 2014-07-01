@@ -15,7 +15,7 @@ public interface IReportService extends IBaseDataService<ReportInfo>{
 	/**
 	 * 
 	 */
-	void taskDaily();
-	void taskWeek();
-	void taskMonth();
+	void addTaskDaily();
+	void addTaskWeek();
+	void addTaskMonth();
 }
