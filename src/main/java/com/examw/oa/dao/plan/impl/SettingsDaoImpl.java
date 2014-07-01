@@ -65,7 +65,7 @@ public class SettingsDaoImpl extends BaseDaoImpl<Settings> implements ISettingsD
 			parameters.put("employeeName", "%" + info.getEmployeeName() + "%");
 		}
 		if(info.getType() != null && info.getType().length == 1){
-			hql += " and ((s.type & :type) = :type)";
+			hql += " and (bitand(s.type,:type) = :type)";
 			parameters.put("type", info.getType()[0]);
 		}
 		return hql;

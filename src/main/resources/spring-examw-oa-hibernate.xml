@@ -56,7 +56,7 @@
 				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
 				<!--是否格式化语句-->
 				<prop key="hibernate.format_sql">true</prop>
-				
+				<prop key="current_session_context_class">thread</prop>
 				<!-- 二级缓存 -->
 				<!-- 缓存提供类 -->
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
