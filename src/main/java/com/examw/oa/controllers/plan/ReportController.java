@@ -1,6 +1,7 @@
 package com.examw.oa.controllers.plan;
 
 import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
+import com.examw.oa.domain.plan.Detail;
 import com.examw.oa.domain.plan.Report;
+import com.examw.oa.model.plan.DetailInfo;
 import com.examw.oa.model.plan.ReportInfo;
+import com.examw.oa.service.plan.IDetailService;
 import com.examw.oa.service.plan.IReportService;
 
 /**
@@ -26,6 +30,8 @@ public class ReportController {
 	private static Logger logger = Logger.getLogger(LogController.class);
 	@Resource
 	private IReportService reportSerivce;
+	@Resource
+	private IDetailService detailService;
 	/**
 	 * 列表页面。
 	 * @return
@@ -57,12 +63,10 @@ public class ReportController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(Model model){
-		model.addAttribute("STATUS_NONE_NAME", this.reportSerivce.loadStatusName(Report.STATUS_NONE));
-		model.addAttribute("STATUS_POST_NAME", this.reportSerivce.loadStatusName(Report.STATUS_POST));
-		model.addAttribute("STATUS_AUDIT_NAME", this.reportSerivce.loadStatusName(Report.STATUS_AUDIT));
-		model.addAttribute("STATUS_LATE_NAME", this.reportSerivce.loadStatusName(Report.STATUS_LATE));
-		model.addAttribute("STATUS_LACK_NAME", this.reportSerivce.loadStatusName(Report.STATUS_LACK));
-		
+		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
+		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
+		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
+		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT));
 		return "plan/report_edit";
    }
 	/**
@@ -85,10 +89,10 @@ public class ReportController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(ReportInfo info){
+	public Json update(DetailInfo info){
 		Json result = new Json();
 		try {
-			result.setData(this.reportSerivce.update(info));
+			result.setData(this.detailService.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);

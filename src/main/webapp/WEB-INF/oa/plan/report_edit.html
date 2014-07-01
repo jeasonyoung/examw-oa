@@ -1,10 +1,60 @@
 <#--计划总结编辑-->
 <#assign module="plan_report"/>
 <#assign form="${module}_edit_form"/>
-<form id="${form}"  method="POST" style="padding:10px">
-		<div style="float:left;margin-top:2px;width:100%;">
-		</div>
+<form id="${form}"  method="POST" class="easyui-tabs">
+	<div title="日报">
 		<div style="float:left; margin-top:12px; width:100%;">
-				<label style="margin-top:8px;width:75px;">计划总结内容：</label>
+			<label>报告类型：</label>
+			<div style="float:left;">
+				<label><input type="radio" name="type" value="1" checked="checked"/>${TYPE_PLAN_NAME}</label>
+				<label><input type="radio" name="type" value="2"  />${TYPE_SUMMARY_NAME}</label>
+				<label><input type="radio" name="type" value="3" />${TYPE_SUPPORT_NAME}</label>
+				<label><input type="radio" name="type" value="4" />${TYPE_SUGGESTIONS_NAME}</label>
+			</div>
 		</div>
+		<div style="float:left; margin-top:18px; width:100%;">
+			<label>计划总结内容：</label>
+			<div style="float:left;">
+				<textarea name="content" rows="8" cols="28"></textarea>
+			</div>
+		</div>
+	</div>
+	
+	<div title="周报">
+		<div style="float:left; margin-top:12px; width:100%;">
+			<label>报告类型：</label>
+			<div style="float:left;">
+				<label><input type="radio" name="type" value="1" checked="checked"/>${TYPE_PLAN_NAME}</label>
+				<label><input type="radio" name="type" value="2"  />${TYPE_SUMMARY_NAME}</label>
+				<label><input type="radio" name="type" value="3" />${TYPE_SUPPORT_NAME}</label>
+				<label><input type="radio" name="type" value="4" />${TYPE_SUGGESTIONS_NAME}</label>
+				
+			</div>
+		</div>
+		<div style="float:left; margin-top:18px; width:100%;">
+			<label>计划总结内容：</label>
+			<div style="float:left;">
+				<textarea name="content" rows="8" cols="28"></textarea>
+			</div>
+		</div>
+	</div>
+	
+	<div title="月报">
+		<div style="float:left; margin-top:12px; width:100%;">
+			<label>报告类型：</label>
+			<div style="float:left;">
+				<label><input type="radio" name="type" value="1" checked="checked"/>${TYPE_PLAN_NAME}</label>
+				<label><input type="radio" name="type" value="2"  />${TYPE_SUMMARY_NAME}</label>
+				<label><input type="radio" name="type" value="3" />${TYPE_SUPPORT_NAME}</label>
+				<label><input type="radio" name="type" value="4" />${TYPE_SUGGESTIONS_NAME}</label>
+				
+			</div>
+		</div>
+		<div style="float:left; margin-top:18px; width:100%;">
+			<label>计划总结内容：</label>
+			<div style="float:left;">
+				<textarea name="content" rows="8" cols="28"></textarea>
+			</div>
+		</div>
+	</div>
 </form>

@@ -11,6 +11,8 @@
 		</id>
 		<!-- 所属员工 -->
 		<one-to-one name="employee"  class="com.examw.oa.domain.org.Employee"/>
+		<!-- 所属部门 -->
+		<many-to-one name="department" column="dept_id"  class="com.examw.oa.domain.org.Department"  />
 		<!-- 报告类型（位运算:1-日报,2-周报,4-月报） -->
 		<property name="type" type="integer" />
 		<!-- 创建时间 -->

@@ -19,5 +19,12 @@ public interface ISettingsService extends IBaseDataService<SettingsInfo>{
 	 * 类型名称。
 	 */
 	String loadTypeName(Integer type);
+	/**
+	 * 类型查找数据（为运算）
+	 * @param type
+	 * 类型值
+	 * @return
+	 * 类型名称
+	 */
 	List<Settings> findSettings(Integer type);
 }

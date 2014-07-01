@@ -11,6 +11,10 @@
 	</bean>
 	<!-- 员工报表dao -->
 	<bean id="reportDao" class="com.examw.oa.dao.plan.impl.ReportDaoImpl">
-			<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 计划总结明细dao -->
+	<bean id="detailDao" class="com.examw.oa.dao.plan.impl.DetailDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 </beans>

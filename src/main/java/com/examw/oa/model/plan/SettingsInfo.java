@@ -16,7 +16,7 @@ import com.examw.oa.support.CustomDateSerializer;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class SettingsInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,typeName, employeeId,employeeName;
+	private String id,typeName, employeeId,employeeName,departmentId;
 	private Integer[] type;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
@@ -62,12 +62,30 @@ public class SettingsInfo extends Paging {
 		return type;
 	}	
 	/**
+	 * 获取部门ID
+	 * @return
+	 * 部门ID
+	 */
+	
+	/**
+	 * 设置部门ID
+	 * @param deptId
+	 * 部门ID
+	 */
+	
+	/**
 	 * 获取员工报表类型名称
 	 * @return
 	 * 员工报表类型名称
 	 */
 	public String getTypeName() {
 		return typeName;
+	}
+	public String getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
 	}
 	/**
 	 * 设置员工报表类型名称

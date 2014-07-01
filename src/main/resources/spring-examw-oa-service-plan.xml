@@ -17,11 +17,14 @@
 			</map>
 		</property>
 	</bean>
-	<!-- 员工报表信息 -->
+	<!-- 员工报表设置信息 -->
 	<bean id="settingsService" class="com.examw.oa.service.plan.impl.SettingsServiceImpl">
-		<!--  -->
+		<!-- 员工报表设置接口 -->
 		<property name="settingsDao" ref="settingsDao"/>
+		<!-- 员工信息接口 -->
 		<property name="employeeDao" ref="employeeDao" />
+		<!-- 部门数据接口 -->
+		<property name="departmentDao" ref="departmentDao"/>
 		<!-- 类型集合 -->
 		<property name="typeMap">
 			<map>
@@ -34,8 +37,11 @@
 			</map>
 		</property>
 	</bean>
+	<!-- 员工报表信息 -->
 	<bean id="reportSerivce" class="com.examw.oa.service.plan.impl.ReportServiceImpl">
+		<!--员工报表信息接口  -->
 		<property name="reportDao" ref="reportDao"/>
+		<!--员工报表设置服务接口 -->
 		<property name="settingsService" ref="settingsService" />
 		<!-- 状态集合 -->
 		<property name="statusMap">
@@ -51,6 +57,24 @@
 					<!-- 缺交 -->
 					<entry key="4" value="${STATUS_LACK}"/>
 				</map>
+		</property>
+	</bean>
+	<!-- 计划总结明细 -->
+	<bean id="detailService" class="com.examw.oa.service.plan.impl.DetailServiceImpl">
+		<!--计划总结明细接口 -->
+		<property name="detailDao" ref="detailDao"/>
+		<!--类型集合 -->
+		<property name="typeMap">
+			<map>
+				<!--计划  -->
+				<entry key="1" value="${TYPE_PLAN}"/>
+				<!--总结 -->
+				<entry key="2" value="${TYPE_SUMMARY}"/>
+				<!--困难/支援 -->
+				<entry key="3" value="${TYPE_SUPPORT}"/>
+				<!--建议/意见 -->
+				<entry key="4" value="${TYPE_SUGGESTIONS}"/>
+			</map>
 		</property>
 	</bean>
 </beans>

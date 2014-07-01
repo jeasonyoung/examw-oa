@@ -1,7 +1,6 @@
 package com.examw.oa.service.plan.impl;
  
-
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -151,7 +150,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		cal.set(Calendar.SECOND, 59);
 		last_post_time = cal.getTime();
 		
-		List<Report> list = new ArrayList<>();
 		for(int k = 0; k < settings.size(); k++){
 			try{
 				Settings setting = settings.get(k);
@@ -163,14 +161,12 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 				data.setStatus(Report.STATUS_NONE);
 				data.setCreateTime(create_time);
 				data.setLastPostTime(last_post_time);
-				list.add(data);
+				this.reportDao.save(data);
 			}catch(Exception e){
 				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
 				logger.error(e);
 			}
 		}
-		//保存数据。
-		this.reportDao.saveReports(list);
 	}
 	/*
 	 * 周报
@@ -199,8 +195,9 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		if(logger.isDebugEnabled()) logger.debug("开始生成周报记录...");
 		Date create_time = new Date();
 		Calendar c = new GregorianCalendar();
+		 SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
 		c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek()+5); // 每周星期五 
-		List<Report> list = new ArrayList<>();
+		
 		for(int k = 0; k < settings.size(); k++){
 			try{
 				Settings setting = settings.get(k);
@@ -211,16 +208,13 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 				data.setType(Report.TYPE_WEEKLY);
 				data.setStatus(Report.STATUS_NONE);
 				data.setCreateTime(create_time);
-				data.setLastPostTime(c.getTime());
-				list.add(data);
+				data.setLastPostTime(sd.parse(sd.format(c.getTime())));
+				this.reportDao.save(data);
 			}catch(Exception e){
 				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
 				logger.error(e);
 			}
 		}
-		//保存数据。
-		this.reportDao.saveReports(list);
-		
 	}
 	/*
 	 * 月报
@@ -250,7 +244,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		Date create_time = new Date();
 		Calendar calendar = new GregorianCalendar();
 		calendar.set(Calendar.DATE, calendar.getActualMaximum(Calendar.DATE));//本月最后一天
-		List<Report> list = new ArrayList<>();
+		
 		for(int k = 0; k < settings.size(); k++){
 			try{
 				Settings setting = settings.get(k);
@@ -262,14 +256,11 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 				data.setStatus(Report.STATUS_NONE);
 				data.setCreateTime(create_time);
 				data.setLastPostTime(calendar.getTime());
-				list.add(data);
+				this.reportDao.save(data);
 			}catch(Exception e){
 				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
 				logger.error(e);
 			}
 		}
-		//保存数据。
-		this.reportDao.saveReports(list);
-		
 	}
 }

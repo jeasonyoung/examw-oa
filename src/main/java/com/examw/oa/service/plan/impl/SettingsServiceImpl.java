@@ -8,8 +8,10 @@ import java.util.UUID;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
+import com.examw.oa.dao.org.IDepartmentDao;
 import com.examw.oa.dao.org.IEmployeeDao;
 import com.examw.oa.dao.plan.ISettingsDao;
+import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
@@ -23,6 +25,7 @@ import com.examw.oa.service.plan.ISettingsService;
 public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsInfo> implements ISettingsService {
 	private ISettingsDao settingsDao;
 	private IEmployeeDao employeeDao;
+	private IDepartmentDao departmentDao;
 	private Map<Integer, String> typeMap;
 	/**
 	 * 设置类型集合。
@@ -43,6 +46,10 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 	
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
+	}
+	
+	public void setDepartmentDao(IDepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
 	}
 	/*
 	 * 数据查询
@@ -101,6 +108,10 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 			Employee e = this.employeeDao.load(Employee.class, info.getEmployeeId());
 			if(e != null) data.setEmployee(e);	
 		}
+		if(!StringUtils.isEmpty(info.getDepartmentId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getDepartmentId()))){
+			Department d = this.departmentDao.load(Department.class, info.getDepartmentId());
+			if(d != null) data.setDepartment(d);
+		}
 		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
 		}
@@ -157,6 +168,10 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 			return sb.substring(1);
 		return null;
 	}
+	/*
+	 * 根据类型查值
+	 * @see com.examw.oa.service.plan.ISettingsService#findSettings(java.lang.Integer)
+	 */
 	@Override
 	public List<Settings> findSettings(final Integer type) {
 		 return this.find(new SettingsInfo(){

@@ -67,8 +67,9 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
-		var emp_id = "";
+		var dept_id = current_dept_id,emp_id = "";
 		if(row){
+			dept_id = row.departmentId;
 			emp_id = row.employeeId;
 		}
 		var d = $("<div/>").dialog({
@@ -134,7 +135,7 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			id:current_dept_id,
+			departmentId:current_dept_id,
 			employeeName:$("#${dg}_toobar input[name='name']").val()
 		});
 	};

@@ -29,5 +29,4 @@ public interface IReportDao extends IBaseDao<Report>{
 	 Long total(ReportInfo info);
 	 
 	 List<Report> findReports(Integer type);
-	 void saveReports(List<Report> reports);
 }

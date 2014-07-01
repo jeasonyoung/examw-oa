@@ -77,14 +77,14 @@ $(function(){
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
-			width:300,
-			height:250,
+			width:400,
+			height:350,
 			href:"<@s.url '/plan/report/edit'/>",
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
 			{
-				text:"保存",
+				text:"提交",
 				iconCls:"icon-save",
 				handler:function(){
 					$.messager.progress();

@@ -3,6 +3,7 @@ package com.examw.oa.domain.plan;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;
 
 /**
@@ -14,6 +15,7 @@ public class Settings implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private Employee employee;
+	private Department department;
 	private Integer type;
 	private Date createTime;
 	/**
@@ -57,6 +59,13 @@ public class Settings implements Serializable {
 	 */
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+	
+	public Department getDepartment() {
+		return department;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 	/**
 	 * 获取报告类型（位运算）。
