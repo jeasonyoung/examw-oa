@@ -4,15 +4,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map; 
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
+import com.examw.oa.dao.plan.IDetailDao;
 import com.examw.oa.dao.plan.IReportDao; 
+import com.examw.oa.domain.plan.Detail;
 import com.examw.oa.domain.plan.Report; 
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.ReportInfo;
@@ -23,8 +27,14 @@ import com.examw.oa.service.plan.ISettingsService;
 public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> implements IReportService {
 	private static Logger logger = Logger.getLogger(ReportServiceImpl.class);
 	private IReportDao reportDao;
+	private IDetailDao detailDao;
 	private ISettingsService settingsService;
 	private Map<Integer, String> statusMap;
+	
+	public void setDetailDao(IDetailDao detailDao) {
+		this.detailDao = detailDao;
+	}
+
 	/**
 	 * 设置员工报表数据接口
 	 * @param reportDao
@@ -83,15 +93,31 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	public ReportInfo update(ReportInfo info) {
 		if(info == null) return null;
 		Report data = this.reportDao.load(Report.class, info.getId());
-		if(data == null){
-			throw new RuntimeException("报告不存在！"+ info.getId());
-		}
+//		if(data == null){
+//			throw new RuntimeException("报告不存在！"+ info.getId());
+//		}
+		//添加计划总结明细
+		Set<Detail> detailSets = new HashSet<>();
+		Detail detail = this.detailDao.load(Detail.class, info.getDetailId());
+		if(detail != null){
+			if(StringUtils.isEmpty(detail.getId())){
+				detail.setId(UUID.randomUUID().toString());
+				}
+				detail = new Detail();
+				detail.setContent(info.getDetailContent());
+				detail.setType(info.getDetailType());
+				detail.setCreateTime(new Date());
+				detailSets.add(detail);
+			}	
+		data.setDetails(detailSets);
+		
 		info.setPostTime(new Date());
-		BeanUtils.copyProperties(info, data, new String[]{"createTime","lastPostTime","type"});
+		BeanUtils.copyProperties(info, data, new String[]{"createTime","lastPostTime","type","detailContent","detailType"});
 		data.setStatus((data.getLastPostTime().getTime() - data.getPostTime().getTime() > 0) ? Report.STATUS_POST : Report.STATUS_LATE);
 		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
 		}
+		
 		info.setTypeName(this.settingsService.loadTypeName(data.getType()));
 		return info;
 	}

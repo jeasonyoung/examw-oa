@@ -2,59 +2,37 @@
 <#assign module="plan_report"/>
 <#assign form="${module}_edit_form"/>
 <form id="${form}"  method="POST" class="easyui-tabs">
-	<div title="日报">
-		<div style="float:left; margin-top:12px; width:100%;">
-			<label>报告类型：</label>
-			<div style="float:left;">
-				<label><input type="radio" name="type" value="1" checked="checked"/>${TYPE_PLAN_NAME}</label>
-				<label><input type="radio" name="type" value="2"  />${TYPE_SUMMARY_NAME}</label>
-				<label><input type="radio" name="type" value="3" />${TYPE_SUPPORT_NAME}</label>
-				<label><input type="radio" name="type" value="4" />${TYPE_SUGGESTIONS_NAME}</label>
-			</div>
-		</div>
-		<div style="float:left; margin-top:18px; width:100%;">
-			<label>计划总结内容：</label>
-			<div style="float:left;">
-				<textarea name="content" rows="8" cols="28"></textarea>
-			</div>
+	<div title=${TYPE_PLAN_NAME}>
+			<input type="hidden" name="detailType" value="1">
+		<div style="float: left; margin-top: 10px; width: 98%;">
+			<textarea id="${form}_introduction" name="detailContent"
+				class="easyui-kindeditor" rows="10" cols="20"
+				style="width: 761px; height: 469px;"></textarea>
 		</div>
 	</div>
 	
-	<div title="周报">
-		<div style="float:left; margin-top:12px; width:100%;">
-			<label>报告类型：</label>
-			<div style="float:left;">
-				<label><input type="radio" name="type" value="1" checked="checked"/>${TYPE_PLAN_NAME}</label>
-				<label><input type="radio" name="type" value="2"  />${TYPE_SUMMARY_NAME}</label>
-				<label><input type="radio" name="type" value="3" />${TYPE_SUPPORT_NAME}</label>
-				<label><input type="radio" name="type" value="4" />${TYPE_SUGGESTIONS_NAME}</label>
-				
-			</div>
-		</div>
-		<div style="float:left; margin-top:18px; width:100%;">
-			<label>计划总结内容：</label>
-			<div style="float:left;">
-				<textarea name="content" rows="8" cols="28"></textarea>
-			</div>
+	<div title=${TYPE_SUMMARY_NAME}>
+			<input type="hidden" name="detailType" value="2">
+		<div style="float: left; margin-top: 10px; width: 98%;">
+			<textarea id="${form}_introduction" name="detailContent"
+				class="easyui-kindeditor" rows="10" cols="20"
+				style="width: 761px; height: 469px;"></textarea>
 		</div>
 	</div>
-	
-	<div title="月报">
-		<div style="float:left; margin-top:12px; width:100%;">
-			<label>报告类型：</label>
-			<div style="float:left;">
-				<label><input type="radio" name="type" value="1" checked="checked"/>${TYPE_PLAN_NAME}</label>
-				<label><input type="radio" name="type" value="2"  />${TYPE_SUMMARY_NAME}</label>
-				<label><input type="radio" name="type" value="3" />${TYPE_SUPPORT_NAME}</label>
-				<label><input type="radio" name="type" value="4" />${TYPE_SUGGESTIONS_NAME}</label>
-				
-			</div>
+	<div title=${TYPE_SUGGESTIONS_NAME}>
+			<input type="hidden" name="detailType" value="3">
+		<div style="float: left; margin-top: 10px; width: 98%;">
+			<textarea id="${form}_introduction" name="detailContent"
+				class="easyui-kindeditor" rows="10" cols="20"
+				style="width: 761px; height: 469px;"></textarea>
 		</div>
-		<div style="float:left; margin-top:18px; width:100%;">
-			<label>计划总结内容：</label>
-			<div style="float:left;">
-				<textarea name="content" rows="8" cols="28"></textarea>
-			</div>
+	</div>
+	<div title=${TYPE_SUPPORT_NAME}>
+			<input type="hidden" name="detailType" value="4">
+		<div style="float: left; margin-top: 10px; width: 98%;">
+			<textarea id="${form}_introduction" name="detailContent"
+				class="easyui-kindeditor" rows="10" cols="20"
+				style="width:761px; height:469px;"></textarea>
 		</div>
 	</div>
 </form>

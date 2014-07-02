@@ -14,7 +14,6 @@ import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.domain.plan.Detail;
 import com.examw.oa.domain.plan.Report;
-import com.examw.oa.model.plan.DetailInfo;
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.plan.IDetailService;
 import com.examw.oa.service.plan.IReportService;
@@ -89,10 +88,10 @@ public class ReportController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(DetailInfo info){
+	public Json update(ReportInfo info){
 		Json result = new Json();
 		try {
-			result.setData(this.detailService.update(info));
+			result.setData(this.reportSerivce.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);

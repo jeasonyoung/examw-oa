@@ -1,7 +1,9 @@
 package com.examw.oa.model.plan;
 
 import java.util.Date;
+
 import org.springframework.format.annotation.DateTimeFormat;
+
 import com.examw.model.Paging;
 /**
  * 计划总结明细
@@ -12,6 +14,7 @@ public class DetailInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,content;
 	private Integer type;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**

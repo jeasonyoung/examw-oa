@@ -12,6 +12,10 @@ public class ReportInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,typeName,employeeId,employeeName;
 	private Integer type,Status;
+	private String detailId;
+	private String detailContent;
+	private Integer detailType;
+	private Date detailCreateTime;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime,postTime,lastPostTime;
 	/**
@@ -152,4 +156,31 @@ public class ReportInfo extends Paging {
 	public void setLastPostTime(Date lastPostTime) {
 		this.lastPostTime = lastPostTime;
 	}
+	
+	
+	public String getDetailId() {
+		return detailId;
+	}
+	public void setDetailId(String string) {
+		this.detailId = string;
+	}
+	public String getDetailContent() {
+		return detailContent;
+	}
+	public void setDetailContent(String detailContent) {
+		this.detailContent = detailContent;
+	}
+	public Integer getDetailType() {
+		return detailType;
+	}
+	public void setDetailType(Integer detailType) {
+		this.detailType = detailType;
+	}
+	public Date getDetailCreateTime() {
+		return detailCreateTime;
+	}
+	public void setDetailCreateTime(Date detailCreateTime) {
+		this.detailCreateTime = detailCreateTime;
+	}
+	
 }
