@@ -12,10 +12,8 @@ public class ReportInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,typeName,employeeId,employeeName;
 	private Integer type,Status;
-	private String detailId;
-	private String detailContent;
-	private Integer detailType;
-	private Date detailCreateTime;
+	private String planId,summaryId,suggetsionsId,supportId;
+	private String planDetail,summaryDetail,suggetsionsDetail,supportDetail;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime,postTime,lastPostTime;
 	/**
@@ -157,30 +155,53 @@ public class ReportInfo extends Paging {
 		this.lastPostTime = lastPostTime;
 	}
 	
-	
-	public String getDetailId() {
-		return detailId;
+
+	public String getPlanId() {
+		return planId;
 	}
-	public void setDetailId(String string) {
-		this.detailId = string;
+	public void setPlanId(String planId) {
+		this.planId = planId;
 	}
-	public String getDetailContent() {
-		return detailContent;
+	public String getSummaryId() {
+		return summaryId;
 	}
-	public void setDetailContent(String detailContent) {
-		this.detailContent = detailContent;
+	public void setSummaryId(String summaryId) {
+		this.summaryId = summaryId;
 	}
-	public Integer getDetailType() {
-		return detailType;
+	public String getSuggetsionsId() {
+		return suggetsionsId;
 	}
-	public void setDetailType(Integer detailType) {
-		this.detailType = detailType;
+	public void setSuggetsionsId(String suggetsionsId) {
+		this.suggetsionsId = suggetsionsId;
 	}
-	public Date getDetailCreateTime() {
-		return detailCreateTime;
+	public String getSupportId() {
+		return supportId;
 	}
-	public void setDetailCreateTime(Date detailCreateTime) {
-		this.detailCreateTime = detailCreateTime;
+	public void setSupportId(String supportId) {
+		this.supportId = supportId;
 	}
-	
+	public String getPlanDetail() {
+		return planDetail;
+	}
+	public void setPlanDetail(String planDetail) {
+		this.planDetail = planDetail;
+	}
+	public String getSummaryDetail() {
+		return summaryDetail;
+	}
+	public void setSummaryDetail(String summaryDetail) {
+		this.summaryDetail = summaryDetail;
+	}
+	public String getSuggetsionsDetail() {
+		return suggetsionsDetail;
+	}
+	public void setSuggetsionsDetail(String suggetsionsDetail) {
+		this.suggetsionsDetail = suggetsionsDetail;
+	}
+	public String getSupportDetail() {
+		return supportDetail;
+	}
+	public void setSupportDetail(String supportDetail) {
+		this.supportDetail = supportDetail;
+	}
 }

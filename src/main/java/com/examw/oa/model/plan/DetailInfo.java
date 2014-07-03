@@ -2,9 +2,11 @@ package com.examw.oa.model.plan;
 
 import java.util.Date;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
+import com.examw.oa.support.CustomDateSerializer;
 /**
  * 计划总结明细
  * @author lq
@@ -14,7 +16,6 @@ public class DetailInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,content;
 	private Integer type;
-	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
@@ -70,6 +71,7 @@ public class DetailInfo extends Paging {
 	 * @return
 	 * 计划总结明细创建时间
 	 */
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}

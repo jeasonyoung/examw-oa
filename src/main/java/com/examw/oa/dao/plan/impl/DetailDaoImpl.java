@@ -48,9 +48,9 @@ public class DetailDaoImpl extends BaseDaoImpl<Detail> implements IDetailDao {
 	 * @return
 	 */
 	protected String addWhere(DetailInfo info, String hql, Map<String, Object> parameters){
-		if(!StringUtils.isEmpty(null)){
-			hql += " and (d.name like :name)";
-			parameters.put("name", "%" + null + "%");
+		if(!StringUtils.isEmpty(info.getCreateTime())){
+			hql += " and (d.createTime like :createTime)";
+			parameters.put("createTime", "%" + info.getCreateTime() + "%");
 		}
 		return hql;
 	}

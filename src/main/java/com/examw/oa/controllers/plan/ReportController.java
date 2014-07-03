@@ -17,7 +17,6 @@ import com.examw.oa.domain.plan.Report;
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.plan.IDetailService;
 import com.examw.oa.service.plan.IReportService;
-
 /**
  * 员工报表控制器。
  * @author lq.
@@ -64,8 +63,8 @@ public class ReportController {
 	public String edit(Model model){
 		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
 		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
-		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
-		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT));
+		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
+		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
 		return "plan/report_edit";
    }
 	/**
@@ -91,6 +90,7 @@ public class ReportController {
 	public Json update(ReportInfo info){
 		Json result = new Json();
 		try {
+			System.out.print(info.getSupportDetail()+"lkkkkkkkkkkkkkkkkkkkkkkk");
 			result.setData(this.reportSerivce.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {

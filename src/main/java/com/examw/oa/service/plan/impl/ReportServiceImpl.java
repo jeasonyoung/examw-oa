@@ -74,6 +74,32 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
 		}
+		//计划总结明细 
+		if(data.getDetails()!=null){
+			for(Detail detail : data.getDetails()){
+				if(detail == null) continue;
+				if(detail.getType() == Detail.TYPE_PLAN){
+					info.setPlanId(detail.getId());
+					info.setPlanDetail(detail.getContent());
+					continue;
+				}
+				if(detail.getType() == Detail.TYPE_SUMMARY){
+					info.setSummaryId(detail.getId());
+					info.setSummaryDetail(detail.getContent());
+					continue;
+				}
+				if(detail.getType() == Detail.TYPE_SUPPORT){
+					info.setSupportId(detail.getId());
+					info.setSupportDetail(detail.getContent());
+					continue;
+				}
+				if(detail.getType() == Detail.TYPE_SUGGESTIONS){
+					info.setSuggetsionsId(detail.getId());
+					info.setSuggetsionsDetail(detail.getContent());
+					continue;
+				}
+			}
+		}
 		info.setTypeName(this.settingsService.loadTypeName(data.getType()));
 		return info;
 	}
@@ -85,6 +111,19 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	protected Long total(ReportInfo info) {
 		return this.reportDao.total(info);
 	}
+	private Detail buildDetail(String id,Integer type,String content){
+		Detail data = StringUtils.isEmpty(id) ? null : this.detailDao.load(Detail.class, id);
+		if(data == null){
+			if(StringUtils.isEmpty(content)) return null;
+			if(StringUtils.isEmpty(id)) id = UUID.randomUUID().toString();
+			data = new Detail();
+			data.setId(id);
+			data.setCreateTime(new Date());
+			data.setType(type);
+		}
+		data.setContent(content);
+		return data;
+	}
 	/*
 	 * 数据更新
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#update(java.lang.Object)
@@ -92,33 +131,42 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	@Override
 	public ReportInfo update(ReportInfo info) {
 		if(info == null) return null;
-		Report data = this.reportDao.load(Report.class, info.getId());
-//		if(data == null){
-//			throw new RuntimeException("报告不存在！"+ info.getId());
-//		}
-		//添加计划总结明细
-		Set<Detail> detailSets = new HashSet<>();
-		Detail detail = this.detailDao.load(Detail.class, info.getDetailId());
-		if(detail != null){
-			if(StringUtils.isEmpty(detail.getId())){
-				detail.setId(UUID.randomUUID().toString());
-				}
-				detail = new Detail();
-				detail.setContent(info.getDetailContent());
-				detail.setType(info.getDetailType());
-				detail.setCreateTime(new Date());
-				detailSets.add(detail);
-			}	
-		data.setDetails(detailSets);
-		
+		Detail planDetail = this.buildDetail(info.getPlanId(), Detail.TYPE_PLAN, info.getPlanDetail()),
+			   summaryDetail = this.buildDetail(info.getSummaryId(), Detail.TYPE_SUMMARY, info.getSummaryDetail()),
+			   supportDetail = this.buildDetail(info.getSupportId(), Detail.TYPE_SUPPORT, info.getSupportDetail()),
+			   suggetDetial = this.buildDetail(info.getSuggetsionsId(), Detail.TYPE_SUGGESTIONS, info.getSuggetsionsDetail());
 		info.setPostTime(new Date());
-		BeanUtils.copyProperties(info, data, new String[]{"createTime","lastPostTime","type","detailContent","detailType"});
+		Report data = this.reportDao.load(Report.class, info.getId());
+		if(data == null){
+			throw new RuntimeException("报告不存在！"+ info.getId());
+		}
+		Set<Detail> details = new HashSet<>();
+		if(planDetail != null){
+			info.setPlanId(planDetail.getId());
+			details.add(planDetail);
+		}
+		if(summaryDetail != null){
+			info.setSummaryId(summaryDetail.getId());
+			details.add(summaryDetail);
+		}
+		if(supportDetail != null){
+			info.setSupportId(supportDetail.getId());
+			details.add(supportDetail);
+		}
+		if(suggetDetial != null){
+			info.setSuggetsionsId(suggetDetial.getId());
+			details.add(suggetDetial);
+		}
+		data.setDetails(details);		
+		BeanUtils.copyProperties(info, data, new String[]{"createTime","lastPostTime","type"});
 		data.setStatus((data.getLastPostTime().getTime() - data.getPostTime().getTime() > 0) ? Report.STATUS_POST : Report.STATUS_LATE);
 		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
 		}
-		
+		info.setType(data.getType());
 		info.setTypeName(this.settingsService.loadTypeName(data.getType()));
+		info.setCreateTime(data.getCreateTime());
+		info.setLastPostTime(data.getLastPostTime());
 		return info;
 	}
 	/*
@@ -127,12 +175,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 */
 	@Override
 	public void delete(String[] ids) {
-		if(ids == null || ids.length == 0) return;
-		for(int i = 0; i < ids.length; i++){
-			if(StringUtils.isEmpty(ids[i])) continue;
-			Report  data = this.reportDao.load(Report.class, ids[i]);
-			if(data != null) this.reportDao.delete(data);
-		}
 	}
 	/*
 	 * 加载状态名称
