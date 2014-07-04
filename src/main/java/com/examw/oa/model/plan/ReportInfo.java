@@ -154,53 +154,131 @@ public class ReportInfo extends Paging {
 	public void setLastPostTime(Date lastPostTime) {
 		this.lastPostTime = lastPostTime;
 	}
-	
-
+	/**
+	 * 设置计划ID
+	 * @return
+	 * 计划ID
+	 */
 	public String getPlanId() {
 		return planId;
 	}
+	/**
+	 * 获取计划ID
+	 * @return
+	 * 计划ID
+	 */
 	public void setPlanId(String planId) {
 		this.planId = planId;
 	}
+	/**
+	 * 获取总结ID
+	 * @return
+	 * 总结ID
+	 */
 	public String getSummaryId() {
 		return summaryId;
 	}
+	/**
+	 * 设置总结ID
+	 * @return
+	 * 总结ID
+	 */
 	public void setSummaryId(String summaryId) {
 		this.summaryId = summaryId;
 	}
+	/**
+	 * 获取建议ID
+	 * @return
+	 * 建议ID
+	 */
 	public String getSuggetsionsId() {
 		return suggetsionsId;
 	}
+	/**
+	 * 设置建议ID
+	 * @return
+	 * 建议ID
+	 */
 	public void setSuggetsionsId(String suggetsionsId) {
 		this.suggetsionsId = suggetsionsId;
 	}
+	/**
+	 * 获取困难ID
+	 * @return
+	 * 困难ID
+	 */
 	public String getSupportId() {
 		return supportId;
 	}
+	/**
+	 * 设置困难ID
+	 * @return
+	 * 困难ID
+	 */
 	public void setSupportId(String supportId) {
 		this.supportId = supportId;
 	}
+	/**
+	 * 获取计划内容
+	 * @return
+	 * 计划内容
+	 */
 	public String getPlanDetail() {
 		return planDetail;
 	}
+	/**
+	 * 设置计划内容
+	 * @return
+	 * 计划内容
+	 */
 	public void setPlanDetail(String planDetail) {
 		this.planDetail = planDetail;
 	}
+	/**
+	 * 获取总结内容
+	 * @return
+	 * 总结内容
+	 */
 	public String getSummaryDetail() {
 		return summaryDetail;
 	}
+	/**
+	 * 设置总结内容
+	 * @return
+	 * 总结内容
+	 */
 	public void setSummaryDetail(String summaryDetail) {
 		this.summaryDetail = summaryDetail;
 	}
+	/**
+	 * 获取建议内容
+	 * @return
+	 * 建议内容
+	 */
 	public String getSuggetsionsDetail() {
 		return suggetsionsDetail;
 	}
+	/**
+	 * 设置建议内容
+	 * @return
+	 * 建议内容
+	 */
 	public void setSuggetsionsDetail(String suggetsionsDetail) {
 		this.suggetsionsDetail = suggetsionsDetail;
 	}
+	/**
+	 * 获取困难内容
+	 * @return
+	 * 困难内容
+	 */
 	public String getSupportDetail() {
 		return supportDetail;
 	}
+	/**
+	 * 设置困难内容
+	 * @return
+	 * 困难内容
+	 */
 	public void setSupportDetail(String supportDetail) {
 		this.supportDetail = supportDetail;
 	}

@@ -26,9 +26,15 @@ import com.examw.oa.service.plan.IReportService;
 @RequestMapping(value = "/plan/report")
 public class ReportController {
 	private static Logger logger = Logger.getLogger(LogController.class);
+	/*
+	 * 报表服务接口
+	 */
 	@Resource
 	private IReportService reportSerivce;
 	@Resource
+	/*
+	 * 计划总结服务接口
+	 */
 	private IDetailService detailService;
 	/**
 	 * 列表页面。
@@ -87,10 +93,9 @@ public class ReportController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(ReportInfo info){
+	public Json update(ReportInfo info,String statusDetail,Model model){
 		Json result = new Json();
 		try {
-			System.out.print(info.getSupportDetail()+"lkkkkkkkkkkkkkkkkkkkkkkk");
 			result.setData(this.reportSerivce.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {

@@ -13,59 +13,75 @@ import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.domain.plan.Detail;
-import com.examw.oa.model.plan.DetailInfo;
+import com.examw.oa.domain.plan.Report;
+import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.plan.IDetailService;
-
+import com.examw.oa.service.plan.IReportService;
 /**
- * 业务系统控制器。
+ * 员工报表控制器。
  * @author lq.
- * @since 2014-07-02.
+ * @since 2014-06-26.
  */
 @Controller
 @RequestMapping(value = "/plan/detail")
 public class DetailController {
 	private static Logger logger = Logger.getLogger(LogController.class);
+	/**
+	 * 员工计划服务接口
+	 */
+	@Resource
+	private IReportService reportSerivce;
+	/**
+	 * 计划总结服务接口
+	 */
 	@Resource
 	private IDetailService detailService;
 	/**
-	 * 获取列表页面。
+	 * 列表页面。
 	 * @return
-	 * 列表页面
 	 */
-	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
+	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
+	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
-		model.addAttribute("TYPE_PLAN_VALUE",Detail.TYPE_PLAN);
-		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
+		model.addAttribute("STATUS_NONE_VALUE",Report.STATUS_NONE);
+		model.addAttribute("STATUS_NONE_NAME", this.reportSerivce.loadStatusName(Report.STATUS_NONE));
 		
-		model.addAttribute("TYPE_SUMMARY_VALUE",Detail.TYPE_SUMMARY);
-		model.addAttribute("TYPE_SUMMARY_NAME", this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
+		model.addAttribute("STATUS_POST_VALUE",Report.STATUS_POST);
+		model.addAttribute("STATUS_POST_NAME", this.reportSerivce.loadStatusName(Report.STATUS_POST));
 		
-		model.addAttribute("TYPE_SUPPORT_VALUE",Detail.TYPE_SUPPORT);
-		model.addAttribute("TYPE_SUPPORT_NAME", this.detailService.loadTypeName(Detail.TYPE_SUPPORT));
+		model.addAttribute("STATUS_AUDIT_VALUE",Report.STATUS_AUDIT);
+		model.addAttribute("STATUS_AUDIT_NAME", this.reportSerivce.loadStatusName(Report.STATUS_AUDIT));
 		
-		model.addAttribute("TYPE_SUGGESTIONS_VALUE",Detail.TYPE_SUGGESTIONS);
-		model.addAttribute("TYPE_SUGGESTIONS_NAME", this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
+		model.addAttribute("STATUS_LATE_VALUE",Report.STATUS_LATE);
+		model.addAttribute("STATUS_LATE_NAME", this.reportSerivce.loadStatusName(Report.STATUS_LATE));
+		
+		model.addAttribute("STATUS_LACK_VALUE",Report.STATUS_LACK);
+		model.addAttribute("STATUS_LACK_NAME", this.reportSerivce.loadStatusName(Report.STATUS_LACK));
+		
 		return "plan/detail_list";
 	}
 	/**
-	 * 获取编辑页面。
+	 * 添加页面。
 	 * @return
-	 * 编辑页面。
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
-	@RequestMapping(value="/edit", method = RequestMethod.GET)
+	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(Model model){
+		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
+		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
+		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
+		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
 		return "plan/detail_edit";
-	}
+   }
 	/**
 	 * 查询数据。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_RIGHT + ":" + Right.VIEW})
+	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
-	public DataGrid<DetailInfo> datagrid(DetailInfo info){
-		return this.detailService.datagrid(info);
+	public DataGrid<ReportInfo> datagrid(ReportInfo info){
+		return this.reportSerivce.datagrid(info);
 	}
 	/**
 	 * 更新数据。
@@ -74,37 +90,21 @@ public class DetailController {
 	 * @return
 	 * 更新后数据。
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(DetailInfo info){
+	public Json update(ReportInfo info,String stutasDteail,Model model){
 		Json result = new Json();
 		try {
-			result.setData(this.detailService.update(info));
+			if(stutasDteail !=null){
+				info.setStatus(Report.STATUS_AUDIT);
+			}
+			result.setData(this.reportSerivce.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
 			result.setSuccess(false);
 			result.setMsg(e.getMessage());
-			logger.error("更新业务系统数据发生异常", e);
-		}
-		return result;
-	}
-	/**
-	 * 删除数据。
-	 * @param id
-	 * @return
-	 */
-	@RequestMapping(value="/delete", method = RequestMethod.POST)
-	@ResponseBody
-	public Json delete(String id){
-		Json result = new Json();
-		try {
-			this.detailService.delete(id.split("\\|"));
-			result.setSuccess(true);
-		} catch (Exception e) {
-			result.setSuccess(false);
-			result.setMsg(e.getMessage());
-			logger.error("删除数据["+id+"]时发生异常:", e);
+			logger.error("更新员工报表信息数据发生异常", e);
 		}
 		return result;
 	}

@@ -27,7 +27,7 @@ import com.examw.oa.service.plan.ISettingsService;
 public class SettingsController {
 	private static Logger logger = Logger.getLogger(LogController.class);
 	/**
-	 * 员工报表服务接口。
+	 * 员工计划设置服务接口。
 	 */
 	@Resource
 	private ISettingsService settingsService;

@@ -28,9 +28,12 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	private static Logger logger = Logger.getLogger(ReportServiceImpl.class);
 	private IReportDao reportDao;
 	private IDetailDao detailDao;
-	private ISettingsService settingsService;
 	private Map<Integer, String> statusMap;
+	private ISettingsService settingsService;
 	
+	/**
+	 * 计划明细数据接口
+	 */
 	public void setDetailDao(IDetailDao detailDao) {
 		this.detailDao = detailDao;
 	}
@@ -42,7 +45,9 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	public void setReportDao(IReportDao reportDao) {
 		this.reportDao = reportDao;
 	}
-	
+	/**
+	 * 计划设置服务
+	 */
 	public void setSettingsService(ISettingsService settingsService) {
 		this.settingsService = settingsService;
 	}

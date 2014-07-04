@@ -60,8 +60,16 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 			hql += " and (r.type like :type)";
 			parameters.put("type", "%" + info.getType() + "%");
 		}
+		if(!StringUtils.isEmpty(info.getEmployeeName())){
+			hql += " and (r.employee.name like :name)";
+			parameters.put("name", "%" + info.getEmployeeName() + "%");
+		}
 		return hql;
 	}
+	/*
+	 * 判断上条记录 是否为 未提交
+	 * @see com.examw.oa.dao.plan.IReportDao#findReports(java.lang.Integer)
+	 */
 	@Override
 	public List<Report> findReports(Integer type) {
 		final String hql = "from Report r where (r.type = :type) and (r.status = :status)";
