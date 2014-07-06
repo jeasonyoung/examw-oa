@@ -77,14 +77,13 @@ $(function(){
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
-			width:800,
-			height:600,
+			width:810,
+			height:620,
 			href:"<@s.url '/plan/report/edit'/>",
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
 			{
-				
 				text:"提交",
 				iconCls:"icon-save",
 				handler:function(){
@@ -144,7 +143,7 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			
+			employeeName:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 });
@@ -153,6 +152,6 @@ $(function(){
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
 	<!-- </shiro.hasPermission> -->
-	<label>创建时间：<input name="time" type="text" style="width:198px;"/></label>
+	<label>员工姓名：<input name="name" type="text" style="width:198px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

@@ -1,23 +1,55 @@
 <#--计划总结编辑-->
+<#include "ftl/comm.ftl"/>
 <#assign module="plan_report"/>
 <#assign form="${module}_edit_form"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	//business 
+	var b_t = $("#${form} input[name='businessId']").combobox({
+		url:"<@s.url '/plan/business/all'/>",
+		valueField:"id",
+		textField:"name",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		}
+	});
+});
+-->
+</script>
 <form id="${form}" method="POST" class="easyui-tabs" style="padding:2px;"> 
 	<input type="hidden" name="id"/>
 	<div title="${TYPE_PLAN_NAME}" style="margin-top:2px;">
+		<div style="float:left;">
+				<label style="width:75px;">业务系统：</label>
+				<input type="text" name="businessId" style="width:172px;"/>
+		</div>
 		<input type="hidden" name="planId"/>
 		<textarea name="planDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:770px;height:480px;"></textarea>
 	</div>
 	<div title="${TYPE_SUMMARY_NAME}" style="margin-top:2px;"> 
+		<div style="float:left;">
+				<label style="width:75px;">业务系统：</label>
+				<input type="text" name="businessId" style="width:172px;"/>
+		</div>
 		<input type="hidden" name="summaryId"/>
 		<textarea name="summaryDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:480px;"></textarea>
 	</div>
 	<div title="${TYPE_SUPPORT_NAME}" style="margin-top:2px;">
+		<div style="float:left;">
+				<label style="width:75px;">业务系统：</label>
+				<input type="text" name="businessId" style="width:172px;"/>
+		</div>
 		<input type="hidden" name="supportId"/>
 		<textarea name="supportDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:480px;"></textarea>
 	</div>
 	<div title="${TYPE_SUGGESTIONS_NAME}" style="margin-top:2px;">
+		<div style="float:left;">
+				<label style="width:75px;">业务系统：</label>
+				<input type="text" name="businessId" style="width:172px;"/>
+		</div>
 		<input type="hidden" name="suggetsionsId"/>
 		<textarea name="suggetsionsDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:480px;"></textarea>
-	</div>
-	 
+	</div> 
 </form>

@@ -13,7 +13,6 @@ import java.util.UUID;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
-
 import com.examw.oa.dao.plan.IDetailDao;
 import com.examw.oa.dao.plan.IReportDao; 
 import com.examw.oa.domain.plan.Detail;
@@ -162,9 +161,13 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 			info.setSuggetsionsId(suggetDetial.getId());
 			details.add(suggetDetial);
 		}
-		data.setDetails(details);		
+		data.setDetails(details);
 		BeanUtils.copyProperties(info, data, new String[]{"createTime","lastPostTime","type"});
-		data.setStatus((data.getLastPostTime().getTime() - data.getPostTime().getTime() > 0) ? Report.STATUS_POST : Report.STATUS_LATE);
+		if(info.getStatus()!=null){
+			data.setStatus(Report.STATUS_AUDIT);
+		}else{
+			data.setStatus((data.getLastPostTime().getTime() - data.getPostTime().getTime() > 0) ? Report.STATUS_POST : Report.STATUS_LATE);
+		}
 		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
 		}

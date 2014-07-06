@@ -14,6 +14,7 @@ public class ReportInfo extends Paging {
 	private Integer type,Status;
 	private String planId,summaryId,suggetsionsId,supportId;
 	private String planDetail,summaryDetail,suggetsionsDetail,supportDetail;
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime,postTime,lastPostTime;
 	/**
@@ -281,5 +282,5 @@ public class ReportInfo extends Paging {
 	 */
 	public void setSupportDetail(String supportDetail) {
 		this.supportDetail = supportDetail;
-	}
+	}	
 }

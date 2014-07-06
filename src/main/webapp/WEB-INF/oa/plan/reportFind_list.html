@@ -1,13 +1,13 @@
 <#--业务系统列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="plan_detail"/>
+<#assign module="plan_reportFind"/>
 <#assign dg="${module}_list_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
 	//dg
 	var dg = $("#${dg}").datagrid({
-		url:"<@s.url '/plan/detail/datagrid'/>",
+		url:"<@s.url '/plan/report/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -75,22 +75,22 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
-		var status =2;
 		var d = $("<div/>").dialog({
 			title:title,
 			width:800,
 			height:600,
-			href:"<@s.url '/plan/detail/edit'/>",
+			href:"<@s.url '/plan/report/edit'/>",
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
 			{
-				text:"审核",
+				
+				text:"提交",
 				iconCls:"icon-save",
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/plan/detail/update'/>?reportStatus="+ status,
+						url:"<@s.url '/plan/report/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -144,7 +144,11 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			employeeName:$("#${dg}_toobar input[name='name']").val()
+			employeeName:$("#${dg}_toobar input[name='name']").val(),
+			type:$("#${dg}_toobar input[name='type']").val(),
+			status:$("#${dg}_toobar input[name='status']").val(),
+			createTime:new Date(parseInt($("#${dg}_toobar input[name='createTime']").val(),10))
+
 		});
 	};
 });
@@ -153,6 +157,9 @@ $(function(){
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
 	<!-- </shiro.hasPermission> -->
-	<label>员工姓名：<input name="name" type="text" style="width:198px;"/></label>
+	<label>员工姓名：<input name="name" type="text" style="width:120px;"/></label>
+	<label>报告类型：<input name="type" type="text" style="width:120px;"/></label>
+	<label>报告状态：<input name="status" type="text" style="width:120px;"/></label>
+	<label>创建时间：<input name="createTime" type="text" style="width:120px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

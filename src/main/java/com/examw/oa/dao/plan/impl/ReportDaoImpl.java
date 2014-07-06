@@ -60,6 +60,10 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 			hql += " and (r.type like :type)";
 			parameters.put("type", "%" + info.getType() + "%");
 		}
+		if(!StringUtils.isEmpty(info.getStatus())){
+			hql += " and (r.status like :status)";
+			parameters.put("status", "%" + info.getStatus() + "%");
+		}
 		if(!StringUtils.isEmpty(info.getEmployeeName())){
 			hql += " and (r.employee.name like :name)";
 			parameters.put("name", "%" + info.getEmployeeName() + "%");
