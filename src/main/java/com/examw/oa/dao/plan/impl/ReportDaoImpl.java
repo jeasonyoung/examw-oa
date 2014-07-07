@@ -52,17 +52,13 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 	 * HQL
 	 */
 	protected String addWhere(ReportInfo info, String hql, Map<String, Object> parameters){
-		if(!StringUtils.isEmpty(info.getCreateTime())){
-			hql += " and (r.createTime like :createTime)";
-			parameters.put("createTime", "%" + info.getCreateTime() + "%");
+		if(info.getCreateTime() !=null){
+			hql += " and (r.createTime <=:createTime)";
+			parameters.put("createTime", info.getCreateTime());
 		}
-		if(!StringUtils.isEmpty(info.getType())){
-			hql += " and (r.type like :type)";
-			parameters.put("type", "%" + info.getType() + "%");
-		}
-		if(!StringUtils.isEmpty(info.getStatus())){
-			hql += " and (r.status like :status)";
-			parameters.put("status", "%" + info.getStatus() + "%");
+		if(info.getStatus() != null){
+			hql += " and (r.status = :Status)";
+			parameters.put("Status", info.getStatus());
 		}
 		if(!StringUtils.isEmpty(info.getEmployeeName())){
 			hql += " and (r.employee.name like :name)";

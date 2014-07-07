@@ -7,7 +7,7 @@
 $(function(){
 	//dg
 	var dg = $("#${dg}").datagrid({
-		url:"<@s.url '/plan/report/datagrid'/>",
+		url:"<@s.url '/plan/reportFind/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -78,47 +78,10 @@ $(function(){
 		var d = $("<div/>").dialog({
 			title:title,
 			width:800,
-			height:600,
-			href:"<@s.url '/plan/report/edit'/>",
+			height:645,
+			href:"<@s.url '/plan/reportFind/edit'/>",
 			modal:true,
 			buttons:[
-			/* <shiro.hasPermission name="${PER_UPDATE}"> */
-			{
-				
-				text:"提交",
-				iconCls:"icon-save",
-				handler:function(){
-					$.messager.progress();
-					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/plan/report/update'/>",
-						onSubmit: function(){
-							var isValid = $(this).form("validate");
-							if (!isValid)$.messager.progress("close");
-							return isValid;
-						},
-						onLoadError:function(e){
-							$.messager.progress("close");
-							<@error_dialog "e"/>
-						},
-						success:function(data){
-							$.messager.progress("close");
-							var data = $.parseJSON(data);
-							if(data.success){
-								dg.datagrid(row ? "updateRow" : "insertRow",{
-									index:index,
-									row:data.data
-								});
-								d.dialog("close");
-							}else{
-								$.messager.show({
-									title:"保存异常",
-									msg:data.msg
-								});
-							}
-						}
-					});
-				}
-			},
 			/* </shiro.hasPermission> */
 			{
 				text:"关闭",
@@ -145,10 +108,8 @@ $(function(){
 	${dg}_search = function(){
 		dg.datagrid("load",{
 			employeeName:$("#${dg}_toobar input[name='name']").val(),
-			type:$("#${dg}_toobar input[name='type']").val(),
-			status:$("#${dg}_toobar input[name='status']").val(),
-			createTime:new Date(parseInt($("#${dg}_toobar input[name='createTime']").val(),10))
-
+			Status:$("#${dg}_toobar select[name='status']").val(),
+			createTime:$("#${dg}_toobar input[name='createTime']").val()
 		});
 	};
 });
@@ -158,8 +119,13 @@ $(function(){
 <div id="${dg}_toobar">
 	<!-- </shiro.hasPermission> -->
 	<label>员工姓名：<input name="name" type="text" style="width:120px;"/></label>
-	<label>报告类型：<input name="type" type="text" style="width:120px;"/></label>
-	<label>报告状态：<input name="status" type="text" style="width:120px;"/></label>
-	<label>创建时间：<input name="createTime" type="text" style="width:120px;"/></label>
+	<label>报告状态：</label>
+		<select name="status" style="width:120px;"> 
+				<option></option>
+			<#list statusMap?keys as key>
+				<option value="${key}">${statusMap[key]}</option>
+			</#list>
+		</select>
+	<label>创建时间：<input name="createTime" type="text" class="easyui-datebox" required="required" style="width:120px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

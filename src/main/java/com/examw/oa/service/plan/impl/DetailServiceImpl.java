@@ -1,15 +1,13 @@
 package com.examw.oa.service.plan.impl;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import com.examw.oa.dao.plan.IDetailDao;
-import com.examw.oa.domain.plan.Business;
 import com.examw.oa.domain.plan.Detail;
 import com.examw.oa.model.plan.DetailInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
@@ -22,6 +20,7 @@ import com.examw.oa.service.plan.IDetailService;
  */
 public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> implements IDetailService {
 	private IDetailDao detailDao;
+	
 	private Map<Integer, String> typeMap;
 	/**
 	 * 计划总结明细接口
@@ -34,9 +33,11 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 * 类型集合
 	 * @param typeMap
 	 */
+	
 	public void setTypeMap(Map<Integer, String> typeMap) {
 		this.typeMap = typeMap;
 	}
+	
 	/*
 	 * 查询数据
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#find(java.lang.Object)
@@ -54,13 +55,6 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 		if(data == null)return null;
 		DetailInfo info=new DetailInfo();
 		BeanUtils.copyProperties(data, info);
-		//业务系统
-		if(data.getBusinesses() != null){
-				info.setBusIdPlan(info.getBusIdPlan());
-				info.setBusIdSummary(info.getBusIdSummary());
-				info.setBusIdSupport(info.getBusIdSupport());
-				info.setBusIdsuggetsion(info.getBusIdsuggetsion());
-			}
 		return info;
 	}
 	/*
@@ -89,9 +83,8 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);
-		//业务系统
-		Set<Business> business = new HashSet<>();
-		data.setBusinesses(business);
+		//添加业务系统。
+		
 		if(isAdded) this.detailDao.save(data);
 		return info;
 	}

@@ -16,7 +16,6 @@ public class DetailInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,content;
 	private Integer type;
-	private String busIdPlan,busIdSupport,busIdSummary,busIdsuggetsion;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
@@ -85,29 +84,4 @@ public class DetailInfo extends Paging {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getBusIdPlan() {
-		return busIdPlan;
-	}
-	public void setBusIdPlan(String busIdPlan) {
-		this.busIdPlan = busIdPlan;
-	}
-	public String getBusIdSupport() {
-		return busIdSupport;
-	}
-	public void setBusIdSupport(String busIdSupport) {
-		this.busIdSupport = busIdSupport;
-	}
-	public String getBusIdSummary() {
-		return busIdSummary;
-	}
-	public void setBusIdSummary(String busIdSummary) {
-		this.busIdSummary = busIdSummary;
-	}
-	public String getBusIdsuggetsion() {
-		return busIdsuggetsion;
-	}
-	public void setBusIdsuggetsion(String busIdsuggetsion) {
-		this.busIdsuggetsion = busIdsuggetsion;
-	}
-
 }

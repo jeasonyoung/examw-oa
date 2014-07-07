@@ -14,7 +14,9 @@ import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.domain.plan.Detail;
 import com.examw.oa.domain.plan.Report;
+import com.examw.oa.model.plan.BusinessInfo;
 import com.examw.oa.model.plan.ReportInfo;
+import com.examw.oa.service.plan.IBusinessService;
 import com.examw.oa.service.plan.IDetailService;
 import com.examw.oa.service.plan.IReportService;
 /**
@@ -31,11 +33,16 @@ public class ReportController {
 	 */
 	@Resource
 	private IReportService reportSerivce;
-	@Resource
 	/*
 	 * 计划总结服务接口
 	 */
+	@Resource
 	private IDetailService detailService;
+	/*
+	 *业务系统服务。
+	 */
+	@Resource
+	private IBusinessService businessService;
 	/**
 	 * 列表页面。
 	 * @return
@@ -70,7 +77,23 @@ public class ReportController {
 		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
 		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
 		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
-		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
+		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS)); 
+		DataGrid<BusinessInfo> business = this.businessService.datagrid(new BusinessInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public Integer getPage(){return null;}
+			@Override
+			public Integer getRows(){return null;}
+			@Override
+			public String getSort(){
+				return "name";
+			}
+			@Override
+			public String getOrder() {
+				return "asc";
+			}
+		});
+		model.addAttribute("business", business.getRows());
 		return "plan/report_edit";
    }
 	/**

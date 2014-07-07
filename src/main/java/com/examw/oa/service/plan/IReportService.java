@@ -1,5 +1,7 @@
 package com.examw.oa.service.plan;
 
+import java.util.Map;
+
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
@@ -28,4 +30,9 @@ public interface IReportService extends IBaseDataService<ReportInfo>{
 	 * 月报任务
 	 */
 	void addTaskMonth();
+	/**
+	 * 取得状态映射
+	 * @return
+	 */
+	Map<String,String> getStatusMap();
 }

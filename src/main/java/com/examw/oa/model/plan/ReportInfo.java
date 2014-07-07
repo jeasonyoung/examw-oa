@@ -14,9 +14,10 @@ public class ReportInfo extends Paging {
 	private Integer type,Status;
 	private String planId,summaryId,suggetsionsId,supportId;
 	private String planDetail,summaryDetail,suggetsionsDetail,supportDetail;
-
+	private String[] businessId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date createTime,postTime,lastPostTime;
+	private Date createTime;
+	private Date postTime,lastPostTime;
 	/**
 	 * 获取员工报表ID
 	 * @return
@@ -282,5 +283,21 @@ public class ReportInfo extends Paging {
 	 */
 	public void setSupportDetail(String supportDetail) {
 		this.supportDetail = supportDetail;
+	}
+	/**
+	 * 获取系统业务数组
+	 * @return
+	 * 系统业务数组
+	 */
+	public String[] getBusinessId() {
+		return businessId;
+	}
+	/**
+	 * 设置系统业务数组
+	 * @param businessId
+	 * 系统业务数组
+	 */
+	public void setBusinessId(String[] businessId) {
+		this.businessId = businessId;
 	}	
 }

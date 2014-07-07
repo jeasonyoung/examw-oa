@@ -43,11 +43,19 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 	public void setSettingsDao(ISettingsDao settingsDao) {
 		this.settingsDao = settingsDao;
 	}
-	
+	/**
+	 * 设置员工信息数据接口。
+	 * @param settingsDao
+	 * 员工信息数据接口。
+	 */
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
 	}
-	
+	/**
+	 * 设置部门信息数据接口。
+	 * @param settingsDao
+	 * 员工部门数据接口。
+	 */
 	public void setDepartmentDao(IDepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
 	}
@@ -71,6 +79,9 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 		if(data.getEmployee() != null){
 			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
+		}
+		if(data.getDepartment() != null){
+			info.setDepartmentId(data.getDepartment().getId());
 		}
 		info.setTypeName(this.loadTypeName(data.getType()));
 		return info;

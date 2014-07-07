@@ -62,18 +62,6 @@ public class SettingsInfo extends Paging {
 		return type;
 	}	
 	/**
-	 * 获取部门ID
-	 * @return
-	 * 部门ID
-	 */
-	
-	/**
-	 * 设置部门ID
-	 * @param deptId
-	 * 部门ID
-	 */
-	
-	/**
 	 * 获取员工报表类型名称
 	 * @return
 	 * 员工报表类型名称
@@ -81,9 +69,21 @@ public class SettingsInfo extends Paging {
 	public String getTypeName() {
 		return typeName;
 	}
+	/**
+	 * 获取部门ID
+	 * @return
+	 * 部门ID
+	 */
+	
 	public String getDepartmentId() {
 		return departmentId;
 	}
+	/**
+	 * 设置部门ID
+	 * @param deptId
+	 * 部门ID
+	 */
+	
 	public void setDepartmentId(String departmentId) {
 		this.departmentId = departmentId;
 	}

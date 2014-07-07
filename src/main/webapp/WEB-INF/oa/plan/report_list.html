@@ -73,59 +73,66 @@ $(function(){
 			edit_window("编辑员工报表信息",rowIndex,rowData);
 		}
 	});
+	function edit_window_btn_save(row){
+		if(!row || (row.status != ${STATUS_NONE_VALUE})) return null;
+		return {
+			text:"提交",
+			iconCls:"icon-save",
+			handler:function(){
+				$.messager.progress();
+				$("#${module}_edit_form").form("submit",{
+					url:"<@s.url '/plan/report/update'/>",
+					onSubmit: function(){
+						var isValid = $(this).form("validate");
+						if (!isValid)$.messager.progress("close");
+						return isValid;
+					},
+					onLoadError:function(e){
+						$.messager.progress("close");
+						<@error_dialog "e"/>
+					},
+					success:function(data){
+						$.messager.progress("close");
+						var data = $.parseJSON(data);
+						if(data.success){
+							dg.datagrid(row ? "updateRow" : "insertRow",{
+								index:index,
+								row:data.data
+							});
+							d.dialog("close");
+						}else{
+							$.messager.show({
+								title:"保存异常",
+								msg:data.msg
+							});
+						}
+					}
+				});
+			}
+		};
+	};
 	//edit
 	function edit_window(title,index,row){
+		var btns =[];
+		/* <shiro.hasPermission name="${PER_UPDATE}"> */
+		var save_btn_obj = edit_window_btn_save(row);
+		if(save_btn_obj != null) btns.push(save_btn_obj);
+		/*</shiro.hasPermission> */
+		btns.push({
+			text:"关闭",
+			iconCls:"icon-cancel",
+			handler:function(){
+				d.dialog("close");
+			}
+		});
+		
 		var d = $("<div/>").dialog({
 			title:title,
-			width:810,
-			height:620,
+			width:800,
+			height:645,
 			href:"<@s.url '/plan/report/edit'/>",
 			modal:true,
-			buttons:[
-			/* <shiro.hasPermission name="${PER_UPDATE}"> */
-			{
-				text:"提交",
-				iconCls:"icon-save",
-				handler:function(){
-					$.messager.progress();
-					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/plan/report/update'/>",
-						onSubmit: function(){
-							var isValid = $(this).form("validate");
-							if (!isValid)$.messager.progress("close");
-							return isValid;
-						},
-						onLoadError:function(e){
-							$.messager.progress("close");
-							<@error_dialog "e"/>
-						},
-						success:function(data){
-							$.messager.progress("close");
-							var data = $.parseJSON(data);
-							if(data.success){
-								dg.datagrid(row ? "updateRow" : "insertRow",{
-									index:index,
-									row:data.data
-								});
-								d.dialog("close");
-							}else{
-								$.messager.show({
-									title:"保存异常",
-									msg:data.msg
-								});
-							}
-						}
-					});
-				}
-			},
-			/* </shiro.hasPermission> */
-			{
-				text:"关闭",
-				iconCls:"icon-cancel",
-				handler:function(){
-					d.dialog("close");
-				}
-			}],
+			buttons:btns,
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
