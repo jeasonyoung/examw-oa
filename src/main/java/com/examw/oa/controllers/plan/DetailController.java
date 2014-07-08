@@ -29,16 +29,16 @@ import com.examw.oa.service.plan.IReportService;
 public class DetailController {
 	private static Logger logger = Logger.getLogger(LogController.class);
 	/**
-	 * 员工计划服务接口
+	 * 员工计划服务
 	 */
 	@Resource
 	private IReportService reportSerivce;
 	/**
-	 * 计划总结服务接口
+	 * 计划总结明细服务
 	 */
 	@Resource
 	private IDetailService detailService;
-	/*
+	/**
 	 *业务系统服务。
 	 */
 	@Resource

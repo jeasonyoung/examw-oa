@@ -3,7 +3,6 @@ package com.examw.oa.domain.plan;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-
 /**
  * 业务系统。
  * @author yangyong.

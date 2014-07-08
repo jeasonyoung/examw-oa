@@ -24,17 +24,17 @@ import com.examw.oa.service.plan.IReportService;
 @Controller
 @RequestMapping(value = "/plan/reportFind")
 public class ReportFindController {
-	/*
-	 * 报表服务接口
+	/**
+	 * 报表服务
 	 */
 	@Resource
 	private IReportService reportSerivce;
-	/*
-	 * 计划总结服务接口
+	/**
+	 * 计划总结明细服务
 	 */
 	@Resource
 	private IDetailService detailService;
-	/*
+	/**
 	 *业务系统服务。
 	 */
 	@Resource

@@ -27,6 +27,12 @@ public interface IReportDao extends IBaseDao<Report>{
 	  * 数据总数。
 	  */
 	 Long total(ReportInfo info);
-	 
+	 /**
+	  * 根据类型查找报表
+	  * @param type
+	  * 查询条件
+	  * @return
+	  * 查询结果
+	  */
 	 List<Report> findReports(Integer type);
 }

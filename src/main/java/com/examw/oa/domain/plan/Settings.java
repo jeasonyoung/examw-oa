@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;
-
 /**
  * 员工报告设置。
  * @author yangyong.
@@ -60,10 +59,18 @@ public class Settings implements Serializable {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-	
+	/**
+	 * 获取所属部门
+	 * @return 所属部门
+	 */
 	public Department getDepartment() {
 		return department;
 	}
+	/**
+	 * 设置所属部门
+	 * @param department
+	 * 所属部门
+	 */
 	public void setDepartment(Department department) {
 		this.department = department;
 	}

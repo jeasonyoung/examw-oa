@@ -11,7 +11,7 @@ import com.examw.oa.dao.plan.ISettingsDao;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 /**
- * 员工报表数据接口实现。
+ * 设置员工报表数据接口实现。
  * @author lq.
  * @since 2014-06-24.
  */

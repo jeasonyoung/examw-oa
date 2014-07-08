@@ -10,7 +10,11 @@ import com.examw.oa.dao.impl.BaseDaoImpl;
 import com.examw.oa.dao.plan.IReportDao;
 import com.examw.oa.domain.plan.Report;
 import com.examw.oa.model.plan.ReportInfo;
-
+/**
+ * 员工报表数据接口实现。
+ * @author lq.
+ * @since 2014-07-03.
+ */
 public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 	/*
 	 * 数据查询
@@ -55,6 +59,10 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 		if(info.getCreateTime() !=null){
 			hql += " and (r.createTime <=:createTime)";
 			parameters.put("createTime", info.getCreateTime());
+		}
+		if(info.getPostTime() !=null){
+			hql += " and (r.postTime <=:postTime)";
+			parameters.put("postTime", info.getPostTime());
 		}
 		if(info.getStatus() != null){
 			hql += " and (r.status = :Status)";

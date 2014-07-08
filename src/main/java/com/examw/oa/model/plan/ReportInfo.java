@@ -7,7 +7,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
-
+/**
+ * 计划总结
+ * @author lq
+ * @since 2014-07-02
+ */
 public class ReportInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,typeName,employeeId,employeeName;
@@ -17,6 +21,7 @@ public class ReportInfo extends Paging {
 	private String[] businessId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date postTime,lastPostTime;
 	/**
 	 * 获取员工报表ID
@@ -66,10 +71,19 @@ public class ReportInfo extends Paging {
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
 	}
-	
+	/**
+	 * 获取类型名称
+	 * @return
+	 * 类型名称
+	 */
 	public String getTypeName() {
 		return typeName;
 	}
+	/**
+	 * 设置类型名称
+	 * @param typeName
+	 * 类型名称
+	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}

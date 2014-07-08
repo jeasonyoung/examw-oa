@@ -73,7 +73,7 @@ $(function(){
 			edit_window("编辑员工报表信息",rowIndex,rowData);
 		}
 	});
-	function edit_window_btn_save(row){
+	function edit_window_btn_save(row,index){
 		if(!row || (row.status != ${STATUS_NONE_VALUE})) return null;
 		return {
 			text:"提交",
@@ -116,7 +116,9 @@ $(function(){
 		var btns =[];
 		/* <shiro.hasPermission name="${PER_UPDATE}"> */
 		var save_btn_obj = edit_window_btn_save(row);
+		var save_btn_index = edit_window_btn_save(index);
 		if(save_btn_obj != null) btns.push(save_btn_obj);
+		if(save_btn_index != null) btns.push(save_btn_index);
 		/*</shiro.hasPermission> */
 		btns.push({
 			text:"关闭",
@@ -125,7 +127,6 @@ $(function(){
 				d.dialog("close");
 			}
 		});
-		
 		var d = $("<div/>").dialog({
 			title:title,
 			width:800,
@@ -150,7 +151,8 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			employeeName:$("#${dg}_toobar input[name='name']").val()
+			employeeName:$("#${dg}_toobar input[name='name']").val(),
+			postTime:$("#${dg}_toobar input[name='postTime']").val()
 		});
 	};
 });
@@ -159,6 +161,7 @@ $(function(){
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
 	<!-- </shiro.hasPermission> -->
-	<label>员工姓名：<input name="name" type="text" style="width:198px;"/></label>
+	<label>员工姓名：<input name="name" type="text" style="width:150px;"/></label>
+	<label>提交时间：<input name="postTime" type="text" class="easyui-datebox" required="required" style="width:140px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

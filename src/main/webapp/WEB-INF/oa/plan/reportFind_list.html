@@ -70,7 +70,7 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑员工报表信息",rowIndex,rowData);
+			edit_window("查询员工报表信息",rowIndex,rowData);
 		}
 	});
 	//edit
@@ -109,7 +109,8 @@ $(function(){
 		dg.datagrid("load",{
 			employeeName:$("#${dg}_toobar input[name='name']").val(),
 			Status:$("#${dg}_toobar select[name='status']").val(),
-			createTime:$("#${dg}_toobar input[name='createTime']").val()
+			createTime:$("#${dg}_toobar input[name='createTime']").val(),
+			postTime:$("#${dg}_toobar input[name='postTime']").val()
 		});
 	};
 });
@@ -127,5 +128,7 @@ $(function(){
 			</#list>
 		</select>
 	<label>创建时间：<input name="createTime" type="text" class="easyui-datebox" required="required" style="width:120px;"/></label>
+		<label>提交时间：<input name="postTime" type="text" class="easyui-datebox" required="required" style="width:120px;"/></label>
+	
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

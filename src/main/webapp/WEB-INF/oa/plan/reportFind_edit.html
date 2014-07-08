@@ -5,50 +5,66 @@
 <form id="${form}" method="POST" class="easyui-tabs" style="padding:2px;"> 
 	<input type="hidden" name="id"/>
 	<div title="${TYPE_PLAN_NAME}" style="margin-top:2px;">
-		<label style="width:75px;">业务系统：</label>
+		<div >
+		<label style="width:150px;">业务系统：</label>
 		<#if business ??>
-		<ul style="list-style: none;">
-			<#list business as b>
-			<li style="float: left; padding: 2px;"><label><input
-					type="checkbox" name="businessId" value="${b.id}" />${b.name}</label></li> </#list>
-		</ul>
+			<ul style="list-style: none;">
+				<#list business as b>
+					<li style="float: left;">
+						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
+					</li>
+				</#list>
+			</ul>
 		</#if>
+		</div>
 		<input type="hidden" name="planId"/>
-		<textarea name="planDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:770px;height:480px;"></textarea>
+		<textarea name="planDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:770px;height:470px;"></textarea>
 	</div>
 	<div title="${TYPE_SUMMARY_NAME}" style="margin-top:2px;"> 
-		<label style="width:75px;">业务系统：</label>
+		<div>
+		<label style="width:150px;">业务系统：</label>
 		<#if business ??>
-		<ul style="list-style: none;">
-			<#list business as b>
-			<li style="float: left; padding: 2px;"><label><input
-					type="checkbox" name="businessId" value="${b.id}" />${b.name}</label></li> </#list>
-		</ul>
+			<ul style="list-style: none;">
+				<#list business as b>
+					<li style="float: left;">
+						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
+					</li>
+				</#list>
+			</ul>
 		</#if>
+		</div>
 		<input type="hidden" name="summaryId"/>
 		<textarea name="summaryDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:480px;"></textarea>
 	</div>
 	<div title="${TYPE_SUPPORT_NAME}" style="margin-top:2px;">
-		<label style="width:75px;">业务系统：</label>
+		<div>
+		<label style="width:150px;">业务系统：</label>
 		<#if business ??>
-		<ul style="list-style: none;">
-			<#list business as b>
-			<li style="float: left; padding: 2px;"><label><input
-					type="checkbox" name="businessId" value="${b.id}" />${b.name}</label></li> </#list>
-		</ul>
+			<ul style="list-style: none;">
+				<#list business as b>
+					<li style="float: left;">
+						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
+					</li>
+				</#list>
+			</ul>
 		</#if>
+		</div>
 		<input type="hidden" name="supportId"/>
 		<textarea name="supportDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:480px;"></textarea>
 	</div>
 	<div title="${TYPE_SUGGESTIONS_NAME}" style="margin-top:2px;">
-		<label style="width:75px;">业务系统：</label>
+		<div>
+		<label style="width:150px;">业务系统：</label>
 		<#if business ??>
-		<ul style="list-style: none;">
-			<#list business as b>
-			<li style="float: left; padding: 2px;"><label><input
-					type="checkbox" name="businessId" value="${b.id}" />${b.name}</label></li> </#list>
-		</ul>
+			<ul style="list-style: none;">
+				<#list business as b>
+					<li style="float: left;">
+						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
+					</li>
+				</#list>
+			</ul>
 		</#if>
+		</div>
 		<input type="hidden" name="suggetsionsId"/>
 		<textarea name="suggetsionsDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:480px;"></textarea>
 	</div> 

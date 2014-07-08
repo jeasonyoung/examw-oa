@@ -18,7 +18,7 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"name",
+		sortName:"createTime",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
@@ -67,7 +67,7 @@ $(function(){
 		var d = $("<div/>").dialog({
 			title:title,
 			width:300,
-			height:250,
+			height:280,
 			href:"<@s.url '/plan/business/edit'/>",
 			modal:true,
 			buttons:[

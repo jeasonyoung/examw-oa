@@ -80,7 +80,6 @@ public class DetailInfo extends Paging {
 	 * @return
 	 * 计划总结明细创建时间
 	 */
-	
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
