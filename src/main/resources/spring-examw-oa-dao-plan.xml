@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<!-- 业务系统dao -->
+	<!-- 业务系统Dao -->
 	<bean id="businessDao" class="com.examw.oa.dao.plan.impl.BusinessDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<!-- 员工计划总结dao -->
+	<!-- 员工计划总结Dao -->
 	<bean id="settingsDao" class="com.examw.oa.dao.plan.impl.SettingsDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<!-- 员工报表dao -->
+	<!-- 员工报表Dao -->
 	<bean id="reportDao" class="com.examw.oa.dao.plan.impl.ReportDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
-	<!-- 计划总结明细dao -->
+	<!-- 计划总结明细Dao -->
 	<bean id="detailDao" class="com.examw.oa.dao.plan.impl.DetailDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>

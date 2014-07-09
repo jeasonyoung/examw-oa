@@ -313,5 +313,5 @@ public class ReportInfo extends Paging {
 	 */
 	public void setBusinessId(String[] businessId) {
 		this.businessId = businessId;
-	}	
+	}
 }

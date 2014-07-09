@@ -73,11 +73,11 @@ $(function(){
 			edit_window("审核员工报表信息",rowIndex,rowData);
 		}
 	});
-	function edit_window_btn_save(row){
+	function edit_window_btn_save(row,index){
 		var status=2;
-		if(!row || (row.status != ${STATUS_POST_VALUE})) return null;
+		if(!row || (row.status != ${STATUS_POST_VALUE}) && (row.status !=${STATUS_LATE_VALUE})) return null;
 		return {
-			text:"提交",
+			text:"审核",
 			iconCls:"icon-save",
 			handler:function(){
 				$.messager.progress();
@@ -117,7 +117,9 @@ $(function(){
 		var btns =[];
 		/* <shiro.hasPermission name="${PER_UPDATE}"> */
 		var save_btn_obj = edit_window_btn_save(row);
+		var save_btn_index = edit_window_btn_save(index);
 		if(save_btn_obj != null) btns.push(save_btn_obj);
+		if(save_btn_index != null) btns.push(save_btn_index);
 		/*</shiro.hasPermission> */
 		btns.push({
 			text:"关闭",
@@ -129,7 +131,7 @@ $(function(){
 		var d = $("<div/>").dialog({
 			title:title,
 			width:800,
-			height:645,
+			height:649,
 			href:"<@s.url '/plan/detail/edit'/>",
 			modal:true,
 			buttons:btns,

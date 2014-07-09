@@ -6,13 +6,11 @@
 	<input type="hidden" name="id"/>
 	<div title="${TYPE_PLAN_NAME}" style="margin-top:2px;">
 		<div >
-		<label style="width:150px;">业务系统：</label>
+		<label style="width:105px;font-size:18px ">业务系统：</label>
 		<#if business ??>
-			<ul style="list-style: none;">
+			<ul style="list-style: none;font-size:15px;">
 				<#list business as b>
-					<li style="float: left;">
-						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
-					</li>
+					<input type="checkbox" name="businessId" value="${b.id}" />${b.name}
 				</#list>
 			</ul>
 		</#if>
@@ -22,13 +20,11 @@
 	</div>
 	<div title="${TYPE_SUMMARY_NAME}" style="margin-top:2px;"> 
 		<div>
-		<label style="width:150px;">业务系统：</label>
+		<label style="width:105px;font-size:18px ">业务系统：</label>
 		<#if business ??>
-			<ul style="list-style: none;">
+			<ul style="list-style: none;font-size:15px;">
 				<#list business as b>
-					<li style="float: left;">
-						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
-					</li>
+					<input type="checkbox" name="businessId" value="${b.id}" />${b.name}
 				</#list>
 			</ul>
 		</#if>
@@ -38,13 +34,11 @@
 	</div>
 	<div title="${TYPE_SUPPORT_NAME}" style="margin-top:2px;">
 		<div>
-		<label style="width:150px;">业务系统：</label>
+		<label style="width:105px;font-size:18px ">业务系统：</label>
 		<#if business ??>
-			<ul style="list-style: none;">
+			<ul style="list-style: none;font-size:15px;">
 				<#list business as b>
-					<li style="float: left;">
-						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
-					</li>
+					<input type="checkbox" name="businessId" value="${b.id}" />${b.name}
 				</#list>
 			</ul>
 		</#if>
@@ -54,13 +48,11 @@
 	</div>
 	<div title="${TYPE_SUGGESTIONS_NAME}" style="margin-top:2px;">
 		<div>
-		<label style="width:150px;">业务系统：</label>
+		<label style="width:105px;font-size:18px ">业务系统：</label>
 		<#if business ??>
-			<ul style="list-style: none;">
+			<ul style="list-style: none;font-size:15px;">
 				<#list business as b>
-					<li style="float: left;">
-						<label><input type="checkbox" name="businessId" value="${b.id}" />${b.name}</label>
-					</li>
+					<input type="checkbox" name="businessId" value="${b.id}"/>${b.name}
 				</#list>
 			</ul>
 		</#if>

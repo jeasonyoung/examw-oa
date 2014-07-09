@@ -57,7 +57,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	public void setStatusMap(Map<String, String> statusMap) {
 		this.statusMap = statusMap;
 	}
-
 	/**
 	 * 设置员工报表数据接口
 	 * @param reportDao
@@ -72,15 +71,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		this.settingsService = settingsService;
 	}
 	/*
-	 *	数据查询 
-	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#find(java.lang.Object)
-	 */
-	@Override
-	protected List<Report> find(ReportInfo info) {
-		return this.reportDao.findReports(info);
-	}
-	/*
-	 * 系统业务设置函数
+	 * 业务系统设置函数
 	 */
 	public String[] buildDetail(Detail detail){
 		List<String> list = new ArrayList<>();
@@ -88,6 +79,80 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 			if(business != null) list.add(business.getId());
 		}
 		return list.toArray(new String[0]);
+	}
+	/*
+	 * 计划总结明细函数
+	 */
+	private Detail buildDetail(String id,Integer type,String content,String[] businessId){
+		Detail data = StringUtils.isEmpty(id) ? null : this.detailDao.load(Detail.class, id);
+		if(data == null){
+			if(StringUtils.isEmpty(content)) return null;
+			if(StringUtils.isEmpty(id)) id = UUID.randomUUID().toString();
+			data = new Detail();
+			data.setId(id);
+			data.setCreateTime(new Date());
+			data.setType(type);
+		}
+		data.setContent(content);
+		//系统业务添加
+		Set<Business> busSets = new HashSet<>();
+			for(String busId : businessId){
+				if(StringUtils.isEmpty(busId)) continue;
+				Business business = this.businessDao.load(Business.class, busId);
+				if(business != null)busSets.add(business);
+		}
+		data.setBusinesses(busSets);
+		return data;
+	}
+	/*
+	 * 报告任务函数
+	 */
+	public Integer Task(Integer typeLy,Integer none,Integer lack){
+		if(logger.isDebugEnabled()) logger.debug("定时器调用生成日报记录...");
+		//1.将未提交的报告变成缺交；
+		List<Report> reports = this.reportDao.findReports(typeLy);
+		if(reports != null && reports.size() > 0){
+			if(logger.isDebugEnabled()) logger.debug("将未提交的报告["+reports.size()+"]变成缺交...");
+			for(int i = 0; i < reports.size();i++){
+				Report report = reports.get(i);
+				if(report == null || report.getStatus() != none)continue;
+				report.setStatus(lack);
+				if(logger.isDebugEnabled()) logger.debug((i+1) + ".将未提交的报告["+report.getId()+"]变成缺交");
+			}
+		}
+		return lack;
+	}
+	/*
+	 * 添加报告任务函数
+	 */
+	public List<Settings> list(List<Settings> sett,Integer typeLy,Integer none,Date createTime,Date getTime){
+		for(int k = 0; k < sett.size(); k++){
+			try{
+				Settings setting = sett.get(k);
+				if(setting == null || setting.getEmployee() == null) continue;
+				Report data = new Report();
+				data.setId(UUID.randomUUID().toString());
+				data.setEmployee(setting.getEmployee());
+				data.setType(typeLy);
+				data.setStatus(none);
+				data.setCreateTime(createTime);
+				data.setLastPostTime(getTime);
+				this.reportDao.save(data);
+			}catch(Exception e){
+				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
+				logger.error(e);
+			}
+		}
+		
+		return sett;
+	}
+	/*
+	 *	数据查询 
+	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#find(java.lang.Object)
+	 */
+	@Override
+	protected List<Report> find(ReportInfo info) {
+		return this.reportDao.findReports(info);
 	}
 	/*
 	 * 类型转换
@@ -148,30 +213,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	protected Long total(ReportInfo info) {
 		return this.reportDao.total(info);
 	}
-	/*
-	 * 建立计划总结明细函数
-	 */
-	private Detail buildDetail(String id,Integer type,String content,String[] businessId){
-		Detail data = StringUtils.isEmpty(id) ? null : this.detailDao.load(Detail.class, id);
-		if(data == null){
-			if(StringUtils.isEmpty(content)) return null;
-			if(StringUtils.isEmpty(id)) id = UUID.randomUUID().toString();
-			data = new Detail();
-			data.setId(id);
-			data.setCreateTime(new Date());
-			data.setType(type);
-		}
-		data.setContent(content);
-		//系统业务添加
-		Set<Business> busSets = new HashSet<>();
-			for(String busId : businessId){
-				if(StringUtils.isEmpty(busId)) continue;
-				Business business = this.businessDao.load(Business.class, busId);
-				if(business != null)busSets.add(business);
-		}
-		data.setBusinesses(busSets);
-		return data;
-	}
+	
 	/*
 	 * 数据更新
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#update(java.lang.Object)
@@ -241,24 +283,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 			return statusMap.get(status.toString());
 	}
 	/*
-	 * 报告任务函数
-	 */
-	public Integer Task(Integer typeLy,Integer none,Integer lack){
-		if(logger.isDebugEnabled()) logger.debug("定时器调用生成日报记录...");
-		//1.将未提交的报告变成缺交；
-		List<Report> reports = this.reportDao.findReports(typeLy);
-		if(reports != null && reports.size() > 0){
-			if(logger.isDebugEnabled()) logger.debug("将未提交的报告["+reports.size()+"]变成缺交...");
-			for(int i = 0; i < reports.size();i++){
-				Report report = reports.get(i);
-				if(report == null || report.getStatus() != none)continue;
-				report.setStatus(lack);
-				if(logger.isDebugEnabled()) logger.debug((i+1) + ".将未提交的报告["+report.getId()+"]变成缺交");
-			}
-		}
-		return lack;
-	}
-	/*
 	 * 日报
 	 * @see com.examw.oa.service.plan.IReportService#taskDaily()
 	 */
@@ -279,24 +303,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		last_post_time = calendar.getTime();
-		
-		for(int k = 0; k < settings.size(); k++){
-			try{
-				Settings setting = settings.get(k);
-				if(setting == null || setting.getEmployee() == null) continue;
-				Report data = new Report();
-				data.setId(UUID.randomUUID().toString());
-				data.setEmployee(setting.getEmployee());
-				data.setType(Report.TYPE_DAILY);
-				data.setStatus(Report.STATUS_NONE);
-				data.setCreateTime(create_time);
-				data.setLastPostTime(last_post_time);
-				this.reportDao.save(data);
-			}catch(Exception e){
-				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
-				logger.error(e);
-			}
-		}
+		list(settings, Report.TYPE_DAILY, Report.STATUS_NONE,create_time,last_post_time);
 	}
 	/*
 	 * 周报
@@ -322,24 +329,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		  calendar.set(Calendar.HOUR_OF_DAY, 23);
 		  calendar.set(Calendar.MINUTE, 59);
 		  calendar.set(Calendar.SECOND, 59); // 每周星期五 
-		
-		for(int k = 0; k < settings.size(); k++){
-			try{
-				Settings setting = settings.get(k);
-				if(setting == null || setting.getEmployee() == null) continue;
-				Report data = new Report();
-				data.setId(UUID.randomUUID().toString());
-				data.setEmployee(setting.getEmployee());
-				data.setType(Report.TYPE_WEEKLY);
-				data.setStatus(Report.STATUS_NONE);
-				data.setCreateTime(create_time);
-				data.setLastPostTime(calendar.getTime());
-				this.reportDao.save(data);
-			}catch(Exception e){
-				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
-				logger.error(e);
-			}
-		}
+		  list(settings, Report.TYPE_WEEKLY, Report.STATUS_NONE,create_time,calendar.getTime());
 	}
 	/*
 	 * 月报
@@ -362,24 +352,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
-		
-		for(int k = 0; k < settings.size(); k++){
-			try{
-				Settings setting = settings.get(k);
-				if(setting == null || setting.getEmployee() == null) continue;
-				Report data = new Report();
-				data.setId(UUID.randomUUID().toString());
-				data.setEmployee(setting.getEmployee());
-				data.setType(Report.TYPE_MONTHLY);
-				data.setStatus(Report.STATUS_NONE);
-				data.setCreateTime(create_time);
-				data.setLastPostTime(calendar.getTime());
-				this.reportDao.save(data);
-			}catch(Exception e){
-				logger.error((k+1) + ".生成报告时发生异常：" + e.getMessage());
-				logger.error(e);
-			}
-		}
+		list(settings, Report.TYPE_MONTHLY, Report.STATUS_NONE,create_time,calendar.getTime());
 	}
 	/*
 	 * 状态集合

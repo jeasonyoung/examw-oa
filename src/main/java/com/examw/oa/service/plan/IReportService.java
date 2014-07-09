@@ -35,4 +35,5 @@ public interface IReportService extends IBaseDataService<ReportInfo>{
 	 * @return
 	 */
 	Map<String,String> getStatusMap();
+	
 }

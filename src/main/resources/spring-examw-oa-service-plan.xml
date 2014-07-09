@@ -43,6 +43,7 @@
 		<property name="reportDao" ref="reportDao"/>
 		<!--计划总结明细接口 -->
 		<property name="detailDao" ref="detailDao"/>
+		<!-- 业务系统信息接口 -->
 		<property name="businessDao" ref="businessDao"/>
 		<!--员工报表设置服务接口 -->
 		<property name="settingsService" ref="settingsService" />
