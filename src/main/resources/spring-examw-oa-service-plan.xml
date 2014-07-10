@@ -5,7 +5,7 @@
 	<bean id="businessService" class="com.examw.oa.service.plan.impl.BusinessServiceImpl">
 		<!-- 业务系统数据接口 -->
 		<property name="businessDao" ref="businessDao"/>
-		<!-- 状态集合 -->
+		<!-- 业务系统状态集合 -->
 		<property name="statusMap">
 			<map>
 				<!-- 停用 -->
@@ -25,7 +25,7 @@
 		<property name="employeeDao" ref="employeeDao" />
 		<!-- 部门数据接口 -->
 		<property name="departmentDao" ref="departmentDao"/>
-		<!-- 类型集合 -->
+		<!-- 报表设置类型集合 -->
 		<property name="typeMap">
 			<map>
 				<!-- 日报 -->
@@ -47,7 +47,7 @@
 		<property name="businessDao" ref="businessDao"/>
 		<!--员工报表设置服务接口 -->
 		<property name="settingsService" ref="settingsService" />
-		<!-- 状态集合 -->
+		<!-- 报表状态集合 -->
 		<property name="statusMap">
 				<map>
 					<!-- 未提交 -->
@@ -67,7 +67,7 @@
 	<bean id="detailService" class="com.examw.oa.service.plan.impl.DetailServiceImpl">
 		<!--计划总结明细接口 -->
 		<property name="detailDao" ref="detailDao"/>
-		<!--类型集合 -->
+		<!--计划总结明细类型集合 -->
 		<property name="typeMap">
 			<map>
 				<!--计划  -->

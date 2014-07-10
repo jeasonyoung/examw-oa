@@ -5,6 +5,7 @@
 <script type="text/javascript">
 <!--
 $(function(){
+	
 	//dg
 	var dg = $("#${dg}").datagrid({
 		url:"<@s.url '/plan/report/datagrid'/>",
@@ -73,6 +74,7 @@ $(function(){
 			edit_window("编辑员工报表信息",rowIndex,rowData);
 		}
 	});
+	var d;
 	function edit_window_btn_save(row,index){
 		if(!row || (row.status != ${STATUS_NONE_VALUE})) return null;
 		return {
@@ -95,10 +97,10 @@ $(function(){
 						$.messager.progress("close");
 						var data = $.parseJSON(data);
 						if(data.success){
-							dg.datagrid(row ? "updateRow" : "insertRow",{
+							 dg.datagrid(row ? "updateRow" : "insertRow",{
 								index:index,
 								row:data.data
-							});
+							}); 
 							d.dialog("close");
 						}else{
 							$.messager.show({
@@ -115,8 +117,7 @@ $(function(){
 	function edit_window(title,index,row){
 		var btns =[]; 
 		/* <shiro.hasPermission name="${PER_UPDATE}"> */
-		var save_btn_obj = edit_window_btn_save(row);
-		var save_btn_index = edit_window_btn_save(index);
+		var save_btn_obj = edit_window_btn_save(row,index);
 		if(save_btn_obj != null) btns.push(save_btn_obj);
 		/*</shiro.hasPermission> */
 		btns.push({
@@ -126,7 +127,7 @@ $(function(){
 				d.dialog("close");
 			}
 		});
-		var d = $("<div/>").dialog({
+		d = $("<div/>").dialog({
 			title:title,
 			width:800,
 			height:649,

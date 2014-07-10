@@ -103,6 +103,7 @@ public class ReportFindController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<ReportInfo> datagrid(ReportInfo info){
+		System.out.println(info.getCreateTime()+"looppppppppppppppppppppppppppppppppppp");
 		return this.reportSerivce.datagrid(info);
 	}
 }

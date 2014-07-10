@@ -1,5 +1,6 @@
 package com.examw.oa.dao.plan.impl;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,12 +58,18 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 	 */
 	protected String addWhere(ReportInfo info, String hql, Map<String, Object> parameters){
 		if(info.getCreateTime() !=null){
+			 Calendar calendar=Calendar.getInstance();  
+			   calendar.setTime(info.getCreateTime());
+			   calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+1);//让日期加1  
 			hql += " and (r.createTime <=:createTime)";
-			parameters.put("createTime", info.getCreateTime());
+			parameters.put("createTime", calendar.getTime());
 		}
 		if(info.getPostTime() !=null){
+			 Calendar calendar=Calendar.getInstance();  
+			   calendar.setTime(info.getPostTime());
+			   calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+1);//让日期加1 
 			hql += " and (r.postTime <=:postTime)";
-			parameters.put("postTime", info.getPostTime());
+			parameters.put("postTime", calendar.getTime());
 		}
 		if(info.getStatus() != null){
 			hql += " and (r.status = :Status)";
