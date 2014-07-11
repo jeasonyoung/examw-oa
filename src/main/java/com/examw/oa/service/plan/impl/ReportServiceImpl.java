@@ -213,7 +213,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	protected Long total(ReportInfo info) {
 		return this.reportDao.total(info);
 	}
-	
 	/*
 	 * 数据更新
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#update(java.lang.Object)
@@ -322,10 +321,10 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		if(logger.isDebugEnabled()) logger.debug("开始生成周报记录...");
 		Date create_time = new Date();
 		Calendar calendar = Calendar.getInstance();
-		  int dayofweek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-		  if (dayofweek == 0)
-		   dayofweek = 7;
-		  calendar.add(Calendar.DATE, -dayofweek + 5);
+		int dayofweek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+		if (dayofweek == 0)
+		  dayofweek = 7;
+		  calendar.add(Calendar.DATE, dayofweek + 5);
 		  calendar.set(Calendar.HOUR_OF_DAY, 23);
 		  calendar.set(Calendar.MINUTE, 59);
 		  calendar.set(Calendar.SECOND, 59); // 每周星期五 

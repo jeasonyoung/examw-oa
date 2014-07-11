@@ -5,7 +5,6 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	
 	//dg
 	var dg = $("#${dg}").datagrid({
 		url:"<@s.url '/plan/report/datagrid'/>",
@@ -71,12 +70,13 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑员工报表信息",rowIndex,rowData);
+			edit_window("编辑报告信息",rowIndex,rowData);
 		}
 	});
 	var d;
 	function edit_window_btn_save(row,index){
-		if(!row || (row.status != ${STATUS_NONE_VALUE})) return null;
+
+		if(!row || (row.status !=${STATUS_NONE_VALUE})) return null;
 		return {
 			text:"提交",
 			iconCls:"icon-save",
@@ -97,10 +97,10 @@ $(function(){
 						$.messager.progress("close");
 						var data = $.parseJSON(data);
 						if(data.success){
-							 dg.datagrid(row ? "updateRow" : "insertRow",{
+							dg.datagrid(row ? "updateRow" : "insertRow",{
 								index:index,
 								row:data.data
-							}); 
+							});
 							d.dialog("close");
 						}else{
 							$.messager.show({
@@ -115,7 +115,7 @@ $(function(){
 	};
 	//edit
 	function edit_window(title,index,row){
-		var btns =[]; 
+		var btns =[];
 		/* <shiro.hasPermission name="${PER_UPDATE}"> */
 		var save_btn_obj = edit_window_btn_save(row,index);
 		if(save_btn_obj != null) btns.push(save_btn_obj);
@@ -130,7 +130,7 @@ $(function(){
 		d = $("<div/>").dialog({
 			title:title,
 			width:800,
-			height:649,
+			height:643,
 			href:"<@s.url '/plan/report/edit'/>",
 			modal:true,
 			buttons:btns,
@@ -161,7 +161,7 @@ $(function(){
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
 	<!-- </shiro.hasPermission> -->
-	<label>员工姓名：<input name="name" type="text" style="width:150px;"/></label>
+	<label>员工姓名：<input name="name" type="text" style="width:140px;"/></label>
 	<label>提交时间：<input name="postTime" type="text" class="easyui-datebox" required="required" style="width:140px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

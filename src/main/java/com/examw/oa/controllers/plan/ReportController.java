@@ -73,7 +73,7 @@ public class ReportController {
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(Model model){
+	public String edit(Integer status,Model model){
 		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
 		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
 		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
@@ -116,7 +116,7 @@ public class ReportController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(ReportInfo info,String statusDetail,Model model){
+	public Json update(ReportInfo info,Model model){
 		Json result = new Json();
 		try {
 			result.setData(this.reportSerivce.update(info));

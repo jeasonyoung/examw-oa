@@ -61,14 +61,14 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 			 Calendar calendar=Calendar.getInstance();  
 			   calendar.setTime(info.getCreateTime());
 			   calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+1);//让日期加1  
-			hql += " and (r.createTime <=:createTime)";
+			hql += " and (r.createTime <:createTime)";
 			parameters.put("createTime", calendar.getTime());
 		}
 		if(info.getPostTime() !=null){
 			 Calendar calendar=Calendar.getInstance();  
 			   calendar.setTime(info.getPostTime());
 			   calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)+1);//让日期加1 
-			hql += " and (r.postTime <=:postTime)";
+			hql += " and (r.postTime <:postTime)";
 			parameters.put("postTime", calendar.getTime());
 		}
 		if(info.getStatus() != null){

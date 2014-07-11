@@ -15,7 +15,7 @@ import com.examw.oa.support.CustomDateSerializer;
 public class ReportInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,typeName,employeeId,employeeName,statusName;
-	private Integer type,Status;
+	private Integer type,status;
 	private String planId,summaryId,suggetsionsId,supportId;
 	private String planDetail,summaryDetail,suggetsionsDetail,supportDetail;
 	private String[] businessId;
@@ -109,7 +109,7 @@ public class ReportInfo extends Paging {
 	 * 员工报表状态
 	 */
 	public Integer getStatus() {
-		return Status;
+		return status;
 	}
 	/**
 	 * 设置员工报表状态
@@ -117,7 +117,7 @@ public class ReportInfo extends Paging {
 	 * 员工报表状态
 	 */
 	public void setStatus(Integer status) {
-		Status = status;
+		this.status = status;
 	}
 	/**
 	 * 获取员工报表创建时间
@@ -128,6 +128,7 @@ public class ReportInfo extends Paging {
 	public Date getCreateTime() {
 		return createTime;
 	}
+	
 	/**
 	 * 设置员工报表创建时间
 	 * @param createTime

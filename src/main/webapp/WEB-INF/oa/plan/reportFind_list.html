@@ -70,7 +70,7 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("查询员工报表信息",rowIndex,rowData);
+			edit_window("查询报告信息",rowIndex,rowData);
 		}
 	});
 	//edit
@@ -78,7 +78,7 @@ $(function(){
 		var d = $("<div/>").dialog({
 			title:title,
 			width:800,
-			height:649,
+			height:643,
 			href:"<@s.url '/plan/reportFind/edit'/>",
 			modal:true,
 			buttons:[
@@ -108,7 +108,7 @@ $(function(){
 	${dg}_search = function(){
 		dg.datagrid("load",{
 			employeeName:$("#${dg}_toobar input[name='name']").val(),
-			Status:$("#${dg}_toobar select[name='status']").val(),
+			status:$("#${dg}_toobar select[name='status']").val(),
 			createTime:$("#${dg}_toobar input[name='createTime']").val(),
 			postTime:$("#${dg}_toobar input[name='postTime']").val()
 		});

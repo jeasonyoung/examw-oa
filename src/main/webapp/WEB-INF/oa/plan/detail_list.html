@@ -5,7 +5,6 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	
 	//dg
 	var dg = $("#${dg}").datagrid({
 		url:"<@s.url '/plan/detail/datagrid'/>",
@@ -71,7 +70,7 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("审核员工报表信息",rowIndex,rowData);
+			edit_window("审核报告信息",rowIndex,rowData);
 		}
 	});
 	var d;
@@ -131,7 +130,7 @@ $(function(){
 		d = $("<div/>").dialog({
 			title:title,
 			width:800,
-			height:649,
+			height:643,
 			href:"<@s.url '/plan/detail/edit'/>",
 			modal:true,
 			buttons:btns,
@@ -154,7 +153,6 @@ $(function(){
 		dg.datagrid("load",{
 			employeeName:$("#${dg}_toobar input[name='name']").val(),
 			postTime:$("#${dg}_toobar input[name='postTime']").val()
-
 		});
 	};
 });
