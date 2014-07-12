@@ -20,7 +20,7 @@ public interface ISettingsService extends IBaseDataService<SettingsInfo>{
 	 */
 	String loadTypeName(Integer type);
 	/**
-	 * 类型查找数据（为运算）
+	 * 类型查找数据（位运算）
 	 * @param type
 	 * 类型值
 	 * @return

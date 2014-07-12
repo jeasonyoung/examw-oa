@@ -14,7 +14,7 @@ import com.examw.oa.support.CustomDateSerializer;
  */
 public class ReportInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,typeName,employeeId,employeeName,statusName;
+	private String id,typeName,employeeId,employeeName;
 	private Integer type,status;
 	private String planId,summaryId,suggetsionsId,supportId;
 	private String planDetail,summaryDetail,suggetsionsDetail,supportDetail;
@@ -315,11 +315,4 @@ public class ReportInfo extends Paging {
 	public void setBusinessId(String[] businessId) {
 		this.businessId = businessId;
 	}
-	public String getStatusName() {
-		return statusName;
-	}
-	public void setStatusName(String statusName) {
-		this.statusName = statusName;
-	}
-	
 }
