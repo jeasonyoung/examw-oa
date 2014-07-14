@@ -8,6 +8,8 @@
 	<import resource="spring-examw-oa-service-org.xml"/>
 	<!-- 计划总结 服务接口实现-->
 	<import resource="spring-examw-oa-service-plan.xml"/>
+	<!-- 行政事务 服务接口实现-->
+	<import resource="spring-examw-oa-service-adm.xml"/>
 	<!-- 定时器 -->
 	<import resource="spring-examw-oa-timer-quartz.xml"/>
 </beans>

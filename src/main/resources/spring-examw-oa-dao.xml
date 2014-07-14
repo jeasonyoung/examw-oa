@@ -8,4 +8,6 @@
 	<import resource="spring-examw-oa-dao-org.xml"/>
 	<!--  计划总结  数据接口实现 -->
 	<import resource="spring-examw-oa-dao-plan.xml"/>
+	<!--  行政事务  数据接口实现 -->
+	<import resource="spring-examw-oa-dao-adm.xml"/>
 </beans>

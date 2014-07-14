@@ -23,7 +23,7 @@
   		<!-- <module id="EOA000603" icon="" name="报告统计" uri="" order="6"/> -->
   	</module>
   	<module id="EOA000004"  icon="" name="行政事务" uri="" order="4">
-  		<module id="EOA000104"  icon="" name="栏目设置" uri="" order="1" />
+  		<module id="EOA000104"  icon="" name="栏目设置" uri="/adm/noticeColumn" order="1" />
   		<module id="EOA000204"  icon="" name="通知公告" uri="" order="2" />
   		<module id="EOA000304"  icon="" name="我要请假" uri="" order="3" />
   		<module id="EOA000404"  icon="" name="请假审批" uri="" order="4" />
