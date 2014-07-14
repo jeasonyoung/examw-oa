@@ -8,7 +8,7 @@
 		<!--员工级别编码 -->
 		<property name="code"  type="string"  length="32"/>
 		<!--员工级别名称 -->
-		<property name="name"  type="string"  length="32" />
+		<property name="name"  type="string"  length="45" />
 	</class>
 	<!-- 部门数据 -->
 	<class name="Department"  table="tbl_Examw_OA_Org_Department">
@@ -49,8 +49,8 @@
 		<property name="name" type="string" length="32"/>
 		<!-- 员工编号 -->
 		<property name="code" type="string" length="32" unique="true"/>
-		<!-- 员工性别 -->
-		<property name="gender" type="integer" length="32"/>
+		<!-- 员工性别(1-男，2-女) -->
+		<property name="gender" type="integer" />
 		<!-- 员工手机号码 -->
 		<property name="phone" type="string" length="32"/>
 		<!-- 员工邮箱地址 -->
@@ -58,13 +58,13 @@
 		<!-- 员工身份证号码 -->
 		<property name="idCard" type="string" length="32"/>
 		<!-- 员工出生日期 -->
-		<property name="brithday"  type="timestamp" length="255" />
+		<property name="brithday"  type="timestamp" />
 		<!-- 员工入职时间 -->
-		<property name="joinTime"  type="timestamp" length="255" />
+		<property name="joinTime"  type="timestamp" />
 		<!-- 状态 0-离职，1-在职，2-限制登录-->
 		<property name="status"  type="integer" />
 		<!-- 创建时间 -->
-		<property name="createTime"  type="timestamp" length="255" />
+		<property name="createTime"  type="timestamp" />
 		<!-- 员工 密码 -->
 		<property name="password"  type="string"  length="512" />
 		<!-- 所属部门 -->

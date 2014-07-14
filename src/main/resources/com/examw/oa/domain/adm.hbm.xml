@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.examw.oa.domain.adm">
+	<!-- 通知公告栏目 -->
+	<class name="NoticeColumn" table="tbl_oa_adm_notice_columns">
+		<!-- 栏目ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 栏目名称 -->
+		<property name="name" type="string" length="45" />
+		<!-- 栏目描述 -->
+		<property name="description" type="string" length="512" />
+		<!-- 上级栏目 -->
+		<many-to-one name="parent" column="pid" class="NoticeColumn" />
+		<!-- 下级栏目集合 -->
+		<set name="children" inverse="true"  cascade="save-update"  order-by="orderNo asc">
+			<key  column="pid"/>
+			<one-to-many class="NoticeColumn"/>
+		</set>
+	</class>
+	<!-- 通知公告 -->
+	<class name="Notice" table="tbl_oa_adm_notices">
+		<!-- ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 标题 -->
+		<property name="title" type="string" length="512" />
+		<!-- 所属栏目 -->
+		<many-to-one name="column"  column="col_id"  class="NoticeColumn" />
+		<!-- 所属部门 -->
+		<many-to-one name="department" column="dept_id" class="com.examw.oa.domain.org.Department" />
+		<!-- 类型 -->
+		<property name="type" type="integer" />
+		<!-- 内容 -->
+		<property name="content" type="text" />
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time"  type="timestamp" />
+	</class>
+	<!-- 请假条 -->
+	<class name="Leave" table="tbl_oa_adm_leave">
+		<!-- ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 请假员工 -->
+		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee"/>
+		<!-- 部门 -->
+		<property name="deptName" type="string" length="32" />
+		<!-- 职务 -->
+		<property name="postName" type="string" length="32" />
+		<!-- 请假开始时间 -->
+		<property name="startTime" column="start_time" type="timestamp" />
+		<!-- 请假结束时间 -->
+		<property name="endTime" column="end_time" type="timestamp" />
+		<!-- 请假事由 -->
+		<property name="resaon" type="text" />
+		<!-- 请假类型 -->
+		<property name="type" type="integer" />
+		<!-- 是否补班 -->
+		<property name="isSup" type="boolean" />
+		<!-- 补班日期 -->
+		<property name="supTime" type="date" />
+		<!-- 换班日期 -->
+		<property name="shiftTime" type="date" />
+		<!-- 换班员工 -->
+		<many-to-one name="shiftEmployee" column="shift_employee_id" class="com.examw.oa.domain.org.Employee" />
+		<!-- 审批意见集合 -->
+		<set name="approvals" inverse="false"  cascade="save-update"  order-by="createTime asc">
+			<key  column="leave_id" />
+			<one-to-many class="LeaveApproval" />
+		</set>
+	</class>
+	<!-- 请假条审批-->
+	<class name="LeaveApproval" table="tbl_oa_adm_leave_approvals">
+		<!-- 审批ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 所属请假条 -->
+		<many-to-one name="leave" column="leave_id" class="Leave" />
+		<!-- 审批用户 -->
+		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee" />
+		<!-- 审批类型 -->
+		<property name="type" type="integer" />
+		<!-- 审批状态 -->
+		<property name="status" type="integer" />
+		<!-- 审批时间 -->
+		<property name="createTime" column="create_time" type="timestamp" />
+	</class>
+</hibernate-mapping>
