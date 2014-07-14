@@ -18,7 +18,6 @@ public class BusinessInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,name,url;
 	private Integer status;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
 	 * 获取业务系统ID。
@@ -98,6 +97,7 @@ public class BusinessInfo extends Paging {
 	 * @return
 	 * 业务系统创建时间。
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}

@@ -16,7 +16,6 @@ public class DetailInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,content;
 	private Integer type;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
 	 * 获取计划总结明细ID
@@ -80,6 +79,7 @@ public class DetailInfo extends Paging {
 	 * @return
 	 * 计划总结明细创建时间
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}

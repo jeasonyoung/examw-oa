@@ -19,10 +19,7 @@ public class ReportInfo extends Paging {
 	private String planId,summaryId,suggetsionsId,supportId;
 	private String planDetail,summaryDetail,suggetsionsDetail,supportDetail;
 	private String[] businessId;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date createTime;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date postTime,lastPostTime;
+	private Date createTime,postTime,lastPostTime;
 	/**
 	 * 获取员工报表ID
 	 * @return
@@ -128,12 +125,12 @@ public class ReportInfo extends Paging {
 	public Date getCreateTime() {
 		return createTime;
 	}
-	
 	/**
 	 * 设置员工报表创建时间
 	 * @param createTime
 	 * 员工报表创建时间
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
@@ -151,6 +148,7 @@ public class ReportInfo extends Paging {
 	 * @param postTime
 	 * 员工报表提交时间
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setPostTime(Date postTime) {
 		this.postTime = postTime;
 	}
@@ -168,6 +166,7 @@ public class ReportInfo extends Paging {
 	 * @param lastPostTime
 	 * 员工报表最后提交时间
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setLastPostTime(Date lastPostTime) {
 		this.lastPostTime = lastPostTime;
 	}

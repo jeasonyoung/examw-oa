@@ -18,7 +18,6 @@ public class SettingsInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,typeName, employeeId,employeeName,departmentId;
 	private Integer[] type;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
 	 * 获取员工计划总结类型ID
@@ -74,7 +73,6 @@ public class SettingsInfo extends Paging {
 	 * @return
 	 * 部门ID
 	 */
-	
 	public String getDepartmentId() {
 		return departmentId;
 	}
@@ -83,7 +81,6 @@ public class SettingsInfo extends Paging {
 	 * @param deptId
 	 * 部门ID
 	 */
-	
 	public void setDepartmentId(String departmentId) {
 		this.departmentId = departmentId;
 	}
@@ -95,7 +92,6 @@ public class SettingsInfo extends Paging {
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
-	
 	/**
 	 * 设置员工报表类型
 	 * @param type
@@ -134,6 +130,7 @@ public class SettingsInfo extends Paging {
 	 * @param createTime、
 	 * 员工报表创建时间
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}	
