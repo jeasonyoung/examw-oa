@@ -116,6 +116,36 @@ public class EmployeeController {
 		return result;
 	}
 	/**
+	 * 岗位级别数据。
+	 * @return
+	 */
+	@RequestMapping(value="/alls", method = RequestMethod.POST)
+	@ResponseBody
+	public List<EmployeeInfo> alls(){
+		return this.employeeService.datagrid(new EmployeeInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "name";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
+	}
+	/**
+	 * 岗位级别数据。
+	 * @return
+	 */
+	@RequestMapping(value="/allLeave", method = RequestMethod.POST)
+	@ResponseBody
+	public List<EmployeeInfo> allLeave(){
+		return this.employeeService.datagrid(new EmployeeInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "name";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
+	}
+	/**
 	 * 返回部门下的所有岗位
 	 * @return
 	 */

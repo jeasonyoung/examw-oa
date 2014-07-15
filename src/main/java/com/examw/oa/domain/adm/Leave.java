@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Set;
 
 import com.examw.oa.domain.org.Employee;
-
 /**
  * 请假记录。
  * @author yangyong.

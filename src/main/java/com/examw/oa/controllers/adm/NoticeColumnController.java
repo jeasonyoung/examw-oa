@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.model.TreeNode;
-import com.examw.oa.controllers.security.MenuController;
 import com.examw.oa.model.adm.NoticeColumnInfo;
 import com.examw.oa.service.adm.INoticeColumnService;
 /**
@@ -26,7 +25,7 @@ import com.examw.oa.service.adm.INoticeColumnService;
 @Controller
 @RequestMapping(value = "/adm/noticeColumn")
 public class NoticeColumnController {
-	private static Logger logger = Logger.getLogger(MenuController.class);
+	private static Logger logger = Logger.getLogger(NoticeColumnController.class);
 	/**
 	 *栏目信息服务。
 	 */

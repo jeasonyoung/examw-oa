@@ -3,6 +3,47 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- 栏目信息 -->
 	<bean id="noticeColumnService" class="com.examw.oa.service.adm.impl.NoticeColumnServiceImpl">
+		<!-- 栏目数据接口 -->
 		<property name="notcDao" ref="notcDao"/>
+	</bean>
+	<!-- 通告信息 -->
+	<bean id="noticeService" class="com.examw.oa.service.adm.impl.NoticeServiceImpl">
+		<!-- 通告数据接口 -->
+		<property name="noticeDao" ref="noticeDao"/>
+		<!-- 部门数据接口 -->
+		<property name="departmentDao" ref="departmentDao"/>
+		<!-- 栏目数据接口 -->
+		<property name="notcDao" ref="notcDao"/>
+		<!-- 通告设置类型集合 -->
+		<property name="typeMap">
+			<map>
+				<!-- 通知公告 -->
+				<entry key="1" value="${TYPE_NOTICE}"/>
+				<!-- 规章制度 -->
+				<entry key="2" value="${TYPE_RULES}"/>
+			</map>
+		</property>
+	</bean>
+	<!-- 请假信息 -->
+	<bean id="leaveService" class="com.examw.oa.service.adm.impl.LeaveServiceImpl">
+		<!-- 请假数据接口 -->
+		<property name="leaveDao" ref="leaveDao"/>
+		<!-- 员工数据接口 -->
+		<property name="employeeDao" ref="employeeDao" />
+		<!-- 请假类型集合 -->
+		<property name="typeMap">
+			<map>
+				<!-- 休假 -->
+				<entry key="1" value="${TYPE_VACATION}"/>
+				<!-- 事假 -->
+				<entry key="2" value="${TYPE_COMPA}"/>
+				<!-- 其他 -->
+				<entry key="3" value="${TYPE_OTHER}"/>
+				<!-- 病假 有证明 -->
+				<entry key="4" value="${TYPE_SICK_PROVE}"/>
+				<!-- 病假 无证明 -->
+				<entry key="5" value="${TYPE_SICK_NONPROVE}"/>
+			</map>
+		</property>
 	</bean>
 </beans>

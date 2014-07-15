@@ -1,28 +1,13 @@
-<#--部门列表-->
+<#--业务系统列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="adm_noticeColumn"/>
-<#assign dg="${module}_dg"/>
+<#assign module="adm_leave"/>
+<#assign dg="${module}_list_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_notc_id = "";
-	//tree
-	var t = $("#${module}_list_tree").tree({
-		url:"<@s.url '/adm/noticeColumn/tree'/>",
-		onLoadError:function(e){
-			<@error_dialog "e"/>
-		},
-		onLoadSuccess:function(n,data){
-			current_notc_id = "";
-		},
-		onClick:function(node){
-			current_notc_id = node.id;
-			${dg}_search();
-		}
-	});
 	//dg
-	var dg=$("#${dg}").datagrid({
-		url:"<@s.url '/adm/noticeColumn/datagrid'/>",
+	var dg = $("#${dg}").datagrid({
+		url:"<@s.url '/adm/leave/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -33,55 +18,72 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"orderNo",
+		sortName:"startTime",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
 			checkbox:true
-		},{
-			title:"栏目名称",
-			field:"name",
-			width:15,
-			align:"left",
-			sortable:true
-		},{
-			title:"栏目全称",
-			field:"fullName",
-			width:15,
-			align:"left",
-			sortable:true
-		},{
-			title:"栏目内容",
-			field:"description",
+		}
+		,{
+			title:"所属部门",
+			field:"deptName",
 			width:20,
 			align:"left",
 			sortable:true
 		},{
-			title:"排序",
-			field:"orderNo",
-			width:10,
-			align:"right",
+			title:"所属职务",
+			field:"postName",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"请假人",
+			field:"employeeName",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"请假类型",
+			field:"type",
+			width:20,
+			align:"center",
+			formatter:function(value,row,index){
+				if(value == ${TYPE_VACATION_VALUE}) return "${TYPE_VACATION_NAME}";
+				if(value == ${TYPE_COMPA_VALUE}) return "${TYPE_COMPA_NAME}";
+				if(value == ${TYPE_SICK_PROVE_VALUE}) return "${TYPE_OTHER_NAME}";
+				if(value == ${TYPE_COMPA_VALUE}) return "${TYPE_SICK_PROVE_NAME}";
+				if(value == ${TYPE_SICK_PROVE_VALUE}) return "${TYPE_SICK_PROVE_NAME}";
+				return value;
+			},
+			sortable:true
+		},{
+			title:"开始时间",
+			field:"startTime",
+			width:20,
+			align:"center",
+			sortable:true
+		},{
+			title:"结束时间",
+			field:"endTime",
+			width:30,
+			align:"center",
 			sortable:true
 		}]],
-		toolbar:"#${dg}_toobar",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
+		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑栏目",rowIndex,rowData);
+			edit_window("编辑业务系统",rowIndex,rowData);
 		}
 	});
 	//edit
 	function edit_window(title,index,row){
-		var ignore = "";
-		if(row && row.id){
-			ignore = row.id;
-		}
 		var d = $("<div/>").dialog({
 			title:title,
-			width:460,
-			height:400,
-			href:"<@s.url '/adm/noticeColumn/edit'/>?ignore="+ignore+"&id=" + current_notc_id,
+			width:700,
+			height:580,
+			href:"<@s.url '/adm/leave/edit'/>",
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -91,7 +93,7 @@ $(function(){
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/adm/noticeColumn/update'/>",
+						url:"<@s.url '/adm/leave/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -109,7 +111,6 @@ $(function(){
 									index:index,
 									row:data.data
 								});
-								t.tree("reload");
 								d.dialog("close");
 							}else{
 								$.messager.show({
@@ -140,13 +141,12 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  id:current_notc_id,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("新增栏目",0,null);
+		edit_window("新增业务系统",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
@@ -161,7 +161,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/adm/noticeColumn/delete'/>",
+					url:"<@s.url '/adm/leave/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")
@@ -176,7 +176,6 @@ $(function(){
 						if(data.success){
 							dg.datagrid("load");
 							dg.datagrid("unselectAll");
-							t.tree("reload");
 						}else{
 							$.messager.show({
 								title:"提示",
@@ -194,22 +193,15 @@ $(function(){
 });
 //-->
 </script>
-<div class="easyui-layout" data-options="fit:true">
-	 <div data-options="region:'west',title:'栏目',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-	 	<ul id="${module}_list_tree"></ul>
-	 </div>
-	<div data-options="region:'center',title:'栏目'">
-		<table id="${dg}"></table>
-		<div id="${dg}_toobar">
-			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
-			<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
-			<!-- </shiro.hasPermission> -->
-			<span>|</span>
-			<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
-			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
-			<!-- </shiro.hasPermission> -->
-			<label>栏目名称：<input name="name" type="text" style="width:198px;"/></label>
-			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
-		</div>
-	</div>
+<table id="${dg}"></table>
+<div id="${dg}_toobar">
+	<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
+	<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
+	<!-- </shiro.hasPermission> -->
+	<span>|</span>
+	<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
+	<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
+	<!-- </shiro.hasPermission> -->
+	<label>名称：<input name="name" type="text" style="width:198px;"/></label>
+	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>
