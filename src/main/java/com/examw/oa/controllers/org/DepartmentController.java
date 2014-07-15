@@ -1,9 +1,7 @@
 package com.examw.oa.controllers.org;
 
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,15 +9,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.model.TreeNode;
-
 import com.examw.oa.controllers.security.MenuController;
 import com.examw.oa.model.org.DepartmentInfo;
 import com.examw.oa.service.org.IDepartmentService;
-
 /**
  * 部门信息控制器。
  * @author lq.
@@ -45,7 +40,6 @@ public class DepartmentController {
 		//model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_ROLE + ":" + Right.DELETE);
 		return "org/dept_list";
 	}
-	
 	/**
 	 * 获取编辑页面。
 	 * @return
@@ -118,5 +112,20 @@ public class DepartmentController {
 	@ResponseBody
 	public List<TreeNode> tree(String ignore){
 		return this.departservice.loadDepartments(ignore);
+	}
+	/**
+	 * 岗位级别数据。
+	 * @return
+	 */
+	@RequestMapping(value="/all", method = RequestMethod.POST)
+	@ResponseBody
+	public List<DepartmentInfo> all(){
+		return this.departservice.datagrid(new DepartmentInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "orderNo";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
 	}
 }

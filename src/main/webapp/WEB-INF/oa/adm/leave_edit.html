@@ -1,0 +1,92 @@
+<#--员工编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_leave"/>
+<#assign form="${module}_edit_form"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	//employeeId
+	var r_t = $("#${form} input[name='employeeId']").combobox({
+		url:"<@s.url '/org/emp/alls'/>",
+		valueField:"id",
+		textField:"name",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		}
+	});
+	//shiftEmployeeId
+	var r_t = $("#${form} input[name='shiftEmployeeId']").combobox({
+		url:"<@s.url '/org/emp/alls'/>",
+		valueField:"id",
+		textField:"name",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		}
+	});
+});
+//-->
+</script>
+<form id="${form}" method="POST" style="padding:10px;">
+		<div style="float:left; margin-top:25px; width:100%;">
+			<div style="float:left;">
+				<label style="width:105px;">姓名：</label>
+				<input type="text" name="employeeId" style="width:170px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:105px;">所属部门：</label>
+				<input type="text" name="deptName" style="width:170px;"/>
+			</div>
+		</div>
+		<div style="float:left;margin-top:15px;">
+				<label style="width:105px;">所属职务：</label>
+				<input type="text" name="postName" style="width:170px;"/>
+			</div>
+		<div style="float:left; margin-top:25px; width:100%;">
+			<div style="float:left;">
+					<label style="width:105px;">开始时间：</label>
+					<input type="text"  name="startTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
+			</div>
+			<div style="float:left;">
+					<label style="width:105px;">结束时间：</label>
+					<input type="text"  name="endTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
+			</div>
+		</div>	
+		<div style="float:left; margin-top:25px; width:100%;">
+			<div style="float:left;">
+					<label style="width:105px;">请假事由：</label>
+					<textarea type="text" name="resaon" row="10" cols="10" style="width:440px;height:120px" />
+					<input type="hidden" name="id"/>
+		   </div>
+		   <div style="float:left;">
+					<label style="margin-top:8px;width:105px;">请假类型：</label>
+					<label><input type="radio" name="type" value="1" checked="checked" />${TYPE_VACATION_NAME}</label>
+					<label><input type="radio" name="type" value="2" />${TYPE_COMPA_NAME}</label>
+					<label><input type="radio" name="type" value="3" />${TYPE_OTHER_NAME}</label>
+					<label><input type="radio" name="type" value="4" />${TYPE_SICK_PROVE_NAME}</label>
+					<label><input type="radio" name="type" value="5" />${TYPE_SICK_NONPROVE}</label>
+			</div>
+		</div>
+		<div style="float:left; margin-top:25px; width:100%;">
+			<div style="float:left;">
+					<label style="width:105px;">补班时间：</label>
+					<input type="text"  name="supTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
+			</div>
+			<div style="float:left;margin-top:5px;">
+			<label style="width:105px;">是否补班：</label>
+					<label><input type="radio" name="isSup" value="0" />不补班</label>
+					<label><input type="radio" name="isSup" value="1" />补班</label>
+			</div>
+		</div>
+		<div style="float:left; margin-top:25px; width:100%;">
+			<div style="float:left;">
+					<label style="width:105px;">换班时间：</label>
+					<input type="text"  name="shiftTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:105px;">换班人：</label>
+				<input type="text" name="shiftEmployeeId" style="width:170px;"/>
+			</div>
+		</div>
+</form>

@@ -9,6 +9,8 @@
 		<property name="name" type="string" length="45" />
 		<!-- 栏目描述 -->
 		<property name="description" type="string" length="512" />
+		<!-- 排序 -->
+		<property name="orderNo"  type="integer" />
 		<!-- 上级栏目 -->
 		<many-to-one name="parent" column="pid" class="NoticeColumn" />
 		<!-- 下级栏目集合 -->
@@ -58,6 +60,8 @@
 		<property name="supTime" type="date" />
 		<!-- 换班日期 -->
 		<property name="shiftTime" type="date" />
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time"  type="timestamp" />
 		<!-- 换班员工 -->
 		<many-to-one name="shiftEmployee" column="shift_employee_id" class="com.examw.oa.domain.org.Employee" />
 		<!-- 审批意见集合 -->

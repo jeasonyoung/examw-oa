@@ -150,6 +150,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 			}
 			data = new Employee();
 		}
+		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);
 		if(!StringUtils.isEmpty(info.getDepartmentId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getDepartmentId()))){
 			Department d = this.departmentDao.load(Department.class, info.getDepartmentId());

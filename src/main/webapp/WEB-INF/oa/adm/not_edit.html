@@ -1,0 +1,59 @@
+<#--员工编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_notice"/>
+<#assign form="${module}_edit_form"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	var current_column_id = "${CURRENT_COLUMN_ID}";
+	//column
+	var t = $("#${form} input[name='columnId']").combotree({
+		url:"<@s.url '/adm/noticeColumn/tree'/>",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(n,d){
+			if(current_column_id.trim() == "")return;
+			t.combotree("setValue",current_column_id);
+		}
+	});
+	//depart 
+	var r_t = $("#${form} input[name='departmentId']").combobox({
+		url:"<@s.url '/org/dept/all'/>",
+		valueField:"id",
+		textField:"name",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		}
+	});
+});
+//-->
+</script>
+<form id="${form}" method="POST" style="padding:10px;">
+		<div style="float:left; margin-top:25px; width:100%;">
+			<div style="float:left;">
+				<label style="width:85px;">所属栏目：</label>
+				<input type="text" name="columnId" style="width:160px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:85px;">所属部门：</label>
+				<input type="text" name="departmentId" style="width:160px;"/>
+			</div>
+		</div>
+		<div style="float:left;margin-top:10px; width:100%;">
+				<label style="width:85px;">标题：</label>
+				<input type="text" name="title" class="easyui-validatebox" data-options="required:true" style="width:400px;"/>
+		</div>
+		<div style="float:left; margin-top:10px; width:100%;">
+				<label style="margin-top:8px;width:85px;">类型：</label>
+				<label><input type="radio" name="type" value="1" checked="checked" />${TYPE_NOTICE_NAME}</label>
+				<label><input type="radio" name="type" value="2" />${TYPE_RULES_NAME}</label>
+		</div>
+		<div style="float:left;margin-top:10px;width:100%;">
+				<label style="width:85px;">内容：</label>
+				<textarea type="text" name="content" row="10" cols="10" style="width:410px;height:220px" />
+				<input type="hidden" name="id"/>
+	   </div>
+</form>
