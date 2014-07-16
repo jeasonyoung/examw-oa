@@ -2,34 +2,36 @@ package com.examw.oa.dao.adm.impl;
 
 import java.util.HashMap;
 import java.util.List;
+
+
 import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
-import com.examw.oa.dao.adm.ILeaveDao;
+import com.examw.oa.dao.adm.ILeaveApprovalDao;
 import com.examw.oa.dao.impl.BaseDaoImpl;
-import com.examw.oa.domain.adm.Leave;
-import com.examw.oa.model.adm.LeaveInfo;
+import com.examw.oa.domain.adm.LeaveApproval;
+import com.examw.oa.model.adm.LeaveApprovalInfo;
 /**
- * 请假条数据接口实现类
+ * 请假审批数据接口
  * @author lq.
- * @since 2014-07-15.
+ * @since 2014-07-16.
  */
-public class LeaveDaoImpl extends BaseDaoImpl<Leave> implements ILeaveDao {
+public class LeaveApprovalDaoImpl extends BaseDaoImpl<LeaveApproval> implements ILeaveApprovalDao {
 	/*
 	 * 数据查询
-	 * @see com.examw.oa.dao.adm.ILeaveDao#findLeaves(com.examw.oa.model.adm.LeaveInfo)
+	 * @see com.examw.oa.dao.adm.ILeaveApprovalDao#findLeaveApprovals(com.examw.oa.model.adm.LeaveApprovalInfo)
 	 */
 	@Override
-	public List<Leave> findLeaves(LeaveInfo info) {
-		String hql = "from Leave l where 1 = 1 ";
+	public List<LeaveApproval> findLeaveApprovals(LeaveApprovalInfo info) {
+		String hql = "from LeaveApproval l where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
 			if(info.getSort().equalsIgnoreCase("employeeName")){
 				info.setSort("employee.name");
-			}else if(info.getSort().equalsIgnoreCase("shiftEmployeeName")){
-				info.setSort("shiftEmployee.name");
+			}else if(info.getSort().equalsIgnoreCase("leaveName")){
+				info.setSort("leave.name");
 			}
 			hql += " order by l." + info.getSort() + " " + info.getOrder();
 		}
@@ -37,11 +39,11 @@ public class LeaveDaoImpl extends BaseDaoImpl<Leave> implements ILeaveDao {
 	}
 	/*
 	 * 数据统计
-	 * @see com.examw.oa.dao.adm.ILeaveDao#total(com.examw.oa.model.adm.LeaveInfo)
+	 * @see com.examw.oa.dao.adm.ILeaveApprovalDao#total(com.examw.oa.model.adm.LeaveApprovalInfo)
 	 */
 	@Override
-	public Long total(LeaveInfo info) {
-		String hql = "select count(*) from Leave l where 1 = 1 ";
+	public Long total(LeaveApprovalInfo info) {
+		String hql = "select count(*) from LeaveApproval l where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		return this.count(hql, parameters);
@@ -57,7 +59,7 @@ public class LeaveDaoImpl extends BaseDaoImpl<Leave> implements ILeaveDao {
 	 * @return
 	 * HQL
 	 */
-	protected String addWhere(LeaveInfo info, String hql, Map<String, Object> parameters){
+	protected String addWhere(LeaveApprovalInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getEmployeeName())){
 			hql += " and (l.employee.name like :name)";
 			parameters.put("name", "%" + info.getEmployeeName() + "%");

@@ -30,6 +30,9 @@
 		<property name="leaveDao" ref="leaveDao"/>
 		<!-- 员工数据接口 -->
 		<property name="employeeDao" ref="employeeDao" />
+		
+		<!-- 部门数据接口 -->
+		<property name="departmentDao" ref="departmentDao"/>
 		<!-- 请假类型集合 -->
 		<property name="typeMap">
 			<map>
@@ -43,6 +46,31 @@
 				<entry key="4" value="${TYPE_SICK_PROVE}"/>
 				<!-- 病假 无证明 -->
 				<entry key="5" value="${TYPE_SICK_NONPROVE}"/>
+			</map>
+		</property>
+	</bean>
+	<!-- 请假审核信息 -->
+	<bean id="approvalService" class="com.examw.oa.service.adm.impl.LeaveApprovalServiceImpl">
+		<!-- 请假审核数据接口 -->
+		<property name="approvalDao" ref="approvalDao"/>
+		<!-- 请假审核类型集合 -->
+		<property name="typeMap">
+			<map>
+				<!-- 部门经理（主管）意见 -->
+				<entry key="1" value="${TYPE_LEADER}"/>
+				<!-- 行政人事部意见 -->
+				<entry key="2" value="${TYPE_ADM}"/>
+				<!-- 公司总经理审批 -->
+				<entry key="3" value="${TYPE_BOSS}"/>
+			</map>
+		</property>
+		<!-- 请假审核状态集合 -->
+		<property name="statusMap">
+			<map>
+				<!--  审批结果－同意 -->
+				<entry key="1" value="${STATUS_AGREE}"/>
+				<!-- 审批结果－不同意 -->
+				<entry key="2" value="${STATUS_DISAGREE}"/>
 			</map>
 		</property>
 	</bean>

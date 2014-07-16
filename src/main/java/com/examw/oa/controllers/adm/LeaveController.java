@@ -59,9 +59,9 @@ public class LeaveController {
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(String deptId,String postId, Model model){
+	public String edit(String deptId,String sEmpId, Model model){
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
-		model.addAttribute("CURRENT_POST_ID", StringUtils.isEmpty(postId) ? "" : postId);
+		model.addAttribute("CURRENT_SEMPL_ID", StringUtils.isEmpty(sEmpId) ? "" : sEmpId);
 
 		
 		model.addAttribute("TYPE_VACATION_NAME", this.leaveService.loadTypeName(Leave.TYPE_VACATION));

@@ -42,6 +42,8 @@
 		<id name="id" type="string" length="64" />
 		<!-- 请假员工 -->
 		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee"/>
+		<!-- 所属部门 -->
+		<many-to-one name="department" column="dept_id"  class="com.examw.oa.domain.org.Department"  />
 		<!-- 部门 -->
 		<property name="deptName" type="string" length="32" />
 		<!-- 职务 -->

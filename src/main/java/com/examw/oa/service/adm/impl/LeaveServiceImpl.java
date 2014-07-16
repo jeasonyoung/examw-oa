@@ -9,8 +9,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.adm.ILeaveDao;
+import com.examw.oa.dao.org.IDepartmentDao;
 import com.examw.oa.dao.org.IEmployeeDao;
 import com.examw.oa.domain.adm.Leave;
+import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;
 import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.adm.ILeaveService;
@@ -19,6 +21,7 @@ import com.examw.oa.service.impl.BaseDataServiceImpl;
 public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> implements ILeaveService {
 	private ILeaveDao leaveDao;
 	private IEmployeeDao employeeDao;
+	private IDepartmentDao departmentDao;
 	private Map<Integer, String> typeMap;
 	/**
 	 * 请假数据接口
@@ -33,6 +36,10 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
+	}
+	
+	public void setDepartmentDao(IDepartmentDao departmentDao) {
+		this.departmentDao = departmentDao;
 	}
 	/**
 	 * 请假类型集合
@@ -63,9 +70,12 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
 		}
-		if(data.getEmployee() != null){
-			info.setShiftEmployeeId(data.getEmployee().getId());
-			info.setShiftEmployeeName(data.getEmployee().getName());
+		if(data.getShiftEmployee() != null){
+			info.setShiftEmployeeId(data.getShiftEmployee().getId());
+			info.setShiftEmployeeName(data.getShiftEmployee().getName());
+		}
+		if(data.getDepartment() !=null){
+			info.setShiftDepartmentId(data.getDepartment().getId());
 		}
 		return info;
 	}
@@ -95,19 +105,26 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data,new String[]{"approvals"});
+		
 		if(!StringUtils.isEmpty(info.getEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEmployeeId()))){
 			Employee e = this.employeeDao.load(Employee.class, info.getEmployeeId());
-			if(e != null) data.setEmployee(e);
+			if(e != null) data.setEmployee(e);	
 		}
-		if(!StringUtils.isEmpty(info.getShiftEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getShiftEmployeeId()))){
+		if(!StringUtils.isEmpty(info.getShiftEmployeeId()) && (data.getShiftEmployee() == null ||!data.getShiftEmployee().getId().equalsIgnoreCase(info.getShiftEmployeeId()))){
 			Employee s = this.employeeDao.load(Employee.class, info.getShiftEmployeeId());
-			if(s != null) data.setEmployee(s);
+			if(s != null) data.setShiftEmployee(s);
 		}
-		if(data.getEmployee() != null)
+		if(!StringUtils.isEmpty(info.getShiftDepartmentId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getShiftDepartmentId()))){
+			Department d = this.departmentDao.load(Department.class, info.getShiftDepartmentId());
+			if(d != null) data.setDepartment(d);
+		}
+		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
+		}
+		if(data.getShiftEmployee() != null){
+			info.setShiftEmployeeName(data.getShiftEmployee().getName());
+		}
 		
-		if(data.getEmployee() != null)
-			info.setShiftEmployeeName(data.getEmployee().getName());
 		if(isAdded)this.leaveDao.save(data);
 		return info;
 	}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;
 /**
  * 请假记录。
@@ -17,6 +18,7 @@ public class Leave implements Serializable {
 	private Integer type;
 	private Boolean isSup;
 	private Employee employee,shiftEmployee;
+	private Department department;
 	private Set<LeaveApproval> approvals;
 	/**
 	 * 类型－休假。
@@ -248,4 +250,11 @@ public class Leave implements Serializable {
 	public void setApprovals(Set<LeaveApproval> approvals) {
 		this.approvals = approvals;
 	}
+	public Department getDepartment() {
+		return department;
+	}
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	
 }

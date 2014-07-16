@@ -15,14 +15,38 @@ $(function(){
 			<@error_dialog "e"/>
 		}
 	});
-	//shiftEmployeeId
-	var r_t = $("#${form} input[name='shiftEmployeeId']").combobox({
-		url:"<@s.url '/org/emp/alls'/>",
+	var current_dept_select = false,current_dept_id = "${CURRENT_DEPT_ID}",current_empl_id="${CURRENT_SEMP_ID}";
+	var t = $("#${form} input[name='shiftDepartmentId']").combotree({
+		url:"<@s.url '/org/dept/tree'/>",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(n,d){
+			if(current_dept_id.trim() == "")return;
+			 t.combotree("setValue",current_dept_id);
+		},
+		onSelect:function(record){
+			if(p_t){
+				current_dept_select = true;
+				p_t.combobox("clear");
+				p_t.combobox("reload",empl_url+record.id);
+			}
+		}
+	});
+	var empl_url = "<@s.url '/org/emp/all'/>?deptId=";
+	var p_t = $("#${form} input[name='shiftEmployeeId']").combobox({
+		url:empl_url + "${CURRENT_DEPT_ID}",
 		valueField:"id",
 		textField:"name",
 		required:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(){
+			if(current_dept_select) return;
+			if(current_empl_id.trim() == "")return;
+			p_t.combobox("setValue",current_empl_id);
 		}
 	});
 });
@@ -46,11 +70,11 @@ $(function(){
 		<div style="float:left; margin-top:25px; width:100%;">
 			<div style="float:left;">
 					<label style="width:105px;">开始时间：</label>
-					<input type="text"  name="startTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
+					<input type="text"  name="startTime" class="easyui-datebox" required="required" style="width:170px;"/>
 			</div>
 			<div style="float:left;">
 					<label style="width:105px;">结束时间：</label>
-					<input type="text"  name="endTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
+					<input type="text"  name="endTime" class="easyui-datebox" required="required" style="width:170px;"/>
 			</div>
 		</div>	
 		<div style="float:left; margin-top:25px; width:100%;">
@@ -71,7 +95,7 @@ $(function(){
 		<div style="float:left; margin-top:25px; width:100%;">
 			<div style="float:left;">
 					<label style="width:105px;">补班时间：</label>
-					<input type="text"  name="supTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
+					<input type="text"  name="supTime" class="easyui-datebox" required="required" style="width:170px;"/>
 			</div>
 			<div style="float:left;margin-top:5px;">
 			<label style="width:105px;">是否补班：</label>
@@ -82,11 +106,12 @@ $(function(){
 		<div style="float:left; margin-top:25px; width:100%;">
 			<div style="float:left;">
 					<label style="width:105px;">换班时间：</label>
-					<input type="text"  name="shiftTime" class="easyui-datetimebox" required="required" style="width:170px;"/>
-			</div>
-			<div style="float:left;">
-				<label style="width:105px;">换班人：</label>
-				<input type="text" name="shiftEmployeeId" style="width:170px;"/>
+					<input type="text"  name="shiftTime" class="easyui-datebox" required="required" style="width:170px;"/>
 			</div>
 		</div>
+		<div style="float:left;margin-top:25px; width:100%;">
+				<label style="width:105px;">换班人：</label>
+				<input type="text" name="shiftDepartmentId" style="width:220px;"/>
+				<input type="text" name="shiftEmployeeId" style="width:220px;"/>
+			</div>
 </form>

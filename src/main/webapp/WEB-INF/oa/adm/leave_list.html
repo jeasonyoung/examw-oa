@@ -42,6 +42,13 @@ $(function(){
 			width:20,
 			align:"left",
 			sortable:true
+		}
+		,{
+			title:"换班人",
+			field:"shiftEmployeeName",
+			width:20,
+			align:"left",
+			sortable:true
 		},{
 			title:"请假类型",
 			field:"type",
@@ -50,9 +57,9 @@ $(function(){
 			formatter:function(value,row,index){
 				if(value == ${TYPE_VACATION_VALUE}) return "${TYPE_VACATION_NAME}";
 				if(value == ${TYPE_COMPA_VALUE}) return "${TYPE_COMPA_NAME}";
-				if(value == ${TYPE_SICK_PROVE_VALUE}) return "${TYPE_OTHER_NAME}";
-				if(value == ${TYPE_COMPA_VALUE}) return "${TYPE_SICK_PROVE_NAME}";
+				if(value == ${TYPE_OTHER_VALUE}) return "${TYPE_OTHER_NAME}";
 				if(value == ${TYPE_SICK_PROVE_VALUE}) return "${TYPE_SICK_PROVE_NAME}";
+				if(value == ${TYPE_SICK_NONPROVE_VALUE}) return "${TYPE_SICK_NONPROVE_NAME}";
 				return value;
 			},
 			sortable:true
@@ -79,11 +86,16 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
+		var sdept_id = "",semp_id = "";
+		if(row){
+			sdept_id = row.shiftDepartmentId;
+			semp_id = row.shiftEmployeeId;
+		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:700,
 			height:580,
-			href:"<@s.url '/adm/leave/edit'/>",
+			href:"<@s.url '/adm/leave/edit'/>?depId="+ sdept_id +"&sEmpId="+ semp_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */

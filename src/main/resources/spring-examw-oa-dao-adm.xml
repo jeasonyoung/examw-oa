@@ -13,4 +13,8 @@
 	<bean id="leaveDao" class="com.examw.oa.dao.adm.impl.LeaveDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!-- 请假审核Dao -->
+	<bean id="approvalDao" class="com.examw.oa.dao.adm.impl.LeaveApprovalDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

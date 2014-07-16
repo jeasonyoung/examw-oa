@@ -16,7 +16,7 @@ import com.examw.oa.support.CustomDateSerializer;
  */
 public class LeaveInfo extends Paging{
 	private static final long serialVersionUID = 1L;
-	private String id,deptName,postName,resaon,employeeId,employeeName,shiftEmployeeId,shiftEmployeeName;
+	private String id,deptName,postName,resaon,employeeId,employeeName,shiftEmployeeId,shiftEmployeeName,shiftDepartmentId;
 	private Integer type;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startTime,endTime,supTime,shiftTime,createTime;
@@ -267,10 +267,36 @@ public class LeaveInfo extends Paging{
 	public void setApprovals(Set<LeaveApproval> approvals) {
 		this.approvals = approvals;
 	}
+	/**
+	 * 获取请假类型
+	 * @return
+	 * 请假类型
+	 */
 	public Integer getType() {
 		return type;
 	}
+	/**
+	 * 设置请假类型
+	 * @param type
+	 * 请假类型
+	 */
 	public void setType(Integer type) {
 		this.type = type;
+	}
+	/**
+	 * 获取换班部门ID
+	 * @return
+	 * 换班部门ID
+	 */
+	public String getShiftDepartmentId() {
+		return shiftDepartmentId;
+	}
+	/**
+	 * 设置换班部门ID
+	 * @param shiftDepartmentId
+	 * 换班部门ID
+	 */
+	public void setShiftDepartmentId(String shiftDepartmentId) {
+		this.shiftDepartmentId = shiftDepartmentId;
 	}	
 }
