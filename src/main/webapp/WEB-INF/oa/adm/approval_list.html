@@ -1,13 +1,13 @@
 <#--业务系统列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="adm_leave"/>
+<#assign module="adm_approval"/>
 <#assign dg="${module}_list_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
 	//dg
 	var dg = $("#${dg}").datagrid({
-		url:"<@s.url '/adm/leave/datagrid'/>",
+		url:"<@s.url '/adm/approval/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -18,60 +18,44 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"startTime",
+		sortName:"createTime",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
 			checkbox:true
 		}
 		,{
-			title:"所属部门",
-			field:"deptName",
-			width:20,
-			align:"left",
-			sortable:true
-		},{
-			title:"所属职务",
-			field:"postName",
-			width:20,
-			align:"left",
-			sortable:true
-		},{
 			title:"请假人",
+			field:"leaveEmplName",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"审批人",
 			field:"employeeName",
 			width:20,
 			align:"left",
 			sortable:true
-		}
-		,{
-			title:"换班人",
-			field:"shiftEmployeeName",
+		},{
+			title:"审批类型",
+			field:"typeName",
 			width:20,
 			align:"left",
 			sortable:true
 		},{
-			title:"请假类型",
-			field:"type",
+			title:"审批状态",
+			field:"status",
 			width:20,
 			align:"center",
 			formatter:function(value,row,index){
-				if(value == ${TYPE_VACATION_VALUE}) return "${TYPE_VACATION_NAME}";
-				if(value == ${TYPE_COMPA_VALUE}) return "${TYPE_COMPA_NAME}";
-				if(value == ${TYPE_OTHER_VALUE}) return "${TYPE_OTHER_NAME}";
-				if(value == ${TYPE_SICK_PROVE_VALUE}) return "${TYPE_SICK_PROVE_NAME}";
-				if(value == ${TYPE_SICK_NONPROVE_VALUE}) return "${TYPE_SICK_NONPROVE_NAME}";
+				if(value == ${STATUS_AGREE_VALUE}) return "${STATUS_AGREE_NAME}";
+				if(value == ${STATUS_DISAGREE_VALUE}) return "${STATUS_DISAGREE_NAME}";
 				return value;
 			},
 			sortable:true
 		},{
-			title:"开始时间",
-			field:"startTime",
-			width:20,
-			align:"center",
-			sortable:true
-		},{
-			title:"结束时间",
-			field:"endTime",
+			title:"创建时间",
+			field:"createTime",
 			width:30,
 			align:"center",
 			sortable:true
@@ -86,16 +70,11 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
-		var sdept_id = "",semp_id = "";
-		if(row){
-			sdept_id = row.shiftDepartmentId;
-			semp_id = row.shiftEmployeeId;
-		}
 		var d = $("<div/>").dialog({
 			title:title,
-			width:710,
-			height:645,
-			href:"<@s.url '/adm/leave/edit'/>?depId="+ sdept_id +"&sEmpId="+ semp_id,
+			width:700,
+			height:630,
+			href:"<@s.url '/adm/approval/edit'/>",
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -105,7 +84,7 @@ $(function(){
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/adm/leave/update'/>",
+						url:"<@s.url '/adm/approval/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -173,7 +152,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/adm/leave/delete'/>",
+					url:"<@s.url '/adm/approval/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")

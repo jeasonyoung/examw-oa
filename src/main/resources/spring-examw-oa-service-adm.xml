@@ -53,6 +53,10 @@
 	<bean id="approvalService" class="com.examw.oa.service.adm.impl.LeaveApprovalServiceImpl">
 		<!-- 请假审核数据接口 -->
 		<property name="approvalDao" ref="approvalDao"/>
+		<!-- 请假数据接口 -->
+		<property name="leaveDao" ref="leaveDao"/>
+		<!-- 员工数据接口 -->
+		<property name="employeeDao" ref="employeeDao" />
 		<!-- 请假审核类型集合 -->
 		<property name="typeMap">
 			<map>

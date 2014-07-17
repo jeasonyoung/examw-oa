@@ -7,7 +7,6 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
-import com.examw.oa.domain.adm.LeaveApproval;
 import com.examw.oa.support.CustomDateSerializer;
 /**
  * 请假条
@@ -21,7 +20,7 @@ public class LeaveInfo extends Paging{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startTime,endTime,supTime,shiftTime,createTime;
 	private Boolean isSup;
-	private Set<LeaveApproval> approvals;
+	private Set<LeaveApprovalInfo> approvals;
 	/**
 	 * 获取请假条ID
 	 * @return
@@ -256,7 +255,7 @@ public class LeaveInfo extends Paging{
 	 * @return
 	 * 换班人ID
 	 */
-	public Set<LeaveApproval> getApprovals() {
+	public Set<LeaveApprovalInfo> getApprovals() {
 		return approvals;
 	}
 	/**
@@ -264,7 +263,7 @@ public class LeaveInfo extends Paging{
 	 * @return
 	 * 换班人ID
 	 */
-	public void setApprovals(Set<LeaveApproval> approvals) {
+	public void setApprovals(Set<LeaveApprovalInfo> approvals) {
 		this.approvals = approvals;
 	}
 	/**

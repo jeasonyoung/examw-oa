@@ -1,0 +1,68 @@
+<#--员工编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_approval"/>
+<#assign form="${module}_edit_form"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	//employeeId
+	var r_t = $("#${form} input[name='employeeId']").combobox({
+		url:"<@s.url '/org/emp/alls'/>",
+		valueField:"id",
+		textField:"name",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		}
+	});
+	//employeeId
+	var r_t = $("#${form} input[name='leaveId']").combobox({
+		url:"<@s.url '/adm/leave/all'/>",
+		valueField:"id",
+		textField:"postName",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		}
+	});
+});
+//-->
+</script>
+<form id="${form}" method="POST" style="padding:10px;">
+		<div style="float:left; margin-top:5px; width:100%;">
+			<div style="float:left;">
+				<label style="width:105px;">请假人：</label>
+				<input type="text" name="leaveId" style="width:170px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:105px;">审批人：</label>
+				<input type="text" name="employeeId" style="width:170px;"/>
+			</div>
+		</div>
+		<div style="float:left;margin-top:15px;">
+				<label style="width:105px;">审核状态：</label>
+				<label><input type="radio" name="type" value="1" checked="checked" />${STATUS_AGREE_NAME}</label>
+				<label><input type="radio" name="type" value="2" />${STATUS_DISAGREE_NAME}</label>
+		</div>
+		<div style="float:left; margin-top:15px; width:100%;">
+				<label style="width:105px;">审核类型：</label>
+					<label><input type="checkbox" name="type" value="1" />${TYPE_LEADER_NAME}</label>
+					<label><input type="checkbox" name="type" value="2"  />${TYPE_ADM_NAME}</label>
+					<label><input type="checkbox" name="type" value="3"/>${TYPE_BOSS_NAME}</label>
+				<input type="hidden" name="id">
+		</div>
+	
+				<div style="float:left;margin-top:10px; width:100%;">
+					<label style="width:105px;">部门经理(主管)意见：</label>
+					<textarea type="text" name="leaderApproval" row="4" cols="5" style="width:440px;height:100px" />
+				</div>
+				<div style="float:left;margin-top:10px; width:100%;">
+					<label style="width:105px;">行政人事部意见：</label>
+					<textarea type="text" name="admApproval" row="4" cols="5" style="width:440px;height:100px" />
+				</div>
+		
+		<div style="float:left; margin-top:10px; width:100%;">
+				<label style="width:105px;">公司总经理审批：</label>
+				<textarea type="text" name="bossApproval" row="4" cols="5" style="width:440px;height:100px" />
+		</div>
+</form>

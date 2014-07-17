@@ -1,18 +1,27 @@
 package com.examw.oa.service.adm.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.adm.ILeaveApprovalDao;
+import com.examw.oa.dao.adm.ILeaveDao;
+import com.examw.oa.dao.org.IEmployeeDao;
+import com.examw.oa.domain.adm.Leave;
 import com.examw.oa.domain.adm.LeaveApproval;
+import com.examw.oa.domain.org.Employee;
 import com.examw.oa.model.adm.LeaveApprovalInfo;
 import com.examw.oa.service.adm.ILeaveApprovalService;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 
 public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval, LeaveApprovalInfo> implements ILeaveApprovalService {
 	private ILeaveApprovalDao approvalDao;
+	private ILeaveDao leaveDao;
+	private IEmployeeDao employeeDao;
 	private Map<Integer, String> typeMap;
 	private Map<Integer, String> statusMap;
 	/**
@@ -22,6 +31,14 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	public void setApprovalDao(ILeaveApprovalDao approvalDao) {
 		this.approvalDao = approvalDao;
 	}
+	public void setLeaveDao(ILeaveDao leaveDao) {
+		this.leaveDao = leaveDao;
+	}
+
+	public void setEmployeeDao(IEmployeeDao employeeDao) {
+		this.employeeDao = employeeDao;
+	}
+
 	/**
 	 * 类型数据集合
 	 * @param typeMap
@@ -37,14 +54,27 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 		this.statusMap = statusMap;
 	}
 	/*
-	 * 类型集合
-	 * @see com.examw.oa.service.adm.ILeaveApprovalService#loadTypeName(java.lang.Integer)
+	 * 加载类型名称。
+	 * @see com.examw.oa.service.org.IEmployeeService#loadStatusName(java.lang.Integer)
 	 */
 	@Override
 	public String loadTypeName(Integer type) {
-		if(this.typeMap == null || type == null) return null;
-		return this.typeMap.get(type);
+		if(this.typeMap == null || type == null) return null; 
+		StringBuilder sb = new StringBuilder();
+		if((type & LeaveApproval.TYPE_LEADER) == LeaveApproval.TYPE_LEADER){
+			sb.append(",").append(this.typeMap.get(LeaveApproval.TYPE_LEADER));
+		}
+		if((type & LeaveApproval.TYPE_ADM) == LeaveApproval.TYPE_ADM){
+			sb.append(",").append(this.typeMap.get(LeaveApproval.TYPE_ADM));
+		}
+		if((type & LeaveApproval.TYPE_BOSS) == LeaveApproval.TYPE_BOSS){
+			sb.append(",").append(this.typeMap.get(LeaveApproval.TYPE_BOSS));
+		}
+		if(sb.length() > 0) 
+			return sb.substring(1);
+		return null;
 	}
+	
 	/*
 	 * 状态集合
 	 * @see com.examw.oa.service.adm.ILeaveApprovalService#loadStatusName(java.lang.Integer)
@@ -68,16 +98,60 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	 */
 	@Override
 	protected LeaveApprovalInfo changeModel(LeaveApproval data) {
-		// TODO Auto-generated method stub
-		return null;
+		if(data == null) return null;
+		LeaveApprovalInfo info = new LeaveApprovalInfo();
+		BeanUtils.copyProperties(data, info);
+		
+		if(data.getEmployee() != null){
+			info.setEmployeeId(data.getEmployee().getId());
+			info.setEmployeeName(data.getEmployee().getName());
+		}
+		if(data.getLeave() != null){
+			info.setLeaveId(data.getLeave().getId());
+			info.setLeaveName(data.getLeave().getPostName());
+		}
+		info.setTypeName(this.loadTypeName(data.getType()));
+		 
+		if(data!=null){
+			if(data.getType() == LeaveApproval.TYPE_LEADER){
+				info.setLeaderId(data.getId());
+				info.setLeaderApproval(data.getApproval());
+			}
+			if(data.getType() == LeaveApproval.TYPE_ADM){
+				info.setAdmId(data.getId());
+				info.setAdmApproval(data.getApproval());
+			}
+			if(data.getType() ==LeaveApproval.TYPE_BOSS){
+				info.setBossId(data.getId());
+				info.setBossApproval(data.getApproval());
+			}
+		}
+		return info;
 	}
 	/*
 	 * 数据统计
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
 	 */
 	@Override
-	protected Long total(LeaveApprovalInfo info) {
+	protected Long total(LeaveApprovalInfo info){
 		return this.approvalDao.total(info);
+	}
+	/*
+	 * 
+	 */
+	public LeaveApproval buildLeaveApproval(String id,String approval,Integer type,Integer status){
+		LeaveApproval data = StringUtils.isEmpty(id) ?  null : this.approvalDao.load(LeaveApproval.class,id);
+		if(data == null){
+			if(StringUtils.isEmpty(approval)) return null;
+			if(StringUtils.isEmpty(id)) id=(UUID.randomUUID().toString());
+			data = new LeaveApproval();
+			data.setId(id);
+			data.setCreateTime(new Date());
+			data.setStatus(status);
+			data.setType(type);
+		}
+		data.setApproval(approval);
+		return data;
 	}
 	/*
 	 * 数据更新
@@ -85,8 +159,31 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	 */
 	@Override
 	public LeaveApprovalInfo update(LeaveApprovalInfo info) {
-		// TODO Auto-generated method stub
-		return null;
+		if(info == null) return null;
+		//LeaveApproval adm=this.buildLeaveApproval(info.getAdmId(), info.getAdmApproval(),info.getStatus(), LeaveApproval.TYPE_ADM),
+		//			  leaveder=this.buildLeaveApproval(info.getLeaderId(), info.getLeaderApproval(),info.getStatus(),LeaveApproval.TYPE_LEADER),
+		//			  boss=this.buildLeaveApproval(info.getBossId(), info.getBossApproval(),info.getStatus(),LeaveApproval.TYPE_BOSS);
+		LeaveApproval data = StringUtils.isEmpty(info.getId()) ?  null : this.approvalDao.load(LeaveApproval.class, info.getId());
+		BeanUtils.copyProperties(info, data);
+		
+		
+		if(!StringUtils.isEmpty(info.getLeaveId()) && (data.getLeave() == null || !data.getLeave().getId().equalsIgnoreCase(info.getLeaveId()))){
+			Leave leave = this.leaveDao.load(Leave.class, info.getLeaveId());
+			if(leave != null)data.setLeave(leave);
+		}
+		if(!StringUtils.isEmpty(info.getEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEmployeeId()))){
+			Employee empl = this.employeeDao.load(Employee.class, info.getEmployeeId());
+			if(empl != null)data.setEmployee(empl);
+		}
+		if(data.getLeave() != null){
+			info.setLeaveName(data.getLeave().getPostName());
+		}
+		
+		if(data.getEmployee() != null){
+			info.setEmployeeName(data.getEmployee().getName());
+		}
+		info.setTypeName(this.loadTypeName(data.getType()));
+		return info;
 	}
 	/*
 	 * 数据删除
@@ -100,6 +197,5 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 			LeaveApproval e = this.approvalDao.load(LeaveApproval.class, ids[i]);
 			if(e != null) this.approvalDao.delete(e);
 		}
-		
 	}
 }

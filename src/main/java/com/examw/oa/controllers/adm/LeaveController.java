@@ -1,6 +1,8 @@
 package com.examw.oa.controllers.adm;
 
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -123,5 +125,20 @@ public class LeaveController {
 			logger.error("删除数据["+id+"]时发生异常:", e);
 		}
 		return result;
+	}
+	/**
+	 * 员工数据。
+	 * @return
+	 */
+	@RequestMapping(value="/all", method = RequestMethod.POST)
+	@ResponseBody
+	public List<LeaveInfo> all(){
+		return this.leaveService.datagrid(new LeaveInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "createTime";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
 	}
 }
