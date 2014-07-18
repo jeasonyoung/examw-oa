@@ -56,6 +56,8 @@
 		<property name="resaon" type="text" />
 		<!-- 请假类型 -->
 		<property name="type" type="integer" />
+		<!-- 审核状态-->
+		<property name="status" type="integer" />
 		<!-- 是否补班 -->
 		<property name="isSup" type="boolean" />
 		<!-- 补班日期 -->

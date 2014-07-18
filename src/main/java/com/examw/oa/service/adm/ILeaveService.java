@@ -16,4 +16,12 @@ public interface ILeaveService extends IBaseDataService<LeaveInfo>{
 	 * 类型名称
 	 */
 	String loadTypeName(Integer type);
+	/**
+	 * 加载状态名称
+	 * @param type
+	 * 状态值
+	 * @return
+	 * 状态名称
+	 */
+	String loadStatusName(Integer status);
 }

@@ -11,9 +11,11 @@ import org.springframework.util.StringUtils;
 import com.examw.oa.dao.adm.ILeaveApprovalDao;
 import com.examw.oa.dao.adm.ILeaveDao;
 import com.examw.oa.dao.org.IEmployeeDao;
+import com.examw.oa.dao.org.IPostDao;
 import com.examw.oa.domain.adm.Leave;
 import com.examw.oa.domain.adm.LeaveApproval;
 import com.examw.oa.domain.org.Employee;
+import com.examw.oa.domain.org.Post;
 import com.examw.oa.model.adm.LeaveApprovalInfo;
 import com.examw.oa.service.adm.ILeaveApprovalService;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
@@ -22,6 +24,7 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	private ILeaveApprovalDao approvalDao;
 	private ILeaveDao leaveDao;
 	private IEmployeeDao employeeDao;
+	private IPostDao postDao;
 	private Map<Integer, String> typeMap;
 	private Map<Integer, String> statusMap;
 	/**
@@ -34,7 +37,10 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	public void setLeaveDao(ILeaveDao leaveDao) {
 		this.leaveDao = leaveDao;
 	}
-
+	
+	public void setPostDao(IPostDao postDao) {
+		this.postDao = postDao;
+	}
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
 	}
@@ -110,22 +116,10 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 			info.setLeaveId(data.getLeave().getId());
 			info.setLeaveName(data.getLeave().getPostName());
 		}
-		info.setTypeName(this.loadTypeName(data.getType()));
-		 
-		if(data!=null){
-			if(data.getType() == LeaveApproval.TYPE_LEADER){
-				info.setLeaderId(data.getId());
-				info.setLeaderApproval(data.getApproval());
-			}
-			if(data.getType() == LeaveApproval.TYPE_ADM){
-				info.setAdmId(data.getId());
-				info.setAdmApproval(data.getApproval());
-			}
-			if(data.getType() ==LeaveApproval.TYPE_BOSS){
-				info.setBossId(data.getId());
-				info.setBossApproval(data.getApproval());
-			}
+		if(data.getPost() != null){
+			info.setPostId(data.getPost().getId());
 		}
+		info.setTypeName(this.loadTypeName(data.getType()));
 		return info;
 	}
 	/*
@@ -160,9 +154,6 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	@Override
 	public LeaveApprovalInfo update(LeaveApprovalInfo info) {
 		if(info == null) return null;
-		//LeaveApproval adm=this.buildLeaveApproval(info.getAdmId(), info.getAdmApproval(),info.getStatus(), LeaveApproval.TYPE_ADM),
-		//			  leaveder=this.buildLeaveApproval(info.getLeaderId(), info.getLeaderApproval(),info.getStatus(),LeaveApproval.TYPE_LEADER),
-		//			  boss=this.buildLeaveApproval(info.getBossId(), info.getBossApproval(),info.getStatus(),LeaveApproval.TYPE_BOSS);
 		LeaveApproval data = StringUtils.isEmpty(info.getId()) ?  null : this.approvalDao.load(LeaveApproval.class, info.getId());
 		BeanUtils.copyProperties(info, data);
 		
@@ -174,6 +165,10 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 		if(!StringUtils.isEmpty(info.getEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEmployeeId()))){
 			Employee empl = this.employeeDao.load(Employee.class, info.getEmployeeId());
 			if(empl != null)data.setEmployee(empl);
+		}
+		if(!StringUtils.isEmpty(info.getPostId()) && (data.getPost() == null || !data.getPost().getId().equalsIgnoreCase(info.getPostId()))){
+			Post post = this.postDao.load(Post.class, info.getPostId());
+			if(post != null)data.setPost(post);
 		}
 		if(data.getLeave() != null){
 			info.setLeaveName(data.getLeave().getPostName());

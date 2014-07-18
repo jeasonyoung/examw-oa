@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.domain.adm.Leave;
+import com.examw.oa.domain.adm.LeaveApproval;
 import com.examw.oa.model.adm.LeaveInfo;
+import com.examw.oa.service.adm.ILeaveApprovalService;
 import com.examw.oa.service.adm.ILeaveService;
 /**
  * 请假控制器。
@@ -32,6 +34,11 @@ public class LeaveController {
 	 */
 	@Resource
 	private ILeaveService leaveService;
+	/**
+	 *栏目信息服务。
+	 */
+	@Resource
+	private ILeaveApprovalService approvalService;
 	/**
 	 * 列表页面。
 	 * @return
@@ -64,7 +71,11 @@ public class LeaveController {
 	public String edit(String deptId,String sEmpId, Model model){
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
 		model.addAttribute("CURRENT_SEMPL_ID", StringUtils.isEmpty(sEmpId) ? "" : sEmpId);
+		
 
+		model.addAttribute("STATUS_AGREE_NAME", this.approvalService.loadStatusName(LeaveApproval.STATUS_AGREE));
+		model.addAttribute("STATUS_DISAGREE_NAME", this.approvalService.loadStatusName(LeaveApproval.STATUS_DISAGREE));
+		
 		
 		model.addAttribute("TYPE_VACATION_NAME", this.leaveService.loadTypeName(Leave.TYPE_VACATION));
 		model.addAttribute("TYPE_COMPA_NAME", this.leaveService.loadTypeName(Leave.TYPE_COMPA));

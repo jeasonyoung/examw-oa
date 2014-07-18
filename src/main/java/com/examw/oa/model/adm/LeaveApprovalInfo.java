@@ -12,10 +12,8 @@ import com.examw.model.Paging;
  */
 public class LeaveApprovalInfo extends Paging{
 	private static final long serialVersionUID = 1L;
-	private String id,approval,typeName,leaveId,leaveName,employeeId,employeeName;
+	private String id,approval,typeName,leaveId,leaveName,employeeId,employeeName,postId;
 	private Integer type,status;
-	private String bossId,admId,leaderId;
-	private String bossApproval,admApproval,leaderApproval;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
 	/**
@@ -162,46 +160,19 @@ public class LeaveApprovalInfo extends Paging{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getBossId() {
-		return bossId;
-	}
-	public void setBossId(String bossId) {
-		this.bossId = bossId;
-	}
-	public String getAdmId() {
-		return admId;
-	}
-	public void setAdmId(String admId) {
-		this.admId = admId;
-	}
-	public String getLeaderId() {
-		return leaderId;
-	}
-	public void setLeaderId(String leaderId) {
-		this.leaderId = leaderId;
-	}
-	public String getBossApproval() {
-		return bossApproval;
-	}
-	public void setBossApproval(String bossApproval) {
-		this.bossApproval = bossApproval;
-	}
-	public String getAdmApproval() {
-		return admApproval;
-	}
-	public void setAdmApproval(String admApproval) {
-		this.admApproval = admApproval;
-	}
-	public String getLeaderApproval() {
-		return leaderApproval;
-	}
-	public void setLeaderApproval(String leaderApproval) {
-		this.leaderApproval = leaderApproval;
-	}
+	
+	
 	public String getTypeName() {
 		return typeName;
 	}
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
+	public String getPostId() {
+		return postId;
+	}
+	public void setPostId(String postId) {
+		this.postId = postId;
+	}
+	
 }

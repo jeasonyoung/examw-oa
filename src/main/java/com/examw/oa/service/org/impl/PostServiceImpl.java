@@ -115,4 +115,8 @@ public class PostServiceImpl extends BaseDataServiceImpl<Post, PostInfo> impleme
 	public List<PostInfo> loadPosts(String departmentId) {
 		return this.changeModel(this.postDao.loadPosts(departmentId));
 	}
+	@Override
+	public List<PostInfo> loadPost(String emplId) {
+		return this.changeModel(this.postDao.loadPost(emplId));
+	}
 }

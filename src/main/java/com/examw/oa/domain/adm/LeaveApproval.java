@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.examw.oa.domain.org.Employee;
+import com.examw.oa.domain.org.Post;
 
 /**
  * 请假审批。
@@ -16,6 +17,7 @@ public class LeaveApproval implements Serializable {
 	private Integer type,status;
 	private Leave leave;
 	private Employee employee;
+	private Post post;
 	private Date createTime;
 	/**
 	 * 类型－部门经理（主管）意见。
@@ -141,4 +143,11 @@ public class LeaveApproval implements Serializable {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+	public Post getPost() {
+		return post;
+	}
+	public void setPost(Post post) {
+		this.post = post;
+	}
+	
 }

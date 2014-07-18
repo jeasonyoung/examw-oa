@@ -34,4 +34,5 @@ public interface IEmployeeDao extends IBaseDao<Employee>{
 	  * @return
 	  */
 	 List<Employee> loadEmployee(String departmentId);
+	 
 }

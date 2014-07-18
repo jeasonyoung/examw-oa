@@ -77,4 +77,15 @@ public class PostDaoImpl extends BaseDaoImpl<Post> implements IPostDao {
 		parameters.put("departmentId", departmentId);
 		return this.find(hql, parameters, null, null);
 	}
+	/*
+	 * 根据员工ID加载数据
+	 * @see com.examw.oa.dao.org.IPostDao#loadPost(java.lang.String)
+	 */
+	@Override
+	public List<Post> loadPost(String emplId) {
+		String hql = "select e.post from Employee e where e.id = :emplId";
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("emplId", emplId);
+		return this.find(hql, parameters, null, null);
+	}
 }

@@ -16,4 +16,10 @@ public interface IPostService extends IBaseDataService<PostInfo>{
 	 * @return
 	 */
 	List<PostInfo> loadPosts(String departmentId);
+	/**
+	 * 根据部门ID获取岗位信息。
+	 * @param departmentId
+	 * @return
+	 */
+	List<PostInfo> loadPost(String emplId);
 }

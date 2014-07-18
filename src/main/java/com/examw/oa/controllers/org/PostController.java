@@ -112,4 +112,13 @@ public class PostController {
 	public List<PostInfo> all(String deptId){
 		 return this.postService.loadPosts(deptId);
 	}
+	/**
+	 * 返回部门下的所有员工
+	 * @return
+	 */
+	@RequestMapping(value={"/alls"}, method = RequestMethod.POST)
+	@ResponseBody
+	public List<PostInfo> alls(String emplId){
+		 return this.postService.loadPost(emplId);
+	}
 }

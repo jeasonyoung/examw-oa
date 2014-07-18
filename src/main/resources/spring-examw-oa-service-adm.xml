@@ -30,7 +30,8 @@
 		<property name="leaveDao" ref="leaveDao"/>
 		<!-- 员工数据接口 -->
 		<property name="employeeDao" ref="employeeDao" />
-		
+		<!-- 请假审核数据接口 -->
+		<property name="approvalDao" ref="approvalDao"/>
 		<!-- 部门数据接口 -->
 		<property name="departmentDao" ref="departmentDao"/>
 		<!-- 请假类型集合 -->
@@ -57,6 +58,8 @@
 		<property name="leaveDao" ref="leaveDao"/>
 		<!-- 员工数据接口 -->
 		<property name="employeeDao" ref="employeeDao" />
+		<!-- 部门岗位数据接口 -->
+		<property name="postDao" ref="postDao"/>
 		<!-- 请假审核类型集合 -->
 		<property name="typeMap">
 			<map>

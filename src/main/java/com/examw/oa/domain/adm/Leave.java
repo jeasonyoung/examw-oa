@@ -15,7 +15,7 @@ public class Leave implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,deptName,postName,resaon;
 	private Date startTime,endTime,supTime,shiftTime,createTime;
-	private Integer type;
+	private Integer type,status;
 	private Boolean isSup;
 	private Employee employee,shiftEmployee;
 	private Department department;
@@ -40,6 +40,14 @@ public class Leave implements Serializable {
 	 * 类型－病假证明无。
 	 */
 	public static final Integer TYPE_SICK_NONPROVE = 5;
+	/**
+	 * 状态－ 批准
+	 */
+	public static final Integer STATUS_PASS = 1;
+	/**
+	 * 状态－未批准
+	 */
+	public static final Integer STATUS_NOPASS = 2;
 	/**
 	 * 获取请假条ID。
 	 * @return 请假条ID。
@@ -255,6 +263,12 @@ public class Leave implements Serializable {
 	}
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 	
 }

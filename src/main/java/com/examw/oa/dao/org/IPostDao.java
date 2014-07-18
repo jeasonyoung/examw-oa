@@ -1,6 +1,7 @@
 package com.examw.oa.dao.org;
 
 import java.util.List;
+
 import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.org.Post;
 import com.examw.oa.model.org.PostInfo;
@@ -33,4 +34,10 @@ public interface IPostDao extends IBaseDao<Post>{
 	  * @return
 	  */
 	 List<Post> loadPosts(String departmentId);
+	 /**
+	  * 加载员工ID下的岗位集合
+	  * @param emplId
+	  * @return
+	  */
+	 List<Post> loadPost(String emplId);
 }

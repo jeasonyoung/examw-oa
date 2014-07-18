@@ -16,10 +16,12 @@ import com.examw.oa.support.CustomDateSerializer;
 public class LeaveInfo extends Paging{
 	private static final long serialVersionUID = 1L;
 	private String id,deptName,postName,resaon,employeeId,employeeName,shiftEmployeeId,shiftEmployeeName,shiftDepartmentId;
-	private Integer type;
+	private Integer type,status;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startTime,endTime,supTime,shiftTime,createTime;
 	private Boolean isSup;
+	private String aId,approval,aLeaveId,aEmplId;
+	private Integer atype,astatus;
 	private Set<LeaveApprovalInfo> approvals;
 	/**
 	 * 获取请假条ID
@@ -297,5 +299,48 @@ public class LeaveInfo extends Paging{
 	 */
 	public void setShiftDepartmentId(String shiftDepartmentId) {
 		this.shiftDepartmentId = shiftDepartmentId;
+	}
+	public Integer getStatus() {
+		return status;
+	}
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	public String getaId() {
+		return aId;
+	}
+	public void setaId(String aId) {
+		this.aId = aId;
+	}
+	public String getApproval() {
+		return approval;
+	}
+	public void setApproval(String approval) {
+		this.approval = approval;
+	}
+	public String getaLeaveId() {
+		return aLeaveId;
+	}
+	public void setaLeaveId(String aLeaveId) {
+		this.aLeaveId = aLeaveId;
+	}
+	public String getaEmplId() {
+		return aEmplId;
+	}
+	public void setaEmplId(String aEmplId) {
+		this.aEmplId = aEmplId;
+	}
+	public Integer getAtype() {
+		return atype;
+	}
+	public void setAtype(Integer atype) {
+		this.atype = atype;
+	}
+	public Integer getAstatus() {
+		return astatus;
+	}
+	public void setAstatus(Integer astatus) {
+		this.astatus = astatus;
 	}	
+	
 }

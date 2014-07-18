@@ -18,44 +18,60 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"createTime",
+		sortName:"startTime",
 		sortOrder:"asc",
 		columns:[[{
 			field:"id",
 			checkbox:true
 		}
 		,{
-			title:"请假人",
-			field:"leaveEmplName",
+			title:"所属部门",
+			field:"deptName",
 			width:20,
 			align:"left",
 			sortable:true
 		},{
-			title:"审批人",
+			title:"所属职务",
+			field:"postName",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"请假人",
 			field:"employeeName",
 			width:20,
 			align:"left",
 			sortable:true
-		},{
-			title:"审批类型",
-			field:"typeName",
+		}
+		,{
+			title:"换班人",
+			field:"shiftEmployeeName",
 			width:20,
 			align:"left",
 			sortable:true
 		},{
-			title:"审批状态",
-			field:"status",
+			title:"请假类型",
+			field:"type",
 			width:20,
 			align:"center",
 			formatter:function(value,row,index){
-				if(value == ${STATUS_AGREE_VALUE}) return "${STATUS_AGREE_NAME}";
-				if(value == ${STATUS_DISAGREE_VALUE}) return "${STATUS_DISAGREE_NAME}";
+				if(value == ${TYPE_VACATION_VALUE}) return "${TYPE_VACATION_NAME}";
+				if(value == ${TYPE_COMPA_VALUE}) return "${TYPE_COMPA_NAME}";
+				if(value == ${TYPE_OTHER_VALUE}) return "${TYPE_OTHER_NAME}";
+				if(value == ${TYPE_SICK_PROVE_VALUE}) return "${TYPE_SICK_PROVE_NAME}";
+				if(value == ${TYPE_SICK_NONPROVE_VALUE}) return "${TYPE_SICK_NONPROVE_NAME}";
 				return value;
 			},
 			sortable:true
 		},{
-			title:"创建时间",
-			field:"createTime",
+			title:"开始时间",
+			field:"startTime",
+			width:20,
+			align:"center",
+			sortable:true
+		},{
+			title:"结束时间",
+			field:"endTime",
 			width:30,
 			align:"center",
 			sortable:true
@@ -65,16 +81,21 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑业务系统",rowIndex,rowData);
+			edit_window("请假审批",rowIndex,rowData);
 		}
 	});
 	//edit
 	function edit_window(title,index,row){
+		var sdept_id = "",semp_id = "";
+		if(row){
+			sdept_id = row.shiftDepartmentId;
+			semp_id = row.shiftEmployeeId;
+		}
 		var d = $("<div/>").dialog({
 			title:title,
-			width:700,
-			height:630,
-			href:"<@s.url '/adm/approval/edit'/>",
+			width:710,
+			height:645,
+			href:"<@s.url '/adm/approval/edit'/>?depId="+ sdept_id +"&sEmpId="+ semp_id,
 			modal:true,
 			buttons:[
 			/* <shiro.hasPermission name="${PER_UPDATE}"> */
@@ -135,10 +156,6 @@ $(function(){
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
-	//add
-	${dg}_add = function(){
-		edit_window("新增业务系统",0,null);
-	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete
 	${dg}_delete = function(){
@@ -186,10 +203,6 @@ $(function(){
 </script>
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
-	<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
-	<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
-	<!-- </shiro.hasPermission> -->
-	<span>|</span>
 	<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
 	<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 	<!-- </shiro.hasPermission> -->
