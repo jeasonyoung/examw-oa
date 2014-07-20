@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.Json;
 import com.examw.model.TreeNode;
+import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.security.MenuInfo;
 import com.examw.oa.service.security.IMenuService;
 /**
@@ -25,29 +27,31 @@ import com.examw.oa.service.security.IMenuService;
 @Controller
 @RequestMapping(value = "/security/menu")
 public class MenuController {
-	private static Logger logger = Logger.getLogger(MenuController.class);
-	
+	private static final Logger logger = Logger.getLogger(MenuController.class);
+	//菜单服务接口。
 	@Resource
 	private IMenuService menuService;
 	/**
 	 * 菜单列表页面。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
-		//model.addAttribute("PER_UPDATE", ModuleConstant.SECURITY_MENU + ":" + Right.UPDATE);
-		//model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_MENU + ":" + Right.DELETE);
+		if(logger.isDebugEnabled()) logger.debug("加载列表页面...");
+		model.addAttribute("PER_UPDATE", ModuleConstant.SECURITY_MENU + ":" + Right.UPDATE);
+		model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_MENU + ":" + Right.DELETE);
 		return "security/menu_list";
 	}
 	/**
 	 * 列表数据。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.VIEW})
 	@RequestMapping(value = "/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public List<MenuInfo> datagrid(){
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.menuService.loadMenus();
 	}
 	/**
@@ -57,6 +61,7 @@ public class MenuController {
 	@RequestMapping(value = "/tree", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public synchronized List<TreeNode> tree(){
+		if(logger.isDebugEnabled()) logger.debug("加载菜单树数据...");
 		List<TreeNode> result = new ArrayList<>();
 		List<MenuInfo> list = this.menuService.loadMenus();
 		if(list != null && list.size() > 0){
@@ -69,6 +74,11 @@ public class MenuController {
 		}
 		return result;
 	}
+	/**
+	 * 创建数据树。
+	 * @param info
+	 * @return
+	 */
 	private TreeNode createTreeNode(MenuInfo info){
 		if(info == null) return null;
 		TreeNode tv = new TreeNode();
@@ -88,10 +98,11 @@ public class MenuController {
 	 * 初始化菜单数据。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.UPDATE})
+	@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.UPDATE})
 	@RequestMapping(value = "/init", method = RequestMethod.POST)
 	@ResponseBody
 	public Json init(){
+		if(logger.isDebugEnabled()) logger.debug("初始化菜单数据...");
 		Json result = new Json();
 		try {
 			this.menuService.init();
@@ -108,10 +119,11 @@ public class MenuController {
 	 * @param id
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.DELETE})
+	@RequiresPermissions({ModuleConstant.SECURITY_MENU + ":" + Right.DELETE})
 	@RequestMapping(value= "/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］...");
 		Json result = new Json();
 		try {
 			if(!StringUtils.isEmpty(id)){

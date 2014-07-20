@@ -2,10 +2,9 @@ package com.examw.oa.service.security;
 
 import java.util.List;
 
-import com.examw.model.TreeNode;
+import com.examw.model.TreeNode; 
 import com.examw.oa.model.security.RoleInfo;
 import com.examw.oa.service.IBaseDataService;
-
 /**
  * 角色服务接口。
  * @author yangyong.
@@ -19,7 +18,7 @@ public interface IRoleService extends IBaseDataService<RoleInfo> {
 	 * @return
 	 * 状态名称。
 	 */
-	String getStatusName(int status);
+	String loadStatusName(Integer status);
 	/**
 	 * 加载角色权限树数据。
 	 * @param roleId
@@ -36,4 +35,11 @@ public interface IRoleService extends IBaseDataService<RoleInfo> {
 	 * 菜单权限ID数组。
 	 */
 	void addRoleRight(String roleId,String[] menuRightIds);
+	/**
+	 * 初始化角色。
+	 * @param roleId
+	 * 角色ID。
+	 * @throws Exception
+	 */
+	void init(String roleId) throws Exception;
 }

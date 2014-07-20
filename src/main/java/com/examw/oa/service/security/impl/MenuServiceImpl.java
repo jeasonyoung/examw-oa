@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 import com.examw.configuration.ModuleDefine;
 import com.examw.configuration.ModuleDefineCollection;
 import com.examw.configuration.ModuleSystem;
-import com.examw.configuration.ModuleSystemCollection;
+import com.examw.configuration.ModuleSystemCollection; 
 import com.examw.oa.dao.security.IMenuDao;
 import com.examw.oa.domain.security.Menu;
 import com.examw.oa.model.security.MenuInfo;
@@ -32,7 +32,7 @@ import com.examw.oa.service.security.IMenuService;
  * @since 2014-04-28.
  */
 public class MenuServiceImpl  implements IMenuService {
-	private static Logger logger = Logger.getLogger(MenuServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(MenuServiceImpl.class);
 	private IMenuDao menuDao;
 	private String menuFile,systemId;
 	private static Map<String, ModuleSystem> mapSystemCache = Collections.synchronizedMap(new HashMap<String,ModuleSystem>());
@@ -42,6 +42,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 * 菜单数据接口。
 	 */
 	public void setMenuDao(IMenuDao menuDao) {
+		if(logger.isDebugEnabled()) logger.debug("设置菜单数据接口..");
 		this.menuDao = menuDao;
 	}
 	/**
@@ -50,6 +51,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 * 菜单文件。
 	 */
 	public void setMenuFile(String menuFile) {
+		if(logger.isDebugEnabled()) logger.debug("设置菜单文件［"+ menuFile +"］");
 		this.menuFile = menuFile;
 	}
 	/**
@@ -58,6 +60,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 * 系统ID。
 	 */
 	public void setSystemId(String systemId) {
+		if(logger.isDebugEnabled()) logger.debug("设置菜单文件中系统ID［"+ systemId +"］");
 		this.systemId = systemId;
 	}
 	/**
@@ -69,8 +72,9 @@ public class MenuServiceImpl  implements IMenuService {
 	 * @throws SAXException 
 	 */
 	private synchronized ModuleSystemCollection loadFileToParse(){
+		if(logger.isDebugEnabled()) logger.debug("加载文件解析为对象集合...");
 		if(StringUtils.isEmpty(this.menuFile)){
-			logger.info("菜单文件为空！");
+			if(logger.isDebugEnabled()) logger.debug("菜单文件为空！");
 			return null;
 		}
 		Resource rs = new ClassPathResource(this.menuFile, ClassUtils.getDefaultClassLoader());
@@ -91,8 +95,9 @@ public class MenuServiceImpl  implements IMenuService {
 	 */
 	@Override
 	public synchronized ModuleSystem loadSystem() {
+		if(logger.isDebugEnabled()) logger.debug("加载系统菜单数据...");
 		if(StringUtils.isEmpty(this.systemId)){
-			logger.info("系统ID为空！");
+			if(logger.isDebugEnabled()) logger.debug("系统ID为空！");
 			return null;
 		}
 		ModuleSystem ms = mapSystemCache.get(this.systemId);
@@ -120,6 +125,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 */
 	@Override
 	public MenuInfo update(MenuInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		if(info == null || StringUtils.isEmpty(info.getId())) return null;
 		boolean isAdded = false;
 		Menu data = this.menuDao.load(Menu.class, info.getId());
@@ -143,12 +149,13 @@ public class MenuServiceImpl  implements IMenuService {
 	 */
 	@Override
 	public void delete(String[] ids) {
+		if(logger.isDebugEnabled()) logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length; i++){
 			Menu data = this.menuDao.load(Menu.class, ids[i]);
 			if(data != null && (data.getChildren() == null || data.getChildren().size() == 0)){
 				this.menuDao.delete(data); 
-				logger.info("删除数据:" + data.getName());
+				if(logger.isDebugEnabled()) logger.debug("删除数据:" + data.getName());
 			}
 		}
 	}
@@ -157,6 +164,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 */
 	@Override
 	public List<MenuInfo> loadMenus() {
+		if(logger.isDebugEnabled()) logger.debug("加载菜单数据...");
 		List<MenuInfo> results = new ArrayList<>();
 		List<Menu> list = this.menuDao.findMenus();
 		if(list != null && list.size() > 0){
@@ -175,6 +183,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 * 结果数据。
 	 */
 	protected MenuInfo changeModel(Menu data) {
+		if(logger.isDebugEnabled()) logger.debug("数据类型转换..");
 		if(data == null) return null;
 		MenuInfo info = new MenuInfo();
 		BeanUtils.copyProperties(data, info, new String[] {"children"});
@@ -196,18 +205,19 @@ public class MenuServiceImpl  implements IMenuService {
 	 */
 	@Override
 	public void init() throws Exception {
-		logger.info("开始初始化菜单数据...");
-		String msg = null;
+		if(logger.isDebugEnabled()) logger.debug("开始初始化菜单数据...");
+		String err = null;
 		ModuleSystem system = this.loadSystem();
 		if(system == null || system.getModules() == null || system.getModules().size() == 0){
-			logger.info(msg = "菜单文件中没有系统信息或菜单数据信息！");
-			throw new Exception(msg);
+			err = "菜单文件中没有系统信息或菜单数据信息！";
+			if(logger.isDebugEnabled()) logger.debug(err);
+			throw new Exception(err);
 		}
 		
 		for(ModuleDefine module : system.getModules()){
 			this.initModuleToMenu(null, module);
 		}
-		logger.info("初始化完成！");
+		if(logger.isDebugEnabled()) logger.debug("初始化完成！");
 	}
 	/**
 	 * 初始化菜单模块到菜单数据。
@@ -237,6 +247,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 */
 	@Override
 	public String loadSystemName() {
+		if(logger.isDebugEnabled()) logger.debug("加载系统名称..");
 		ModuleSystem ms = this.loadSystem();
 		return ms == null ? null : ms.getName();
 	}
@@ -246,6 +257,7 @@ public class MenuServiceImpl  implements IMenuService {
 	 */
 	@Override
 	public ModuleDefineCollection loadModules() {
+		if(logger.isDebugEnabled()) logger.debug("加载系统模块集合..");
 		ModuleSystem ms = this.loadSystem();
 		return ms == null ? null : ms.getModules();
 	}

@@ -1,13 +1,13 @@
-<#--角色列表-->
+<#--用户列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="security_role"/>
+<#assign module="security_user"/>
 <#assign dg="${module}_list_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
 	//dg
-	var dg = $("#${dg}").datagrid({
-		url:"<@s.url '/security/role/datagrid'/>",
+	var dg=$("#${dg}").datagrid({
+		url:"<@s.url '/security/user/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -18,70 +18,71 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"name",
-		sortOrder:"asc",
+		sortName:"createTime",
+		sortOrder:"desc",
 		columns:[[{
 			field:"id",
 			checkbox:true
 		},{
-			title:"角色名称",
+			title:"用户姓名",
 			field:"name",
-			width:30,
+			width:15,
 			align:"left",
+			sortable:true
+		},{
+			title:"用户账号",
+			field:"account",
+			width:35,
+			align:"left",
+			sortable:true
+		},{
+			title:"用户昵称",
+			field:"nickName",
+			width:25,
+			align:"left",
+			sortable:true
+		},{
+			title:"性别",
+			field:"genderName",
+			width:10,
+			align:"center"
+		},{
+			title:"创建时间",
+			field:"createTime",
+			width:15,
+			align:"center",
 			sortable:true
 		},{
 			title:"状态",
 			field:"statusName",
 			width:10,
-			align:"center",
-			sortable:true
-		},{
-			title:"描述",
-			field:"description",
-			width:120,
-			align:"left",
-			sortable:true
-		},{
-			title:"角色权限",
-			field:"opt",
-			width:15,
-			align:"center",
-			formatter:function(value,data,index){
-				return "<a class='role-list-dg-opt-right' onclick='${dg}_right_window(\""+data.id +"\")' href='javascript:void(0)'>授权编辑</a>"
-			}
+			align:"center"
 		}]],
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		toolbar:"#${dg}_toobar",
-		onLoadSuccess:function(data){
-			dg_fields_format();
-		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑角色",rowIndex,rowData);
+			edit_window("编辑用户",rowIndex,rowData);
 		}
 	});
-	//format dg
-	function dg_fields_format(){
-		$(".role-list-dg-opt-right").linkbutton({text:"授权",plain:true,iconCls:"icon-edit"});
-	};
 	//edit
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
-			width:400,
-			height:260,
-			href:"<@s.url '/security/role/edit'/>",
+			width:600,
+			height:400,
+			href:"<@s.url '/security/user/edit'/>",
 			modal:true,
 			buttons:[
 			<@shiro.hasPermission name="${PER_UPDATE}">
-			{
+			 {
 				text:"保存",
 				iconCls:"icon-save",
 				handler:function(){
 					$.messager.progress();
 					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/security/role/update'/>",
+						url:"<@s.url '/security/user/update'/>",
 						onSubmit: function(){
 							var isValid = $(this).form("validate");
 							if (!isValid)$.messager.progress("close");
@@ -95,11 +96,8 @@ $(function(){
 							$.messager.progress("close");
 							var data = $.parseJSON(data);
 							if(data.success){
-								dg.datagrid(row ? "updateRow" : "insertRow",{
-									index:index,
-									row:data.data
-								});
-								dg_fields_format();
+								dg.datagrid("load");
+								dg.datagrid("unselectAll");
 								d.dialog("close");
 							}else{
 								$.messager.show({
@@ -123,48 +121,23 @@ $(function(){
 				$(this).dialog("destroy");
 			},
 			onLoad:function(){
-				if(row) $("#${module}_edit_form").form("load",row);
+				if(row){
+					$("#${module}_edit_form").form("load",row);
+					$("#${module}_edit_form :hidden").change();
+				}
 			}
 	  });
 	};
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  name:$("#${dg}_toobar input[name='name']").val()
+			  name:$("#${dg}_toobar input[name='name']").val(),
+			  status:$("#${dg}_toobar input[name='status']:checked").val()
 		});
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("新增角色",0,null);
-	};
-	${dg}_right_window = function(roleId){
-		var d = $("<div/>").dialog({
-			title:"角色权限",
-			width:300,
-			height:500,
-			href:"<@s.url '/security/role/right'/>?roleId="+roleId,
-			modal:true,
-			buttons:[
-			<@shiro.hasPermission name="${PER_UPDATE}">
-			{
-				text:"保存",
-				iconCls:"icon-save",
-				handler:function(){
-					${module}_right_save(d);
-				}
-			},
-			</@shiro.hasPermission>
-			{
-				text:"关闭",
-				iconCls:"icon-cancel",
-				handler:function(){
-					d.dialog("close");
-				}
-			}],
-			onClose:function(){
-				$(this).dialog("destroy");
-			}
-	  });
+		edit_window("新增用户",0,null);
 	};
 	<@shiro.hasPermission name="${PER_DELETE}">
 	//delete
@@ -179,7 +152,7 @@ $(function(){
 					ids.push(rows[i].id);
 				}
 				$.ajax({
-					url:"<@s.url '/security/role/delete'/>",
+					url:"<@s.url '/security/user/delete'/>",
 					type:"POST",
 					data:{
 						id:ids.join("|")
@@ -214,14 +187,17 @@ $(function(){
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
 	<@shiro.hasPermission name="${PER_UPDATE}">
-	<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
+	<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">添加</a>
 	</@shiro.hasPermission>
 	<span>|</span>
 	<@shiro.hasPermission name="${PER_DELETE}">
 	<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 	</@shiro.hasPermission>
 	
-	<label>角色名称：<input name="name" type="text" style="width:198px;"/></label>
+	<label>用户：<input name="name" type="text" style="width:198px;"/></label>
+	<label style="margin-left:10px;">状态:</label>
+	<label><input type="radio" name="status" value="1" checked="checked"/>${STATUS_ENABLED}</label>
+	<label><input type="radio" name="status" value="0"/>${STATUS_DISABLE}</label>
 	
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

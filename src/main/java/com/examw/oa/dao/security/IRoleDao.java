@@ -5,7 +5,6 @@ import java.util.List;
 import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.security.Role;
 import com.examw.oa.model.security.RoleInfo;
-
 /**
  * 角色数据接口。
  * @author yangyong.

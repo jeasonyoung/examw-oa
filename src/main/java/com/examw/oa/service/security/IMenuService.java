@@ -3,9 +3,8 @@ package com.examw.oa.service.security;
 import java.util.List;
 
 import com.examw.configuration.ModuleDefineCollection;
-import com.examw.configuration.ModuleSystem;
+import com.examw.configuration.ModuleSystem; 
 import com.examw.oa.model.security.MenuInfo;
-
 /**
  * 菜单服务接口。
  * @author yangyong.

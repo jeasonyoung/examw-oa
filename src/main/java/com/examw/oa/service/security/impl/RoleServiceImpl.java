@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
@@ -18,16 +19,17 @@ import com.examw.oa.dao.security.IRoleDao;
 import com.examw.oa.domain.security.Menu;
 import com.examw.oa.domain.security.MenuRight;
 import com.examw.oa.domain.security.Role;
+import com.examw.oa.model.security.MenuRightInfo;
 import com.examw.oa.model.security.RoleInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.security.IRoleService;
-
 /**
  * 角色服务接口实现类。
  * @author yangyong.
  * @since 2014-05-06.
  */
 public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> implements IRoleService {
+	private static final Logger logger = Logger.getLogger(RoleServiceImpl.class);
 	private IRoleDao roleDao;
 	private IMenuDao menuDao;
 	private IMenuRightDao menuRightDao;
@@ -38,6 +40,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 * 角色数据接口。
 	 */
 	public void setRoleDao(IRoleDao roleDao) {
+		if(logger.isDebugEnabled()) logger.debug("设置角色数据接口...");
 		this.roleDao = roleDao;
 	}
 	/**
@@ -46,6 +49,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 * 菜单数据接口。
 	 */
 	public void setMenuDao(IMenuDao menuDao) {
+		if(logger.isDebugEnabled()) logger.debug("设置菜单数据接口...");
 		this.menuDao = menuDao;
 	}
 	/**
@@ -54,6 +58,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 * 菜单权限数据接口。
 	 */
 	public void setMenuRightDao(IMenuRightDao menuRightDao) {
+		if(logger.isDebugEnabled()) logger.debug("设置菜单权限数据接口...");
 		this.menuRightDao = menuRightDao;
 	}
 	/**
@@ -62,6 +67,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 * 角色状态名称。
 	 */
 	public void setRoleStatusName(Map<Integer, String> roleStatusName) {
+		if(logger.isDebugEnabled()) logger.debug("设置角色状态名称集合...");
 		this.roleStatusName = roleStatusName;
 	}
 	/*
@@ -69,7 +75,8 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 * @see com.examw.netplatform.service.admin.IRoleService#getStatusName(int)
 	 */
 	@Override
-	public String getStatusName(int status) {
+	public String loadStatusName(Integer status) {
+		if(logger.isDebugEnabled()) logger.debug("加载状态［"+ status +"］名称...");
 		if(this.roleStatusName == null || this.roleStatusName.size() == 0) return null;
 		return this.roleStatusName.get(status);
 	}
@@ -79,6 +86,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 */
 	@Override
 	protected List<Role> find(RoleInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据...");
 		return this.roleDao.findRoles(info);
 	}
 	/*
@@ -87,10 +95,11 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 */
 	@Override
 	protected RoleInfo changeModel(Role data) {
+		if(logger.isDebugEnabled()) logger.debug("类型转换...");
 		if(data == null) return null;
 		RoleInfo info = new RoleInfo();
 		BeanUtils.copyProperties(data, info);
-		info.setStatusName(this.getStatusName(info.getStatus()));
+		info.setStatusName(this.loadStatusName(info.getStatus()));
 		return info;
 	}
 	/*
@@ -99,6 +108,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 */
 	@Override
 	protected Long total(RoleInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据统计...");
 		return this.roleDao.total(info);
 	}
 	/*
@@ -107,6 +117,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 */
 	@Override
 	public RoleInfo update(RoleInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		if(info == null) return null;
 		boolean isAdded = false;
 		Role data = StringUtils.isEmpty(info.getId()) ? null : this.roleDao.load(Role.class, info.getId());
@@ -118,7 +129,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 		}
 		BeanUtils.copyProperties(info, data);
 		if(StringUtils.isEmpty(info.getStatusName())){
-			info.setStatusName(this.getStatusName(info.getStatus()));
+			info.setStatusName(this.loadStatusName(info.getStatus()));
 		}
 		if(isAdded) this.roleDao.save(data);
 		return info;
@@ -130,11 +141,13 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 */
 	@Override
 	public void delete(String[] ids) {
+		if(logger.isDebugEnabled()) logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length; i++){
 			if(StringUtils.isEmpty(ids[i])) continue;
 			Role data = this.roleDao.load(Role.class, ids[i]);
 			if(data != null){
+				if(logger.isDebugEnabled()) logger.debug("更新数据：" + ids[i]);
 				this.roleDao.delete(data);
 			}
 		}
@@ -145,6 +158,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 */
 	@Override
 	public List<TreeNode> loadRoleRightTree(String roleId) {
+		if(logger.isDebugEnabled()) logger.debug("加载角色权限树数据...");
 		List<TreeNode> results = new ArrayList<>();
 		List<Menu>  menus =  this.menuDao.findMenus();
 		if(menus != null && menus.size() > 0){
@@ -218,6 +232,7 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 	 */
 	@Override
 	public void addRoleRight(String roleId, String[] menuRightIds) {
+		if(logger.isDebugEnabled()) logger.debug("添加角色［"+ roleId +"］权限...");
 		if(StringUtils.isEmpty(roleId)) return;
 		Role role = this.roleDao.load(Role.class, roleId);
 		if(role == null) return;
@@ -234,5 +249,37 @@ public class RoleServiceImpl extends BaseDataServiceImpl<Role, RoleInfo> impleme
 		}
 		role.setRights(rights);
 		this.roleDao.update(role);
+	}
+	/*
+	 * 初始化角色。
+	 * @see com.examw.wechat.service.security.IRoleService#init()
+	 */
+	@Override
+	public void init(String roleId) throws Exception {
+		if(logger.isDebugEnabled()) logger.debug("初始化角色...");
+		String err = null;
+		if(StringUtils.isEmpty(roleId)){
+			err = "RoleID 为空!";
+			if(logger.isDebugEnabled()) logger.debug(err);
+			throw new Exception(err);
+		}
+		List<MenuRight> menuRights = this.menuRightDao.findMenuRights(new MenuRightInfo(){private static final long serialVersionUID = 1L;});
+		if(menuRights == null || menuRights.size() == 0){
+			err = "未找到菜单权限！";
+			if(logger.isDebugEnabled()) logger.debug(err);
+			throw new Exception(err);
+		}
+		boolean isAdded = false;
+		Role data = this.roleDao.load(Role.class, roleId);
+		if(isAdded = (data == null)){
+			data = new Role();
+			data.setId(roleId);
+		}
+		data.setName("administrators");
+		data.setDescription("系统初始化角色");
+		data.setStatus(Role.STATUS_ENABLED);
+		data.setRights(new HashSet<MenuRight>(menuRights));
+		if(isAdded)this.roleDao.save(data);
+		if(logger.isDebugEnabled()) logger.debug("初始化角色成功！");
 	}
 }

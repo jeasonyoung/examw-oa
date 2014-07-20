@@ -3,7 +3,6 @@ package com.examw.oa.service.security;
 import com.examw.oa.model.security.RightInfo;
 import com.examw.oa.service.IBaseDataService;
 
-
 /**
  * 基础权限服务接口。
  * @author yangyong.
@@ -17,7 +16,7 @@ public interface IRightService extends IBaseDataService<RightInfo> {
 	 * @return
 	 * 权限名称。
 	 */
-	String getRightName(int right);
+	String loadRightName(Integer right);
 	/**
 	 * 初始化数据。
 	 * @throws Exception

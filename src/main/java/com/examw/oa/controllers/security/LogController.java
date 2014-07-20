@@ -3,6 +3,7 @@ package com.examw.oa.controllers.security;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
+import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.security.LoginLogInfo;
 import com.examw.oa.service.security.ILoginLogService;
-
 /**
  * 登录日志管理控制器。
  * @author yangyong.
@@ -22,27 +23,30 @@ import com.examw.oa.service.security.ILoginLogService;
 @Controller
 @RequestMapping(value = "/security/log")
 public class LogController {
-	private static Logger logger = Logger.getLogger(LogController.class);
+	private static final Logger logger = Logger.getLogger(LogController.class);
+	//登录日志服务接口。
 	@Resource
 	private ILoginLogService loginLogService;
 	/**
 	 * 获取列表页面。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.VIEW})
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
-		//model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.DELETE);
+		if(logger.isDebugEnabled()) logger.debug("加载列表页面...");
+		model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.DELETE);
 		return "security/log_list";
 	}
 	/**
 	 * 查询数据。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LoginLogInfo> datagrid(LoginLogInfo info){
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.loginLogService.datagrid(info);
 	}
 	/**
@@ -50,10 +54,11 @@ public class LogController {
 	 * @param id
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.DELETE})
+	@RequiresPermissions({ModuleConstant.SECURITY_LOGIN_LOG + ":" + Right.DELETE})
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］...");
 		Json result = new Json();
 		try {
 			this.loginLogService.delete(id.split("\\|"));

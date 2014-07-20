@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
@@ -12,13 +13,13 @@ import com.examw.oa.domain.security.LoginLog;
 import com.examw.oa.model.security.LoginLogInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.security.ILoginLogService;
-
 /**
  * 登录日志服务实现。
  * @author yangyong.
  * @since 2014-05-17.
  */
 public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogInfo> implements ILoginLogService {
+	private static final Logger logger = Logger.getLogger(LoginLogServiceImpl.class);
 	private ILoginLogDao loginLogDao;
 	/**
 	 * 设置登录日志数据接口。
@@ -26,6 +27,7 @@ public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogI
 	 * 数据接口。
 	 */
 	public void setLoginLogDao(ILoginLogDao loginLogDao) {
+		if(logger.isDebugEnabled())logger.debug("注入登录日志数据操作对象..");
 		this.loginLogDao = loginLogDao;
 	}
 	/*
@@ -34,6 +36,7 @@ public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogI
 	 */
 	@Override
 	public void addLog(String account, String ip, String browser) {
+		if(logger.isDebugEnabled()) logger.debug(String.format("account=%1$s ip=%2$s browser=%3$s", account,ip,browser));
 		if(!StringUtils.isEmpty(account)){
 			LoginLog data = new LoginLog();
 			data.setId(UUID.randomUUID().toString());
@@ -50,6 +53,7 @@ public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogI
 	 */
 	@Override
 	protected List<LoginLog> find(LoginLogInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据...");
 		return this.loginLogDao.findLoginLogs(info);
 	}
 	/*
@@ -58,6 +62,7 @@ public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogI
 	 */
 	@Override
 	protected LoginLogInfo changeModel(LoginLog data) {
+		if(logger.isDebugEnabled())logger.debug("开始类型转换...");
 		if(data == null) return null;
 		LoginLogInfo info = new LoginLogInfo();
 		BeanUtils.copyProperties(data, info);
@@ -69,6 +74,7 @@ public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogI
 	 */
 	@Override
 	protected Long total(LoginLogInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据统计...");
 		return this.loginLogDao.total(info);
 	}
 	/*
@@ -77,6 +83,7 @@ public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogI
 	 */
 	@Override
 	public LoginLogInfo update(LoginLogInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		if(info == null) return null;
 		boolean isAdded = false;
 		LoginLog data = StringUtils.isEmpty(info.getId()) ? null : this.loginLogDao.load(LoginLog.class, info.getId());
@@ -96,6 +103,7 @@ public class LoginLogServiceImpl extends BaseDataServiceImpl<LoginLog, LoginLogI
 	 */
 	@Override
 	public void delete(String[] ids) {
+		if(logger.isDebugEnabled()) logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length; i++){
 			if(StringUtils.isEmpty(ids[i])) continue;

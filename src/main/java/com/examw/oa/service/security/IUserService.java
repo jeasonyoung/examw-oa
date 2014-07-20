@@ -6,6 +6,7 @@ import com.examw.oa.domain.security.User;
 import com.examw.oa.model.security.UserInfo;
 import com.examw.oa.service.IBaseDataService;
 
+
 /**
  * 用户服务接口。
  * @author yangyong.
@@ -60,4 +61,15 @@ public interface IUserService extends IBaseDataService<UserInfo> {
 	 * 权限集合。
 	 */
 	Set<String> findPermissions(String account);
+	/**
+	 * 初始化用户。
+	 * @param roleId
+	 * 角色ID。
+	 * @param account
+	 * 账号。
+	 * @param password
+	 * 密码。
+	 * @throws Exception
+	 */
+	void init(String roleId,String account, String password) throws Exception;
 }

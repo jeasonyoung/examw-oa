@@ -5,7 +5,6 @@ import java.util.List;
 import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.security.LoginLog;
 import com.examw.oa.model.security.LoginLogInfo;
-
 /**
  * 登录日志数据接口。
  * @author yangyong.
