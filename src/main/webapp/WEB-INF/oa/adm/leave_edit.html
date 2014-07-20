@@ -115,21 +115,21 @@ $(function(){
 				<input type="text" name="shiftDepartmentId" style="width:220px;"/>
 				<input type="text" name="shiftEmployeeId" style="width:220px;"/>
 		</div>
-		
-		<div style="float:left; margin-top:10px; width:100%;">
-				<label style="width:105px;">审批人：</label>
-				<input type="text" name="" style="width:170px;"/>
-				<input type="text" name="" style="width:170px;"/>
-		</div>
-		<div style="float:left;margin-top:10px;">
+		<div style="float:left;margin-top:10px;width:100%;">
 			<label style="width:105px;">审核状态：</label>
-			<label><input type="radio" name="" value="1" checked="checked" />${STATUS_AGREE_NAME}</label>
-			<label><input type="radio" name="" value="2" />${STATUS_DISAGREE_NAME}</label>
+			<label><input type="radio" name="aStatus" value="1"  />${STATUS_AGREE_NAME}</label>
+			<label><input type="radio" name="aStatus" value="2" />${STATUS_DISAGREE_NAME}</label>
+		</div>
+		<div style="float:left;margin-top:10px;width:100%;">
+			<label style="width:105px;">审核类型：</label>
+			<label><input type="radio" name="aType" value="1" />${TYPE_ADM_NAME}</label>
+			<label><input type="radio" name="aType" value="2" />${TYPE_LEADER_NAME}</label>
+			<label><input type="radio" name="aType" value="3" />${TYPE_BOSS_NAME}</label>
 		</div>
 		<div style="float:left;margin-top:10px; width:100%;">
 			<label style="width:105px;">意见：</label>
-			<input type="hidden" name="">
-			<textarea type="text" name="" row="4" cols="5" style="width:440px;height:100px" />
+			<input type="hidden" name="aId">
+			<textarea type="text" name="approval" row="4" cols="5" style="width:440px;height:100px" />
 		</div>
 </div>
 <div title="请假审核">	

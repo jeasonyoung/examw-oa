@@ -1,9 +1,7 @@
 package com.examw.oa.service.adm.impl;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
@@ -19,7 +17,11 @@ import com.examw.oa.domain.org.Post;
 import com.examw.oa.model.adm.LeaveApprovalInfo;
 import com.examw.oa.service.adm.ILeaveApprovalService;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
-
+/**
+ * 请假审批服务
+ * @author lq.
+ * @since 2014-07-17.
+ */
 public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval, LeaveApprovalInfo> implements ILeaveApprovalService {
 	private ILeaveApprovalDao approvalDao;
 	private ILeaveDao leaveDao;
@@ -34,17 +36,20 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	public void setApprovalDao(ILeaveApprovalDao approvalDao) {
 		this.approvalDao = approvalDao;
 	}
+	/**
+	 * 请假数据接口
+	 * @param leaveDao
+	 */
 	public void setLeaveDao(ILeaveDao leaveDao) {
 		this.leaveDao = leaveDao;
 	}
-	
-	public void setPostDao(IPostDao postDao) {
-		this.postDao = postDao;
-	}
+	/**
+	 * 员工数据接口
+	 * @param employeeDao
+	 */
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
 	}
-
 	/**
 	 * 类型数据集合
 	 * @param typeMap
@@ -65,22 +70,9 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	 */
 	@Override
 	public String loadTypeName(Integer type) {
-		if(this.typeMap == null || type == null) return null; 
-		StringBuilder sb = new StringBuilder();
-		if((type & LeaveApproval.TYPE_LEADER) == LeaveApproval.TYPE_LEADER){
-			sb.append(",").append(this.typeMap.get(LeaveApproval.TYPE_LEADER));
-		}
-		if((type & LeaveApproval.TYPE_ADM) == LeaveApproval.TYPE_ADM){
-			sb.append(",").append(this.typeMap.get(LeaveApproval.TYPE_ADM));
-		}
-		if((type & LeaveApproval.TYPE_BOSS) == LeaveApproval.TYPE_BOSS){
-			sb.append(",").append(this.typeMap.get(LeaveApproval.TYPE_BOSS));
-		}
-		if(sb.length() > 0) 
-			return sb.substring(1);
-		return null;
+		if(this.typeMap == null || type == null) return null;
+		return this.typeMap.get(type);
 	}
-	
 	/*
 	 * 状态集合
 	 * @see com.examw.oa.service.adm.ILeaveApprovalService#loadStatusName(java.lang.Integer)
@@ -129,23 +121,6 @@ public class LeaveApprovalServiceImpl extends BaseDataServiceImpl<LeaveApproval,
 	@Override
 	protected Long total(LeaveApprovalInfo info){
 		return this.approvalDao.total(info);
-	}
-	/*
-	 * 
-	 */
-	public LeaveApproval buildLeaveApproval(String id,String approval,Integer type,Integer status){
-		LeaveApproval data = StringUtils.isEmpty(id) ?  null : this.approvalDao.load(LeaveApproval.class,id);
-		if(data == null){
-			if(StringUtils.isEmpty(approval)) return null;
-			if(StringUtils.isEmpty(id)) id=(UUID.randomUUID().toString());
-			data = new LeaveApproval();
-			data.setId(id);
-			data.setCreateTime(new Date());
-			data.setStatus(status);
-			data.setType(type);
-		}
-		data.setApproval(approval);
-		return data;
 	}
 	/*
 	 * 数据更新

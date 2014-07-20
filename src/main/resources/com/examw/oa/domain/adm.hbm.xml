@@ -80,6 +80,8 @@
 		<id name="id" type="string" length="64" />
 		<!-- 所属请假条 -->
 		<many-to-one name="leave" column="leave_id" class="Leave" />
+		<!-- 审批意见 -->
+		<property name="approval" type="string" length="512" />
 		<!-- 审批用户 -->
 		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee" />
 		<!-- 审批类型 -->

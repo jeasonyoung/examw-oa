@@ -62,6 +62,10 @@ public class LeaveDaoImpl extends BaseDaoImpl<Leave> implements ILeaveDao {
 			hql += " and (l.employee.name like :name)";
 			parameters.put("name", "%" + info.getEmployeeName() + "%");
 		}
+		if(info.getType() != null){
+			hql += " and (l.type = :type)";
+			parameters.put("type", info.getType());
+		}
 		return hql;
 	}
 }

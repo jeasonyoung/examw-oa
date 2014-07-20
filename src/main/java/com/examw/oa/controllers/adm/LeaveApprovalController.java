@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.examw.aware.IUserAware;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.domain.adm.Leave;
@@ -26,8 +27,9 @@ import com.examw.oa.service.adm.ILeaveService;
  */
 @Controller
 @RequestMapping(value = "/adm/approval")
-public class LeaveApprovalController {
+public class LeaveApprovalController implements IUserAware{
 	private static Logger logger = Logger.getLogger(NoticeColumnController.class);
+	private String userId;
 	/**
 	 *栏目信息服务。
 	 */
@@ -59,6 +61,15 @@ public class LeaveApprovalController {
 		
 		model.addAttribute("TYPE_SICK_NONPROVE_VALUE",Leave.TYPE_SICK_NONPROVE);
 		model.addAttribute("TYPE_SICK_NONPROVE_NAME", this.leaveService.loadTypeName(Leave.TYPE_SICK_NONPROVE));
+		
+
+		model.addAttribute("STATUS_PASS_VALUE",Leave.STATUS_PASS);
+		model.addAttribute("STATUS_PASS_NAME", this.leaveService.loadStatusName(Leave.STATUS_PASS));
+		
+		model.addAttribute("STATUS_NOPASS_VALUE",Leave.STATUS_NOPASS);
+		model.addAttribute("STATUS_NOPASS_NAME", this.leaveService.loadStatusName(Leave.STATUS_NOPASS));
+		
+		model.addAttribute("typeMap",this.leaveService.getTypeMap());
 		return "adm/approval_list";
 	}
 	/**
@@ -71,6 +82,10 @@ public class LeaveApprovalController {
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
 		model.addAttribute("CURRENT_SEMPL_ID", StringUtils.isEmpty(sEmpId) ? "" : sEmpId);
 
+		model.addAttribute("TYPE_ADM_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_ADM));
+		model.addAttribute("TYPE_LEADER_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_LEADER));
+		model.addAttribute("TYPE_BOSS_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_BOSS));
+		
 		model.addAttribute("STATUS_AGREE_NAME", this.approvalService.loadStatusName(LeaveApproval.STATUS_AGREE));
 		model.addAttribute("STATUS_DISAGREE_NAME", this.approvalService.loadStatusName(LeaveApproval.STATUS_DISAGREE));
 		
@@ -106,6 +121,7 @@ public class LeaveApprovalController {
 	public Json update(LeaveInfo info){
 		Json result = new Json();
 		try {
+			info.setaEmplId(userId);
 			result.setData(this.leaveService.update(info));
 			result.setSuccess(true);
 		} catch (Exception e) {
@@ -149,5 +165,20 @@ public class LeaveApprovalController {
 			@Override
 			public String getOrder(){return "asc";}
 		}).getRows();
+	}
+	@Override
+	public void setUserId(String userId) {
+		this.userId=userId;
+		
+	}
+	@Override
+	public void setUserName(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setUserNickName(String arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

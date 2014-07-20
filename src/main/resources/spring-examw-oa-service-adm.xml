@@ -49,6 +49,15 @@
 				<entry key="5" value="${TYPE_SICK_NONPROVE}"/>
 			</map>
 		</property>
+		<!-- 请假类型集合 -->
+		<property name="statusMap">
+			<map>
+				<!-- 批准 -->
+				<entry key="1" value="${STATUS_PASS}"/>
+				<!-- 未批准 -->
+				<entry key="2" value="${STATUS_NOPASS}"/>
+			</map>
+		</property>
 	</bean>
 	<!-- 请假审核信息 -->
 	<bean id="approvalService" class="com.examw.oa.service.adm.impl.LeaveApprovalServiceImpl">
@@ -58,8 +67,6 @@
 		<property name="leaveDao" ref="leaveDao"/>
 		<!-- 员工数据接口 -->
 		<property name="employeeDao" ref="employeeDao" />
-		<!-- 部门岗位数据接口 -->
-		<property name="postDao" ref="postDao"/>
 		<!-- 请假审核类型集合 -->
 		<property name="typeMap">
 			<map>

@@ -21,7 +21,7 @@ public class LeaveInfo extends Paging{
 	private Date startTime,endTime,supTime,shiftTime,createTime;
 	private Boolean isSup;
 	private String aId,approval,aLeaveId,aEmplId;
-	private Integer atype,astatus;
+	private Integer aType,aStatus;
 	private Set<LeaveApprovalInfo> approvals;
 	/**
 	 * 获取请假条ID
@@ -330,17 +330,17 @@ public class LeaveInfo extends Paging{
 	public void setaEmplId(String aEmplId) {
 		this.aEmplId = aEmplId;
 	}
-	public Integer getAtype() {
-		return atype;
+	public Integer getaType() {
+		return aType;
 	}
-	public void setAtype(Integer atype) {
-		this.atype = atype;
+	public void setaType(Integer aType) {
+		this.aType = aType;
 	}
-	public Integer getAstatus() {
-		return astatus;
+	public Integer getaStatus() {
+		return aStatus;
 	}
-	public void setAstatus(Integer astatus) {
-		this.astatus = astatus;
-	}	
+	public void setaStatus(Integer aStatus) {
+		this.aStatus = aStatus;
+	}
 	
 }

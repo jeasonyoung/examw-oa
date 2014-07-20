@@ -21,13 +21,17 @@ import com.examw.oa.domain.org.Employee;
 import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.adm.ILeaveService;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
-
+/**
+ * 请假服务
+ * @author lq.
+ * @since 2014-07-17.
+ */
 public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> implements ILeaveService {
 	private ILeaveDao leaveDao;
 	private IEmployeeDao employeeDao;
 	private IDepartmentDao departmentDao;
 	private ILeaveApprovalDao approvalDao;
-	private Map<Integer, String> typeMap;
+	private Map<String, String> typeMap;
 	private Map<Integer, String> statusMap;
 	/**
 	 * 请假数据接口
@@ -43,15 +47,24 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
 		this.employeeDao = employeeDao;
 	}
-	
+	/**
+	 * 部门数据接口
+	 * @param departmentDao
+	 */
 	public void setDepartmentDao(IDepartmentDao departmentDao) {
 		this.departmentDao = departmentDao;
 	}
-	
+	/**
+	 * 请假审核数据接口
+	 * @param approvalDao
+	 */
 	public void setApprovalDao(ILeaveApprovalDao approvalDao) {
 		this.approvalDao = approvalDao;
 	}
-	
+	/**
+	 * 请假状态集合
+	 * @param statusMap
+	 */
 	public void setStatusMap(Map<Integer, String> statusMap) {
 		this.statusMap = statusMap;
 	}
@@ -59,7 +72,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 * 请假类型集合
 	 * @param typeMap
 	 */
-	public void setTypeMap(Map<Integer, String> typeMap) {
+	public void setTypeMap(Map<String, String> typeMap) {
 		this.typeMap = typeMap;
 	}
 	/*
@@ -97,10 +110,10 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 				if(app == null) continue;
 					info.setaId(app.getId());
 					info.setaLeaveId(app.getLeave().getId());
-					info.setaEmplId(app.getEmployee().getId());
+					info.setaEmplId("3fb96023-292a-4051-844f-622d5e4a70c9");
 					info.setApproval(app.getApproval());
-					info.setAtype(app.getType());
-					info.setAstatus(app.getStatus());
+					info.setaType(app.getType());
+					info.setaStatus(app.getStatus());
 					continue;
 			}
 		}
@@ -127,8 +140,8 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 			data.setCreateTime(new Date());
 			data.setType(type);
 			data.setStatus(status);
+			data.setApproval(approval);
 		}
-		data.setApproval(approval);
 		return data;
 	}
 	/*
@@ -148,6 +161,13 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 			data = new Leave();
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
+		//判断是否通过
+		if(info.getaStatus()==LeaveApproval.STATUS_AGREE){
+			info.setStatus(Leave.STATUS_PASS);
+		}
+		if(info.getaStatus() == LeaveApproval.STATUS_DISAGREE){
+			info.setStatus(Leave.STATUS_NOPASS);
+		}
 		BeanUtils.copyProperties(info, data);
 		
 		if(!StringUtils.isEmpty(info.getEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEmployeeId()))){
@@ -169,24 +189,21 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 			info.setShiftEmployeeName(data.getShiftEmployee().getName());
 		}
 		//审批
-		LeaveApproval app=this.buildApproval(info.getaId(), info.getApproval(), info.getAtype(), info.getAstatus());
+		LeaveApproval app=this.buildApproval(info.getaId(), info.getApproval(), info.getaType(), info.getaStatus());
 		Set<LeaveApproval> approvale = new HashSet<>();
 		if(app != null){
 			info.setaId(app.getId());
+			info.setaType(app.getType());
+			info.setaStatus(app.getStatus());
+			info.setApproval(app.getApproval());
 			//获取当前请假人ID
 			info.setaLeaveId(data.getId());
 			//审批人ID
 			info.setaEmplId(info.getaEmplId());
 			approvale.add(app);
 		}
-		//判断是否通过
-		if(info.getAstatus()==LeaveApproval.STATUS_AGREE){
-			info.setStatus(Leave.STATUS_PASS);
-		}
-		if(info.getAstatus() == LeaveApproval.STATUS_DISAGREE){
-			info.setStatus(Leave.STATUS_NOPASS);
-		}
 		data.setApprovals(approvale);
+		
 		if(isAdded)this.leaveDao.save(data);
 		return info;
 	}
@@ -209,8 +226,9 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	public String loadTypeName(Integer type) {
-		if(this.typeMap == null || type == null) return null;
-		return this.typeMap.get(type);
+		if(typeMap==null || type==null)
+			return null;
+			return typeMap.get(type.toString());
 	}
 	/*
 	 * 加载状态集合
@@ -220,5 +238,9 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	public String loadStatusName(Integer status) {
 		if(this.statusMap == null|| status==null) return null;
 		return this.statusMap.get(status);
+	}
+	@Override
+	public Map<String, String> getTypeMap() {
+		return typeMap;
 	}
 }
