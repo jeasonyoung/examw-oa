@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model; 
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -48,10 +47,9 @@ public class EmployeeController {
 	 */
 	@RequiresPermissions({ModuleConstant.ORG_EMPLOYEE + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(String deptId,String postId, Model model){
+	public String edit(String deptId,Model model){
 		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
-		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
-		model.addAttribute("CURRENT_POST_ID", StringUtils.isEmpty(postId) ? "" : postId);
+		model.addAttribute("CURRENT_DEPT_ID", deptId);
 
 		model.addAttribute("GENDER_MALE_VALUE", Employee.GENDER_MALE);
 		model.addAttribute("GENDER_MALE_NAME", this.employeeService.loadGenderName(Employee.GENDER_MALE));
@@ -122,28 +120,4 @@ public class EmployeeController {
 		}
 		return result;
 	}
-//	/**
-//	 * 员工数据。
-//	 * @return
-//	 */
-//	@RequestMapping(value="/alls", method = RequestMethod.POST)
-//	@ResponseBody
-//	public List<EmployeeInfo> alls(){
-//		return this.employeeService.datagrid(new EmployeeInfo(){
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public String getSort(){return "name";}
-//			@Override
-//			public String getOrder(){return "asc";}
-//		}).getRows();
-//	}
-//	/**
-//	 * 返回部门下的所有员工
-//	 * @return
-//	 */
-//	@RequestMapping(value={"/all"}, method = RequestMethod.POST)
-//	@ResponseBody
-//	public List<EmployeeInfo> all(String deptId){
-//		 return this.employeeService.loadEmployee(deptId);
-//	}
 }

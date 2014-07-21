@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
@@ -23,11 +24,12 @@ import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IEmployeeService;
 import com.examw.oa.service.security.IUserService;
 /**
- * 员工服务接口。
+ * 员工服务接口实现类。
  * @author lq.
  * @since 2014-06-16.
  */
 public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeInfo> implements IEmployeeService {
+	private static Logger logger = Logger.getLogger(EmployeeServiceImpl.class);
 	private IEmployeeDao employeeDao;
 	private IDepartmentDao departmentDao;
 	private IPostDao postDao;
@@ -40,6 +42,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 * 员工数据接口。
 	 */
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
+		if(logger.isDebugEnabled())logger.debug("注入员工数据接口...");
 		this.employeeDao = employeeDao;
 	}
 	/**
@@ -48,6 +51,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 * 部门数据接口。
 	 */
 	public void setDepartmentDao(IDepartmentDao departmentDao) {
+		if(logger.isDebugEnabled()) logger.debug("注入部门数据接口...");
 		this.departmentDao = departmentDao;
 	}
 	/**
@@ -55,6 +59,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 * @param postDao
 	 */
 	public void setPostDao(IPostDao postDao) {
+		if(logger.isDebugEnabled()) logger.debug("注入岗位数据接口...");
 		this.postDao = postDao;
 	}
 	/**
@@ -63,6 +68,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 * 员工级别接口。
 	 */
 	public void setRankDao(IRankDao rankDao) {
+		if(logger.isDebugEnabled()) logger.debug("注入员工级别数据接口...");
 		this.rankDao = rankDao;
 	}
 	/**
@@ -71,6 +77,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 * 用户服务接口。
 	 */
 	public void setUserService(IUserService userService) {
+		if(logger.isDebugEnabled()) logger.debug("注入用户服务接口...");
 		this.userService = userService;
 	}
 	/**
@@ -79,6 +86,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 * 性别集合。
 	 */
 	public void setGendersMap(Map<Integer, String> gendersMap) {
+		if(logger.isDebugEnabled()) logger.debug("注入性别集合...");
 		this.gendersMap = gendersMap;
 	}
 	/**
@@ -87,6 +95,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 * 状态集合。
 	 */
 	public void setStatusMap(Map<Integer, String> statusMap) {
+		if(logger.isDebugEnabled()) logger.debug("注入状态集合...");
 		this.statusMap = statusMap;
 	}
 	/*
@@ -95,6 +104,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	@Override
 	public String loadGenderName(Integer gender) {
+		if(logger.isDebugEnabled()) logger.debug("加载性别［"+gender+"］名称...");
 		if(this.gendersMap == null || gender == null) return null;
 		return this.gendersMap.get(gender);
 	}
@@ -104,6 +114,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	@Override
 	public String loadStatusName(Integer status) {
+		if(logger.isDebugEnabled()) logger.debug("加载状态［"+status+"］名称...");
 		if(this.statusMap == null || status == null) return null;
 		return this.statusMap.get(status);
 	}
@@ -113,6 +124,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	@Override
 	protected List<Employee> find(EmployeeInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据...");
 		return this.employeeDao.findEmployees(info);
 	}
 	/*
@@ -121,6 +133,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	@Override
 	protected Long total(EmployeeInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据统计...");
 		return this.employeeDao.total(info);
 	}
 	/*
@@ -129,12 +142,13 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	@Override
 	protected EmployeeInfo changeModel(Employee data) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据统计...");
 		if(data == null) return null;
 		EmployeeInfo info = new EmployeeInfo();
 		BeanUtils.copyProperties(data, info);
 		if(data.getDepartment() != null){
-			info.setDepartmentId(data.getDepartment().getId());
-			info.setDepartmentName(data.getDepartment().getName());
+			info.setDeptId(data.getDepartment().getId());
+			info.setDeptName(data.getDepartment().getName());
 		}
 		if(data.getPost() != null){
 			info.setPostId(data.getPost().getId());
@@ -155,6 +169,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	@Override
 	public EmployeeInfo update(EmployeeInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		if(info == null) return null;
 		Boolean isAdded = false;
 		Employee data = StringUtils.isEmpty(info.getId()) ? null : this.employeeDao.load(Employee.class, info.getId());
@@ -167,8 +182,8 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);
-		if(!StringUtils.isEmpty(info.getDepartmentId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getDepartmentId()))){
-			Department d = this.departmentDao.load(Department.class, info.getDepartmentId());
+		if(!StringUtils.isEmpty(info.getDeptId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getDeptId()))){
+			Department d = this.departmentDao.load(Department.class, info.getDeptId());
 			if(d != null) data.setDepartment(d);
 		}
 		if(!StringUtils.isEmpty(info.getPostId()) && (data.getPost() == null || !data.getPost().getId().equalsIgnoreCase(info.getPostId()))){
@@ -179,7 +194,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 			Rank r = this.rankDao.load(Rank.class, info.getRankId());
 			if(r != null) data.setRank(r);
 		}
-		if(data.getDepartment() != null) info.setDepartmentName(data.getDepartment().getName());
+		if(data.getDepartment() != null) info.setDeptName(data.getDepartment().getName());
 		if(data.getPost() != null) info.setPostName(data.getPost().getName());
 		if(data.getRank() != null) info.setRankName(data.getRank().getName());
 
@@ -204,19 +219,15 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	@Override
 	public void delete(String[] ids) {
+		if(logger.isDebugEnabled())logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length;i++){
 			if(StringUtils.isEmpty(ids[i])) continue;
 			Employee e = this.employeeDao.load(Employee.class, ids[i]);
-			if(e != null) this.employeeDao.delete(e);
+			if(e != null){
+				if(logger.isDebugEnabled())logger.debug("删除员工［"+ids[i]+"］");
+				this.employeeDao.delete(e);
+			}
 		}
-	}
-	/*
-	 * 根据部门ID加载员工集合。
-	 * @see com.examw.oa.service.org.IEmployeeService#loadPosts(java.lang.String)
-	 */
-	@Override
-	public List<EmployeeInfo> loadEmployee(String departmentId) {
-		return this.changeModel(this.employeeDao.loadEmployee(departmentId));
 	}
 }

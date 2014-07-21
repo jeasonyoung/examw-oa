@@ -8,13 +8,14 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
+import com.examw.model.TreeNode;
 import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.org.PostInfo;
 import com.examw.oa.service.org.IPostService;
@@ -48,9 +49,10 @@ public class PostController {
 	 */
 	@RequiresPermissions({ModuleConstant.ORG_POST + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(String deptId, Model model){
+	public String edit(String deptId,String postId, Model model){
 		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
-		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
+		model.addAttribute("CURRENT_DEPT_ID", deptId);
+		model.addAttribute("CURRENT_POST_ID", postId);
 		return "org/post_edit";
 	}
 	/**
@@ -109,22 +111,15 @@ public class PostController {
 		return result;
 	}
 	/**
-	 * 返回部门下的所有岗位
+	 * 加载部门下的岗位树.
+	 * @param deptId
+	 * @param ignore
 	 * @return
 	 */
-	@RequestMapping(value={"/all"}, method = RequestMethod.POST)
+	@RequestMapping(value="/tree/{deptId}", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public List<PostInfo> all(String deptId){
-		if(logger.isDebugEnabled()) logger.debug("加载部门［"+ deptId +"］下的所有岗位...");
-		 return this.postService.loadPosts(deptId);
+	public List<TreeNode> tree(@PathVariable String deptId,String ignore){
+		if(logger.isDebugEnabled()) logger.debug("加载部门［"+deptId+"］下的岗位［ignore="+ignore+"］树...");
+		return this.postService.loadPosts(deptId, ignore);
 	}
-//	/**
-//	 * 返回部门下的所有员工
-//	 * @return
-//	 */
-//	@RequestMapping(value={"/alls"}, method = RequestMethod.POST)
-//	@ResponseBody
-//	public List<PostInfo> alls(String emplId){
-//		 return this.postService.loadPost(emplId);
-//	}
 }

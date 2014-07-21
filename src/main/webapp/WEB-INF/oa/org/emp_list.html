@@ -40,7 +40,7 @@ $(function(){
 			checkbox:true
 		},{
 			title:"所属部门",
-			field:"departmentName",
+			field:"deptName",
 			width:30,
 			align:"left",
 			sortable:true
@@ -107,16 +107,15 @@ $(function(){
 	};
 	//edit
 	function edit_window(title,index,row){
-		var dept_id = current_dept_id,postId="";
+		var dept_id = current_dept_id;
 		if(row){
-			dept_id = row.departmentId;
-			postId = row.postId;
+			dept_id = (row.deptId) ?row.deptId:"";
 		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:600,
 			height:400,
-			href:"<@s.url '/org/emp/edit'/>?deptId=" + dept_id + "&postId=" + postId,
+			href:"<@s.url '/org/emp/edit'/>?deptId=" + dept_id,
 			modal:true,
 			buttons:[
 			<@shiro.hasPermission name="${PER_UPDATE}">
@@ -174,7 +173,7 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			departmentId:current_dept_id,
+			deptId:current_dept_id,
 			name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
@@ -224,10 +223,10 @@ $(function(){
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-		 <div data-options="region:'west',title:'所属部门信息',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_dept_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+		 <div data-options="region:'west',title:'所属部门架构',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_dept_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
 		 		<ul id="${module}_dept_tree"></ul>
 		 </div>
-	 <div data-options="region:'center',title:'用户列表'">
+	 <div data-options="region:'center',title:'员工列表'">
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
 			<@shiro.hasPermission name="${PER_UPDATE}">

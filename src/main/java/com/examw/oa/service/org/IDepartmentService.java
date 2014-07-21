@@ -6,7 +6,7 @@ import com.examw.model.TreeNode;
 import com.examw.oa.model.org.DepartmentInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
- * 部门服务。
+ * 部门服务接口。
  * @author lq.
  * @since 2014-06-16.
  */

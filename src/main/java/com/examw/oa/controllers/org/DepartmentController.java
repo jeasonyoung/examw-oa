@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,7 +53,7 @@ public class DepartmentController {
 	public String edit(String pid,String ignore,Model model){
 		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
 		model.addAttribute("CURRENT_PARENT_DEPT_ID", pid);
-		model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
+		model.addAttribute("CURRENT_IGNORE", ignore);
 		return "org/dept_edit";
 	}
 	/**
@@ -122,20 +121,4 @@ public class DepartmentController {
 		if(logger.isDebugEnabled()) logger.debug("加载部门树结构数据［ignore="+ ignore+"］...");
 		return this.departservice.loadDepartments(ignore);
 	}
-//	/**
-//	 * 加载全部部门数据。
-//	 * @return
-//	 */
-//	@RequestMapping(value="/all", method = RequestMethod.POST)
-//	@ResponseBody
-//	public List<DepartmentInfo> all(){
-//		if(logger.isDebugEnabled()) logger.debug("加载全部部门数据...");
-//		return this.departservice.datagrid(new DepartmentInfo(){
-//			private static final long serialVersionUID = 1L;
-//			@Override
-//			public String getSort(){return "orderNo";}
-//			@Override
-//			public String getOrder(){return "asc";}
-//		}).getRows();
-//	}
 }

@@ -17,69 +17,65 @@ import com.examw.oa.support.CustomShortDateSerializer;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmployeeInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,code,name,phone,email,idCard,password,departmentId,departmentName,postId,postName,rankId,rankName,genderName,statusName;
+	private String id,code,name,phone,email,idCard,password,deptId,deptName,postId,postName,rankId,rankName,genderName,statusName;
 	private Integer gender,status;
 	private Date brithday, joinTime,createTime;
 	private String[] roleId;
 	/**
 	 * 获取员工ID。
-	 * @return
-	 * 员工ID。
+	 * @return 员工ID。
 	 */
 	public String getId() {
 		return id;
 	}
 	/**
 	 * 设置员工ID。
-	 * @return
+	 * @param id 
 	 * 员工ID。
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	/**
-	 * 获取工号。
-	 * @return
-	 *  工号。
+	 * 获取员工工号。
+	 * @return 员工工号。
 	 */
 	public String getCode() {
 		return code;
 	}
 	/**
-	 * 设置工号。
-	 * @return
-	 * 工号。
+	 * 设置员工工号。
+	 * @param code
+	 * 员工工号。
 	 */
 	public void setCode(String code) {
 		this.code = code;
 	}
 	/**
-	 * 获取姓名。
-	 * @return
-	 * 姓名。
+	 * 获取员工姓名。
+	 * @return  员工姓名。
 	 */
 	public String getName() {
 		return name;
 	}
 	/**
-	 * 设置姓名。
-	 * @return
-	 * 姓名。
+	 * 设置员工姓名。
+	 * @param name
+	 * 员工姓名。
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	/**
 	 * 获取手机号码。
-	 * @return
-	 * 手机号码。
+	 * @return 手机号码。
 	 */
 	public String getPhone() {
 		return phone;
 	}
 	/**
 	 * 设置手机号码。
-	 * @return
+	 * @param phone
 	 * 手机号码。
 	 */
 	public void setPhone(String phone) {
@@ -87,15 +83,14 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取邮箱地址。
-	 * @return
-	 * 邮箱地址。
+	 * @return  邮箱地址。
 	 */
 	public String getEmail() {
 		return email;
 	}
 	/**
 	 * 设置邮箱地址。
-	 * @return
+	 * @param email
 	 * 邮箱地址。
 	 */
 	public void setEmail(String email) {
@@ -103,47 +98,44 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取身份证号码。
-	 * @return
-	 * 身份证号码。
+	 * @return 身份证号码。
 	 */
 	public String getIdCard() {
 		return idCard;
 	}
 	/**
-	 * 设置身份证号码。
-	 * @return
+	 *  设置身份证号码。
+	 * @param idCard
 	 * 身份证号码。
 	 */
 	public void setIdCard(String idCard) {
 		this.idCard = idCard;
 	}
 	/**
-	 * 获取员工密码。
-	 * @return
-	 * 密码。
+	 * 获取初始密码。
+	 * @return 初始密码。
 	 */
 	public String getPassword() {
 		return password;
 	}
 	/**
 	 * 设置员工密码。
-	 * @return
-	 * 密码。
+	 * @param password
+	 * 初始密码。
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 	/**
 	 * 获取性别。
-	 * @return
-	 * 性别。
+	 * @return  性别。
 	 */
 	public Integer getGender() {
 		return gender;
 	}
 	/**
 	 * 设置性别。
-	 * @return
+	 * @param gender
 	 * 性别。
 	 */
 	public void setGender(Integer gender) {
@@ -166,15 +158,14 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取状态。
-	 * @return
-	 * 状态。
+	 * @return 状态。
 	 */
 	public Integer getStatus() {
 		return status;
 	}
 	/**
 	 * 设置状态。
-	 * @return
+	 * @param status
 	 * 状态。
 	 */
 	public void setStatus(Integer status) {
@@ -197,8 +188,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取出生日期。
-	 * @return
-	 * 出生日期。
+	 * @return 出生日期。
 	 */
 	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getBrithday() {
@@ -206,7 +196,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 设置出生日期。
-	 * @return
+	 * @param brithday
 	 * 出生日期。
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -215,8 +205,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取入职时间。
-	 * @return
-	 * 入职时间。
+	 * @return 入职时间。
 	 */
 	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getJoinTime() {
@@ -224,7 +213,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 设置入职时间。
-	 * @return
+	 * @param joinTime
 	 * 入职时间。
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -233,8 +222,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取创建时间。
-	 * @return
-	 * 创建时间。
+	 * @return 创建时间。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
@@ -242,7 +230,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 设置创建时间。
-	 * @return
+	 * @param createTime
 	 * 创建时间。
 	 */
 	public void setCreateTime(Date createTime) {
@@ -250,40 +238,37 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取所属部门ID。
-	 * @param departmentId
-	 * 所属部门ID。
+	 * @return 所属部门ID。
 	 */
-	public String getDepartmentId() {
-		return departmentId;
+	public String getDeptId() {
+		return deptId;
 	}
 	/**
 	 * 设置所属部门ID。
-	 * @param departmentId
+	 * @param deptId
 	 * 所属部门ID。
 	 */
-	public void setDepartmentId(String departmentId) {
-		this.departmentId = departmentId;
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
 	}
 	/**
 	 * 获取所属部门名称。
-	 * @param departmentName
-	 * 所属部门名称。
+	 * @return 所属部门名称。
 	 */
-	public String getDepartmentName() {
-		return departmentName;
+	public String getDeptName() {
+		return deptName;
 	}
 	/**
 	 * 设置所属部门名称。
-	 * @param departmentName
+	 * @param deptName
 	 * 所属部门名称。
 	 */
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 	/**
 	 * 获取所属岗位ID。
-	 * @param postId
-	 * 所属岗位ID。
+	 * @return 所属岗位ID。
 	 */
 	public String getPostId() {
 		return postId;
@@ -298,8 +283,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取所属岗位名称。
-	 * @param postName
-	 * 所属岗位名称。
+	 * @return  所属岗位名称。
 	 */
 	public String getPostName() {
 		return postName;
@@ -314,8 +298,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取所属等级ID。
-	 * @param rankId
-	 * 所属等级ID。
+	 * @return  所属等级ID。
 	 */
 	public String getRankId() {
 		return rankId;
@@ -330,8 +313,7 @@ public class EmployeeInfo extends Paging {
 	}
 	/**
 	 * 获取所属等级名称。
-	 * @param rankName
-	 * 所属等级名称。
+	 * @return 所属等级名称。
 	 */
 	public String getRankName() {
 		return rankName;

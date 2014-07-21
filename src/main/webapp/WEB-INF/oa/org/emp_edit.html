@@ -5,40 +5,34 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_dept_select = current_dept_load = false,current_dept_id = "${CURRENT_DEPT_ID}",current_post_id = "${CURRENT_POST_ID}";
 	//department
-	var dept_cbt = $("#${form} input[name='departmentId']").combotree({
+	var dept_cbt = $("#${form} input[name='deptId']").combotree({
 		url:"<@s.url '/org/dept/tree'/>",
 		required:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(n,d){
-			if($.trim(current_dept_id) == "") return;
-			current_dept_load = true;
-			dept_cbt.combotree("setValue",current_dept_id);
+			<#if (CURRENT_DEPT_ID?length > 0)>
+			dept_cbt.combotree("setValue","${CURRENT_DEPT_ID}");
+			</#if>
 		},
-		onSelect:function(record){
-			if(!current_dept_load)current_dept_select = true;
+		onChange:function(n,o){
 			if(post_cbb){
-				current_dept_load = false;
-				post_cbb.combobox("clear");
-				post_cbb.combobox("reload","<@s.url '/org/post/all?deptId=' />"+record.id);
+				post_cbb.combotree("clear");
+				if($.trim(n) == "") return;
+				post_cbb.combotree("reload","<@s.url '/org/post/tree/'/>" + n);
 			}
 		}
 	});
 	//post
-	var post_cbb = $("#${form} input[name='postId']").combobox({
-		url:"<@s.url '/org/post/all?deptId=${CURRENT_DEPT_ID}'/>'",
-		valueField:"id",
-		textField:"name",
+	var post_cbb = $("#${form} input[name='postId']").combotree({
+		<#if (CURRENT_DEPT_ID?length > 0)>
+		url:"<@s.url '/org/post/tree/${CURRENT_DEPT_ID}'/>",
+		</#if>
 		required:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
-		},
-		onLoadSuccess:function(){
-			if(current_dept_select || $.trim(current_post_id) == "") return;
-			post_cbb.combobox("setValue",current_post_id);
 		}
 	});
 });
@@ -49,6 +43,7 @@ $(function(){
 			<label style="width:75px;">工号：</label>
 			<input type="text" name="code" class="easyui-validatebox" data-options="required:true" style="width:198px;"/>
 			<input type="hidden" name="id"/>
+			<span style="float:right; color:red;">(**工号将作为员工登录系统的账号使用**)</span>
 		</div>
 		<div style="float:left; margin-top:12px; width:100%;">
 			<div style="float:left;">
@@ -65,7 +60,7 @@ $(function(){
 		</div>
 		<div style="float:left; margin-top:12px; width:100%;">
 			<label style="width:75px;">所属部门：</label>
-			<input type="text" name="departmentId" style="width:266px;"/>
+			<input type="text" name="deptId" style="width:266px;"/>
 			<input type="text" name="postId"  style="width:210px;"/>	
 		</div>
 		<div  style="float:left;margin-top:12px; width:100%;">

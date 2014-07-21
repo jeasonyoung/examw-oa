@@ -1,36 +1,63 @@
 <#--岗位编辑-->
+<#include "ftl/comm.ftl"/>
 <#assign module="org_post"/>
 <#assign form="${module}_edit_form"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var t = $("#${form} input[name='departmentId']").combotree({
+	//dept
+	var dept_cbt = $("#${form} input[name='deptId']").combotree({
 		url:"<@s.url '/org/dept/tree'/>",
+		lines:true,
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
 		onLoadSuccess:function(n,d){
-			var deptId = "${CURRENT_DEPT_ID}";
-			if(deptId.trim() == "")return;
-			t.combotree("setValue",deptId);
+			<#if (CURRENT_DEPT_ID?length > 0)>
+			dept_cbt.combotree("setValue","${CURRENT_DEPT_ID}");
+			</#if>
+		},
+		onChange:function(n,o){
+			if(parent_post_cbt){
+				parent_post_cbt.combotree("clear");
+				if($.trim(n) == "") return;
+				parent_post_cbt.combotree("reload","<@s.url '/org/post/tree/'/>" + n);
+			}
+		}
+	});
+	${form}_load = function(){
+		if(dept_cbt)dept_cbt.combotree("readonly");
+	};
+	//parent post
+	var parent_post_cbt = $("#${form} input[name='pid']").combotree({
+		<#if (CURRENT_DEPT_ID?length > 0)>
+		url:"<@s.url '/org/post/tree/${CURRENT_DEPT_ID}?ignore='/><#if (CURRENT_POST_ID?length > 0)>${CURRENT_POST_ID}</#if>",
+		</#if>
+		lines:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
 		}
 	});
 });
 //-->
 </script>
 <form id="${form}" method="POST" style="padding:10px;">
-	<div  style="float:left;margin-top:10px;width:100%;">
+	<div  style="float:left;margin-top:2px;width:100%;">
 		<label style="width:75px;">所属部门：</label>
-		<input type="text" name="departmentId" style="width:268px;"/>	
+		<input type="text" name="deptId" style="width:272px;"/>	
 	</div>
-	<div style="float:left;margin-top:10px;width:100%;">
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">上级岗位：</label>
+		<input type="text" name="pid" style="width:272px;"/>
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
 		<label style="width:75px;">岗位编码：</label>
 		<input type="text" name="code" class="easyui-validatebox"  data-options="required:true" style="width:268px;"/>
 		<input type="hidden" name="id"/>
 	</div>
-	<div style="float:left;margin-top:10px;width:100%;">
+	<div style="float:left;margin-top:12px;width:100%;">
 		<label style="width:75px;">岗位名称：</label>
 		<input type="text" name="name" class="easyui-validatebox" data-options="required:true" style="width:268px;"/>
-	</div>
-	<div style="float:left;margin-top:10px;width:100%;">
-		<label style="width:75px;">岗位值：</label>
-		<input type="text" name="level" class="easyui-numberbox"  data-options="required:true,min:0" style="width:80px;"/>
 	</div>
 </form>

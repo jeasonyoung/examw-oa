@@ -1,11 +1,9 @@
 package com.examw.oa.service.org;
 
-import java.util.List;
-
 import com.examw.oa.model.org.EmployeeInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
- * 员工服务。
+ * 员工服务接口。
  * @author lq.
  * @since 2014-06-16.
  */
@@ -26,10 +24,4 @@ public interface IEmployeeService extends IBaseDataService<EmployeeInfo>{
 	 * 状态名称。
 	 */
 	String loadStatusName(Integer status);
-	/**
-	 * 根据部门ID获员工信息。
-	 * @param departmentId
-	 * @return
-	 */
-	List<EmployeeInfo> loadEmployee(String departmentId);
 }

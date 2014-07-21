@@ -31,8 +31,13 @@
 		<property name="name" type="string" length="32" unique="true"/>
 		<!-- 所属部门 -->
 		<many-to-one name="department" column="dept_id"  class="Department"  />
-		<!-- 岗位值 -->
-		<property name="level" type="integer" />
+		<!-- 上级岗位 -->
+		<many-to-one name="parent" column="pid" class="Post" />
+		<!-- 子岗位集合 -->
+		<set name="children"  inverse="true"  cascade="save-update"  order-by="code asc">
+				<key  column="pid"/>
+				<one-to-many class="Post"/>
+		</set>
 	</class>
 	<!-- 员工级别 -->
 	<class name="Rank" table="tbl_Examw_OA_Org_Rank">

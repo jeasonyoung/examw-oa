@@ -1,13 +1,11 @@
 package com.examw.oa.dao.org;
 
 import java.util.List;
-
 import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.org.Department;
 import com.examw.oa.model.org.DepartmentInfo;
-
 /**
- * 部门信息数据接口。
+ * 部门数据操作接口。
  * @author lq.
  * @since 2014-06-11.
  */

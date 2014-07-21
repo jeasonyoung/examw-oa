@@ -1,6 +1,7 @@
 package com.examw.oa.domain.org;
 
 import java.io.Serializable;
+import java.util.Set;
 /**
  * 部门岗位。
  * @author lq.
@@ -10,18 +11,18 @@ public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,code,name;
 	private Department department;
-	private Integer level;
+	private Post parent;
+	private Set<Post> children;
 	/**
 	 * 获取岗位ID。
-	 * @return
-	 * 岗位ID。
+	 * @return 岗位ID。
 	 */
 	public String getId() {
 		return id;
 	}
 	/**
 	 * 设置岗位ID。
-	 * @return
+	 * @param id
 	 * 岗位ID。
 	 */
 	public void setId(String id) {
@@ -29,15 +30,14 @@ public class Post implements Serializable {
 	}
 	/**
 	 * 获取岗位名称。
-	 * @return
-	 * 岗位名称。
+	 * @return 岗位名称。
 	 */
 	public String getName() {
 		return name;
 	}
 	/**
 	 * 设置岗位名称。
-	 * @return
+	 * @param name
 	 * 岗位名称。
 	 */
 	public void setName(String name) {
@@ -45,15 +45,14 @@ public class Post implements Serializable {
 	}
 	/**
 	 * 获取岗位编号。
-	 * @return
-	 * 岗位编号。
+	 * @return 岗位编号。
 	 */
 	public String getCode() {
 		return code;
 	}
 	/**
 	 * 设置岗位编号。
-	 * @return
+	 * @param code
 	 * 岗位编号。
 	 */
 	public void setCode(String code) {
@@ -61,33 +60,47 @@ public class Post implements Serializable {
 	}
 	/**
 	 * 获取所属部门。
-	 * @return
-	 * 所属部门。
+	 * @return 所属部门。
 	 */
 	public Department getDepartment() {
 		return department;
 	}
 	/**
 	 * 设置所属部门。
-	 * @return
+	 * @param department
 	 * 所属部门。
 	 */
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
 	/**
-	 * 获取岗位值。
-	 * @return 岗位值。
+	 * 获取上级岗位。
+	 * @return 上级岗位。
 	 */
-	public Integer getLevel() {
-		return level;
+	public Post getParent() {
+		return parent;
 	}
 	/**
-	 * 设置岗位值。
-	 * @param level
-	 * 岗位值。
+	 * 设置上级岗位。
+	 * @param parent
+	 * 上级岗位。
 	 */
-	public void setLevel(Integer level) {
-		this.level = level;
+	public void setParent(Post parent) {
+		this.parent = parent;
+	}
+	/**
+	 * 获取子岗位集合。
+	 * @return 子岗位集合。
+	 */
+	public Set<Post> getChildren() {
+		return children;
+	}
+	/**
+	 * 设置子岗位集合。
+	 * @param children
+	 * 子岗位集合。
+	 */
+	public void setChildren(Set<Post> children) {
+		this.children = children;
 	}
 }
