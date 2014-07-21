@@ -9,6 +9,7 @@ $(function(){
 	//dept tree
 	$("#${module}_dept_tree").tree({
 		url:"<@s.url '/org/dept/tree'/>",
+		lines:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
