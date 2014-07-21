@@ -1,6 +1,5 @@
 package com.examw.oa.model.org;
 
-
 import java.util.Date;
 import java.util.List;
 
@@ -23,47 +22,44 @@ public class DepartmentInfo extends Paging {
 	private List<DepartmentInfo> children;
 	/**
 	 * 获取上级部门ID。
-	 * @return
-	 * 上级部门ID。
+	 * @return 上级部门ID。
 	 */
 	public String getPid() {
 		return pid;
 	}
 	/**
 	 * 设置上级部门ID。
-	 * @return
+	 * @param pid
 	 * 上级部门ID。
 	 */
 	public void setPid(String pid) {
 		this.pid = pid;
 	}
 	/**
-	 * 获取部门id。
-	 * @return
-	 * 	部门id。
+	 * 获取部门ID。
+	 * @return 部门ID。
 	 */
 	public String getId() {
 		return id;
 	}
 	/**
-	 * 设置部门id。
-	 * @return
-	 * 	部门id。
+	 * 设置部门ID。
+	 * @param id
+	 * 	部门ID。
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	/**
 	 * 获取部门名称。
-	 * @return
-	 * 	部门名称。
+	 * @return 部门名称。
 	 */
 	public String getName() {
 		return name;
 	}
 	/**
 	 * 设置部门名称。
-	 * @return
+	 * @param name
 	 * 	部门名称。
 	 */
 	public void setName(String name) {
@@ -71,15 +67,14 @@ public class DepartmentInfo extends Paging {
 	}
 	/**
 	 * 获取部门编号。
-	 * @return
-	 * 	部门编号。
+	 * @return 部门编号。
 	 */
 	public String getCode() {
 		return code;
 	}
 	/**
 	 * 设置部门编号。
-	 * @return
+	 * @param code
 	 * 	设置编号。
 	 */
 	public void setCode(String code) {
@@ -87,40 +82,37 @@ public class DepartmentInfo extends Paging {
 	}
 	/**
 	 * 获取部门全称。
-	 * @return
-	 * 	部门全称。
+	 * @return 部门全称。
 	 */
 	public String getFullName() {
 		return fullName;
 	}
 	/**
 	 * 设置部门全称。
-	 * @return
+	 * @param fullName
 	 * 	部门全称。
 	 */
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
 	/**
-	 * 获取排序。
-	 * @return
-	 * 	排序。
+	 * 获取排序号。
+	 * @return 排序号。
 	 */
 	public Integer getOrderNo() {
 		return orderNo;
 	}
 	/**
-	 * 设置排序。
-	 * @return
-	 * 	排序。
+	 * 设置排序号。
+	 * @param orderNo
+	 * 	排序号。
 	 */
 	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
 	}
 	/**
 	 * 获取创建时间。
-	 * @return
-	 * 	创建时间。
+	 * @return 创建时间。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
@@ -128,23 +120,22 @@ public class DepartmentInfo extends Paging {
 	}
 	/**
 	 * 设置创建时间。
-	 * @return
+	 * @param createTime
 	 * 	创建时间。
 	 */
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	/**
-	 * 获取子菜单集合。
-	 * @return
-	 * 	子菜单集合。
+	 * 获取子部门集合。
+	 * @return 子部门集合。
 	 */
 	public List<DepartmentInfo> getChildren() {
 		return children;
 	}
 	/**
 	 * 设置子部门集合。
-	 * @return
+	 * @param children
 	 * 	子部门集合。
 	 */
 	public void setChildren(List<DepartmentInfo> children) {

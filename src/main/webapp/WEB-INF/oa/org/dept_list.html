@@ -5,18 +5,19 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_dept_id = "";
-	//tree
-	var t = $("#${module}_list_tree").tree({
+	var current_parent_dept_id = "";
+	//dept_tree
+	var dept_tree = $("#${module}_dept_tree").tree({
 		url:"<@s.url '/org/dept/tree'/>",
+		lines:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		onLoadSuccess:function(n,data){
-			current_dept_id = "";
+		onBeforeLoad:function(n,p){
+			current_parent_dept_id = "";
 		},
 		onClick:function(node){
-			current_dept_id = node.id;
+			current_parent_dept_id = node.id;
 			${dg}_search();
 		}
 	});
@@ -53,11 +54,11 @@ $(function(){
 		},{
 			title:"部门全称",
 			field:"fullName",
-			width:20,
+			width:45,
 			align:"left",
 			sortable:true
 		},{
-			title:"成立时间",
+			title:"创建时间",
 			field:"createTime",
 			width:15,
 			align:"center",
@@ -78,20 +79,25 @@ $(function(){
 			edit_window("编辑部门",rowIndex,rowData);
 		}
 	});
+	//add
+	${dg}_add = function(){
+		edit_window("新增部门",0,null);
+	};
 	//edit
 	function edit_window(title,index,row){
-		var ignore = "";
-		if(row && row.id){
-			ignore = row.id;
+		var p_id = current_parent_dept_id, ignore_id = "";
+		if(row){
+			p_id = (row.pid) ? row.pid : "";
+			ignore_id = row.id;
 		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:400,
 			height:220,
-			href:"<@s.url '/org/dept/edit'/>?ignore="+ignore+"&id=" + current_dept_id,
+			href:"<@s.url '/org/dept/edit'/>?ignore="+ignore_id+"&pid=" + p_id,
 			modal:true,
 			buttons:[
-			/* <shiro.hasPermission name="${PER_UPDATE}"> */
+			<@shiro.hasPermission name="${PER_UPDATE}">
 			{
 				text:"保存",
 				iconCls:"icon-save",
@@ -116,7 +122,7 @@ $(function(){
 									index:index,
 									row:data.data
 								});
-								t.tree("reload");
+								if(dept_tree)dept_tree.tree("reload");
 								d.dialog("close");
 							}else{
 								$.messager.show({
@@ -128,7 +134,7 @@ $(function(){
 					});
 				}
 			},
-			/* </shiro.hasPermission> */
+			</@shiro.hasPermission>
 			{
 				text:"关闭",
 				iconCls:"icon-cancel",
@@ -147,15 +153,11 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  id:current_dept_id,
+			  id:current_parent_dept_id,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
-	//add
-	${dg}_add = function(){
-		edit_window("新增部门",0,null);
-	};
-	/* <shiro.hasPermission name="${PER_DELETE}"> */
+	<@shiro.hasPermission name="${PER_DELETE}">
 	//delete
 	${dg}_delete = function(){
 		var rows = dg.datagrid("getChecked");
@@ -183,7 +185,7 @@ $(function(){
 						if(data.success){
 							dg.datagrid("load");
 							dg.datagrid("unselectAll");
-							t.tree("reload");
+							if(dept_tree)dept_tree.tree("reload");
 						}else{
 							$.messager.show({
 								title:"提示",
@@ -197,26 +199,26 @@ $(function(){
 			$.messager.alert("提示","未选中须删除的数据！");
 		}
 	};
-	/* </shiro.hasPermission> */
+	</@shiro.hasPermission>
 });
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-	 <div data-options="region:'west',title:'部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-	 	<ul id="${module}_list_tree"></ul>
+	 <div data-options="region:'west',title:'部门架构',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_dept_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+	 	<ul id="${module}_dept_tree"></ul>
 	 </div>
-	<div data-options="region:'center',title:'机构部门'">
+	<div data-options="region:'center',title:'部门信息列表'">
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
-			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
-			<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
-			<!-- </shiro.hasPermission> -->
+			<@shiro.hasPermission name="${PER_UPDATE}">
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="${dg}_add()" style="float:left;">新增</a>
+			</@shiro.hasPermission>
 			<span>|</span>
-			<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
-			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
-			<!-- </shiro.hasPermission> -->
+			<@shiro.hasPermission name="${PER_DELETE}">
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="${dg}_delete()">删除</a>
+			</@shiro.hasPermission>
 			<label>部门名称：<input name="name" type="text" style="width:198px;"/></label>
-			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="${dg}_search()" style="margin-left:10px;">查询</a>
 		</div>
 	</div>
 </div>

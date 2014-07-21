@@ -13,5 +13,5 @@
 		<!-- service -->
 		<import resource="spring-examw-oa-service.xml" />
 		<!-- shiro -->
-		<!--<import resource="spring-examw-oa-shiro.xml" />-->
+		<import resource="spring-examw-oa-shiro.xml" />
 </beans>

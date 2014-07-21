@@ -6,11 +6,17 @@ import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.org.Post;
 import com.examw.oa.model.org.PostInfo;
 /**
- * 岗位信息数据接口。
+ * 部门岗位数据操作接口。
  * @author lq.
  * @since 2014-06-13.
  */
 public interface IPostDao extends IBaseDao<Post>{
+	/**
+	 * 加载一级岗位集合。
+	 * @param deptId
+	 * @return
+	 */
+	List<Post> loadFristPosts(String deptId);
 	/**
 	 * 查询数据。
 	 * @param info
@@ -27,17 +33,4 @@ public interface IPostDao extends IBaseDao<Post>{
 	 * 数据总数。
 	 */
 	 Long total(PostInfo info);
-	 /**
-	  * 加载部门ID下的岗位集合。
-	  * @param departmentId
-	  * 部门ID。
-	  * @return
-	  */
-	 List<Post> loadPosts(String departmentId);
-	 /**
-	  * 加载员工ID下的岗位集合
-	  * @param emplId
-	  * @return
-	  */
-	 List<Post> loadPost(String emplId);
 }

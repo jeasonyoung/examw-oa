@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.examw.oa.domain.org">
-	<!-- 员工级别 -->
-	<class name="Rank" table="tbl_Examw_OA_Org_Rank">
-		<!-- 员工级别ID -->
-		<id name="id"  type="string"  length="64" />
-		<!--员工级别编码 -->
-		<property name="code"  type="string"  length="32"/>
-		<!--员工级别名称 -->
-		<property name="name"  type="string"  length="45" />
-	</class>
 	<!-- 部门数据 -->
 	<class name="Department"  table="tbl_Examw_OA_Org_Department">
 		<!--部门ID -->
@@ -40,6 +31,22 @@
 		<property name="name" type="string" length="32" unique="true"/>
 		<!-- 所属部门 -->
 		<many-to-one name="department" column="dept_id"  class="Department"  />
+		<!-- 上级岗位 -->
+		<many-to-one name="parent" column="pid" class="Post" />
+		<!-- 子岗位集合 -->
+		<set name="children"  inverse="true"  cascade="save-update"  order-by="code asc">
+				<key  column="pid"/>
+				<one-to-many class="Post"/>
+		</set>
+	</class>
+	<!-- 员工级别 -->
+	<class name="Rank" table="tbl_Examw_OA_Org_Rank">
+		<!-- 员工级别ID -->
+		<id name="id"  type="string"  length="64" />
+		<!--员工级别编码 -->
+		<property name="code"  type="string"  length="32"/>
+		<!--员工级别名称 -->
+		<property name="name"  type="string"  length="45" />
 	</class>
 	<!--员工信息 -->
 	<class name="Employee"  table="tbl_Examw_OA_Org_Employee">
@@ -65,8 +72,8 @@
 		<property name="status"  type="integer" />
 		<!-- 创建时间 -->
 		<property name="createTime"  type="timestamp" />
-		<!-- 员工 密码 -->
-		<property name="password"  type="string"  length="512" />
+		<!-- 员工初始化密码 -->
+		<property name="password"  type="string"  length="32" />
 		<!-- 所属部门 -->
 		<many-to-one name="department" column="dept_id"  class="Department" />
 		<!-- 所属部门岗位 -->

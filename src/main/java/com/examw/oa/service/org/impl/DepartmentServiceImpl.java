@@ -17,7 +17,7 @@ import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IDepartmentService;
 import com.examw.oa.service.security.impl.MenuServiceImpl;
 /**
- * 部门服务。
+ * 部门服务接口实现类。
  * @author lq
  * @since 2014-06-12.
  */
@@ -29,6 +29,7 @@ public class DepartmentServiceImpl extends BaseDataServiceImpl<Department, Depar
 	 * @param departmentDao
 	 */
 	public void setDepartmentDao(IDepartmentDao departmentDao) {
+		if(logger.isDebugEnabled())logger.debug("注入部门数据接口...");
 		this.departmentDao = departmentDao;
 	}
 	/*
@@ -37,6 +38,7 @@ public class DepartmentServiceImpl extends BaseDataServiceImpl<Department, Depar
 	 */
 	@Override
 	protected List<Department> find(DepartmentInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据...");
 		return this.departmentDao.findDepartments(info);
 	}
 	/*
@@ -45,6 +47,7 @@ public class DepartmentServiceImpl extends BaseDataServiceImpl<Department, Depar
 	 */
 	@Override
 	protected DepartmentInfo changeModel(Department data) {
+		if(logger.isDebugEnabled()) logger.debug("类型转换...");
 		if(data == null) return null;
 		DepartmentInfo info = new DepartmentInfo();
 		BeanUtils.copyProperties(data, info, new String[] {"children"});
@@ -66,11 +69,12 @@ public class DepartmentServiceImpl extends BaseDataServiceImpl<Department, Depar
 		return sb.toString();
 	}
 	/*
-	 *  统计查询数据。
+	 *  查询数据统计。
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
 	 */
 	@Override
 	protected Long total(DepartmentInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据统计...");
 		return this.departmentDao.total(info);
 	}
 	/*
@@ -79,14 +83,13 @@ public class DepartmentServiceImpl extends BaseDataServiceImpl<Department, Depar
 	 */
 	@Override
 	public DepartmentInfo update(DepartmentInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		if(info == null) return null;
 		boolean isAdded = false;
 		Department data = StringUtils.isEmpty(info.getId()) ?  null : this.departmentDao.load(Department.class, info.getId());
 		if(isAdded = (data == null)){
-			if(StringUtils.isEmpty(info.getId())){
-				info.setId(UUID.randomUUID().toString());
-				info.setCreateTime(new Date());
-			}
+			if(StringUtils.isEmpty(info.getId())) info.setId(UUID.randomUUID().toString());	
+			info.setCreateTime(new Date());
 			data = new Department();
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
@@ -107,13 +110,13 @@ public class DepartmentServiceImpl extends BaseDataServiceImpl<Department, Depar
 	 */
 	@Override
 	public void delete(String[] ids) {
-		if(ids == null || ids.length == 0) return;
-		logger.info("删除数据...");
+		if(logger.isDebugEnabled())logger.debug("删除数据...");
+		if(ids == null || ids.length == 0) return; 
 		for(int i = 0; i < ids.length; i++){
 			Department data = this.departmentDao.load(Department.class, ids[i]);
 			if(data != null){
+				if(logger.isDebugEnabled())logger.debug("删除数据［"+ids[i]+"］");
 				this.departmentDao.delete(data); 
-				logger.info("删除数据:" + data.getName());
 			}
 		}
 	}
@@ -123,6 +126,7 @@ public class DepartmentServiceImpl extends BaseDataServiceImpl<Department, Depar
 	 */
 	@Override
 	public List<TreeNode> loadDepartments(String ignore) {
+		if(logger.isDebugEnabled()) logger.debug("加载部门数据树［ignore="+ignore+"］...");
 		List<TreeNode> treeNodes = new ArrayList<>();
 		List<Department> list = this.departmentDao.loadFristDepartments();
 		if(list != null){

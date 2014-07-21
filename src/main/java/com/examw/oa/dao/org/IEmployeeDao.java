@@ -6,7 +6,7 @@ import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.org.Employee;
 import com.examw.oa.model.org.EmployeeInfo;
 /**
- * 员工接口。
+ * 员工数据操作接口。
  * @author lq.
  * @since 2014-06-16.
  */
@@ -27,12 +27,4 @@ public interface IEmployeeDao extends IBaseDao<Employee>{
 	 * 数据总数。
 	 */
 	 Long total(EmployeeInfo info);
-	 /**
-	  * 加载部门ID下的员工信息集合。
-	  * @param departmentId
-	  * 部门ID。
-	  * @return
-	  */
-	 List<Employee> loadEmployee(String departmentId);
-	 
 }

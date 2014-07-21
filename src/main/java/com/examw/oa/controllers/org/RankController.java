@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.controllers.security.LogController;
+import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.org.RankInfo;
 import com.examw.oa.service.org.IRankService;
 
@@ -25,18 +27,20 @@ import com.examw.oa.service.org.IRankService;
 @Controller
 @RequestMapping(value = "/org/rank")
 public class RankController {
-	private static Logger logger = Logger.getLogger(LogController.class);
-	/**
-	 *等级信息服务。
-	 */
+	private static final Logger logger = Logger.getLogger(LogController.class);
+	//等级信息服务。
 	@Resource
 	private IRankService rankservice;
 	/**
 	 * 获取列表页面。
 	 * @return
 	 */
+	@RequiresPermissions({ModuleConstant.ORG_RANK + ":" + Right.UPDATE})
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载列表页面...");
+		model.addAttribute("PER_UPDATE", ModuleConstant.ORG_RANK + ":" + Right.UPDATE);
+		model.addAttribute("PER_DELETE", ModuleConstant.ORG_RANK + ":" + Right.DELETE);
 		return "org/rank_list";
 	}
 	/**
@@ -44,19 +48,21 @@ public class RankController {
 	 * @return
 	 * 编辑页面。
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	@RequiresPermissions({ModuleConstant.ORG_RANK + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
-	public String edit(Model model){
+	public String edit(){
+		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
 		return "org/rank_edit";
 	}
 	/**
 	 * 查询数据。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_RIGHT + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.ORG_RANK + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<RankInfo> datagrid(RankInfo info){
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.rankservice.datagrid(info);
 	}
 	/**
@@ -66,10 +72,11 @@ public class RankController {
 	 * @return
 	 * 更新后数据。
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	@RequiresPermissions({ModuleConstant.ORG_RANK + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(RankInfo info){
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		Json result = new Json();
 		try {
 			result.setData(this.rankservice.update(info));
@@ -85,7 +92,7 @@ public class RankController {
 	 * 岗位级别数据。
 	 * @return
 	 */
-	@RequestMapping(value="/all", method = RequestMethod.POST)
+	@RequestMapping(value="/all", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public List<RankInfo> all(){
 		return this.rankservice.datagrid(new RankInfo(){
@@ -104,6 +111,7 @@ public class RankController {
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］..");
 		Json result = new Json();
 		try {
 			this.rankservice.delete(id.split("\\|"));

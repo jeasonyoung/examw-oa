@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.impl.BaseDaoImpl;
@@ -16,18 +17,21 @@ import com.examw.oa.model.security.UserInfo;
  * @since 2014-05-08.
  */
 public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
+	private static final Logger logger = Logger.getLogger(UserDaoImpl.class);
 	/*
 	 * 查询数据。
 	 * @see com.examw.netplatform.dao.admin.IUserDao#findUsers(com.examw.netplatform.model.admin.UserInfo)
 	 */
 	@Override
 	public List<User> findUsers(UserInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据...");
 		String hql = "select u from User u where 1=1 "; 
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
 			hql += " order by u." + info.getSort() + " " + info.getOrder();
 		}
+		if(logger.isDebugEnabled()) logger.debug(hql);
 		return this.find(hql, parameters, info.getPage(), info.getRows());
 	}
 	/*
@@ -36,23 +40,15 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 	 */
 	@Override
 	public Long total(UserInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据统计...");
 		String hql = "select count(*) from User u where 1=1";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
+		if(logger.isDebugEnabled()) logger.debug(hql);
 		return this.count(hql, parameters);
 	}
-	/**
-	 * 添加查询条件到HQL。
-	 * @param info
-	 * 查询条件。
-	 * @param hql
-	 * HQL
-	 * @param parameters
-	 * 参数。
-	 * @return
-	 * HQL
-	 */
-	protected String addWhere(UserInfo info, String hql, Map<String, Object> parameters){
+	//添加查询条件到HQL。
+	private String addWhere(UserInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getRoleId())){
 			hql += " and (u.roles.id = :roleId) ";
 			parameters.put("roleId", info.getRoleId());
@@ -73,6 +69,7 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements IUserDao {
 	 */
 	@Override
 	public User findByAccount(String account) {
+		if(logger.isDebugEnabled()) logger.debug("根据账号［"+ account +"］查询用户...");
 		if(StringUtils.isEmpty(account)) return null;
 		final String hql = "from User u where u.account = :account";
 		Map<String, Object> parameters = new HashMap<>();

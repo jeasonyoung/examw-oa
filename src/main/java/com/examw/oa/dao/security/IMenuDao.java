@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.security.Menu;
-
 /**
  * 菜单数据操作接口。
  * @author yangyong.
@@ -17,4 +16,12 @@ public interface IMenuDao extends IBaseDao<Menu> {
 	 * 结果数据。
 	 */
 	List<Menu> findMenus();
+	/**
+	 * 加载子菜单集合。
+	 * @param pid
+	 * 上级菜单ID。
+	 * @return
+	 * 子菜单集合。
+	 */
+	List<Menu> loadChildren(String pid);
 }

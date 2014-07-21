@@ -10,7 +10,7 @@ import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
 
 /**
- * 自定义日期格式JSON化。
+ * 自定义长日期格式（yyyy-MM-dd HH:mm:ss）JSON化。
  * @author yangyong
  * @since 2014-05-12.
  */

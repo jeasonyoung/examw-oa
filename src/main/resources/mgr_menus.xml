@@ -6,12 +6,13 @@
   		<module id="EOA000201" icon="" name="基础权限" uri="/security/right" order="2"/>
   		<module id="EOA000301" icon="" name="菜单权限" uri="/security/menu/right" order="3"/>
   		<module id="EOA000401" icon="" name="角色设置" uri="/security/role" order="4"/>
-  		<module id="EOA000601" icon="" name="登录日志" uri="/security/log" order="5"/>
+  		<module id="EOA000501" icon="" name="用户管理" uri="/security/user" order="5"/>
+  		<module id="EOA000601" icon="" name="登录日志" uri="/security/log" order="6"/>
   	</module>
   	<module id="EOA000002"  icon="" name="组织架构" uri="" order="2">
   		<module id="EOA000102" icon="" name="部门信息" uri="/org/dept" order="1"/>
-  		<module id="EOA000202" icon="" name="员工等级" uri="/org/rank" order="2"/>
-  		<module id="EOA000302" icon="" name="岗位信息" uri="/org/post" order="3"/>
+  		<module id="EOA000202" icon="" name="部门岗位" uri="/org/post" order="2"/>
+  		<module id="EOA000302" icon="" name="员工等级" uri="/org/rank" order="3"/>
   		<module id="EOA000402" icon="" name="员工信息" uri="/org/emp" order="4"/>
   	</module>
   	<module id="EOA000003"  icon="" name="计划/总结" uri="" order="3">

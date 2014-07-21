@@ -5,7 +5,6 @@ import java.util.List;
 import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.security.RightInfo;
-
 /**
  * 基础权限数据接口。
  * @author yangyong.
