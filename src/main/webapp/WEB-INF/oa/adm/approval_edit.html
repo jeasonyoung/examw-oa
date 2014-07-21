@@ -67,7 +67,7 @@ $(function(){
 		<div style="float:left;margin-top:10px;">
 				<label style="width:105px;">所属职务：</label>
 				<input type="text" name="postName" style="width:170px;"/>
-			</div>
+		</div>
 		<div style="float:left; margin-top:10px; width:100%;">
 			<div style="float:left;">
 					<label style="width:105px;">开始时间：</label>
@@ -111,19 +111,19 @@ $(function(){
 			</div>
 		</div>
 		<div style="float:left;margin-top:10px; width:100%;">
-				<label style="width:105px;">换班人：</label>
-				<input type="text" name="shiftDepartmentId" style="width:220px;"/>
-				<input type="text" name="shiftEmployeeId" style="width:220px;"/>
+			<label style="width:105px;">换班人：</label>
+			<input type="text" name="shiftDepartmentId" style="width:220px;"/>
+			<input type="text" name="shiftEmployeeId" style="width:220px;"/>
 		</div>
 		
 		<div style="float:left;margin-top:10px;width:100%;">
 			<label style="width:105px;">审核状态：</label>
-			<label><input type="radio" name="aStatus" value="1" checked="checked" />${STATUS_AGREE_NAME}</label>
+			<label><input type="radio" name="aStatus" value="1"  />${STATUS_AGREE_NAME}</label>
 			<label><input type="radio" name="aStatus" value="2" />${STATUS_DISAGREE_NAME}</label>
 		</div>
 		<div style="float:left;margin-top:10px;width:100%;">
 			<label style="width:105px;">审核类型：</label>
-			<label><input type="radio" name="aType" value="1" checked="checked" />${TYPE_ADM_NAME}</label>
+			<label><input type="radio" name="aType" value="1" />${TYPE_ADM_NAME}</label>
 			<label><input type="radio" name="aType" value="2" />${TYPE_LEADER_NAME}</label>
 			<label><input type="radio" name="aType" value="3" />${TYPE_BOSS_NAME}</label>
 		</div>
@@ -132,7 +132,5 @@ $(function(){
 			<input type="hidden" name="aId">
 			<textarea type="text" name="approval" row="4" cols="5" style="width:440px;height:100px" />
 		</div>
-</div>
-<div title="请假审核">	
 </div>
 </form>

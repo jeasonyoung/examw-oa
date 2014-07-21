@@ -90,7 +90,7 @@ $(function(){
 	});
 	var d;
 	function edit_window_btn_save(row,index){
-		if(row && (row.status !=${STATUS_NOPASS_VALUE}) ||  (row.status !=${STATUS_PASS_VALUE}))) return ;
+		if(!row || (row.status !=null)) return null;
 		return {
 			text:"提交",
 			iconCls:"icon-save",
@@ -143,7 +143,7 @@ $(function(){
 		});
 		d = $("<div/>").dialog({
 			title:title,
-			width:800,
+			width:700,
 			height:643,
 			href:"<@s.url '/adm/approval/edit'/>",
 			modal:true,
@@ -160,7 +160,6 @@ $(function(){
 	${dg}_search = function(){
 		dg.datagrid("load",{
 			employeeName:$("#${dg}_toobar input[name='name']").val(),
-			type:$("#${dg}_toobar select[name='type']").val()
 		});
 	};
 	/* </shiro.hasPermission> */
@@ -171,12 +170,5 @@ $(function(){
 <div id="${dg}_toobar">
 	<!-- </shiro.hasPermission> -->
 	<label>请假人：<input name="name" type="text" style="width:198px;"/></label>
-	<label>请假类型：</label>
-		<select name="type" style="width:120px;"> 
-				<option></option>
-			<#list typeMap?keys as key>
-				<option value="${key}">${typeMap[key]}</option>
-			</#list>
-		</select>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

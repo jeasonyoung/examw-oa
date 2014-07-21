@@ -31,7 +31,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	private IEmployeeDao employeeDao;
 	private IDepartmentDao departmentDao;
 	private ILeaveApprovalDao approvalDao;
-	private Map<String, String> typeMap;
+	private Map<Integer, String> typeMap;
 	private Map<Integer, String> statusMap;
 	/**
 	 * 请假数据接口
@@ -72,7 +72,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 * 请假类型集合
 	 * @param typeMap
 	 */
-	public void setTypeMap(Map<String, String> typeMap) {
+	public void setTypeMap(Map<Integer, String> typeMap) {
 		this.typeMap = typeMap;
 	}
 	/*
@@ -213,12 +213,6 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	public void delete(String[] ids) {
-		if(ids == null || ids.length == 0) return;
-		for(int i = 0; i < ids.length;i++){
-			if(StringUtils.isEmpty(ids[i])) continue;
-			Leave e = this.leaveDao.load(Leave.class, ids[i]);
-			if(e != null) this.leaveDao.delete(e);
-		}
 	}
 	/*
 	 * 加载类型集合
@@ -226,9 +220,8 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	public String loadTypeName(Integer type) {
-		if(typeMap==null || type==null)
-			return null;
-			return typeMap.get(type.toString());
+		if(this.typeMap == null|| type==null) return null;
+		return this.typeMap.get(type);
 	}
 	/*
 	 * 加载状态集合
@@ -238,9 +231,5 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	public String loadStatusName(Integer status) {
 		if(this.statusMap == null|| status==null) return null;
 		return this.statusMap.get(status);
-	}
-	@Override
-	public Map<String, String> getTypeMap() {
-		return typeMap;
 	}
 }

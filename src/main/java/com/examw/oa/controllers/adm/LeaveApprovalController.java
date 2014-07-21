@@ -31,12 +31,12 @@ public class LeaveApprovalController implements IUserAware{
 	private static Logger logger = Logger.getLogger(NoticeColumnController.class);
 	private String userId;
 	/**
-	 *栏目信息服务。
+	 *请假服务。
 	 */
 	@Resource
 	private ILeaveService leaveService;
 	/**
-	 *栏目信息服务。
+	 *请假审批服务。
 	 */
 	@Resource
 	private ILeaveApprovalService approvalService;
@@ -68,8 +68,6 @@ public class LeaveApprovalController implements IUserAware{
 		
 		model.addAttribute("STATUS_NOPASS_VALUE",Leave.STATUS_NOPASS);
 		model.addAttribute("STATUS_NOPASS_NAME", this.leaveService.loadStatusName(Leave.STATUS_NOPASS));
-		
-		model.addAttribute("typeMap",this.leaveService.getTypeMap());
 		return "adm/approval_list";
 	}
 	/**

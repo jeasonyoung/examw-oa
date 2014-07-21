@@ -1,5 +1,4 @@
 package com.examw.oa.service.adm;
-import java.util.Map;
 
 import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.IBaseDataService;
@@ -25,10 +24,4 @@ public interface ILeaveService extends IBaseDataService<LeaveInfo>{
 	 * 状态名称
 	 */
 	String loadStatusName(Integer status);
-	/**
-	 * 取得状态映射
-	 * @return
-	 */
-	Map<String,String> getTypeMap();
-	
 }

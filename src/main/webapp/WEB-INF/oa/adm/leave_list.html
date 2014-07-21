@@ -36,6 +36,13 @@ $(function(){
 			width:20,
 			align:"left",
 			sortable:true
+		}
+		,{
+			title:"请假人",
+			field:"employeeName",
+			width:20,
+			align:"left",
+			sortable:true
 		},{
 			title:"请假类型",
 			field:"type",
@@ -84,7 +91,7 @@ $(function(){
 	});
 	var d;
 	function edit_window_btn_save(row,index){
-		if(!row || (row.status !=null)) return null;
+		//if((row.status!=null)) return null;
 		return {
 			text:"提交",
 			iconCls:"icon-save",
@@ -137,7 +144,7 @@ $(function(){
 		});
 		d = $("<div/>").dialog({
 			title:title,
-			width:800,
+			width:700,
 			height:643,
 			href:"<@s.url '/adm/leave/edit'/>",
 			modal:true,
@@ -146,13 +153,7 @@ $(function(){
 				$(this).dialog("destroy");
 			},
 			onLoad:function(){
-				if(row){
-					$("#${module}_edit_form").form("load",row);
-					if(row.planDetail)$("#${module}_edit_form textarea[name='planDetail']").kindeditor("setValue",row.planDetail);
-					if(row.summaryDetail)$("#${module}_edit_form textarea[name='summaryDetail']").kindeditor("setValue",row.summaryDetail);
-					if(row.supportDetail)$("#${module}_edit_form textarea[name='supportDetail']").kindeditor("setValue",row.supportDetail);
-					if(row.suggetsionsDetail)$("#${module}_edit_form textarea[name='suggetsionsDetail']").kindeditor("setValue",row.suggetsionsDetail);
-				}
+				if(row) $("#${module}_edit_form").form("load",row);
 			}
 	  });
 	};

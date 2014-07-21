@@ -1,0 +1,133 @@
+<#--业务系统列表-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_record"/>
+<#assign dg="${module}_list_dg"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	//dg
+	var dg = $("#${dg}").datagrid({
+		url:"<@s.url '/adm/record/datagrid'/>",
+		fit:true,
+		fitColumns:true,
+		rownumbers:true,
+		pagination:true,
+		pagePosition:"bottom",
+		pageSize:20,
+		pageList:[20,30,40],
+		border:true,
+		striped:true,
+		idField:"id",
+		sortName:"createTime",
+		sortOrder:"asc",
+		columns:[[{
+			field:"id",
+			checkbox:true
+		},{
+			title:"请假人",
+			field:"leaveName",
+			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"审核人",
+			field:"employeeName",
+			width:20,
+			align:"center",
+			sortable:true
+		},{
+			title:"审核类型",
+			field:"type",
+			width:20,
+			align:"left",
+			formatter:function(value,row,index){
+				if(value == ${TYPE_LEADER_VALUE}) return "${TYPE_LEADER_NAME}";
+				if(value == ${TYPE_ADM_VALUE}) return "${TYPE_ADM_NAME}";
+				if(value == ${TYPE_BOSS_VALUE}) return "${TYPE_BOSS_NAME}";
+				return value;
+			},
+			sortable:true
+		},{
+			title:"审核状态",
+			field:"status",
+			width:20,
+			align:"left",
+			formatter:function(value,row,index){
+				if(value == ${STATUS_AGREE_VALUE}) return "${STATUS_AGREE_NAME}";
+				if(value == ${STATUS_DISAGREE_VALUE}) return "${STATUS_DISAGREE_NAME}";
+				return value;
+			},
+			sortable:true
+		},{
+			title:"创建时间",
+			field:"createTime",
+			width:20,
+			align:"left",
+			sortable:true
+		}]],
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		toolbar:"#${dg}_toobar",
+		onDblClickRow:function(rowIndex,rowData){
+			edit_window("查看",rowIndex,rowData);
+		}
+	});
+	//edit
+	function edit_window(title,index,row){
+		var d = $("<div/>").dialog({
+			title:title,
+			width:650,
+			height:450,
+			href:"<@s.url '/adm/record/edit'/>",
+			modal:true,
+			buttons:[
+			/* </shiro.hasPermission> */
+			{
+				text:"关闭",
+				iconCls:"icon-cancel",
+				handler:function(){
+					d.dialog("close");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			},
+			onLoad:function(){
+				if(row) $("#${module}_edit_form").form("load",row);
+			}
+	  });
+	};
+	//search
+	${dg}_search = function(){
+		dg.datagrid("load",{
+			employeeName:$("#${dg}_toobar input[name='name']").val(),
+			  type:$("#${dg}_toobar select[name='type']").val(),
+			  status:$("#${dg}_toobar select[name='status']").val()
+		});
+	};
+	
+	/* </shiro.hasPermission> */
+});
+//-->
+</script>
+<table id="${dg}"></table>
+<div id="${dg}_toobar">
+	<!-- </shiro.hasPermission> -->
+	<label>审核人：<input name="name" type="text" style="width:170px;"/></label>
+	<label>审核类型：</label>
+		<select name="type" style="width:150px;"> 
+				<option></option>
+			<#list typeMap?keys as key>
+				<option value="${key}">${typeMap[key]}</option>
+			</#list>
+		</select>
+		<label>审核状态：</label>
+		<select name="status" style="width:150px;"> 
+				<option></option>
+			<#list statusMap?keys as key>
+				<option value="${key}">${statusMap[key]}</option>
+			</#list>
+		</select>
+	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+</div>

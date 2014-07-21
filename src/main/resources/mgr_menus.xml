@@ -27,6 +27,7 @@
   		<module id="EOA000204"  icon="" name="通知公告" uri="/adm/notice" order="2" />
   		<module id="EOA000304"  icon="" name="我要请假" uri="/adm/leave" order="3" />
   		<module id="EOA000404"  icon="" name="请假审批" uri="/adm/approval" order="4" />
+  		<module id="EOA000504"  icon="" name="审批记录" uri="/adm/record" order="4" />
   	</module>
   </system>
 </ipower>

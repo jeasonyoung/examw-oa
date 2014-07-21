@@ -32,9 +32,9 @@ public class LeaveInfo extends Paging{
 		return id;
 	}
 	/**
-	 * 设置请假条ID
-	 * @return
-	 * 请假条ID
+	 * 设置请假条ID.
+	 * @return 请假条ID.
+	 * 
 	 */
 	public void setId(String id) {
 		this.id = id;

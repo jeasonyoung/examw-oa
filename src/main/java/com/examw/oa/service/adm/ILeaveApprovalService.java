@@ -1,5 +1,7 @@
 package com.examw.oa.service.adm;
 
+import java.util.Map;
+
 import com.examw.oa.model.adm.LeaveApprovalInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
@@ -24,4 +26,14 @@ public interface ILeaveApprovalService extends IBaseDataService<LeaveApprovalInf
 	 * 状态名称
 	 */
 	String loadStatusName(Integer status);
+	/**
+	 * 取得类型映射
+	 * @return
+	 */
+	Map<String,String> getTypeMap();
+	/**
+	 * 取得状态映射
+	 * @return
+	 */
+	Map<String,String> getStatusMap();
 }
