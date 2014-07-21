@@ -307,4 +307,23 @@ public class UserServiceImpl extends BaseDataServiceImpl<User, UserInfo> impleme
 		data.setStatus(User.STATUS_ENABLED);
 		this.userDao.save(data);
 	}
+	/*
+	 * 加载用户角色ID集合。
+	 * @see com.examw.oa.service.security.IUserService#loadRoles(java.lang.String)
+	 */
+	@Override
+	public String[] loadRoles(String userId) {
+		if(logger.isDebugEnabled()) logger.debug("加载用户［useId="+ userId +"］角色ID集合...");
+		if(StringUtils.isEmpty(userId)) return null;
+		User user = this.userDao.load(User.class, userId);
+		if(user == null) return null;
+		List<String> list = new ArrayList<>();
+		if(user.getRoles() != null){
+			for(Role role : user.getRoles()){
+				if(role == null) continue;
+				list.add(role.getId());
+			}
+		}
+		return list.toArray(new String[0]);
+	}
 }

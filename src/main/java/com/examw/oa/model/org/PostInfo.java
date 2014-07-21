@@ -13,6 +13,7 @@ import com.examw.model.Paging;
 public class PostInfo extends Paging{
 	private static final long serialVersionUID = 1L;
 	private String id,code,name,departmentId,departmentName;
+	private Integer level;
 	/**
 	 * 获取部门岗位ID。
 	 * @return
@@ -92,5 +93,20 @@ public class PostInfo extends Paging{
 	 */
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
+	}
+	/**
+	 * 获取岗位值。
+	 * @return 岗位值。
+	 */
+	public Integer getLevel() {
+		return level;
+	}
+	/**
+	 * 设置岗位值。
+	 * @param level
+	 * 岗位值。
+	 */
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 }

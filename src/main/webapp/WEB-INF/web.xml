@@ -99,7 +99,7 @@
   </filter>
   <filter-mapping>
   	<filter-name>shiroFilter</filter-name>
-  	<url-pattern>/</url-pattern>
+  	<url-pattern>/*</url-pattern>
   </filter-mapping>
   
    	<!-- Spring MVC 配置，配置文件名称默认为｛servlet-name｝-servlet.xml,路径默认在/WEB-INF/下 -->

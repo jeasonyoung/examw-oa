@@ -32,6 +32,10 @@ public class EmployeeDaoImpl extends BaseDaoImpl<Employee> implements IEmployeeD
 				info.setSort("post.name");
 			}else if(info.getSort().equalsIgnoreCase("rankName")){
 				info.setSort("rank.name");
+			}else if(info.getSort().equalsIgnoreCase("genderName")){
+				info.setSort("gender");
+			}else if(info.getSort().equalsIgnoreCase("statusName")){
+				info.setSort("status");
 			}
 			hql += " order by e." + info.getSort() + " " + info.getOrder();
 		}

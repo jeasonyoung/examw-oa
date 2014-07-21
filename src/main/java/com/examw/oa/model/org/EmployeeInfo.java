@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
+import com.examw.oa.support.CustomShortDateSerializer;
 /**
  * 员工信息。
  * @author lq.
@@ -16,10 +17,10 @@ import com.examw.oa.support.CustomDateSerializer;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class EmployeeInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,code,name,phone,email,idCard,password,departmentId,departmentName,postId,postName,rankId,rankName;
+	private String id,code,name,phone,email,idCard,password,departmentId,departmentName,postId,postName,rankId,rankName,genderName,statusName;
 	private Integer gender,status;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date brithday, joinTime,createTime;
+	private String[] roleId;
 	/**
 	 * 获取员工ID。
 	 * @return
@@ -149,6 +150,21 @@ public class EmployeeInfo extends Paging {
 		this.gender = gender;
 	}
 	/**
+	 * 获取性别名称。
+	 * @return 性别名称。
+	 */
+	public String getGenderName() {
+		return genderName;
+	}
+	/**
+	 * 设置性别名称。
+	 * @param genderName
+	 * 性别名称。
+	 */
+	public void setGenderName(String genderName) {
+		this.genderName = genderName;
+	}
+	/**
 	 * 获取状态。
 	 * @return
 	 * 状态。
@@ -165,11 +181,26 @@ public class EmployeeInfo extends Paging {
 		this.status = status;
 	}
 	/**
+	 * 获取状态名称。
+	 * @return 状态名称。
+	 */
+	public String getStatusName() {
+		return statusName;
+	}
+	/**
+	 * 设置状态名称。
+	 * @param statusName
+	 * 状态名称。
+	 */
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+	/**
 	 * 获取出生日期。
 	 * @return
 	 * 出生日期。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getBrithday() {
 		return brithday;
 	}
@@ -178,6 +209,7 @@ public class EmployeeInfo extends Paging {
 	 * @return
 	 * 出生日期。
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setBrithday(Date brithday) {
 		this.brithday = brithday;
 	}
@@ -186,7 +218,7 @@ public class EmployeeInfo extends Paging {
 	 * @return
 	 * 入职时间。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getJoinTime() {
 		return joinTime;
 	}
@@ -195,6 +227,7 @@ public class EmployeeInfo extends Paging {
 	 * @return
 	 * 入职时间。
 	 */
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setJoinTime(Date joinTime) {
 		this.joinTime = joinTime;
 	}
@@ -203,6 +236,7 @@ public class EmployeeInfo extends Paging {
 	 * @return
 	 * 创建时间。
 	 */
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -309,5 +343,20 @@ public class EmployeeInfo extends Paging {
 	 */
 	public void setRankName(String rankName) {
 		this.rankName = rankName;
+	}
+	/**
+	 *获取用户角色集合。
+	 * @return 用户角色集合。
+	 */
+	public String[] getRoleId() {
+		return roleId;
+	}
+	/**
+	 * 设置用户角色集合。
+	 * @param roleId
+	 * 用户角色集合。
+	 */
+	public void setRoleId(String[] roleId) {
+		this.roleId = roleId;
 	}	
 }

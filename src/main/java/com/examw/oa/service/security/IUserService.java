@@ -54,6 +54,14 @@ public interface IUserService extends IBaseDataService<UserInfo> {
 	 */
 	Set<String> findRoles(String account);
 	/**
+	 * 加载用户角色ID集合。
+	 * @param userId
+	 * 用户ID。
+	 * @return
+	 * 角色集合。
+	 */
+	String[] loadRoles(String userId);
+	/**
 	 * 根据账号查询其权限。
 	 * @param account
 	 * 用户账号。

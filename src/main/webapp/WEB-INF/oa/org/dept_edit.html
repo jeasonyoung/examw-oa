@@ -1,15 +1,18 @@
 <#--部门编辑-->
+<#include "ftl/comm.ftl"/>
 <#assign module="org_dept"/>
 <#assign form="${module}_edit_form"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var t = $("#${form} input[name='pid']").combotree({
+	var p = $("#${form} input[name='pid']").combotree({
 		url:"<@s.url '/org/dept/tree?ignore=${CURRENT_IGNORE}'/>",
 		onLoadSuccess:function(n,d){
-			var pid = "${CURRENT_DEPT_ID}";
-			if(pid.trim() == "")return;
-			t.combotree("setValue",pid);
+			<#if CURRENT_PARENT_DEPT_ID ??>
+				var pid = "${CURRENT_DEPT_ID}";
+				if(pid.trim() == "")return;
+				p.combotree("setValue",pid);
+			</#if>
 		}
 	});
 });
@@ -31,6 +34,6 @@ $(function(){
 	</div>
 	<div style="float:left;margin-top:12px;width:100%;">
 		<label style="width:75px;">排序号：</label>
-		<input type="text" name="orderNo" class="easyui-numberspinner" data-options="required:true,min:1,max:100,value:1,editable:false" style="width:80px;" />
+		<input type="text" name="orderNo" class="easyui-numberspinner" data-options="required:true,min:1,max:100,value:1,editable:true" style="width:80px;" />
 	</div>
 </form>

@@ -26,6 +26,8 @@
 		<property name="postDao" ref="postDao" />
 		<!-- 员工级别数据接口 -->
 		<property name="rankDao" ref="rankDao" />
+		<!-- 用户服务接口 -->
+		<property name="userService" ref="userService" />
 		<!-- 性别集合 -->
 		<property name="gendersMap">
 			<map>

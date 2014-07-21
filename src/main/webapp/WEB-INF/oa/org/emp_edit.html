@@ -5,31 +5,31 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_dept_select = false,current_dept_id = "${CURRENT_DEPT_ID}",current_post_id = "${CURRENT_POST_ID}";
+	var current_dept_select = current_dept_load = false,current_dept_id = "${CURRENT_DEPT_ID}",current_post_id = "${CURRENT_POST_ID}";
 	//department
-	var t = $("#${form} input[name='departmentId']").combotree({
+	var dept_cbt = $("#${form} input[name='departmentId']").combotree({
 		url:"<@s.url '/org/dept/tree'/>",
 		required:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(n,d){
-			if(current_dept_id.trim() == "")return;
-			if(current_post_id.trim() == "") t.combotree("setValue",current_dept_id);
+			if($.trim(current_dept_id) == "") return;
+			current_dept_load = true;
+			dept_cbt.combotree("setValue",current_dept_id);
 		},
 		onSelect:function(record){
-			if(p_t){
-				current_dept_select = true;
-				p_t.combobox("clear");
-				p_t.combobox("reload",post_url+record.id);
+			if(!current_dept_load)current_dept_select = true;
+			if(post_cbb){
+				current_dept_load = false;
+				post_cbb.combobox("clear");
+				post_cbb.combobox("reload","<@s.url '/org/post/all?deptId=' />"+record.id);
 			}
 		}
 	});
-	//post url
-	var post_url = "<@s.url '/org/post/all'/>?deptId=";
 	//post
-	var p_t = $("#${form} input[name='postId']").combobox({
-		url:post_url + "${CURRENT_DEPT_ID}",
+	var post_cbb = $("#${form} input[name='postId']").combobox({
+		url:"<@s.url '/org/post/all?deptId=${CURRENT_DEPT_ID}'/>'",
 		valueField:"id",
 		textField:"name",
 		required:true,
@@ -37,19 +37,8 @@ $(function(){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(){
-			if(current_dept_select) return;
-			if(current_post_id.trim() == "")return;
-			p_t.combobox("setValue",current_post_id);
-		}
-	});
-	//rank 
-	var r_t = $("#${form} input[name='rankId']").combobox({
-		url:"<@s.url '/org/rank/all'/>",
-		valueField:"id",
-		textField:"name",
-		required:true,
-		onLoadError:function(e){
-			<@error_dialog "e"/>
+			if(current_dept_select || $.trim(current_post_id) == "") return;
+			post_cbb.combobox("setValue",current_post_id);
 		}
 	});
 });
@@ -57,68 +46,89 @@ $(function(){
 </script>
 <form id="${form}" method="POST" style="padding:10px;">
 		<div style="float:left; margin-top:2px; width:100%;">
-			<div style="float:left;">
-				<label style="width:75px;">工号：</label>
-				<input type="text" name="code" class="easyui-validatebox" data-options="required:true" style="width:168px;"/>
-				<input type="hidden" name="id"/>
-			</div>
-			<div style="float:left;">
-				<label style="width:75px;">姓名：</label>
-				<input type="text" name="name" class="easyui-validatebox" data-options="required:true" style="width:168px;"/>
-			</div>
+			<label style="width:75px;">工号：</label>
+			<input type="text" name="code" class="easyui-validatebox" data-options="required:true" style="width:198px;"/>
+			<input type="hidden" name="id"/>
 		</div>
 		<div style="float:left; margin-top:12px; width:100%;">
-			<label style="margin-top:8px;width:75px;">性别：</label>
-			<div style="float:left;width:172px;">
-				<label><input type="radio" name="gender" value="1" checked="checked" />${GENDER_MALE_NAME}</label>
-				<label><input type="radio" name="gender" value="2" />${GENDER_FEMALE_NAME}</label>
+			<div style="float:left;">
+				<label style="width:75px;">姓名：</label>
+				<input type="text" name="name" class="easyui-validatebox" data-options="required:true" style="width:198px;"/>
+			</div>
+		    <div style="float:left;">
+				<label style="padding-top:8px;width:75px;">性别：</label>
+				<div style="float:left;">
+					<label style="padding-top:0;"><input type="radio" name="gender" value="${GENDER_MALE_VALUE}" checked="checked" />${GENDER_MALE_NAME}</label>
+					<label style="padding-top:0;"><input type="radio" name="gender" value="${GENDER_FEMALE_VALUE}" />${GENDER_FEMALE_NAME}</label>
+				</div>
 			</div>
 		</div>
 		<div style="float:left; margin-top:12px; width:100%;">
 			<label style="width:75px;">所属部门：</label>
-			<input type="text" name="departmentId" style="width:218px;"/>
-			<input type="text" name="postId"  style="width:198px;"/>	
+			<input type="text" name="departmentId" style="width:266px;"/>
+			<input type="text" name="postId"  style="width:210px;"/>	
 		</div>
 		<div  style="float:left;margin-top:12px; width:100%;">
-			<div style="float:left;">
 				<label style="width:75px;">所属级别：</label>
-				<input type="text" name="rankId" style="width:172px;"/>
-			</div>
-			<div style="float: left;">
-				 <label style="width: 75px;">手机号码：</label>
-				 <input type="text" name="phone" style="width:168px;" />
-			</div>
+				<input type="text" name="rankId" class="easyui-combobox" data-options="
+						url:'<@s.url '/org/rank/all'/>',
+						required:true,
+						valueField:'id',
+						textField:'name',
+						onLoadError:function(e){
+							<@error_dialog 'e'/>
+						}
+					" style="width:202px;"/>
 		</div>
 		<div  style="float:left;margin-top:12px; width:100%;">
 			<div style="float:left;">
 				<label style="width:75px;">身份证码：</label>
-				<input type="text" name="idCard" style="width:168px;"/>
+				<input type="text" name="idCard" style="width:198px;"/>
 			</div>
+			<div style="float: left;">
+				 <label style="width: 75px;">手机号码：</label>
+				 <input type="text" name="phone" style="width:198px;" />
+			</div>
+		</div>
+		<div  style="float:left;margin-top:12px; width:100%;">
 			<div style="float:left;">
 				<label style="width:75px;">出生日期：</label>
-				<input name="brithday" type="text" class="easyui-datebox" style="width:172px;">
+				<input name="brithday" type="text" class="easyui-datebox" style="width:202px;">
+			</div>
+			<div style="float:left;"> 
+				<label style="width:75px;">入职时间：</label>
+				<input type="text" name="joinTime" class="easyui-datebox" required="required:true" style="width:202px;">
 			</div>
 		</div>
 		<div style="float:left; margin-top:12px; width:100%;">
 			<label style="width:75px;">邮箱地址：</label>
-			<input type="text" name="email" style="width:416px;"/>
+			<input type="text" name="email" style="width:475px;"/>
 		</div>
 		<div style="float:left; margin-top:12px; width: 100%;">
-			<div style="float:left;"> 
-				<label style="width:75px;">入职时间：</label>
-				<input type="text" name="joinTime" class="easyui-datebox" required="required" style="width:168px;">
+			<div style="float:left;">
+				<label style="width:75px;">角色授权：</label>
+				<input type="text" name="roleId" class="easyui-combobox" data-options="
+						url:'<@s.url '/security/role/all'/>',
+						required:true,
+						multiple:true,
+						valueField:'id',
+						textField:'name',
+						onLoadError:function(e){
+							<@error_dialog 'e'/>
+						}
+					" style="width:202px;"/>
 			</div>
-			<div style="float:left;margin-left:3px;">
-				<label style="width:75px;">登录密码：</label>
+			<div style="float:left;">
+				<label style="width:75px;">初始密码：</label>
 				<input type="text" name="password" class="easyui-validatebox"  data-options="required:true" style="width:168px;"/>
 			</div>
 		</div>
-		<div style="float:left; margin-top:10px; width:100%;">
-			<label style="margin-top:8px;width:75px;">状态：</label>
+		<div style="float:left; margin-top:12px; width:100%;">
+			<label style="width:75px;">状态：</label>
 			<div style="float:left;">
-				<label><input type="radio" name="status" value="1" checked="checked" />${STATUS_ON_NAME}</label>
-				<label><input type="radio" name="status" value="-1" />${STATUS_LIMIT_NAME}</label>
-				<label><input type="radio" name="status" value="0" />${STATUS_OUT_NAME}</label>
+				<label style="padding-top:0;"><input type="radio" name="status" value="${STATUS_ON_VALUE}" checked="checked" />${STATUS_ON_NAME}</label>
+				<label style="padding-top:0;"><input type="radio" name="status" value="${STATUS_LIMIT_VALUE}" />${STATUS_LIMIT_NAME}</label>
+				<label style="padding-top:0;"><input type="radio" name="status" value="${STATUS_OUT_VALUE}" />${STATUS_OUT_NAME}</label>
 			</div>
 		</div>
 </form>

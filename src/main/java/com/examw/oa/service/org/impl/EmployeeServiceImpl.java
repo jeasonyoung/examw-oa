@@ -16,9 +16,12 @@ import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;  
 import com.examw.oa.domain.org.Post;
 import com.examw.oa.domain.org.Rank;
+import com.examw.oa.domain.security.User;
 import com.examw.oa.model.org.EmployeeInfo;
+import com.examw.oa.model.security.UserInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.org.IEmployeeService;
+import com.examw.oa.service.security.IUserService;
 /**
  * 员工服务接口。
  * @author lq.
@@ -29,6 +32,7 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	private IDepartmentDao departmentDao;
 	private IPostDao postDao;
 	private IRankDao rankDao;
+	private IUserService userService;
 	private Map<Integer, String> gendersMap,statusMap;
 	/**
 	 * 设置员工数据接口。
@@ -60,6 +64,14 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 	 */
 	public void setRankDao(IRankDao rankDao) {
 		this.rankDao = rankDao;
+	}
+	/**
+	 * 设置用户服务接口。
+	 * @param userService
+	 * 用户服务接口。
+	 */
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
 	}
 	/**
 	 * 设置性别集合。
@@ -132,6 +144,9 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 			info.setRankId(data.getRank().getId());
 			info.setRankName(data.getRank().getName());
 		}
+		info.setGenderName(this.loadGenderName(info.getGender()));
+		info.setStatusName(this.loadStatusName(info.getStatus()));
+		info.setRoleId(this.userService.loadRoles(info.getId()));
 		return info;
 	}
 	/*
@@ -169,6 +184,18 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 		if(data.getRank() != null) info.setRankName(data.getRank().getName());
 
 		if(isAdded)this.employeeDao.save(data);
+		if(info.getRoleId() != null && info.getRoleId().length > 0){
+			UserInfo usr = new UserInfo();
+			BeanUtils.copyProperties(info, usr, new String[]{"status"});
+			usr.setAccount(info.getCode());
+			usr.setNickName(info.getName());
+			usr.setPassword(info.getPassword());
+			usr.setStatus(info.getStatus() == Employee.STATUS_ON ? User.STATUS_ENABLED : User.STATUS_DISABLE);
+			this.userService.update(usr);
+		}
+		
+		info.setGenderName(this.loadGenderName(info.getGender()));
+		info.setStatusName(this.loadStatusName(info.getStatus()));
 		return info;
 	}
 	/*

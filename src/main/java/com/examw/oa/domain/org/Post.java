@@ -10,6 +10,7 @@ public class Post implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,code,name;
 	private Department department;
+	private Integer level;
 	/**
 	 * 获取岗位ID。
 	 * @return
@@ -73,5 +74,20 @@ public class Post implements Serializable {
 	 */
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+	/**
+	 * 获取岗位值。
+	 * @return 岗位值。
+	 */
+	public Integer getLevel() {
+		return level;
+	}
+	/**
+	 * 设置岗位值。
+	 * @param level
+	 * 岗位值。
+	 */
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 }

@@ -24,7 +24,7 @@ public class DepartmentDaoImpl extends BaseDaoImpl<Department> implements IDepar
 	 */
 	@Override
 	public List<Department> loadFristDepartments() {
-		final String hql = "from Department d where d.parent is null ";
+		final String hql = "from Department d where (d.parent is null) order by d.orderNo";
 		return this.find(hql, null, null, null);
 	}
 	/*
