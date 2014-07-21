@@ -53,85 +53,83 @@ $(function(){
 //-->
 </script>
 <form id="${form}" method="POST" class="easyui-tabs">
-<div title="基本信息">
+	<div title="基本信息">
 		<div style="float:left; margin-top:10px; width:100%;">
 			<div style="float:left;">
-				<label style="width:105px;">姓名：</label>
+				<label style="width:115px;">姓名：</label>
 				<input type="text" name="employeeId" style="width:170px;"/>
 			</div>
 			<div style="float:left;">
-				<label style="width:105px;">所属部门：</label>
+				<label style="width:115px;">所属部门：</label>
 				<input type="text" name="deptName" style="width:170px;"/>
 			</div>
 		</div>
 		<div style="float:left;margin-top:10px;">
-				<label style="width:105px;">所属职务：</label>
-				<input type="text" name="postName" style="width:170px;"/>
+				<label style="width:115px;">所属职务：</label>
+				<input type="text" name="postName" style="width:165px;"/>
 			</div>
 		<div style="float:left; margin-top:10px; width:100%;">
 			<div style="float:left;">
-					<label style="width:105px;">开始时间：</label>
-					<input type="text"  name="startTime" class="easyui-datebox" required="required" style="width:170px;"/>
+				<label style="width:115px;">开始时间：</label>
+				<input type="text"  name="startTime" class="easyui-datebox" required="required" style="width:170px;"/>
 			</div>
 			<div style="float:left;">
-					<label style="width:105px;">结束时间：</label>
-					<input type="text"  name="endTime" class="easyui-datebox" required="required" style="width:170px;"/>
+				<label style="width:115px;">结束时间：</label>
+				<input type="text"  name="endTime" class="easyui-datebox" required="required" style="width:170px;"/>
 			</div>
 		</div>	
 		<div style="float:left; margin-top:10px; width:100%;">
 			<div style="float:left;">
-					<label style="width:105px;">请假事由：</label>
-					<textarea type="text" name="resaon" row="10" cols="10" style="width:440px;height:100px" />
-					<input type="hidden" name="id"/>
+				<label style="width:115px;">请假事由：</label>
+				<textarea type="text" name="resaon" row="10" cols="10" style="width:450px;height:100px" />
+				<input type="hidden" name="id"/>
 		   </div>
 		   <div style="float:left;">
-					<label style="margin-top:8px;width:105px;">请假类型：</label>
-					<label><input type="radio" name="type" value="1" checked="checked" />${TYPE_VACATION_NAME}</label>
-					<label><input type="radio" name="type" value="2" />${TYPE_COMPA_NAME}</label>
-					<label><input type="radio" name="type" value="3" />${TYPE_OTHER_NAME}</label>
-					<label><input type="radio" name="type" value="4" />${TYPE_SICK_PROVE_NAME}</label>
-					<label><input type="radio" name="type" value="5" />${TYPE_SICK_NONPROVE}</label>
+				<label style="margin-top:8px;width:115px;">请假类型：</label>
+				<label><input type="radio" name="type" value="1" checked="checked" />${TYPE_VACATION_NAME}</label>
+				<label><input type="radio" name="type" value="2" />${TYPE_COMPA_NAME}</label>
+				<label><input type="radio" name="type" value="3" />${TYPE_OTHER_NAME}</label>
+				<label><input type="radio" name="type" value="4" />${TYPE_SICK_PROVE_NAME}</label>
+				<label><input type="radio" name="type" value="5" />${TYPE_SICK_NONPROVE}</label>
 			</div>
 		</div>
 		<div style="float:left; margin-top:5px; width:100%;">
 			<div style="float:left;">
-					<label style="width:105px;">补班时间：</label>
-					<input type="text"  name="supTime" class="easyui-datebox"  style="width:170px;"/>
+				<label style="width:115px;">补班时间：</label>
+				<input type="text"  name="supTime" class="easyui-datebox"  style="width:170px;"/>
 			</div>
 			<div style="float:left;margin-top:10px;">
-			<label style="width:105px;">是否补班：</label>
-					<input type="radio" name="isSup" value="0" />不补班
-					<input type="radio" name="isSup" value="1" />补班
+				<label style="width:115px;">是否补班：</label>
+				<input type="radio" name="isSup" value="0" checked="checked"/>不补班
+				<input type="radio" name="isSup" value="1" />补班
 			</div>
 		</div>
 		<div style="float:left; margin-top:10px; width:100%;">
 			<div style="float:left;">
-					<label style="width:105px;">换班时间：</label>
-					<input type="text"  name="shiftTime" class="easyui-datebox"  style="width:170px;"/>
+				<label style="width:115px;">换班时间：</label>
+				<input type="text"  name="shiftTime" class="easyui-datebox"  style="width:170px;"/>
 			</div>
 		</div>
 		<div style="float:left;margin-top:10px; width:100%;">
-				<label style="width:105px;">换班人：</label>
-				<input type="text" name="shiftDepartmentId" style="width:220px;"/>
-				<input type="text" name="shiftEmployeeId" style="width:220px;"/>
+			<label style="width:115px;">换班人：</label>
+			<input type="text" name="shiftDepartmentId" style="width:220px;"/>
+			<input type="text" name="shiftEmployeeId" style="width:220px;"/>
 		</div>
-		
-		<div style="float:left; margin-top:10px; width:100%;">
-				<label style="width:105px;">审批人：</label>
-				<input type="text" name="" style="width:170px;"/>
-				<input type="text" name="" style="width:170px;"/>
+		<div style="float:left;margin-top:10px;width:100%;">
+			<label style="width:115px;">审核状态：</label>
+			<label><input type="radio" name="aStatus" value="1"/>${STATUS_AGREE_NAME}</label>
+			<label><input type="radio" name="aStatus" value="2"/>${STATUS_DISAGREE_NAME}</label>
 		</div>
-		<div style="float:left;margin-top:10px;">
-			<label style="width:105px;">审核状态：</label>
-			<label><input type="radio" name="" value="1" checked="checked" />${STATUS_AGREE_NAME}</label>
-			<label><input type="radio" name="" value="2" />${STATUS_DISAGREE_NAME}</label>
+		<div style="float:left;margin-top:10px;width:100%;">
+			<label style="width:115px;">审核类型：</label>
+			<label><input type="radio" name="aType" value="1"/>${TYPE_ADM_NAME}</label>
+			<label><input type="radio" name="aType" value="2" />${TYPE_LEADER_NAME}</label>
+			<label><input type="radio" name="aType" value="3" />${TYPE_BOSS_NAME}</label>
 		</div>
 		<div style="float:left;margin-top:10px; width:100%;">
-			<label style="width:105px;">意见：</label>
-			<input type="hidden" name="">
-			<textarea type="text" name="" row="4" cols="5" style="width:440px;height:100px" />
+			<label style="width:115px;">意见：</label>
+			<input type="hidden" name="aId">
+			<textarea type="text" name="approval" row="4" cols="5" style="width:450px;height:100px" />
 		</div>
-</div>
-<div title="请假审核">	
-</div>
+	</div>
 </form>

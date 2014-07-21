@@ -2,9 +2,11 @@ package com.examw.oa.model.adm;
 
 import java.util.Date;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
+import com.examw.oa.support.CustomDateSerializer;
 /**
  * 请假审批
  * @author lq.
@@ -12,7 +14,7 @@ import com.examw.model.Paging;
  */
 public class LeaveApprovalInfo extends Paging{
 	private static final long serialVersionUID = 1L;
-	private String id,approval,typeName,leaveId,leaveName,employeeId,employeeName,postId;
+	private String id,approval,leaveId,leaveName,employeeId,employeeName;
 	private Integer type,status;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date createTime;
@@ -149,6 +151,7 @@ public class LeaveApprovalInfo extends Paging{
 	 * @return
 	 * 创建时间
 	 */
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -160,19 +163,4 @@ public class LeaveApprovalInfo extends Paging{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
-	
-	public String getTypeName() {
-		return typeName;
-	}
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
-	public String getPostId() {
-		return postId;
-	}
-	public void setPostId(String postId) {
-		this.postId = postId;
-	}
-	
 }

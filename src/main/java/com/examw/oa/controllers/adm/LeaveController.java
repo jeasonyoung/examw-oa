@@ -60,6 +60,13 @@ public class LeaveController {
 		
 		model.addAttribute("TYPE_SICK_NONPROVE_VALUE",Leave.TYPE_SICK_NONPROVE);
 		model.addAttribute("TYPE_SICK_NONPROVE_NAME", this.leaveService.loadTypeName(Leave.TYPE_SICK_NONPROVE));
+		
+		model.addAttribute("STATUS_PASS_VALUE",Leave.STATUS_PASS);
+		model.addAttribute("STATUS_PASS_NAME", this.leaveService.loadStatusName(Leave.STATUS_PASS));
+		
+		model.addAttribute("STATUS_NOPASS_VALUE",Leave.STATUS_NOPASS);
+		model.addAttribute("STATUS_NOPASS_NAME", this.leaveService.loadStatusName(Leave.STATUS_NOPASS));
+		
 		return "adm/leave_list";
 	}
 	/**
@@ -76,6 +83,9 @@ public class LeaveController {
 		model.addAttribute("STATUS_AGREE_NAME", this.approvalService.loadStatusName(LeaveApproval.STATUS_AGREE));
 		model.addAttribute("STATUS_DISAGREE_NAME", this.approvalService.loadStatusName(LeaveApproval.STATUS_DISAGREE));
 		
+		model.addAttribute("TYPE_ADM_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_ADM));
+		model.addAttribute("TYPE_LEADER_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_LEADER));
+		model.addAttribute("TYPE_BOSS_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_BOSS));
 		
 		model.addAttribute("TYPE_VACATION_NAME", this.leaveService.loadTypeName(Leave.TYPE_VACATION));
 		model.addAttribute("TYPE_COMPA_NAME", this.leaveService.loadTypeName(Leave.TYPE_COMPA));

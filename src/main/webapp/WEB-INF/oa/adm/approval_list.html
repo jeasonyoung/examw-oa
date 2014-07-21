@@ -42,13 +42,6 @@ $(function(){
 			width:20,
 			align:"left",
 			sortable:true
-		}
-		,{
-			title:"换班人",
-			field:"shiftEmployeeName",
-			width:20,
-			align:"left",
-			sortable:true
 		},{
 			title:"请假类型",
 			field:"type",
@@ -75,6 +68,17 @@ $(function(){
 			width:30,
 			align:"center",
 			sortable:true
+		},{
+			title:"审批结果",
+			field:"status",
+			width:20,
+			align:"left",
+			formatter:function(value,row,index){
+				if(value == ${STATUS_PASS_VALUE}) return "${STATUS_PASS_NAME}";
+				if(value == ${STATUS_NOPASS_VALUE}) return "${STATUS_NOPASS_NAME}";
+				return value;
+			},
+			sortable:true
 		}]],
 		onLoadError:function(e){
 			<@error_dialog "e"/>
@@ -84,64 +88,66 @@ $(function(){
 			edit_window("请假审批",rowIndex,rowData);
 		}
 	});
+	var d;
+	function edit_window_btn_save(row,index){
+		if(!row || (row.status !=null)) return null;
+		return {
+			text:"提交",
+			iconCls:"icon-save",
+			handler:function(){
+				$.messager.progress();
+				$("#${module}_edit_form").form("submit",{
+					url:"<@s.url '/adm/approval/update'/>",
+					onSubmit: function(){
+						var isValid = $(this).form("validate");
+						if (!isValid)$.messager.progress("close");
+						return isValid;
+					},
+					onLoadError:function(e){
+						$.messager.progress("close");
+						<@error_dialog "e"/>
+					},
+					success:function(data){
+						$.messager.progress("close");
+						var data = $.parseJSON(data);
+						if(data.success){
+							dg.datagrid(row ? "updateRow" : "insertRow",{
+								index:index,
+								row:data.data
+							});
+							d.dialog("close");
+						}else{
+							$.messager.show({
+								title:"保存异常",
+								msg:data.msg
+							});
+						}
+					}
+				});
+			}
+		};
+	};
 	//edit
 	function edit_window(title,index,row){
-		var sdept_id = "",semp_id = "";
-		if(row){
-			sdept_id = row.shiftDepartmentId;
-			semp_id = row.shiftEmployeeId;
-		}
-		var d = $("<div/>").dialog({
+		var btns =[];
+		/* <shiro.hasPermission name="${PER_UPDATE}"> */
+		var save_btn_obj = edit_window_btn_save(row,index);
+		if(save_btn_obj != null) btns.push(save_btn_obj);
+		/*</shiro.hasPermission> */
+		btns.push({
+			text:"关闭",
+			iconCls:"icon-cancel",
+			handler:function(){
+				d.dialog("close");
+			}
+		});
+		d = $("<div/>").dialog({
 			title:title,
-			width:710,
-			height:645,
-			href:"<@s.url '/adm/approval/edit'/>?depId="+ sdept_id +"&sEmpId="+ semp_id,
+			width:700,
+			height:643,
+			href:"<@s.url '/adm/approval/edit'/>",
 			modal:true,
-			buttons:[
-			/* <shiro.hasPermission name="${PER_UPDATE}"> */
-			{
-				text:"保存",
-				iconCls:"icon-save",
-				handler:function(){
-					$.messager.progress();
-					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/adm/approval/update'/>",
-						onSubmit: function(){
-							var isValid = $(this).form("validate");
-							if (!isValid)$.messager.progress("close");
-							return isValid;
-						},
-						onLoadError:function(e){
-							$.messager.progress("close");
-							<@error_dialog "e"/>
-						},
-						success:function(data){
-							$.messager.progress("close");
-							var data = $.parseJSON(data);
-							if(data.success){
-								dg.datagrid(row ? "updateRow" : "insertRow",{
-									index:index,
-									row:data.data
-								});
-								d.dialog("close");
-							}else{
-								$.messager.show({
-									title:"保存异常",
-									msg:data.msg
-								});
-							}
-						}
-					});
-				}
-			},
-			/* </shiro.hasPermission> */
-			{
-				text:"关闭",
-				iconCls:"icon-cancel",
-				handler:function(){
-					d.dialog("close");
-				}
-			}],
+			buttons:btns,
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
@@ -153,49 +159,8 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  name:$("#${dg}_toobar input[name='name']").val()
+			employeeName:$("#${dg}_toobar input[name='name']").val(),
 		});
-	};
-	/* <shiro.hasPermission name="${PER_DELETE}"> */
-	//delete
-	${dg}_delete = function(){
-		var rows = dg.datagrid("getChecked");
-		if(rows && rows.length > 0){
-			$.messager.confirm("确认","您是否确认删除选中的数据?",function(r){
-				if(!r)return;
-				$.messager.progress();
-				var ids = [];
-				for(var i = 0; i < rows.length; i++){
-					ids.push(rows[i].id);
-				}
-				$.ajax({
-					url:"<@s.url '/adm/approval/delete'/>",
-					type:"POST",
-					data:{
-						id:ids.join("|")
-					},
-					dataType:"json",
-					error:function(e){
-						$.messager.progress("close");
-						<@error_dialog "e"/>
-					},
-					success:function(data,textStatus){
-						$.messager.progress("close");
-						if(data.success){
-							dg.datagrid("load");
-							dg.datagrid("unselectAll");
-						}else{
-							$.messager.show({
-								title:"提示",
-								msg:data.msg
-							});
-						}
-					}
-				});
-			});
-		}else{
-			$.messager.alert("提示","未选中须删除的数据！");
-		}
 	};
 	/* </shiro.hasPermission> */
 });
@@ -203,9 +168,7 @@ $(function(){
 </script>
 <table id="${dg}"></table>
 <div id="${dg}_toobar">
-	<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
-	<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
 	<!-- </shiro.hasPermission> -->
-	<label>名称：<input name="name" type="text" style="width:198px;"/></label>
+	<label>请假人：<input name="name" type="text" style="width:198px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

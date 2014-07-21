@@ -64,6 +64,14 @@ public class LeaveApprovalDaoImpl extends BaseDaoImpl<LeaveApproval> implements 
 			hql += " and (l.employee.name like :name)";
 			parameters.put("name", "%" + info.getEmployeeName() + "%");
 		}
+		if(info.getType() != null){
+			hql += " and (l.type = :type)";
+			parameters.put("type", info.getType());
+		}
+		if(info.getStatus() != null){
+			hql += " and (l.status = :status)";
+			parameters.put("status", info.getStatus());
+		}
 		return hql;
 	}
 }

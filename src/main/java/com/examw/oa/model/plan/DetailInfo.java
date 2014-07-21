@@ -27,7 +27,7 @@ public class DetailInfo extends Paging {
 	}
 	/**
 	 * 设置计划总结明细ID
-	 * @return
+	 * @param id
 	 * 计划总结明细ID
 	 */
 	public void setId(String id) {
@@ -43,7 +43,7 @@ public class DetailInfo extends Paging {
 	}
 	/**
 	 * 设置计划总结明细内容
-	 * @return
+	 * @param content
 	 * 计划总结明细内容
 	 */
 	public void setContent(String content) {
@@ -59,7 +59,7 @@ public class DetailInfo extends Paging {
 	}
 	/**
 	 * 设置计划总结明细类型
-	 * @return
+	 * @param type
 	 * 计划总结明细类型
 	 */
 	public void setType(Integer type) {
@@ -76,7 +76,7 @@ public class DetailInfo extends Paging {
 	}
 	/**
 	 * 设置计划总结明细创建时间
-	 * @return
+	 * @param createTime
 	 * 计划总结明细创建时间
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

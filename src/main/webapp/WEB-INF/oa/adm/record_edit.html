@@ -1,0 +1,38 @@
+<#--员工编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_record"/>
+<#assign form="${module}_edit_form"/>
+<form id="${form}" method="POST">
+		<div style="float:left;margin-top:25px;width:100%;">
+			<div style="float:left;">
+				<label style="width:105px;">请假人：</label>
+				<input type="text" name="leaveName" style="width:170px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:105px;">审核人：</label>
+				<input type="text" name="employeeName" style="width:170px;"/>
+			</div>
+		</div>
+		<div style="float:left;margin-top:20px;width:100%;">
+			<div style="float:left;">
+				<label style="width:105px;">创建时间：</label>
+				<label><input type="text" name="createTime" style="width:170px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:105px;">审核状态：</label>
+				<label><input type="radio" name="aStatus" value="1"  />${STATUS_AGREE_NAME}</label>
+				<label><input type="radio" name="aStatus" value="2" />${STATUS_DISAGREE_NAME}</label>
+			</div>
+		</div>
+		<div style="float:left;margin-top:20px;width:100%;">
+			<label style="width:105px;">审核类型：</label>
+			<label><input type="radio" name="aType" value="1" />${TYPE_ADM_NAME}</label>
+			<label><input type="radio" name="aType" value="2" />${TYPE_LEADER_NAME}</label>
+			<label><input type="radio" name="aType" value="3" />${TYPE_BOSS_NAME}</label>
+		</div>
+		<div style="float:left;margin-top:20px; width:100%;">
+			<label style="width:105px;">意见：</label>
+			<input type="hidden" name="aId">
+			<textarea type="text" name="approval" row="4" cols="5" style="width:440px;height:150px" />
+		</div>
+</form>

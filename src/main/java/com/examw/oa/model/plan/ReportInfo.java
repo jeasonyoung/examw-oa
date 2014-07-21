@@ -179,8 +179,8 @@ public class ReportInfo extends Paging {
 		return planId;
 	}
 	/**
-	 * 获取计划ID
-	 * @return
+	 * 设置计划ID
+	 * @param planId
 	 * 计划ID
 	 */
 	public void setPlanId(String planId) {
@@ -196,7 +196,7 @@ public class ReportInfo extends Paging {
 	}
 	/**
 	 * 设置总结ID
-	 * @return
+	 * @param summaryId
 	 * 总结ID
 	 */
 	public void setSummaryId(String summaryId) {
@@ -212,7 +212,7 @@ public class ReportInfo extends Paging {
 	}
 	/**
 	 * 设置建议ID
-	 * @return
+	 * @param suggetsionsId
 	 * 建议ID
 	 */
 	public void setSuggetsionsId(String suggetsionsId) {
@@ -228,7 +228,7 @@ public class ReportInfo extends Paging {
 	}
 	/**
 	 * 设置困难ID
-	 * @return
+	 * @param supportId
 	 * 困难ID
 	 */
 	public void setSupportId(String supportId) {
@@ -243,9 +243,8 @@ public class ReportInfo extends Paging {
 		return planDetail;
 	}
 	/**
-	 * 设置计划内容
-	 * @return
-	 * 计划内容
+	 * 
+	 * @param planDetail
 	 */
 	public void setPlanDetail(String planDetail) {
 		this.planDetail = planDetail;
