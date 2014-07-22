@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
+
 import com.examw.oa.dao.plan.IDetailDao;
 import com.examw.oa.domain.plan.Detail;
 import com.examw.oa.model.plan.DetailInfo;
@@ -18,6 +20,7 @@ import com.examw.oa.service.plan.IDetailService;
  * @since 2014-07-01
  */
 public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> implements IDetailService {
+	private static Logger logger = Logger.getLogger(DetailServiceImpl.class);
 	private IDetailDao detailDao;
 	private Map<Integer, String> typeMap;
 	/**
@@ -25,6 +28,7 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 * @param detailDao
 	 */
 	public void setDetailDao(IDetailDao detailDao) {
+		if(logger.isDebugEnabled())logger.debug("注入计划总结明细数据接口...");
 		this.detailDao = detailDao;
 	}
 	/**
@@ -32,6 +36,7 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 * @param typeMap
 	 */
 	public void setTypeMap(Map<Integer, String> typeMap) {
+		if(logger.isDebugEnabled()) logger.debug("注入类型集合...");
 		this.typeMap = typeMap;
 	}
 	/*
@@ -40,6 +45,7 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 */
 	@Override
 	protected List<Detail> find(DetailInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("数据查询...");
 		return this.detailDao.findDetails(info);
 	}
 	/*
@@ -48,17 +54,19 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 */
 	@Override
 	protected DetailInfo changeModel(Detail data) {
+		if(logger.isDebugEnabled()) logger.debug("类型转换...");
 		if(data == null)return null;
 		DetailInfo info=new DetailInfo();
 		BeanUtils.copyProperties(data, info);
 		return info;
 	}
 	/*
-	 * 统计数据
+	 * 查询数据统计
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
 	 */
 	@Override
 	protected Long total(DetailInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据统计...");
 		return this.detailDao.total(info);
 	}
 	/*
@@ -67,6 +75,7 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 */
 	@Override
 	public DetailInfo update(DetailInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		if(info == null) return null;
 		boolean isAdded = false;
 		Detail data = StringUtils.isEmpty(info.getId()) ? null : this.detailDao.load(Detail.class, info.getId());
@@ -88,11 +97,15 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 */
 	@Override
 	public void delete(String[] ids) {
+		if(logger.isDebugEnabled()) logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length; i++){
 			if(StringUtils.isEmpty(ids[i])) continue;
 			Detail data = this.detailDao.load(Detail.class, ids[i]);
-			if(data != null) this.detailDao.delete(data);
+			if(data != null){
+				if(logger.isDebugEnabled())logger.debug("删除员工［"+ids[i]+"］");
+				this.detailDao.delete(data);
+			}
 		}
 	}
 	/*
@@ -101,6 +114,7 @@ public class DetailServiceImpl extends BaseDataServiceImpl<Detail, DetailInfo> i
 	 */
 	@Override
 	public String loadTypeName(Integer type) {
+		if(logger.isDebugEnabled()) logger.debug("加载类型［"+type+"］名称...");
 		if(this.typeMap == null || type == null) return null;
 		return this.typeMap.get(type);
 	}

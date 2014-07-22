@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.impl.BaseDaoImpl;
@@ -11,17 +12,19 @@ import com.examw.oa.dao.plan.ISettingsDao;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 /**
- * 设置员工报表数据接口实现。
+ * 员工报表设置数据操作接口实现。
  * @author lq.
  * @since 2014-06-24.
  */
 public class SettingsDaoImpl extends BaseDaoImpl<Settings> implements ISettingsDao {
+	private static Logger logger = Logger.getLogger(SettingsDaoImpl.class);
 	/*
 	 * 查询数据。
 	 * @see com.examw.oa.dao.org.IEmployeeDao#findEmployees(com.examw.oa.model.org.EmployeeInfo)
 	 */
 	@Override
 	public List<Settings> findSettings(SettingsInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据...");
 		String hql = "from Settings s where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
@@ -34,27 +37,18 @@ public class SettingsDaoImpl extends BaseDaoImpl<Settings> implements ISettingsD
 		return this.find(hql, parameters, info.getPage(), info.getRows());
 	}
 	/*
-	 * 查询数据统计。
+	 * 查询统计。
 	 * @see com.examw.oa.dao.org.IEmployeeDao#total(com.examw.oa.model.org.EmployeeInfo)
 	 */
 	@Override
 	public Long total(SettingsInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据统计...");
 		String hql = "select count(*) from Settings s where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		return this.count(hql, parameters);
 	}
-	/**
-	 * 添加查询条件到HQL。
-	 * @param info
-	 * 查询条件。
-	 * @param hql
-	 * HQL
-	 * @param parameters
-	 * 参数。
-	 * @return
-	 * HQL
-	 */
+	//查询条件
 	protected String addWhere(SettingsInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getDepartmentId())){
 			hql += " and ((s.employee.department.id = :departmentId) or (s.employee.department.parent.id = :departmentId))";

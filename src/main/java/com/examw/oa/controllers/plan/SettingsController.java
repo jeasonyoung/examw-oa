@@ -1,6 +1,5 @@
 package com.examw.oa.controllers.plan;
 
-
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
-import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 import com.examw.oa.service.plan.ISettingsService;
@@ -25,10 +23,8 @@ import com.examw.oa.service.plan.ISettingsService;
 @Controller
 @RequestMapping(value = "/plan/settings")
 public class SettingsController {
-	private static Logger logger = Logger.getLogger(LogController.class);
-	/**
-	 * 员工计划设置服务。
-	 */
+	private static Logger logger = Logger.getLogger(SettingsController.class);
+	//计划总计设置服务。
 	@Resource
 	private ISettingsService settingsService;
 	/**
@@ -38,6 +34,7 @@ public class SettingsController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载列表页面...");
 		model.addAttribute("TYPE_DAY_VALUE",Settings.TYPE_DAY);
 		model.addAttribute("TYPE_DAY_NAME", this.settingsService.loadTypeName(Settings.TYPE_DAY));
 		
@@ -56,6 +53,7 @@ public class SettingsController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(String deptId,String empId, Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
 		model.addAttribute("CURRENT_EMP_ID", StringUtils.isEmpty(empId) ? "" : empId);
 		
@@ -72,6 +70,7 @@ public class SettingsController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<SettingsInfo> datagrid(SettingsInfo info){
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.settingsService.datagrid(info);
 	}
 	/**
@@ -85,6 +84,7 @@ public class SettingsController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(SettingsInfo info){
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		Json result = new Json();
 		try {
 			result.setData(this.settingsService.update(info));
@@ -105,6 +105,7 @@ public class SettingsController {
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］...");
 		Json result = new Json();
 		try {
 			this.settingsService.delete(id.split("\\|"));

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
-import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.domain.plan.Business;
 import com.examw.oa.model.plan.BusinessInfo;
 import com.examw.oa.service.plan.IBusinessService;
@@ -23,19 +22,18 @@ import com.examw.oa.service.plan.IBusinessService;
 @Controller
 @RequestMapping(value = "/plan/business")
 public class BusinessController {
-	private static Logger logger = Logger.getLogger(LogController.class);
-	/**
-	 *业务系统服务。
-	 */
+	private static final Logger logger = Logger.getLogger(BusinessController.class);
+	//业务系统服务接口
 	@Resource
 	private IBusinessService businessService;
 	/**
 	 * 获取列表页面。
 	 * @return
-	 * 列表页面
+	 * 列表页面。
 	 */
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled())logger.debug("加载列表页面...");
 		model.addAttribute("STATUS_STOP_VALUE",Business.STATUS_STOP);
 		model.addAttribute("STATUS_STOP_NAME", this.businessService.loadStatusName(Business.STATUS_STOP));
 		
@@ -54,6 +52,7 @@ public class BusinessController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
 	public String edit(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
 		model.addAttribute("STATUS_STOP_NAME", this.businessService.loadStatusName(Business.STATUS_STOP));
 		model.addAttribute("STATUS_NORMAL_NAME", this.businessService.loadStatusName(Business.STATUS_NORMAL));
 		model.addAttribute("STATUS_TEST_NAME", this.businessService.loadStatusName(Business.STATUS_TEST));
@@ -67,6 +66,7 @@ public class BusinessController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<BusinessInfo> datagrid(BusinessInfo info){
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.businessService.datagrid(info);
 	}
 	/**
@@ -80,6 +80,7 @@ public class BusinessController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(BusinessInfo info){
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		Json result = new Json();
 		try {
 			result.setData(this.businessService.update(info));
@@ -99,6 +100,7 @@ public class BusinessController {
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］...");
 		Json result = new Json();
 		try {
 			this.businessService.delete(id.split("\\|"));

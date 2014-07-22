@@ -20,115 +20,107 @@ public class SettingsInfo extends Paging {
 	private Integer[] type;
 	private Date createTime;
 	/**
-	 * 获取员工计划总结类型ID
-	 * @return
-	 * 员工计划总结类型ID
+	 * 获取员工计划总结类型ID。
+	 * @return 员工计划总结类型ID。
 	 */
 	public String getId() {
 		return id;
 	}
 	/**
-	 * 设置员工计划总结类型ID
-	 * @return
-	 * 员工计划总结类型ID
+	 * 设置员工计划总结类型ID。
+	 * @param id
+	 * 员工计划总结类型ID。
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	/**
-	 * 获取员工ID
-	 * @return
-	 * 员工ID
+	 * 获取员工ID。
+	 * @return 员工ID。
 	 */
 	public String getEmployeeId() {
 		return employeeId;
 	}
 	/**
-	 * 设置员工ID
+	 * 设置员工ID。
 	 * @param employee_id
-	 * 员工ID
+	 * 员工ID。
 	 */
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
 	/**
-	 * 获取员工报表类型
-	 * @return
-	 * 员工报表类型
+	 * 获取员工报表类型。
+	 * @return 员工报表类型。
 	 */
-	
 	public Integer[] getType() {
 		return type;
 	}	
 	/**
-	 * 获取员工报表类型名称
-	 * @return
-	 * 员工报表类型名称
-	 */
-	public String getTypeName() {
-		return typeName;
-	}
-	/**
-	 * 获取部门ID
-	 * @return
-	 * 部门ID
-	 */
-	public String getDepartmentId() {
-		return departmentId;
-	}
-	/**
-	 * 设置部门ID
-	 * @param deptId
-	 * 部门ID
-	 */
-	public void setDepartmentId(String departmentId) {
-		this.departmentId = departmentId;
-	}
-	/**
-	 * 设置员工报表类型名称
-	 * @return
-	 * 员工报表类型名称
-	 */
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
-	/**
-	 * 设置员工报表类型
-	 * @param type
-	 * 员工报表类型
+	 * 设置员工报表类型。
+	 * @param type 
+	 * 员工报表类型。
 	 */
 	public void setType(Integer[] type) {
 		this.type = type;
 	}
 	/**
-	 * 获取员工名称
-	 * @return
-	 * 员工名称
+	 * 获取员工报表类型名称。
+	 * @return 员工报表类型名称。	
+	 */
+	public String getTypeName() {
+		return typeName;
+	}
+	/**
+	 * 设置报表类型名称。
+	 * @param typeName
+	 * 报表类型名称。
+	 */
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	/**
+	 * 获取部门ID。
+	 * @return 部门ID。
+	 */
+	public String getDepartmentId() {
+		return departmentId;
+	}
+	/**
+	 * 设置部门ID。
+	 * @param deptId
+	 * 部门ID。
+	 */
+	public void setDepartmentId(String departmentId) {
+		this.departmentId = departmentId;
+	}
+	/**
+	 * 获取员工名称。
+	 * @return 员工名称。
 	 */
 	public String getEmployeeName() {
 		return employeeName;
 	}
 	/**
-	 * 设置员工名称
-	 * @return
-	 * 员工名称
+	 * 设置员工名称。
+	 * @param employeeName
+	 * 员工名称。
 	 */
 	public void setEmployeeName(String employeeName) {
 		this.employeeName = employeeName;
 	}
 	/**
-	 * 获取员工报表创建时间
-	 * @return
-	 * 员工报表创建时间
+	 * 获取员工报表创建时间。
+	 * @return 员工报表创建时间。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}
 	/**
-	 * 设置员工报表创建时间
-	 * @param createTime、
-	 * 员工报表创建时间
+	 * 设置员工报表创建时间。
+	 * @param createTime
+	 * 员工报表创建时间。
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {

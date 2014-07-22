@@ -9,11 +9,11 @@ import com.examw.oa.service.IBaseDataService;
  */
 public interface IDetailService extends IBaseDataService<DetailInfo>{
 	/**
-	 * 加载类型名称。
-	 * @param status
-	 * 类型值。
+	 * 加载类型名称
+	 * @param type
+	 * 类型值
 	 * @return
-	 * 类型名称。
+	 * 类型名称
 	 */
 	String loadTypeName(Integer type);
 }

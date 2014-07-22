@@ -18,66 +18,62 @@ public class DetailInfo extends Paging {
 	private Integer type;
 	private Date createTime;
 	/**
-	 * 获取计划总结明细ID
-	 * @return
-	 * 计划总结明细ID
+	 * 获取计划总结明细ID。
+	 * @return 计划总结明细ID。
 	 */
 	public String getId() {
 		return id;
 	}
 	/**
-	 * 设置计划总结明细ID
+	 * 设置计划总结明细ID。
 	 * @param id
-	 * 计划总结明细ID
+	 * 计划总结明细ID。
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	/**
-	 * 获取计划总结明细内容
-	 * @return
-	 * 计划总结明细内容
+	 * 获取计划总结明细内容。
+	 * @return 计划总结明细内容。
 	 */
 	public String getContent() {
 		return content;
 	}
 	/**
-	 * 设置计划总结明细内容
+	 * 设置计划总结明细内容。
 	 * @param content
-	 * 计划总结明细内容
+	 * 计划总结明细内容。
 	 */
 	public void setContent(String content) {
 		this.content = content;
 	}
 	/**
-	 * 获取计划总结明细类型
-	 * @return
-	 * 计划总结明细类型
+	 * 获取计划总结明细类型。
+	 * @return 计划总结明细类型。
 	 */
 	public Integer getType() {
 		return type;
 	}
 	/**
-	 * 设置计划总结明细类型
+	 * 设置计划总结明细类型。
 	 * @param type
-	 * 计划总结明细类型
+	 * 计划总结明细类型。
 	 */
 	public void setType(Integer type) {
 		this.type = type;
 	}
 	/**
-	 * 获取计划总结明细创建时间
-	 * @return
-	 * 计划总结明细创建时间
+	 * 获取计划总结明细创建时间。
+	 * @return 计划总结明细创建时间。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}
 	/**
-	 * 设置计划总结明细创建时间
+	 * 设置计划总结明细创建时间。
 	 * @param createTime
-	 * 计划总结明细创建时间
+	 * 计划总结明细创建时间。
 	 */
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {

@@ -2,6 +2,7 @@ package com.examw.oa.controllers.plan;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,19 +25,14 @@ import com.examw.oa.service.plan.IReportService;
 @Controller
 @RequestMapping(value = "/plan/reportFind")
 public class ReportFindController {
-	/**
-	 * 报表服务
-	 */
+	private static Logger logger = Logger.getLogger(ReportFindController.class);
+	//报表服务。
 	@Resource
 	private IReportService reportSerivce;
-	/**
-	 * 计划总结明细服务
-	 */
+	//计划总结明细服务。
 	@Resource
 	private IDetailService detailService;
-	/**
-	 *业务系统服务。
-	 */
+	//业务系统服务。
 	@Resource
 	private IBusinessService businessService;
 	/**
@@ -46,6 +42,7 @@ public class ReportFindController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载列表页面...");
 		model.addAttribute("STATUS_NONE_VALUE",Report.STATUS_NONE);
 		model.addAttribute("STATUS_NONE_NAME", this.reportSerivce.loadStatusName(Report.STATUS_NONE));
 		
@@ -71,6 +68,7 @@ public class ReportFindController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
 		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
 		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
 		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
@@ -103,7 +101,7 @@ public class ReportFindController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<ReportInfo> datagrid(ReportInfo info){
-		System.out.println(info.getCreateTime()+"looppppppppppppppppppppppppppppppppppp");
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.reportSerivce.datagrid(info);
 	}
 }

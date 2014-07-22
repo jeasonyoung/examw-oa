@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
-import com.examw.oa.controllers.security.LogController;
 import com.examw.oa.domain.plan.Detail;
 import com.examw.oa.domain.plan.Report;
 import com.examw.oa.model.plan.BusinessInfo;
@@ -27,20 +26,14 @@ import com.examw.oa.service.plan.IReportService;
 @Controller
 @RequestMapping(value = "/plan/detail")
 public class DetailController {
-	private static Logger logger = Logger.getLogger(LogController.class);
-	/**
-	 * 员工计划服务
-	 */
+	private static Logger logger = Logger.getLogger(DetailController.class);
+	//员工报表服务接口
 	@Resource
 	private IReportService reportSerivce;
-	/**
-	 * 计划总结明细服务
-	 */
+	//计划总结明细服务接口
 	@Resource
 	private IDetailService detailService;
-	/**
-	 *业务系统服务。
-	 */
+	//业务系统服务接口
 	@Resource
 	private IBusinessService businessService;
 	/**
@@ -50,6 +43,7 @@ public class DetailController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载列表页面...");
 		model.addAttribute("STATUS_NONE_VALUE",Report.STATUS_NONE);
 		model.addAttribute("STATUS_NONE_NAME", this.reportSerivce.loadStatusName(Report.STATUS_NONE));
 		
@@ -74,6 +68,7 @@ public class DetailController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
 		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
 		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
 		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
@@ -105,6 +100,7 @@ public class DetailController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<ReportInfo> datagrid(ReportInfo info){
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.reportSerivce.datagrid(info);
 	}
 	/**
@@ -118,6 +114,7 @@ public class DetailController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(ReportInfo info,String reportStatus,Model model){
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		Json result = new Json();
 		try {
 			if(reportStatus !=null){

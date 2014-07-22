@@ -38,42 +38,55 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	private Map<String, String> statusMap;
 	private ISettingsService settingsService;
 	/**
-	 * 计划明细数据接口
+	 * 设置计划明细数据接口。
+	 * @param detailDao
+	 * 计划明细数据接口。
 	 */
 	public void setDetailDao(IDetailDao detailDao) {
+		if(logger.isDebugEnabled())logger.debug("注入计划明细数据接口...");
 		this.detailDao = detailDao;
 	}
 	/**
-	 * 设置系统业务数据接口
+	 * 设置业务系统数据接口。
 	 * @param reportDao
+	 * 业务系统数据接口。
 	 */
 	public void setBusinessDao(IBusinessDao businessDao) {
+		if(logger.isDebugEnabled())logger.debug("注入业务系统数据接口...");
 		this.businessDao = businessDao;
 	}
 	/**
-	 * 设置状态集合
+	 * 设置状态集合。
 	 * @param reportDao
+	 * 状态集合。
 	 */
 	public void setStatusMap(Map<String, String> statusMap) {
+		if(logger.isDebugEnabled())logger.debug("注入状态集合...");
 		this.statusMap = statusMap;
 	}
 	/**
-	 * 设置员工报表数据接口
+	 * 设置员工报表数据接口。
 	 * @param reportDao
+	 * 员工报表数据接口。
 	 */
 	public void setReportDao(IReportDao reportDao) {
+		if(logger.isDebugEnabled())logger.debug("员工报表数据接口...");
 		this.reportDao = reportDao;
 	}
 	/**
-	 * 计划设置服务
+	 * 设置计划设置服务。
+	 * @param settingsService
+	 * 计划设置服务。
 	 */
 	public void setSettingsService(ISettingsService settingsService) {
+		if(logger.isDebugEnabled())logger.debug("计划设置服务...");
 		this.settingsService = settingsService;
 	}
 	/*
 	 * 业务系统设置函数
 	 */
-	public String[] buildDetail(Detail detail){
+	private String[] buildDetail(Detail detail){
+		if(logger.isDebugEnabled())logger.debug("业务系统设置函数...");
 		List<String> list = new ArrayList<>();
 		for(Business business :detail.getBusinesses()){
 			if(business != null) list.add(business.getId());
@@ -84,6 +97,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 * 计划总结明细函数
 	 */
 	private Detail buildDetail(String id,Integer type,String content,String[] businessId){
+		if(logger.isDebugEnabled())logger.debug("计划总计明细函数...");
 		Detail data = StringUtils.isEmpty(id) ? null : this.detailDao.load(Detail.class, id);
 		if(data == null){
 			if(StringUtils.isEmpty(content)) return null;
@@ -94,7 +108,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 			data.setType(type);
 		}
 		data.setContent(content);
-		//系统业务添加
+		//业务系统添加
 		Set<Business> busSets = new HashSet<>();
 			for(String busId : businessId){
 				if(StringUtils.isEmpty(busId)) continue;
@@ -107,7 +121,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	/*
 	 * 报告任务函数
 	 */
-	public Integer Task(Integer typeLy,Integer none,Integer lack){
+	private Integer Task(Integer typeLy,Integer none,Integer lack){
 		if(logger.isDebugEnabled()) logger.debug("定时器调用生成日报记录...");
 		//1.将未提交的报告变成缺交；
 		List<Report> reports = this.reportDao.findReports(typeLy);
@@ -125,7 +139,8 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	/*
 	 * 添加报告任务函数
 	 */
-	public List<Settings> list(List<Settings> sett,Integer typeLy,Integer none,Date createTime,Date getTime){
+	private List<Settings> list(List<Settings> sett,Integer typeLy,Integer none,Date createTime,Date getTime){
+		if(logger.isDebugEnabled()) logger.debug("添加报告任务函数...");
 		for(int k = 0; k < sett.size(); k++){
 			try{
 				Settings setting = sett.get(k);
@@ -143,7 +158,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 				logger.error(e);
 			}
 		}
-		
 		return sett;
 	}
 	/*
@@ -152,6 +166,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 */
 	@Override
 	protected List<Report> find(ReportInfo info) {
+		if(logger.isDebugEnabled())logger.debug("数据查询...");
 		return this.reportDao.findReports(info);
 	}
 	/*
@@ -160,6 +175,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 */
 	@Override
 	protected ReportInfo changeModel(Report data) {
+		if(logger.isDebugEnabled())logger.debug("类型转换...");
 		if(data == null) return null;
 		ReportInfo info = new ReportInfo();
 		BeanUtils.copyProperties(data, info, new String[]{"type"});
@@ -174,7 +190,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 				if(detail.getType() == Detail.TYPE_PLAN){
 					info.setPlanId(detail.getId());
 					info.setPlanDetail(detail.getContent());
-					//系统业务
+					//业务系统转换
 					String[] deta=this.buildDetail(detail);
 					info.setBusinessId(deta);
 					continue;
@@ -189,6 +205,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 				if(detail.getType() == Detail.TYPE_SUPPORT){
 					info.setSupportId(detail.getId());
 					info.setSupportDetail(detail.getContent());
+					//业务系统转换
 					String[] deta=this.buildDetail(detail);
 					info.setBusinessId(deta);
 					continue;
@@ -196,6 +213,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 				if(detail.getType() == Detail.TYPE_SUGGESTIONS){
 					info.setSuggetsionsId(detail.getId());
 					info.setSuggetsionsDetail(detail.getContent());
+					//业务系统转换
 					String[] deta=this.buildDetail(detail);
 					info.setBusinessId(deta);
 					continue;
@@ -211,6 +229,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 */
 	@Override
 	protected Long total(ReportInfo info) {
+		if(logger.isDebugEnabled())logger.debug("数据统计...");
 		return this.reportDao.total(info);
 	}
 	/*
@@ -219,6 +238,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 */
 	@Override
 	public ReportInfo update(ReportInfo info) {
+		if(logger.isDebugEnabled())logger.debug("数据更新...");
 		if(info == null) return null;
 		//计划总结明细更新
 		Detail planDetail = this.buildDetail(info.getPlanId(), Detail.TYPE_PLAN, info.getPlanDetail(),info.getBusinessId()),
@@ -277,9 +297,18 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 	 */
 	@Override
 	public String loadStatusName(Integer status) {
+		if(logger.isDebugEnabled()) logger.debug("加载状态［"+status+"］名称...");
 		if(statusMap==null || status==null)
 			return null;
 			return statusMap.get(status.toString());
+	}
+	/*
+	 * 状态集合
+	 * @see com.examw.oa.service.plan.IReportService#getStatusMap()
+	 */
+	@Override
+	public Map<String, String> getStatusMap() {
+		return statusMap;
 	}
 	/*
 	 * 日报
@@ -352,13 +381,5 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 		list(settings, Report.TYPE_MONTHLY, Report.STATUS_NONE,create_time,calendar.getTime());
-	}
-	/*
-	 * 状态集合
-	 * @see com.examw.oa.service.plan.IReportService#getStatusMap()
-	 */
-	@Override
-	public Map<String, String> getStatusMap() {
-		return statusMap;
 	}
 }

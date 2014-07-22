@@ -9,7 +9,6 @@ import com.examw.oa.model.plan.DetailInfo;
  * 计划总结明细数据接口
  * @author lq
  * @since 2014-07-1
- *
  */
 public interface IDetailDao extends IBaseDao<Detail>{
 	/**
