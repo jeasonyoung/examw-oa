@@ -6,7 +6,7 @@ import com.examw.model.TreeNode;
 import com.examw.oa.model.adm.NoticeColumnInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
- * 栏目服务
+ * 栏目设置服务接口
  * @author lq
  * @since 2014-07-14.
  */

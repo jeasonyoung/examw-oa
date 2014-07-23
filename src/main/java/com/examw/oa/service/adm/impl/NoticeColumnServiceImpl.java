@@ -16,7 +16,7 @@ import com.examw.oa.service.adm.INoticeColumnService;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.security.impl.MenuServiceImpl;
 /**
- * 栏目服务
+ * 栏目设置服务接口实现类。
  * @author lq
  * @since 2014-07-14
  */
@@ -28,6 +28,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	 * @param noticeColumnDao
 	 */
 	public void setNotcDao(INoticeColumnDao notcDao) {
+		if(logger.isDebugEnabled()) logger.debug("注入设置栏目数据接口...");
 		this.notcDao = notcDao;
 	}
 	/*
@@ -36,6 +37,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	 */
 	@Override
 	protected List<NoticeColumn> find(NoticeColumnInfo info) {
+		if(logger.isDebugEnabled()) logger.debug("查询数据...");
 		return this.notcDao.findNoticeColumn(info);
 	}
 	/*
@@ -44,6 +46,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	 */
 	@Override
 	protected NoticeColumnInfo changeModel(NoticeColumn data) {
+		if(logger.isDebugEnabled()) logger.debug("类型转换...");
 		if(data == null) return null;
 		NoticeColumnInfo info = new NoticeColumnInfo();
 		BeanUtils.copyProperties(data, info, new String[] {"children"});
@@ -65,11 +68,12 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 		return sb.toString();
 	}
 	/*
-	 *  统计查询数据。
+	 *  查询数据统计。
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#total(java.lang.Object)
 	 */
 	@Override
 	protected Long total(NoticeColumnInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据统计...");
 		return this.notcDao.total(info);
 	}
 	/*
@@ -78,6 +82,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	 */
 	@Override
 	public NoticeColumnInfo update(NoticeColumnInfo info) {
+		if(logger.isDebugEnabled())logger.debug("更新数据...");
 		if(info == null) return null;
 		boolean isAdded = false;
 		NoticeColumn data = StringUtils.isEmpty(info.getId()) ?  null : this.notcDao.load(NoticeColumn.class, info.getId());
@@ -88,7 +93,6 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 			}
 			data = new NoticeColumn();
 		}
-		
 		BeanUtils.copyProperties(info, data, new String[]{"children"});
 		if(!StringUtils.isEmpty(info.getPid()) && (data.getParent() == null || !data.getParent().getId().equalsIgnoreCase(info.getPid()))){
 			NoticeColumn parent = this.notcDao.load(NoticeColumn.class, info.getPid());
@@ -106,13 +110,13 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	 */
 	@Override
 	public void delete(String[] ids) {
+		if(logger.isDebugEnabled())logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
-		logger.info("删除数据...");
 		for(int i = 0; i < ids.length; i++){
 			NoticeColumn data = this.notcDao.load(NoticeColumn.class, ids[i]);
 			if(data != null){
+				if(logger.isDebugEnabled())logger.debug("删除数据［"+ids[i]+"］");
 				this.notcDao.delete(data); 
-				logger.info("删除数据:" + data.getName());
 			}
 		}
 	}
@@ -122,6 +126,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	 */
 	@Override
 	public List<TreeNode> loadNoticeColumn(String ignore) {
+		if(logger.isDebugEnabled()) logger.debug("加载栏目数据树［ignore="+ignore+"］...");
 		List<TreeNode> treeNodes = new ArrayList<>();
 		List<NoticeColumn> list = this.notcDao.loadFristNoticeColumn();
 		if(list != null){

@@ -6,6 +6,7 @@ import java.util.List;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.adm.ILeaveApprovalDao;
@@ -13,17 +14,19 @@ import com.examw.oa.dao.impl.BaseDaoImpl;
 import com.examw.oa.domain.adm.LeaveApproval;
 import com.examw.oa.model.adm.LeaveApprovalInfo;
 /**
- * 请假审批数据接口
+ * 请假审批数据操作接口实现类
  * @author lq.
  * @since 2014-07-16.
  */
 public class LeaveApprovalDaoImpl extends BaseDaoImpl<LeaveApproval> implements ILeaveApprovalDao {
+	private static Logger logger = Logger.getLogger(LeaveApprovalDaoImpl.class);
 	/*
 	 * 数据查询
 	 * @see com.examw.oa.dao.adm.ILeaveApprovalDao#findLeaveApprovals(com.examw.oa.model.adm.LeaveApprovalInfo)
 	 */
 	@Override
 	public List<LeaveApproval> findLeaveApprovals(LeaveApprovalInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据...");
 		String hql = "from LeaveApproval l where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
@@ -38,27 +41,18 @@ public class LeaveApprovalDaoImpl extends BaseDaoImpl<LeaveApproval> implements 
 		return this.find(hql, parameters, info.getPage(), info.getRows());
 	}
 	/*
-	 * 数据统计
+	 * 查询数据统计
 	 * @see com.examw.oa.dao.adm.ILeaveApprovalDao#total(com.examw.oa.model.adm.LeaveApprovalInfo)
 	 */
 	@Override
 	public Long total(LeaveApprovalInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据统计...");
 		String hql = "select count(*) from LeaveApproval l where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		return this.count(hql, parameters);
 	}
-	/**
-	 * 添加查询条件到HQL。
-	 * @param info
-	 * 查询条件。
-	 * @param hql
-	 * HQL
-	 * @param parameters
-	 * 参数。
-	 * @return
-	 * HQL
-	 */
+	//条件查询
 	protected String addWhere(LeaveApprovalInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getEmployeeName())){
 			hql += " and (l.employee.name like :name)";

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
@@ -22,11 +23,12 @@ import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.adm.ILeaveService;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 /**
- * 请假服务
+ * 我要请假服务接口实现。
  * @author lq.
  * @since 2014-07-17.
  */
 public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> implements ILeaveService {
+	private static Logger logger = Logger.getLogger(LeaveServiceImpl.class);
 	private ILeaveDao leaveDao;
 	private IEmployeeDao employeeDao;
 	private IDepartmentDao departmentDao;
@@ -38,6 +40,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 * @param leaveDao
 	 */
 	public void setLeaveDao(ILeaveDao leaveDao) {
+		if(logger.isDebugEnabled())logger.debug("注入请假数据接口...");
 		this.leaveDao = leaveDao;
 	}
 	/**
@@ -45,13 +48,15 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 * @param employeeDao
 	 */
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
+		if(logger.isDebugEnabled())logger.debug("注入员工信息数据接口...");
 		this.employeeDao = employeeDao;
 	}
 	/**
 	 * 部门数据接口
 	 * @param departmentDao
 	 */
-	public void setDepartmentDao(IDepartmentDao departmentDao) {
+	public void setDepartmentDao(IDepartmentDao departmentDao){
+		if(logger.isDebugEnabled())logger.debug("注入部门信息数据接口...");
 		this.departmentDao = departmentDao;
 	}
 	/**
@@ -59,6 +64,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 * @param approvalDao
 	 */
 	public void setApprovalDao(ILeaveApprovalDao approvalDao) {
+		if(logger.isDebugEnabled())logger.debug("注入请假审核数据接口...");
 		this.approvalDao = approvalDao;
 	}
 	/**
@@ -66,6 +72,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 * @param statusMap
 	 */
 	public void setStatusMap(Map<Integer, String> statusMap) {
+		if(logger.isDebugEnabled())logger.debug("状态集合...");
 		this.statusMap = statusMap;
 	}
 	/**
@@ -73,7 +80,28 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 * @param typeMap
 	 */
 	public void setTypeMap(Map<Integer, String> typeMap) {
+		if(logger.isDebugEnabled())logger.debug("类型集合...");
 		this.typeMap = typeMap;
+	}
+	/*
+	 * 加载类型名称
+	 * @see com.examw.oa.service.adm.ILeaveService#loadTypeName(java.lang.Integer)
+	 */
+	@Override
+	public String loadTypeName(Integer type) {
+		if(logger.isDebugEnabled()) logger.debug("加载类型［"+type+"］名称...");
+		if(this.typeMap == null|| type==null) return null;
+		return this.typeMap.get(type);
+	}
+	/*
+	 * 加载状态名称
+	 * @see com.examw.oa.service.adm.ILeaveService#loadStatusName(java.lang.Integer)
+	 */
+	@Override
+	public String loadStatusName(Integer status) {
+		if(logger.isDebugEnabled()) logger.debug("加载状态［"+status+"］名称...");
+		if(this.statusMap == null|| status==null) return null;
+		return this.statusMap.get(status);
 	}
 	/*
 	 * 数据查询
@@ -81,6 +109,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	protected List<Leave> find(LeaveInfo info) {
+		if(logger.isDebugEnabled())logger.debug("数据查询...");
 		return this.leaveDao.findLeaves(info);
 	}
 	/*
@@ -89,6 +118,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	protected LeaveInfo changeModel(Leave data) {
+		if(logger.isDebugEnabled())logger.debug("类型转换...");
 		if(data == null) return null;
 		LeaveInfo info = new LeaveInfo();
 		BeanUtils.copyProperties(data, info, new String[] {"approvals"});
@@ -104,16 +134,16 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 		if(data.getDepartment() !=null){
 			info.setShiftDepartmentId(data.getDepartment().getId());
 		}
-		//审批
+		//请假审批类型转换
 		if(data.getApprovals() !=null){
 			for(LeaveApproval app:data.getApprovals()){
 				if(app == null) continue;
-					info.setaId(app.getId());
-					info.setaLeaveId(app.getLeave().getId());
-					info.setaEmplId("3fb96023-292a-4051-844f-622d5e4a70c9");
+					info.setApprovalId(app.getId());
+					info.setApprovalLeaveId(app.getLeave().getId());
+					info.setApprovalEmplId("3fb96023-292a-4051-844f-622d5e4a70c9");
 					info.setApproval(app.getApproval());
-					info.setaType(app.getType());
-					info.setaStatus(app.getStatus());
+					info.setApprovalType(app.getType());
+					info.setApprovalStatus(app.getStatus());
 					continue;
 			}
 		}
@@ -125,6 +155,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	protected Long total(LeaveInfo info) {
+		if(logger.isDebugEnabled())logger.debug("数据统计...");
 		return this.leaveDao.total(info);
 	}
 	/*
@@ -150,6 +181,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	public LeaveInfo update(LeaveInfo info) {
+		if(logger.isDebugEnabled())logger.debug("更新数据...");
 		if(info == null) return null;
 		Boolean isAdded = false;
 		Leave data = StringUtils.isEmpty(info.getId()) ? null : this.leaveDao.load(Leave.class, info.getId());
@@ -161,15 +193,16 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 			data = new Leave();
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
-		//判断是否通过
-		if(info.getaStatus()==LeaveApproval.STATUS_AGREE){
+		//判断是否审批通过 同意--批准
+		if(info.getApprovalStatus()==LeaveApproval.STATUS_AGREE){
 			info.setStatus(Leave.STATUS_PASS);
 		}
-		if(info.getaStatus() == LeaveApproval.STATUS_DISAGREE){
+		//不同意--未批准
+		if(info.getApprovalStatus() == LeaveApproval.STATUS_DISAGREE){
 			info.setStatus(Leave.STATUS_NOPASS);
 		}
-		BeanUtils.copyProperties(info, data);
 		
+		BeanUtils.copyProperties(info, data);
 		if(!StringUtils.isEmpty(info.getEmployeeId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEmployeeId()))){
 			Employee e = this.employeeDao.load(Employee.class, info.getEmployeeId());
 			if(e != null) data.setEmployee(e);	
@@ -188,18 +221,18 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 		if(data.getShiftEmployee() != null){
 			info.setShiftEmployeeName(data.getShiftEmployee().getName());
 		}
-		//审批
-		LeaveApproval app=this.buildApproval(info.getaId(), info.getApproval(), info.getaType(), info.getaStatus());
+		//添加请假审批数据
+		LeaveApproval app=this.buildApproval(info.getApprovalId(), info.getApproval(), info.getApprovalType(), info.getApprovalStatus());
 		Set<LeaveApproval> approvale = new HashSet<>();
 		if(app != null){
-			info.setaId(app.getId());
-			info.setaType(app.getType());
-			info.setaStatus(app.getStatus());
+			info.setApprovalId(app.getId());
+			info.setApprovalType(app.getType());
+			info.setApprovalStatus(app.getStatus());
 			info.setApproval(app.getApproval());
 			//获取当前请假人ID
-			info.setaLeaveId(data.getId());
+			info.setApprovalLeaveId(data.getId());
 			//审批人ID
-			info.setaEmplId(info.getaEmplId());
+			info.setApprovalEmplId(info.getApprovalEmplId());
 			approvale.add(app);
 		}
 		data.setApprovals(approvale);
@@ -213,23 +246,5 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	 */
 	@Override
 	public void delete(String[] ids) {
-	}
-	/*
-	 * 加载类型集合
-	 * @see com.examw.oa.service.adm.ILeaveService#loadTypeName(java.lang.Integer)
-	 */
-	@Override
-	public String loadTypeName(Integer type) {
-		if(this.typeMap == null|| type==null) return null;
-		return this.typeMap.get(type);
-	}
-	/*
-	 * 加载状态集合
-	 * @see com.examw.oa.service.adm.ILeaveService#loadStatusName(java.lang.Integer)
-	 */
-	@Override
-	public String loadStatusName(Integer status) {
-		if(this.statusMap == null|| status==null) return null;
-		return this.statusMap.get(status);
 	}
 }

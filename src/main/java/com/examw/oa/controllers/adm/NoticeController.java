@@ -16,7 +16,7 @@ import com.examw.oa.domain.adm.Notice;
 import com.examw.oa.model.adm.NoticeInfo;
 import com.examw.oa.service.adm.INoticeService;
 /**
- * 通告信息控制器。
+ * 通知公告信息控制器。
  * @author lq.
  * @since 2014-07-15.
  */
@@ -24,9 +24,7 @@ import com.examw.oa.service.adm.INoticeService;
 @RequestMapping(value = "/adm/notice")
 public class NoticeController {
 	private static Logger logger = Logger.getLogger(NoticeController.class);
-	/**
-	 * 通告服务接口。
-	 */
+	//通知公告服务
 	@Resource
 	private INoticeService noticeService;
 	/**
@@ -36,6 +34,7 @@ public class NoticeController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled())logger.debug("加载列表页面...");
 		model.addAttribute("TYPE_NOTICE_VALUE",Notice.TYPE_NOTICE);
 		model.addAttribute("TYPE_NOTICE_NAME", this.noticeService.loadTypeName(Notice.TYPE_NOTICE));
 		model.addAttribute("TYPE_RULES_VALUE",Notice.TYPE_RULES);
@@ -43,12 +42,13 @@ public class NoticeController {
 		return "adm/not_list";
 	}
 	/**
-	 * 添加页面。
+	 * 编辑页面。
 	 * @return
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(String columnId, Model model){
+		if(logger.isDebugEnabled())logger.debug("加载编辑页面...");
 		model.addAttribute("CURRENT_COLUMN_ID", StringUtils.isEmpty(columnId) ? "" : columnId);
 
 		model.addAttribute("TYPE_NOTICE_NAME", this.noticeService.loadTypeName(Notice.TYPE_NOTICE));
@@ -64,6 +64,7 @@ public class NoticeController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<NoticeInfo> datagrid(NoticeInfo info){
+		if(logger.isDebugEnabled())logger.debug("查询数据");
 		return this.noticeService.datagrid(info);
 	}
 	/**
@@ -77,6 +78,7 @@ public class NoticeController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(NoticeInfo info){
+		if(logger.isDebugEnabled())logger.debug("更新数据...");
 		Json result = new Json();
 		try {
 			result.setData(this.noticeService.update(info));
@@ -97,6 +99,7 @@ public class NoticeController {
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］...");
 		Json result = new Json();
 		try {
 			this.noticeService.delete(id.split("\\|"));

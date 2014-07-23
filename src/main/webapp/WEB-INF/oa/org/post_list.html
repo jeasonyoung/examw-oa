@@ -148,8 +148,8 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  departmentId:current_dept_id,
-			  name:$("#${dg}_toobar input[name='name']").val()
+			deptId:current_dept_id,
+			name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 	<@shiro.hasPermission name="${PER_DELETE}">
