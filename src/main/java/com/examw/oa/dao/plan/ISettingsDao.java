@@ -6,7 +6,7 @@ import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 /**
- * 员工计划总结设置数据接口。
+ * 员工报告设置数据接口。
  * @author lq.
  * @since 2014-06-24.
  */

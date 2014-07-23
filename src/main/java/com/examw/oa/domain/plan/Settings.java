@@ -3,7 +3,6 @@ package com.examw.oa.domain.plan;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;
 /**
  * 员工报告设置。
@@ -14,21 +13,20 @@ public class Settings implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private Employee employee;
-	private Department department;
 	private Integer type;
 	private Date createTime;
 	/**
 	 * 类型－日报。
 	 */
-	public static final Integer TYPE_DAY = 1;
+	public static final Integer TYPE_DAY = 0x01;
 	/**
 	 * 类型－周报。
 	 */
-	public static final Integer TYPE_WEEK = 2;
+	public static final Integer TYPE_WEEK = 0x02;
 	/**
 	 * 类型－月报。
 	 */
-	public static final Integer TYPE_MONTH = 4;
+	public static final Integer TYPE_MONTH = 0x04;
 	/**
 	 * 获取报告设置ID。
 	 * @return 报告设置ID。
@@ -58,21 +56,6 @@ public class Settings implements Serializable {
 	 */
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
-	}
-	/**
-	 * 获取所属部门
-	 * @return 所属部门
-	 */
-	public Department getDepartment() {
-		return department;
-	}
-	/**
-	 * 设置所属部门
-	 * @param department
-	 * 所属部门
-	 */
-	public void setDepartment(Department department) {
-		this.department = department;
 	}
 	/**
 	 * 获取报告类型（位运算）。

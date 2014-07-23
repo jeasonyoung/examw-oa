@@ -23,8 +23,6 @@
 		<property name="settingsDao" ref="settingsDao"/>
 		<!-- 员工信息接口 -->
 		<property name="employeeDao" ref="employeeDao" />
-		<!-- 部门数据接口 -->
-		<property name="departmentDao" ref="departmentDao"/>
 		<!-- 报表设置类型集合 -->
 		<property name="typeMap">
 			<map>

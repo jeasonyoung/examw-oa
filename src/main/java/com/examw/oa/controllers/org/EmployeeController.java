@@ -1,5 +1,7 @@
 package com.examw.oa.controllers.org;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -75,6 +77,16 @@ public class EmployeeController {
 	public DataGrid<EmployeeInfo> datagrid(EmployeeInfo info){
 		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.employeeService.datagrid(info);
+	}
+	/**
+	 * 查询员工数据。
+	 * @param deptId
+	 * @return
+	 */
+	@RequestMapping(value="/all", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public List<EmployeeInfo> all(String deptId){
+		return this.employeeService.findEmployees(deptId);
 	}
 	/**
 	 * 更新数据。
