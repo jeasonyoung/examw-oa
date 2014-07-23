@@ -61,17 +61,17 @@
 				<!-- 缓存提供类 -->
 				<prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
 				<!--是否启用二级缓存 -->
-				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
 				<!-- 是否开启查询缓存 -->
 				<prop key="hibernate.cache.use_query_cache">true</prop>
 				<!-- 配置RegionFactory为Ehcache的RegionFactory -->
 				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
 				<!-- 强制Hibernate以更人性化的格式将数据存入二级缓存 -->
-				<!-- <prop key="hibernate.cache.use_structured_entries">true</prop> -->
-				<!-- ibernate将收集有助于性能调节的统计数据 -->
-				<!-- <prop key="hibernate.generate_statistics">true</prop> -->
+				<prop key="hibernate.cache.use_structured_entries">true</prop>
+				<!-- hibernate将收集有助于性能调节的统计数据 -->
+				<prop key="hibernate.generate_statistics">false</prop>
 				<!-- ehcache配置文件 -->
-				<prop key="net.sf.ehcache.configurationResourceName">examw-ehcache-hibernate.xml</prop>
+				<prop key="net.sf.ehcache.configurationResourceName">spring-examw-oa-ehcache-hibernate.xml</prop>
 				<!-- ehcache缓存配置节点 -->
 				<prop key="net.sf.ehcache.cacheManagerName">hibernateCache</prop>
 			</props>
