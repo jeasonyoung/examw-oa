@@ -1,43 +1,31 @@
 package com.examw.oa.service.plan.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
-
-import com.examw.oa.dao.org.IDepartmentDao;
+ 
 import com.examw.oa.dao.org.IEmployeeDao;
-import com.examw.oa.dao.plan.ISettingsDao;
-import com.examw.oa.domain.org.Department;
+import com.examw.oa.dao.plan.ISettingsDao; 
 import com.examw.oa.domain.org.Employee;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.plan.ISettingsService;
 /**
- * 员工报表服务接口。
+ * 员工报告设置服务接口实现类。
  * @author lq.
  * @since 2014-06-24.
  */
 public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsInfo> implements ISettingsService {
-	private static Logger logger = Logger.getLogger(SettingsServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(SettingsServiceImpl.class);
 	private ISettingsDao settingsDao;
 	private IEmployeeDao employeeDao;
-	private IDepartmentDao departmentDao;
 	private Map<Integer, String> typeMap;
-	/**
-	 * 设置类型集合。
-	 * @param typeMap
-	 * 类型集合。
-	 */
-	public void setTypeMap(Map<Integer, String> typeMap) {
-		if(logger.isDebugEnabled())logger.debug("注入类型集合...");
-		this.typeMap = typeMap;
-	}
 	/**
 	 * 设置员工计划总结数据接口。
 	 * @param settingsDao
@@ -48,22 +36,22 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 		this.settingsDao = settingsDao;
 	}
 	/**
-	 * 设置员工信息数据接口。
+	 * 设置员工数据接口。
 	 * @param settingsDao
 	 * 员工信息数据接口。
 	 */
 	public void setEmployeeDao(IEmployeeDao employeeDao) {
-		if(logger.isDebugEnabled())logger.debug("注入员工信息数据接口...");
+		if(logger.isDebugEnabled())logger.debug("注入员工数据接口...");
 		this.employeeDao = employeeDao;
 	}
 	/**
-	 * 设置部门信息数据接口。
-	 * @param settingsDao
-	 * 部门数据接口。
+	 * 设置类型集合。
+	 * @param typeMap
+	 * 类型集合。
 	 */
-	public void setDepartmentDao(IDepartmentDao departmentDao) {
-		if(logger.isDebugEnabled())logger.debug("注入部门数据接口...");
-		this.departmentDao = departmentDao;
+	public void setTypeMap(Map<Integer, String> typeMap) {
+		if(logger.isDebugEnabled())logger.debug("注入类型集合...");
+		this.typeMap = typeMap;
 	}
 	/*
 	 * 数据查询
@@ -87,10 +75,13 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 		if(data.getEmployee() != null){
 			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
+			
+			if(data.getEmployee().getDepartment() != null){
+				info.setDeptId(data.getEmployee().getDepartment().getId());
+				info.setDeptName(data.getEmployee().getDepartment().getName());
+			}
 		}
-		if(data.getDepartment() != null){
-			info.setDepartmentId(data.getDepartment().getId());
-		}
+		info.setType(this.loadTypeValue(data.getType()));
 		info.setTypeName(this.loadTypeName(data.getType()));
 		return info;
 	}
@@ -112,13 +103,12 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 		if(logger.isDebugEnabled())logger.debug("数据更新...");
 		if(info == null) return null;
 		boolean isAdded = false;
+		if(StringUtils.isEmpty(info.getId())) info.setId(info.getEmployeeId());
 		Settings data = StringUtils.isEmpty(info.getId()) ? null : this.settingsDao.load(Settings.class, info.getId());
 		if(isAdded = (data == null)){
-			if(StringUtils.isEmpty(info.getId())) {
-				info.setId(UUID.randomUUID().toString());
-				info.setCreateTime(new Date());			
-			}
+			if(StringUtils.isEmpty(info.getId())) info.setId(info.getEmployeeId());
 			data = new Settings();
+			info.setCreateTime(new Date());	
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data, new String[]{"type"});
@@ -127,12 +117,12 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 			Employee e = this.employeeDao.load(Employee.class, info.getEmployeeId());
 			if(e != null) data.setEmployee(e);	
 		}
-		if(!StringUtils.isEmpty(info.getDepartmentId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getDepartmentId()))){
-			Department d = this.departmentDao.load(Department.class, info.getDepartmentId());
-			if(d != null) data.setDepartment(d);
-		}
 		if(data.getEmployee() != null){
 			info.setEmployeeName(data.getEmployee().getName());
+			if(data.getEmployee().getDepartment() != null){
+				info.setDeptId(data.getEmployee().getDepartment().getId());
+				info.setDeptName(data.getEmployee().getDepartment().getName());
+			}
 		}
 		if(isAdded)this.settingsDao.save(data);
 		info.setTypeName(this.loadTypeName(data.getType()));
@@ -156,23 +146,37 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 		}	
 	}
 	/*
-	 * 转换为数字
+	 * 位运算类型。
 	 */
-	private Integer calTypeValue(Integer[] types){
-		if(logger.isDebugEnabled())logger.debug("位运算类型转换为数字...");
+	private Integer calTypeValue(String[] types){
 		Integer result = null;
 		if(types == null || types.length == 0) return result;
 		for(int i = 0; i < types.length; i++){
-			if(types[i] == null)continue;
+			if(StringUtils.isEmpty(types[i]))continue;
 			if(result == null) 
-				result = types[i];
+				result =  new Integer(types[i]);
 			else
-				result |= types[i];
+				result |= new Integer(types[i]);
 		}
 		return result;
 	}
+	//加载位类型包含的值。
+	private String[] loadTypeValue(Integer type){
+		if(type == null) return null;
+		List<String> list = new ArrayList<>();
+		if((type & Settings.TYPE_DAY) == Settings.TYPE_DAY){
+			list.add(Settings.TYPE_DAY.toString());
+		}
+		if((type & Settings.TYPE_WEEK) == Settings.TYPE_WEEK){
+			list.add(Settings.TYPE_WEEK.toString());
+		}
+		if((type & Settings.TYPE_MONTH) == Settings.TYPE_MONTH){
+			list.add(Settings.TYPE_MONTH.toString());
+		}
+		return list.toArray(new String[0]);
+	}
 	/*
-	 * 加载类型名称。
+	 * 加载位类型名称。
 	 * @see com.examw.oa.service.org.IEmployeeService#loadStatusName(java.lang.Integer)
 	 */
 	@Override
@@ -201,7 +205,7 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 	public List<Settings> findSettings(final Integer type) {
 		 return this.find(new SettingsInfo(){
 			private static final long serialVersionUID = 1L;
-			public Integer[] getType(){ return new Integer[]{ type};}
+			public String[] getType(){ return new String[]{ type == null ? null: type.toString()};}
 		 });
 	}
 }

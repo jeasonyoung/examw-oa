@@ -70,4 +70,15 @@ public class EmployeeDaoImpl extends BaseDaoImpl<Employee> implements IEmployeeD
 		}
 		return hql;
 	}
+	/*
+	 * 查询部门下的员工集合。
+	 * @see com.examw.oa.dao.org.IEmployeeDao#findEmployees(java.lang.String)
+	 */
+	@Override
+	public List<Employee> findEmployees(String deptId) {
+		final String hql = "from Employee e where e.department.id = :deptId order by e.name";
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("deptId", deptId);
+		return this.find(hql, parameters, null, null);
+	}
 }

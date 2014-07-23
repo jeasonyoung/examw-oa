@@ -1,5 +1,6 @@
 package com.examw.oa.service.org.impl;
  
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List; 
 import java.util.Map;
@@ -162,6 +163,23 @@ public class EmployeeServiceImpl extends BaseDataServiceImpl<Employee,EmployeeIn
 		info.setStatusName(this.loadStatusName(info.getStatus()));
 		info.setRoleId(this.userService.loadRoles(info.getId()));
 		return info;
+	}
+	/*
+	 * 加载部门下的员工数据。
+	 * @see com.examw.oa.service.org.IEmployeeService#findEmployees(java.lang.String)
+	 */
+	@Override
+	public List<EmployeeInfo> findEmployees(String deptId) {
+		if(logger.isDebugEnabled())logger.debug("查询部门［"+deptId+"］下的员工数据集合...");
+		List<EmployeeInfo> list = new ArrayList<>();
+		List<Employee> employees = this.employeeDao.findEmployees(deptId);
+		if(employees != null && employees.size() > 0){
+			for(Employee data: employees){
+				EmployeeInfo info = this.changeModel(data);
+				if(info != null) list.add(info);
+			}
+		}
+		return list;
 	}
 	/*
 	 * 更新数据。

@@ -2,7 +2,6 @@ package com.examw.oa.domain.plan;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 /**
  * 业务系统。
  * @author yangyong.
@@ -12,7 +11,6 @@ public class Business implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,name,url;
 	private Integer status;
-	private Set<Detail> details;
 	private Date createTime;
 	/**
 	 * 状态－停用。
@@ -100,20 +98,5 @@ public class Business implements Serializable {
 	 */
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
-	}
-	/**
-	 * 获取所属明细集合。
-	 * @return 所属明细集合。
-	 */
-	public Set<Detail> getDetails() {
-		return details;
-	}
-	/**
-	 * 设置所属明细集合。
-	 * @param details
-	 * 所属明细集合。
-	 */
-	public void setDetails(Set<Detail> details) {
-		this.details = details;
 	}
 }

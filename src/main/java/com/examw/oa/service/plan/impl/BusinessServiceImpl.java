@@ -20,18 +20,9 @@ import com.examw.oa.service.plan.IBusinessService;
  * @since 2014-06-24.
  */
 public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessInfo> implements IBusinessService {
-	private static Logger logger = Logger.getLogger(BusinessServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(BusinessServiceImpl.class);
 	private IBusinessDao businessDao;
 	private Map<Integer, String> statusMap;
-	/**
-	 * 设置状态集合。
-	 * @param statusMap
-	 * 状态集合。
-	 */
-	public void setStatusMap(Map<Integer, String> statusMap) {
-		if(logger.isDebugEnabled()) logger.debug("注入状态集合...");
-		this.statusMap = statusMap;
-	}
 	/**
 	 * 设置业务系统数据接口。
 	 * @param businessDao
@@ -40,6 +31,15 @@ public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessIn
 	public void setBusinessDao(IBusinessDao businessDao) {
 		if(logger.isDebugEnabled()) logger.debug("注入业务系统数据接口...");
 		this.businessDao = businessDao;
+	}
+	/**
+	 * 设置状态集合。
+	 * @param statusMap
+	 * 状态集合。
+	 */
+	public void setStatusMap(Map<Integer, String> statusMap) {
+		if(logger.isDebugEnabled()) logger.debug("注入状态集合...");
+		this.statusMap = statusMap;
 	}
 	/*
 	 * 加载状态名称。
@@ -70,6 +70,7 @@ public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessIn
 		if(data == null)return null;	
 		BusinessInfo info=new BusinessInfo();
 		BeanUtils.copyProperties(data, info);
+		info.setStatusName(this.loadStatusName(info.getStatus()));
 		return info;
 	}
 	/*
@@ -92,15 +93,14 @@ public class BusinessServiceImpl extends BaseDataServiceImpl<Business,BusinessIn
 		boolean isAdded = false;
 		Business data = StringUtils.isEmpty(info.getId()) ? null : this.businessDao.load(Business.class, info.getId());
 		if(isAdded = (data == null)){
-			if(StringUtils.isEmpty(info.getId())) {
-				info.setId(UUID.randomUUID().toString());
-				info.setCreateTime(new Date());
-			}
+			if(StringUtils.isEmpty(info.getId())) info.setId(UUID.randomUUID().toString()); 
 			data = new Business();
+			info.setCreateTime(new Date());
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);
 		if(isAdded) this.businessDao.save(data);
+		info.setStatusName(this.loadStatusName(info.getStatus()));
 		return info;
 	}
 	/*

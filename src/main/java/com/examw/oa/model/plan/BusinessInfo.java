@@ -16,7 +16,7 @@ import com.examw.oa.support.CustomDateSerializer;
 @JsonSerialize(include = Inclusion.NON_NULL)
 public class BusinessInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,name,url;
+	private String id,name,url,statusName;
 	private Integer status;
 	private Date createTime;
 	/**
@@ -78,6 +78,21 @@ public class BusinessInfo extends Paging {
 	 */
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+	/**
+	 * 获取业务系统状态名称。
+	 * @return 业务系统状态名称。
+	 */
+	public String getStatusName() {
+		return statusName;
+	}
+	/**
+	 * 设置业务系统状态名称。
+	 * @param statusName
+	 * 业务系统状态名称。
+	 */
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 	/**
 	 * 获取业务系统创建时间。

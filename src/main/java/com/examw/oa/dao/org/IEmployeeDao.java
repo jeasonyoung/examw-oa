@@ -20,6 +20,14 @@ public interface IEmployeeDao extends IBaseDao<Employee>{
 	 */
 	 List<Employee> findEmployees(EmployeeInfo info);
 	 /**
+	  * 查询部门下的员工。
+	  * @param deptId
+	  * 所属部门ID。
+	  * @return
+	  * 员工集合。
+	  */
+	 List<Employee> findEmployees(String deptId);
+	 /**
 	 * 查询数据总数。
 	 * @param info
 	 * 查询条件。

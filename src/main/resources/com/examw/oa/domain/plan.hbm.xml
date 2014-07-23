@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="com.examw.oa.domain.plan">
-	<!-- 员工报告设置 -->
-	<class name="Settings" table="tbl_Examw_OA_Plan_Settings">
-	   	<!-- 报告设置ID -->
-		<id name="id" column="employee_id">
-			<generator class="foreign">
-				<param name="property">employee</param>
-			</generator>
-		</id>
-		<!-- 所属员工 -->
-		<one-to-one name="employee"  class="com.examw.oa.domain.org.Employee"/>
-		<!-- 所属部门 -->
-		<many-to-one name="department" column="dept_id"  class="com.examw.oa.domain.org.Department"  />
-		<!-- 报告类型（位运算:1-日报,2-周报,4-月报） -->
-		<property name="type" type="integer" />
-		<!-- 创建时间 -->
-		<property name="createTime" column="create_time"  type="timestamp"/>
-	</class>
 	<!-- 业务系统设置 -->
 	<class name="Business" table="tbl_Examw_OA_Plan_Business">
 		<!-- 业务系统ID -->
@@ -30,14 +13,23 @@
 		<property name="status" type="integer" />
 		<!-- 创建时间 -->
 		<property name="createTime" column="create_time"  type="timestamp"/>
-		<!-- 关联报告明细集合 -->
-		<set name="details" inverse="true"  table="tbl_Examw_OA_Plan_Detail_Business">
-			<!-- 业务系统ID -->
-			<key column="business_id" />
-			<!-- 报告明细ID -->
-			<many-to-many class="Detail"  column="detail_id"/>
-		</set>
 	</class>
+	<!-- 员工报告设置 -->
+	<class name="Settings" table="tbl_Examw_OA_Plan_Settings">
+	   	<!-- 报告设置ID -->
+		<id name="id" column="employee_id">
+			<generator class="foreign">
+				<param name="property">employee</param>
+			</generator>
+		</id>
+		<!-- 所属员工 -->
+		<one-to-one name="employee"  class="com.examw.oa.domain.org.Employee"/>
+		<!-- 报告类型（位运算:1-日报,2-周报,4-月报） -->
+		<property name="type" type="integer" />
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time"  type="timestamp"/>
+	</class>
+	
 	<!-- 员工报告 -->
 	<class name="Report" table="tbl_Examw_OA_Plan_Report">
 		<!-- 报告ID -->
