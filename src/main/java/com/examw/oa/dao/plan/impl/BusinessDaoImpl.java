@@ -17,7 +17,7 @@ import com.examw.oa.model.plan.BusinessInfo;
  * @since 2014-06-24.
  */
 public class BusinessDaoImpl extends BaseDaoImpl<Business> implements IBusinessDao {
-	private static Logger logger = Logger.getLogger(BusinessDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(BusinessDaoImpl.class);
 	/*
 	 * 查询数据。
 	 * @see com.examw.oa.dao.plan.IBusinessDao#findBusiness(com.examw.oa.model.plan.BusinessInfo)
@@ -29,8 +29,12 @@ public class BusinessDaoImpl extends BaseDaoImpl<Business> implements IBusinessD
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
+			if(info.getSort().equalsIgnoreCase("statusName")){
+				info.setSort("status");
+			}
 			hql += " order by b." + info.getSort() + " " + info.getOrder();
 		}
+		if(logger.isDebugEnabled()) logger.debug(hql);
 		return this.find(hql, parameters, info.getPage(), info.getRows());
 	}
 	/*
@@ -43,10 +47,11 @@ public class BusinessDaoImpl extends BaseDaoImpl<Business> implements IBusinessD
 		String hql = "select count(*) from Business b where 1 = 1 ";
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
+		if(logger.isDebugEnabled())logger.debug(hql);
 		return this.count(hql, parameters);
 	}
 	//条件查询
-	protected String addWhere(BusinessInfo info, String hql, Map<String, Object> parameters){
+	private String addWhere(BusinessInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getName())){
 			hql += " and (b.name like :name)";
 			parameters.put("name", "%" + info.getName() + "%");

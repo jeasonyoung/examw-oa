@@ -2,21 +2,19 @@
 <#assign module="plan_business"/>
 <#assign form="${module}_edit_form"/>
 <form id="${form}"  method="POST" style="padding:10px">
-		<div style="float:left;margin-top:18px;width:100%;">
-			<label style="width:75px;">名称：</label>
-			<input type="text" name="name" class="easyui-validatebox"  data-options="required:true" style="width:128px;"/>
-			<input type="hidden" name="id"/>
-		</div>
-		<div style="float:left; margin-top:12px; width:100%;">
-				<label style="margin-top:8px;width:75px;">状态：</label>
-				<div style="float:left;">
-					<label><input type="radio" name="status" value="0" checked="checked"/>${STATUS_STOP_NAME}</label>
-					<label><input type="radio" name="status" value="1"  />${STATUS_NORMAL_NAME}</label>
-					<label><input type="radio" name="status" value="2" />${STATUS_TEST_NAME}</label>
-				</div>
-			</div>
-		<div style="float:left;margin-top:12px;width:100%;">
-			<label style="width:75px;">URL：</label>
-			<textarea type="text" name="url" row="10" cols="10" style="width:128px;" />
-		</div>
+	<div style="float:left;margin-top:2px;width:100%;">
+		<label style="width:45px;">名称：</label>
+		<input type="text" name="name" class="easyui-validatebox"  data-options="required:true" style="width:298px;"/>
+		<input type="hidden" name="id"/>
+	</div>
+	<div style="float:left; margin-top:12px; width:100%;">
+			<label style="margin-top:5px;width:45px;">状态：</label>
+			<label style="padding-top:0px;"><input type="radio" name="status" value="${STATUS_NORMAL_VALUE}"  checked="checked"/>${STATUS_NORMAL_NAME}</label>
+			<label style="padding-top:0px;"><input type="radio" name="status" value="${STATUS_TEST_VALUE}" />${STATUS_TEST_NAME}</label>
+			<label style="padding-top:0px;"><input type="radio" name="status" value="${STATUS_STOP_VALUE}" />${STATUS_STOP_NAME}</label>
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:45px;">URL：</label>
+		<textarea type="text" name="url" row="15" cols="20" style="width:298px;height:120px;" />
+	</div>
 </form>

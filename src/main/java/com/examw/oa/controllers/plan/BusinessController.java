@@ -3,6 +3,7 @@ package com.examw.oa.controllers.plan;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.domain.plan.Business;
+import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.plan.BusinessInfo;
 import com.examw.oa.service.plan.IBusinessService;
 /**
@@ -31,9 +33,25 @@ public class BusinessController {
 	 * @return
 	 * 列表页面。
 	 */
+	@RequiresPermissions({ModuleConstant.PLAN_BUSINESS + ":" + Right.VIEW})
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
 		if(logger.isDebugEnabled())logger.debug("加载列表页面...");
+		
+		model.addAttribute("PER_UPDATE", ModuleConstant.PLAN_BUSINESS + ":" + Right.UPDATE);
+		model.addAttribute("PER_DELETE", ModuleConstant.PLAN_BUSINESS + ":" + Right.DELETE);
+		
+		return "plan/business_list";
+	}
+	/**
+	 * 获取编辑页面。
+	 * @return
+	 * 编辑页面。
+	 */
+	@RequiresPermissions({ModuleConstant.PLAN_BUSINESS + ":" + Right.UPDATE})
+	@RequestMapping(value="/edit", method = RequestMethod.GET)
+	public String edit(Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
 		model.addAttribute("STATUS_STOP_VALUE",Business.STATUS_STOP);
 		model.addAttribute("STATUS_STOP_NAME", this.businessService.loadStatusName(Business.STATUS_STOP));
 		
@@ -42,27 +60,14 @@ public class BusinessController {
 		
 		model.addAttribute("STATUS_TEST_VALUE",Business.STATUS_TEST);
 		model.addAttribute("STATUS_TEST_NAME", this.businessService.loadStatusName(Business.STATUS_TEST));
-		return "plan/business_list";
-	}
-	/**
-	 * 获取编辑页面。
-	 * @return
-	 * 编辑页面。
-	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
-	@RequestMapping(value="/edit", method = RequestMethod.GET)
-	public String edit(Model model){
-		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
-		model.addAttribute("STATUS_STOP_NAME", this.businessService.loadStatusName(Business.STATUS_STOP));
-		model.addAttribute("STATUS_NORMAL_NAME", this.businessService.loadStatusName(Business.STATUS_NORMAL));
-		model.addAttribute("STATUS_TEST_NAME", this.businessService.loadStatusName(Business.STATUS_TEST));
+		
 		return "plan/business_edit";
 	}
 	/**
 	 * 查询数据。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_RIGHT + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.PLAN_BUSINESS + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<BusinessInfo> datagrid(BusinessInfo info){
@@ -76,7 +81,7 @@ public class BusinessController {
 	 * @return
 	 * 更新后数据。
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	@RequiresPermissions({ModuleConstant.PLAN_BUSINESS + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(BusinessInfo info){
@@ -97,6 +102,7 @@ public class BusinessController {
 	 * @param id
 	 * @return
 	 */
+	@RequiresPermissions({ModuleConstant.PLAN_BUSINESS + ":" + Right.DELETE})
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
