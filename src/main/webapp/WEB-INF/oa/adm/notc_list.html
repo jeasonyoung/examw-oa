@@ -68,7 +68,7 @@ $(function(){
 			<@error_dialog "e"/>
 		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑栏目",rowIndex,rowData);
+			edit_window("编辑栏目设置",rowIndex,rowData);
 		}
 	});
 	//edit
@@ -146,7 +146,7 @@ $(function(){
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("新增栏目",0,null);
+		edit_window("新增栏目设置",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete

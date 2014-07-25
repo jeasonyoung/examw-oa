@@ -3,7 +3,7 @@ package com.examw.oa.service.adm;
 import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
- * 请假服务
+ * 我要请假服务接口
  * @author lq.
  * @since 2014-07-15.
  */

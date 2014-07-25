@@ -2,6 +2,7 @@ package com.examw.oa.controllers.adm;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +21,8 @@ import com.examw.oa.service.adm.ILeaveApprovalService;
 @Controller
 @RequestMapping(value = "/adm/record")
 public class RecordController {
-	//private static Logger logger = Logger.getLogger(RecordController.class);
-	/**
-	 *请假审批服务。
-	 */
+	private static Logger logger = Logger.getLogger(RecordController.class);
+	//请假审批服务
 	@Resource
 	private ILeaveApprovalService approvalService;
 	/**
@@ -33,6 +32,7 @@ public class RecordController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.VIEW})
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled())logger.debug("加载列表页面...");
 		model.addAttribute("TYPE_LEADER_VALUE",LeaveApproval.TYPE_LEADER);
 		model.addAttribute("TYPE_LEADER_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_LEADER));
 
@@ -54,23 +54,13 @@ public class RecordController {
 		return "adm/record_list";
 	}
 	/**
-	 * 查询数据。
-	 * @return
-	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
-	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
-	@ResponseBody
-	public DataGrid<LeaveApprovalInfo> datagrid(LeaveApprovalInfo info){
-		return this.approvalService.datagrid(info);
-	}
-	/**
-	 * 添加页面。
+	 * 编辑页面。
 	 * @return
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit( Model model){
-
+		if(logger.isDebugEnabled())logger.debug("加载编辑页面...");
 		model.addAttribute("TYPE_ADM_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_ADM));
 		model.addAttribute("TYPE_LEADER_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_LEADER));
 		model.addAttribute("TYPE_BOSS_NAME", this.approvalService.loadTypeName(LeaveApproval.TYPE_BOSS));
@@ -79,4 +69,15 @@ public class RecordController {
 		model.addAttribute("STATUS_DISAGREE_NAME", this.approvalService.loadStatusName(LeaveApproval.STATUS_DISAGREE));
 		return "adm/record_edit";
    }
+	/**
+	 * 查询数据。
+	 * @return
+	 */
+	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
+	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
+	@ResponseBody
+	public DataGrid<LeaveApprovalInfo> datagrid(LeaveApprovalInfo info){
+		if(logger.isDebugEnabled())logger.debug("查询数据...");
+		return this.approvalService.datagrid(info);
+	}
 }

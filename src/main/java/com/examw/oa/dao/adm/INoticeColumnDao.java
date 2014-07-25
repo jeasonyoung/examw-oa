@@ -5,7 +5,7 @@ import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.adm.NoticeColumn;
 import com.examw.oa.model.adm.NoticeColumnInfo;
 /**
- * 栏目信息接口
+ * 栏目设置数据操作接口
  * @author lq
  * @since 2014-07-14
  */

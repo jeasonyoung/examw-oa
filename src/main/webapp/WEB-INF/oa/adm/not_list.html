@@ -79,7 +79,7 @@ $(function(){
 			<@error_dialog "e"/>
 		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑",rowIndex,rowData);
+			edit_window("编辑通知公告",rowIndex,rowData);
 		}
 	});
 	//edit
@@ -153,7 +153,7 @@ $(function(){
 	};
 	//add
 	${dg}_add = function(){
-		edit_window("添加部门",0,null);
+		edit_window("新增通知公告",0,null);
 	};
 	/* <shiro.hasPermission name="${PER_DELETE}"> */
 	//delete

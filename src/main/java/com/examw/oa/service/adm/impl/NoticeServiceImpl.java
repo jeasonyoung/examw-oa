@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
@@ -18,11 +19,12 @@ import com.examw.oa.model.adm.NoticeInfo;
 import com.examw.oa.service.adm.INoticeService;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 /**
- * 通告服务
+ * 通告公告服务接口实现类。
  * @author lq.
  * @since 2014-07-15.
  */
 public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> implements INoticeService {
+	private static Logger logger = Logger.getLogger(NoticeServiceImpl.class);
 	private INoticeDao noticeDao;
 	private IDepartmentDao departmentDao;
 	private INoticeColumnDao notcDao;
@@ -32,6 +34,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 * @param noticeDao
 	 */
 	public void setNoticeDao(INoticeDao noticeDao) {
+		if(logger.isDebugEnabled())logger.debug("注入通告数据接口...");
 		this.noticeDao = noticeDao;
 	}
 	/**
@@ -39,6 +42,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 * @param departmentDao
 	 */
 	public void setDepartmentDao(IDepartmentDao departmentDao) {
+        if(logger .isDebugEnabled())logger.debug("注入部门数据接口...");
 		this.departmentDao = departmentDao;
 	}
 	/**
@@ -46,6 +50,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 * @param notcDao
 	 */
 	public void setNotcDao(INoticeColumnDao notcDao) {
+		if(logger.isDebugEnabled())logger.debug("注入栏目数据接口...");
 		this.notcDao = notcDao;
 	}
 	/**
@@ -53,7 +58,18 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 * @param typeMap
 	 */
 	public void setTypeMap(Map<Integer, String> typeMap) {
+		if(logger.isDebugEnabled())logger.debug("注入类型集合");
 		this.typeMap = typeMap;
+	}
+	/*
+	 * 加载类型名称
+	 * @see com.examw.oa.service.adm.INoticeService#loadTypeName(java.lang.Integer)
+	 */
+	@Override
+	public String loadTypeName(Integer type) {
+		if(logger.isDebugEnabled()) logger.debug("加载类型［"+type+"］名称...");
+		if(this.typeMap == null || type == null) return null;
+		return this.typeMap.get(type);
 	}
 	/*
 	 * 查询数据
@@ -61,6 +77,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 */
 	@Override
 	protected List<Notice> find(NoticeInfo info) {
+		if(logger.isDebugEnabled())logger.debug("查询数据...");
 		return this.noticeDao.findNotices(info);
 	}
 	/*
@@ -69,6 +86,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 */
 	@Override
 	protected NoticeInfo changeModel(Notice data) {
+		if(logger.isDebugEnabled())logger.debug("类型转换...");
 		if(data == null) return null;
 		NoticeInfo info = new NoticeInfo();
 		BeanUtils.copyProperties(data, info);
@@ -88,6 +106,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 */
 	@Override
 	protected Long total(NoticeInfo info) {
+		if(logger.isDebugEnabled())logger.debug("统计数据...");
 		return this.noticeDao.total(info);
 	}
 	/*
@@ -96,6 +115,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 */
 	@Override
 	public NoticeInfo update(NoticeInfo info) {
+		if(logger.isDebugEnabled())logger.debug("更新数据...");
 		if(info == null) return null;
 		Boolean isAdded = false;
 		Notice data = StringUtils.isEmpty(info.getId()) ? null : this.noticeDao.load(Notice.class, info.getId());
@@ -118,7 +138,6 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 		}
 		if(data.getDepartment() != null) info.setDepartmentName(data.getDepartment().getName());
 		if(data.getColumn() != null) info.setColumnName(data.getColumn().getName());
-		
 
 		if(isAdded)this.noticeDao.save(data);
 		return info;
@@ -129,11 +148,15 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 */
 	@Override
 	public void delete(String[] ids) {
+		if(logger.isDebugEnabled())logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length;i++){
 			if(StringUtils.isEmpty(ids[i])) continue;
 			Notice e = this.noticeDao.load(Notice.class, ids[i]);
-			if(e != null) this.noticeDao.delete(e);
+			if(e != null){
+				if(logger.isDebugEnabled())logger.debug("删除数据［"+ids[i]+"］");
+				this.noticeDao.delete(e);
+			} 
 		}
 		
 	}
@@ -143,15 +166,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 */
 	@Override
 	public List<NoticeInfo> loadNotice(String columnId) {
+		if(logger.isDebugEnabled())logger.debug("根据栏目ID加载通告集合...");
 		return this.changeModel(this.noticeDao.loadNotice(columnId));
-	}
-	/*
-	 * 加载类型名
-	 * @see com.examw.oa.service.adm.INoticeService#loadTypeName(java.lang.Integer)
-	 */
-	@Override
-	public String loadTypeName(Integer type) {
-		if(this.typeMap == null || type == null) return null;
-		return this.typeMap.get(type);
 	}
 }

@@ -21,22 +21,18 @@ import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.adm.ILeaveApprovalService;
 import com.examw.oa.service.adm.ILeaveService;
 /**
- * 请假控制器。
+ * 我要请假信息控制器。
  * @author lq.
  * @since 2014-07-15.
  */
 @Controller
 @RequestMapping(value = "/adm/leave")
 public class LeaveController {
-	private static Logger logger = Logger.getLogger(NoticeColumnController.class);
-	/**
-	 *栏目信息服务。
-	 */
+	private static Logger logger = Logger.getLogger(LeaveController.class);
+	//请假服务接口
 	@Resource
 	private ILeaveService leaveService;
-	/**
-	 *栏目信息服务。
-	 */
+	//请假审批服务接口
 	@Resource
 	private ILeaveApprovalService approvalService;
 	/**
@@ -46,6 +42,7 @@ public class LeaveController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.VIEW})
 	@RequestMapping(value = {"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled())logger.debug("加载列表页面...");
 		model.addAttribute("TYPE_VACATION_VALUE",Leave.TYPE_VACATION);
 		model.addAttribute("TYPE_VACATION_NAME", this.leaveService.loadTypeName(Leave.TYPE_VACATION));
 		
@@ -70,12 +67,13 @@ public class LeaveController {
 		return "adm/leave_list";
 	}
 	/**
-	 * 添加页面。
+	 * 编辑页面。
 	 * @return
 	 */
 	//@RequiresPermissions({ModuleConstant.SECURITY_MENU_RIGHT + ":" + Right.UPDATE})
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(String deptId,String sEmpId, Model model){
+		if(logger.isDebugEnabled())logger.debug("加载编辑页面...");
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
 		model.addAttribute("CURRENT_SEMPL_ID", StringUtils.isEmpty(sEmpId) ? "" : sEmpId);
 		
@@ -103,6 +101,7 @@ public class LeaveController {
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<LeaveInfo> datagrid(LeaveInfo info){
+		if(logger.isDebugEnabled())logger.debug("查询数据...");
 		return this.leaveService.datagrid(info);
 	}
 	/**
@@ -116,6 +115,7 @@ public class LeaveController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(LeaveInfo info){
+		if(logger.isDebugEnabled())logger.debug("更新数据...");
 		Json result = new Json();
 		try {
 			result.setData(this.leaveService.update(info));
@@ -136,6 +136,7 @@ public class LeaveController {
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］...");
 		Json result = new Json();
 		try {
 			this.leaveService.delete(id.split("\\|"));
@@ -148,7 +149,7 @@ public class LeaveController {
 		return result;
 	}
 	/**
-	 * 员工数据。
+	 * 请假数据。
 	 * @return
 	 */
 	@RequestMapping(value="/all", method = RequestMethod.POST)

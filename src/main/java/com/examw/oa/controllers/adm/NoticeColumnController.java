@@ -18,7 +18,7 @@ import com.examw.model.TreeNode;
 import com.examw.oa.model.adm.NoticeColumnInfo;
 import com.examw.oa.service.adm.INoticeColumnService;
 /**
- * 栏目信息控制器。
+ * 栏目设置信息控制器。
  * @author lq.
  * @since 2014-07-14.
  */
@@ -26,9 +26,7 @@ import com.examw.oa.service.adm.INoticeColumnService;
 @RequestMapping(value = "/adm/noticeColumn")
 public class NoticeColumnController {
 	private static Logger logger = Logger.getLogger(NoticeColumnController.class);
-	/**
-	 *栏目信息服务。
-	 */
+	//通知公告栏目服务
 	@Resource
 	private INoticeColumnService noticeColumnService;
 	/**
@@ -38,6 +36,7 @@ public class NoticeColumnController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.VIEW})
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
+		if(logger.isDebugEnabled())logger.debug("加载列表页面...");
 		//model.addAttribute("PER_UPDATE", ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE);
 		//model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_ROLE + ":" + Right.DELETE);
 		return "adm/notc_list";
@@ -50,8 +49,9 @@ public class NoticeColumnController {
 	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
 	public String edit(String id,String ignore,Model model){
-	model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(id) ? "" : id);
-	model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
+		if(logger.isDebugEnabled())logger.debug("加载编辑页面...");
+		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(id) ? "" : id);
+		model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
 		return "adm/notc_edit";
 	}
 	/**
@@ -75,6 +75,7 @@ public class NoticeColumnController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(NoticeColumnInfo info){
+		if(logger.isDebugEnabled())logger.debug("更新数据...");
 		Json result = new Json();
 		try {
 			result.setData(this.noticeColumnService.update(info));
@@ -95,6 +96,7 @@ public class NoticeColumnController {
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){
+		if(logger.isDebugEnabled()) logger.debug("删除数据［"+ id +"］...");
 		Json result = new Json();
 		try {
 			this.noticeColumnService.delete(id.split("\\|"));
@@ -113,6 +115,7 @@ public class NoticeColumnController {
 	@RequestMapping(value = "/tree", method = {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public List<TreeNode> tree(String ignore){
+		if(logger.isDebugEnabled()) logger.debug("加载部门树结构数据［ignore="+ ignore+"］...");
 		return this.noticeColumnService.loadNoticeColumn(ignore);
 	}
 }

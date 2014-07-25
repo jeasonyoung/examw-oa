@@ -5,7 +5,7 @@ import java.util.Map;
 import com.examw.oa.model.adm.LeaveApprovalInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
- * 请假审批服务
+ * 请假审批服务接口
  * @author lq.
  * @since 2014-07-16.
  */
