@@ -54,14 +54,14 @@ public class SettingsController {
 		
 		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(deptId) ? "" : deptId);
 		
-		model.addAttribute("TYPE_DAY_VALUE",Settings.TYPE_DAY);
-		model.addAttribute("TYPE_DAY_NAME", this.settingsService.loadTypeName(Settings.TYPE_DAY));
+		model.addAttribute("TYPE_DAILY_VALUE",Settings.TYPE_DAILY);
+		model.addAttribute("TYPE_DAILY_NAME", this.settingsService.loadTypeName(Settings.TYPE_DAILY));
 		
-		model.addAttribute("TYPE_WEEK_VALUE",Settings.TYPE_WEEK);
-		model.addAttribute("TYPE_WEEK_NAME", this.settingsService.loadTypeName(Settings.TYPE_WEEK));
+		model.addAttribute("TYPE_WEEKLY_VALUE",Settings.TYPE_WEEKLY);
+		model.addAttribute("TYPE_WEEKLY_NAME", this.settingsService.loadTypeName(Settings.TYPE_WEEKLY));
 		
-		model.addAttribute("TYPE_MONTH_VALUE",Settings.TYPE_MONTH);
-		model.addAttribute("TYPE_MONTH_NAME", this.settingsService.loadTypeName(Settings.TYPE_MONTH));
+		model.addAttribute("TYPE_MONTHLY_VALUE",Settings.TYPE_MONTHLY);
+		model.addAttribute("TYPE_MONTHLY_NAME", this.settingsService.loadTypeName(Settings.TYPE_MONTHLY));
 		
 		return "plan/settings_edit";
    }

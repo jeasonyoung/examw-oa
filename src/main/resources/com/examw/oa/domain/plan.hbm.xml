@@ -29,7 +29,6 @@
 		<!-- 创建时间 -->
 		<property name="createTime" column="create_time"  type="timestamp"/>
 	</class>
-	
 	<!-- 员工报告 -->
 	<class name="Report" table="tbl_Examw_OA_Plan_Report">
 		<!-- 报告ID -->
@@ -41,11 +40,9 @@
 		<!-- 报告状态(0-未提交,1-已提交,2-已审阅,3-迟交,4-缺交) -->
 		<property name="status" type="integer" />
 		<!-- 明细集合 -->
-		<set name="details" inverse="false"  cascade="save-update"  table="tbl_Examw_OA_Plan_Report_Detail">
-			<!-- 报告ID -->
+		<set name="details" inverse="false"  cascade="save-update">
 			<key column="report_id" />
-			<!-- 报告明细ID -->
-			<many-to-many class="Detail"  column="detail_id"/>
+			<one-to-many class="ReportDetail"/>
 		</set>
 		<!-- 创建时间 -->
 		<property name="createTime" column="create_time" type="timestamp" />
@@ -55,21 +52,23 @@
 		<property name="lastPostTime" column="last_post_time" type="timestamp" />
 	</class>
 	<!-- 员工报告明细 -->
-	<class name="Detail" table="tbl_Examw_OA_Plan_Detail">
+	<class name="ReportDetail" table="tbl_Examw_OA_Plan_ReportDetail">
 		<!-- 明细ID -->
 		<id name="id" type="string" length="64" />
+		<!-- 所属报告 -->
+		<many-to-one name="report" column="report_id" />
 		<!-- 类型 -->
 		<property name="type" type="integer" />
 		<!-- 内容 -->
 		<property name="content" type="text" />
-		<!-- 创建时间 -->
-		<property name="createTime" column="create_time" type="timestamp" />
 		<!-- 关联业务系统集合。 -->
-		<set name="businesses" inverse="false"  cascade="save-update"  table="tbl_Examw_OA_Plan_Detail_Business">
+		<set name="businesses" inverse="false"  cascade="save-update"  table="tbl_Examw_OA_Plan_ReportDetail_Business">
 			<!-- 明细ID -->
-			<key column="detail_id" />
+			<key column="report_detail_id" />
 			<!-- 业务系统ID -->
 			<many-to-many class="Business"  column="business_id"/>
 		</set>
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time" type="timestamp" />
 	</class>
 </hibernate-mapping>

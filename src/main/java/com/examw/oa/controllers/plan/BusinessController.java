@@ -1,5 +1,7 @@
 package com.examw.oa.controllers.plan;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -73,6 +75,21 @@ public class BusinessController {
 	public DataGrid<BusinessInfo> datagrid(BusinessInfo info){
 		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.businessService.datagrid(info);
+	}
+	/**
+	 * 加载全部数据。
+	 * @return
+	 */
+	@RequestMapping(value = "/all", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public List<BusinessInfo> all(){
+		return this.businessService.datagrid(new BusinessInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "name";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
 	}
 	/**
 	 * 更新数据。

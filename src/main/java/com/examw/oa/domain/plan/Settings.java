@@ -18,15 +18,15 @@ public class Settings implements Serializable {
 	/**
 	 * 类型－日报。
 	 */
-	public static final Integer TYPE_DAY = 0x01;
+	public static final Integer TYPE_DAILY = 0x01;
 	/**
 	 * 类型－周报。
 	 */
-	public static final Integer TYPE_WEEK = 0x02;
+	public static final Integer TYPE_WEEKLY = 0x02;
 	/**
 	 * 类型－月报。
 	 */
-	public static final Integer TYPE_MONTH = 0x04;
+	public static final Integer TYPE_MONTHLY = 0x04;
 	/**
 	 * 获取报告设置ID。
 	 * @return 报告设置ID。

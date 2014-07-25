@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.impl.BaseDaoImpl;
 import com.examw.oa.dao.plan.ISettingsDao;
+import com.examw.oa.domain.org.Employee;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.SettingsInfo;
 /**
@@ -68,5 +69,17 @@ public class SettingsDaoImpl extends BaseDaoImpl<Settings> implements ISettingsD
 			parameters.put("type", new Integer(info.getType()[0]));
 		}
 		return hql;
+	}
+	/*
+	 * 根据报告类型查询数据。
+	 * @see com.examw.oa.dao.plan.ISettingsDao#findSettings(java.lang.Integer)
+	 */
+	@Override
+	public List<Settings> findSettings(Integer type) {
+		final String hql = "from Settings s where  (bitand(s.type,:type) = :type) and (s.employee.status != :status) order by s.createTime";
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("type", type);
+		parameters.put("status", Employee.STATUS_OUT);
+		return this.find(hql, parameters, null, null);
 	}
 }

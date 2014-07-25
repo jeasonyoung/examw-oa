@@ -23,6 +23,13 @@
 		<!-- <mvc:annotation-driven/> -->
 		<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
 		<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+			<property name="webBindingInitializer">
+				<bean class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+					<property name="conversionService">
+						<bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+					</property>
+				</bean>
+			</property>
 			<property name="messageConverters">
 				<list>
 					<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">

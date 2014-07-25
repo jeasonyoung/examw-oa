@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.examw.model.DataGrid;
-import com.examw.oa.domain.plan.Detail;
+import com.examw.model.DataGrid; 
 import com.examw.oa.domain.plan.Report;
 import com.examw.oa.model.plan.BusinessInfo;
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.plan.IBusinessService;
-import com.examw.oa.service.plan.IDetailService;
 import com.examw.oa.service.plan.IReportService;
 /**
  * 员工报表查询控制器。
@@ -29,9 +27,6 @@ public class ReportFindController {
 	//报表服务。
 	@Resource
 	private IReportService reportSerivce;
-	//计划总结明细服务。
-	@Resource
-	private IDetailService detailService;
 	//业务系统服务。
 	@Resource
 	private IBusinessService businessService;
@@ -58,7 +53,7 @@ public class ReportFindController {
 		model.addAttribute("STATUS_LACK_VALUE",Report.STATUS_LACK);
 		model.addAttribute("STATUS_LACK_NAME", this.reportSerivce.loadStatusName(Report.STATUS_LACK));
 		
-		model.addAttribute("statusMap",this.reportSerivce.getStatusMap());
+		//model.addAttribute("statusMap",this.reportSerivce.getStatusMap());
 		return "plan/reportFind_list";
 	}
 	/**
@@ -69,10 +64,10 @@ public class ReportFindController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(Model model){
 		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
-		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
-		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
-		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
-		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
+//		model.addAttribute("TYPE_PLAN_NAME", this.detailService.loadTypeName(Detail.TYPE_PLAN));
+//		model.addAttribute("TYPE_SUMMARY_NAME",this.detailService.loadTypeName(Detail.TYPE_SUMMARY));
+//		model.addAttribute("TYPE_SUPPORT_NAME",this.detailService.loadTypeName(Detail.TYPE_SUPPORT ));
+//		model.addAttribute("TYPE_SUGGESTIONS_NAME",this.detailService.loadTypeName(Detail.TYPE_SUGGESTIONS));
 
 		DataGrid<BusinessInfo> business = this.businessService.datagrid(new BusinessInfo(){
 			private static final long serialVersionUID = 1L;

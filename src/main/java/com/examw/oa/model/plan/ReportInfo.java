@@ -3,49 +3,54 @@ package com.examw.oa.model.plan;
 import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 import com.examw.model.Paging;
+import com.examw.oa.controllers.IUser;
 import com.examw.oa.support.CustomDateSerializer;
 /**
- * 计划总结
+ *  员工报告信息。
  * @author lq
  * @since 2014-07-02
  */
-public class ReportInfo extends Paging {
+@JsonSerialize(include = Inclusion.NON_NULL)
+public class ReportInfo extends Paging implements IUser {
 	private static final long serialVersionUID = 1L;
-	private String id,typeName,employeeId,employeeName;
-	private Integer type,status;
-	private String planId,summaryId,suggetsionsId,supportId;
-	private String planDetail,summaryDetail,suggetsionsDetail,supportDetail;
-	private String[] businessId;
+	private String id,employeeId,employeeName,deptName,postName,rankName, typeName,statusName,
+							planId,planDetail,
+							summaryId,summaryDetail,
+							supportId,supportDetail,
+							suggetsionId,suggetsionDetail,
+							currentUserId;
+	private String[] planBusinessId,summaryBusinessId,supportBusinessId,suggetsionBusinessId;
+	private Integer type,status; 
 	private Date createTime,postTime,lastPostTime;
 	/**
-	 * 获取员工报表ID。
-	 * @return 员工报表ID。
+	 * 获取报告ID。
+	 * @return 报告ID。
 	 */
 	public String getId() {
 		return id;
 	}
 	/**
-	 * 设置员工报表ID。
+	 * 设置报告ID。
 	 * @param id
-	 * 员工报表ID。
+	 * 报告ID。
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 	/**
-	 * 获取员工ID。
-	 * @return 员工ID。
+	 * 获取所属员工ID。
+	 * @return 所属员工ID。
 	 */
 	public String getEmployeeId() {
 		return employeeId;
 	}
 	/**
-	 * 设置员工ID。
+	 * 设置所属员工ID。
 	 * @param employeeId
-	 * 员工ID。
+	 * 所属员工ID。
 	 */
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
@@ -66,235 +71,352 @@ public class ReportInfo extends Paging {
 		this.employeeName = employeeName;
 	}
 	/**
-	 * 获取类型名称。
-	 * @return 类型名称。
+	 * 获取员工所属部门名称。
+	 * @return 员工所属部门名称。
 	 */
-	public String getTypeName() {
-		return typeName;
+	public String getDeptName() {
+		return deptName;
 	}
 	/**
-	 * 设置类型名称。
-	 * @param typeName
-	 * 类型名称。
+	 * 设置员工所属部门名称。
+	 * @param deptName
+	 * 员工所属部门名称。
 	 */
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
 	}
 	/**
-	 * 获取员工报表类型。
-	 * @return 员工报表类型。
+	 * 获取所属岗位名称。
+	 * @return 所属岗位名称。
+	 */
+	public String getPostName() {
+		return postName;
+	}
+	/**
+	 * 设置所属岗位名称。
+	 * @param postName
+	 * 	所属岗位名称。
+	 */
+	public void setPostName(String postName) {
+		this.postName = postName;
+	}
+	/**
+	 * 获取员工等级。
+	 * @return 员工等级。
+	 */
+	public String getRankName() {
+		return rankName;
+	}
+	/**
+	 * 设置员工等级。
+	 * @param rankName
+	 * 员工等级。
+	 */
+	public void setRankName(String rankName) {
+		this.rankName = rankName;
+	}
+	/**
+	 * 获取报告类型。
+	 * @return 报告类型。
 	 */
 	public Integer getType() {
 		return type;
 	}
 	/**
-	 * 设置员工报表类型。
+	 * 设置报告类型。
 	 * @param type
-	 * 员工报表类型。
+	 * 报告类型。
 	 */
 	public void setType(Integer type) {
 		this.type = type;
 	}
 	/**
-	 * 获取员工报表状态。
-	 * @return 员工报表状态。
+	 * 获取报告类型名称。
+	 * @return 报告类型名称。
+	 */
+	public String getTypeName() {
+		return typeName;
+	}
+	/**
+	 * 设置报告类型名称。
+	 * @param typeName
+	 * 报告类型名称。
+	 */
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	/**
+	 * 获取报告状态。
+	 * @return 报告状态。
 	 */
 	public Integer getStatus() {
 		return status;
 	}
 	/**
-	 * 设置员工报表状态。
+	 * 设置报告状态。
 	 * @param status
-	 * 员工报表状态。
+	 * 报告状态。
 	 */
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	/**
-	 * 获取员工报表创建时间。
-	 * @return 员工报表创建时间。
+	 * 获取报告状态名称。
+	 * @return 报告状态名称。
+	 */
+	public String getStatusName() {
+		return statusName;
+	}
+	/**
+	 * 设置报告状态名称。
+	 * @param statusName
+	 * 报告状态名称。
+	 */
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+	/**
+	 * 获取报告计划ID。
+	 * @return 报告计划ID。
+	 */
+	public String getPlanId() {
+		return planId;
+	}
+	/**
+	 * 设置报告计划ID。
+	 * @param planId
+	 * 报告计划ID。
+	 */
+	public void setPlanId(String planId) {
+		this.planId = planId;
+	}
+	/**
+	 * 获取报告计划内容。
+	 * @return 报告计划内容。
+	 */
+	public String getPlanDetail() {
+		return planDetail;
+	}
+	/**
+	 * 设置报告计划内容。
+	 * @param planDetail
+	 * 报告计划内容。
+	 */
+	public void setPlanDetail(String planDetail) {
+		this.planDetail = planDetail;
+	}
+	/**
+	 * 获取报告计划关联业务系统ID。
+	 * @return 报告计划关联业务系统ID。
+	 */
+	public String[] getPlanBusinessId() {
+		return planBusinessId;
+	}
+	/**
+	 * 设置报告计划关联业务系统ID。
+	 * @param planBusinessId
+	 * 报告计划关联业务系统ID。
+	 */
+	public void setPlanBusinessId(String[] planBusinessId) {
+		this.planBusinessId = planBusinessId;
+	}
+	/**
+	 * 获取报告总结ID。
+	 * @return 报告总结ID。
+	 */
+	public String getSummaryId() {
+		return summaryId;
+	}
+	/**
+	 * 设置报告总结ID。
+	 * @param summaryId
+	 * 报告总结ID。
+	 */
+	public void setSummaryId(String summaryId) {
+		this.summaryId = summaryId;
+	}
+	/**
+	 * 获取报告总结内容。
+	 * @return 报告总结内容。
+	 */
+	public String getSummaryDetail() {
+		return summaryDetail;
+	}
+	/**
+	 * 设置报告总结内容。
+	 * @param summaryDetail
+	 * 报告总结内容。
+	 */
+	public void setSummaryDetail(String summaryDetail) {
+		this.summaryDetail = summaryDetail;
+	}
+	/**
+	 * 获取报告总结关联业务系统ID。
+	 * @return 报告总结关联业务系统ID。
+	 */
+	public String[] getSummaryBusinessId() {
+		return summaryBusinessId;
+	}
+	/**
+	 * 设置报告总结关联业务系统ID。
+	 * @param summaryBusinessId
+	 * 报告总结关联业务系统ID。
+	 */
+	public void setSummaryBusinessId(String[] summaryBusinessId) {
+		this.summaryBusinessId = summaryBusinessId;
+	}
+	/**
+	 * 获取报告困难/支援ID。
+	 * @return 报告困难/支援ID。
+	 */
+	public String getSupportId() {
+		return supportId;
+	}
+	/**
+	 * 设置报告困难/支援ID。
+	 * @param supportId
+	 * 报告困难/支援ID。
+	 */
+	public void setSupportId(String supportId) {
+		this.supportId = supportId;
+	}
+	/**
+	 * 获取报告困难/支援内容。
+	 * @return 报告困难/支援内容。
+	 */
+	public String getSupportDetail() {
+		return supportDetail;
+	}
+	/**
+	 * 设置报告困难/支援内容。
+	 * @param supportDetail
+	 * 报告困难/支援内容。
+	 */
+	public void setSupportDetail(String supportDetail) {
+		this.supportDetail = supportDetail;
+	}
+	/**
+	 *  获取报告困难/支援关联业务系统ID。
+	 * @return 报告困难/支援关联业务系统ID。
+	 */
+	public String[] getSupportBusinessId() {
+		return supportBusinessId;
+	}
+	/**
+	 * 设置报告困难/支援关联业务系统ID。
+	 * @param supportBusinessId
+	 * 报告困难/支援关联业务系统ID。
+	 */
+	public void setSupportBusinessId(String[] supportBusinessId) {
+		this.supportBusinessId = supportBusinessId;
+	}
+	/**
+	 * 获取报告建议/意见ID。
+	 * @return 报告建议/意见ID。
+	 */
+	public String getSuggetsionId() {
+		return suggetsionId;
+	}
+	/**
+	 * 设置报告建议/意见ID。
+	 * @param suggetsionId
+	 * 报告建议/意见ID。
+	 */
+	public void setSuggetsionId(String suggetsionId) {
+		this.suggetsionId = suggetsionId;
+	}
+	/**
+	 * 获取报告建议/意见内容。
+	 * @return 报告建议/意见内容。
+	 */
+	public String getSuggetsionDetail() {
+		return suggetsionDetail;
+	}
+	/**
+	 * 设置报告建议/意见内容。
+	 * @param suggetsionDetail
+	 * 报告建议/意见内容。
+	 */
+	public void setSuggetsionDetail(String suggetsionDetail) {
+		this.suggetsionDetail = suggetsionDetail;
+	}
+	/**
+	 *  获取报告建议/意见关联业务系统ID。
+	 * @return 报告建议/意见关联业务系统ID。
+	 */
+	public String[] getSuggetsionBusinessId() {
+		return suggetsionBusinessId;
+	}
+	/**
+	 * 设置报告建议/意见关联业务系统ID。
+	 * @param suggetsionBusinessId
+	 * 报告建议/意见关联业务系统ID。
+	 */
+	public void setSuggetsionBusinessId(String[] suggetsionBusinessId) {
+		this.suggetsionBusinessId = suggetsionBusinessId;
+	}
+	/**
+	 * 获取报告创建时间。
+	 * @return 报告创建时间。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}
 	/**
-	 * 设置员工报表创建时间。
+	 * 设置报告创建时间。
 	 * @param createTime
-	 * 员工报表创建时间。
+	 * 报告创建时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 	/**
-	 * 获取员工报表提交时间。
-	 * @return 员工报表提交时间。
+	 * 获取报告提交时间。
+	 * @return 报告提交时间。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getPostTime() {
 		return postTime;
 	}
 	/**
-	 * 设置员工报表提交时间。
+	 * 设置报告提交时间。
 	 * @param postTime
-	 * 员工报表提交时间。
+	 * 报告提交时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setPostTime(Date postTime) {
 		this.postTime = postTime;
 	}
 	/**
-	 * 获取员工报表最后提交时间。
-	 * @return 员工报表最后提交时间。
+	 * 获取报告最后提交时间。
+	 * @return 报告最后提交时间。
 	 */
 	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getLastPostTime() {
 		return lastPostTime;
 	}
 	/**
-	 * 设置员工报表最后提交时间。
+	 * 设置报告最后提交时间。
 	 * @param lastPostTime
-	 * 员工报表最后提交时间。
+	 * 报告最后提交时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setLastPostTime(Date lastPostTime) {
 		this.lastPostTime = lastPostTime;
 	}
-	/**
-	 * 获取计划ID。
-	 * @return 计划ID。
+	/*
+	 * 获取当前用户ID。
+	 * @see com.examw.oa.controllers.IUser#getCurrentUserId()
 	 */
-	public String getPlanId() {
-		return planId;
+	@Override
+	public String getCurrentUserId() {
+		return this.currentUserId;
 	}
-	/**
-	 * 设置计划ID。
-	 * @param planId
-	 * 计划ID。
+	/*
+	 * 设置当前用户ID。
+	 * @see com.examw.oa.controllers.IUser#setCurrentUserId(java.lang.String)
 	 */
-	public void setPlanId(String planId) {
-		this.planId = planId;
-	}
-	/**
-	 * 获取总结ID。
-	 * @return 总结ID。
-	 */
-	public String getSummaryId() {
-		return summaryId;
-	}
-	/**
-	 * 设置总结ID。
-	 * @param summaryId
-	 * 总结ID。
-	 */
-	public void setSummaryId(String summaryId) {
-		this.summaryId = summaryId;
-	}
-	/**
-	 * 获取建议ID。
-	 * @return 建议ID。
-	 */
-	public String getSuggetsionsId() {
-		return suggetsionsId;
-	}
-	/**
-	 * 设置建议ID。
-	 * @param suggetsionsId
-	 * 建议ID。
-	 */
-	public void setSuggetsionsId(String suggetsionsId) {
-		this.suggetsionsId = suggetsionsId;
-	}
-	/**
-	 * 获取困难ID。
-	 * @return 困难ID。
-	 */
-	public String getSupportId() {
-		return supportId;
-	}
-	/**
-	 * 设置困难ID。
-	 * @param supportId
-	 * 困难ID。
-	 */
-	public void setSupportId(String supportId) {
-		this.supportId = supportId;
-	}
-	/**
-	 * 获取计划内容。
-	 * @return 计划内容。
-	 */
-	public String getPlanDetail() {
-		return planDetail;
-	}
-	/**
-	 * 设置计划内容。
-	 * @param planDetail
-	 * 计划内容。
-	 */
-	public void setPlanDetail(String planDetail) {
-		this.planDetail = planDetail;
-	}
-	/**
-	 * 获取总结内容。
-	 * @return 总结内容。
-	 */
-	public String getSummaryDetail() {
-		return summaryDetail;
-	}
-	/**
-	 * 设置总结内容。
-	 * @param summaryDetail
-	 * 总结内容。
-	 */
-	public void setSummaryDetail(String summaryDetail) {
-		this.summaryDetail = summaryDetail;
-	}
-	/**
-	 * 获取建议内容。
-	 * @return 建议内容。
-	 */
-	public String getSuggetsionsDetail() {
-		return suggetsionsDetail;
-	}
-	/**
-	 * 设置建议内容。
-	 * @param suggetsionsDetail
-	 * 建议内容。
-	 */
-	public void setSuggetsionsDetail(String suggetsionsDetail) {
-		this.suggetsionsDetail = suggetsionsDetail;
-	}
-	/**
-	 * 获取困难内容。
-	 * @return
-	 * 困难内容。
-	 */
-	public String getSupportDetail() {
-		return supportDetail;
-	}
-	/**
-	 * 设置困难内容。
-	 * @param supportDetail
-	 * 困难内容。
-	 */
-	public void setSupportDetail(String supportDetail) {
-		this.supportDetail = supportDetail;
-	}
-	/**
-	 * 获取系统业务数组。
-	 * @return 系统业务数组。
-	 */
-	public String[] getBusinessId() {
-		return businessId;
-	}
-	/**
-	 * 设置系统业务数组。
-	 * @param businessId
-	 * 系统业务数组。
-	 */
-	public void setBusinessId(String[] businessId) {
-		this.businessId = businessId;
+	@Override
+	public void setCurrentUserId(String currentUserId) {
+		this.currentUserId = currentUserId;
 	}
 }

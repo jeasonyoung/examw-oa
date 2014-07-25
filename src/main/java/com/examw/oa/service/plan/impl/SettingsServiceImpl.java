@@ -164,14 +164,14 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 	private String[] loadTypeValue(Integer type){
 		if(type == null) return null;
 		List<String> list = new ArrayList<>();
-		if((type & Settings.TYPE_DAY) == Settings.TYPE_DAY){
-			list.add(Settings.TYPE_DAY.toString());
+		if((type & Settings.TYPE_DAILY) == Settings.TYPE_DAILY){
+			list.add(Settings.TYPE_DAILY.toString());
 		}
-		if((type & Settings.TYPE_WEEK) == Settings.TYPE_WEEK){
-			list.add(Settings.TYPE_WEEK.toString());
+		if((type & Settings.TYPE_WEEKLY) == Settings.TYPE_WEEKLY){
+			list.add(Settings.TYPE_WEEKLY.toString());
 		}
-		if((type & Settings.TYPE_MONTH) == Settings.TYPE_MONTH){
-			list.add(Settings.TYPE_MONTH.toString());
+		if((type & Settings.TYPE_MONTHLY) == Settings.TYPE_MONTHLY){
+			list.add(Settings.TYPE_MONTHLY.toString());
 		}
 		return list.toArray(new String[0]);
 	}
@@ -184,14 +184,14 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 		if(logger.isDebugEnabled()) logger.debug("加载类型［"+type+"］名称...");
 		if(this.typeMap == null || type == null) return null; 
 		StringBuilder sb = new StringBuilder();
-		if((type & Settings.TYPE_DAY) == Settings.TYPE_DAY){
-			sb.append(",").append(this.typeMap.get(Settings.TYPE_DAY));
+		if((type & Settings.TYPE_DAILY) == Settings.TYPE_DAILY){
+			sb.append(",").append(this.typeMap.get(Settings.TYPE_DAILY));
 		}
-		if((type & Settings.TYPE_WEEK) == Settings.TYPE_WEEK){
-			sb.append(",").append(this.typeMap.get(Settings.TYPE_WEEK));
+		if((type & Settings.TYPE_WEEKLY) == Settings.TYPE_WEEKLY){
+			sb.append(",").append(this.typeMap.get(Settings.TYPE_WEEKLY));
 		}
-		if((type & Settings.TYPE_MONTH) == Settings.TYPE_MONTH){
-			sb.append(",").append(this.typeMap.get(Settings.TYPE_MONTH));
+		if((type & Settings.TYPE_MONTHLY) == Settings.TYPE_MONTHLY){
+			sb.append(",").append(this.typeMap.get(Settings.TYPE_MONTHLY));
 		}
 		if(sb.length() > 0) 
 			return sb.substring(1);
@@ -202,10 +202,8 @@ public class SettingsServiceImpl extends BaseDataServiceImpl<Settings, SettingsI
 	 * @see com.examw.oa.service.plan.ISettingsService#findSettings(java.lang.Integer)
 	 */
 	@Override
-	public List<Settings> findSettings(final Integer type) {
-		 return this.find(new SettingsInfo(){
-			private static final long serialVersionUID = 1L;
-			public String[] getType(){ return new String[]{ type == null ? null: type.toString()};}
-		 });
+	public List<Settings> findSettings(Integer type) {
+		  if(type == null) return null;
+		  return this.settingsDao.findSettings(type);
 	}
 }

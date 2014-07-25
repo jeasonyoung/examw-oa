@@ -15,20 +15,8 @@ public class Report implements Serializable{
 	private String id;
 	private Integer type,status;
 	private Employee employee;
-	private Set<Detail> details;
+	private Set<ReportDetail> details;
 	private Date createTime,postTime,lastPostTime;
-	/**
-	 * 类型－日报。
-	 */
-	public static final Integer TYPE_DAILY = 0x01;
-	/**
-	 * 类型－周报。
-	 */
-	public static final Integer TYPE_WEEKLY = 0x02;
-	/**
-	 * 类型－月报。
-	 */
-	public static final Integer TYPE_MONTHLY = 0x04;
 	/**
 	 * 状态－未提交。
 	 */
@@ -44,11 +32,11 @@ public class Report implements Serializable{
 	/**
 	 * 状态－迟交。
 	 */
-	public static final Integer STATUS_LATE = 3;
+	public static final Integer STATUS_LATE = -1;
 	/**
 	 * 状态－缺交。
 	 */
-	public static final Integer STATUS_LACK = 4;
+	public static final Integer STATUS_LACK = -2;
 	/**
 	 * 获取报告ID。
 	 * @return 报告ID。
@@ -110,18 +98,18 @@ public class Report implements Serializable{
 		this.status = status;
 	}
 	/**
-	 * 获取明细集合。
-	 * @return 明细集合。
+	 * 获取报告明细集合。
+	 * @return 报告明细集合。
 	 */
-	public Set<Detail> getDetails() {
+	public Set<ReportDetail> getDetails() {
 		return details;
 	}
 	/**
-	 * 设置明细集合。
+	 * 设置报告明细集合。
 	 * @param details
-	 * 明细集合。
+	 * 报告明细集合。
 	 */
-	public void setDetails(Set<Detail> details) {
+	public void setDetails(Set<ReportDetail> details) {
 		this.details = details;
 	}
 	/**

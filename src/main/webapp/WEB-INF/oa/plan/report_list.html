@@ -1,4 +1,4 @@
-<#--业务系统列表-->
+<#--员工报告列表-->
 <#include "ftl/comm.ftl"/>
 <#assign module="plan_report"/>
 <#assign dg="${module}_list_dg"/>
@@ -19,49 +19,54 @@ $(function(){
 		striped:true,
 		idField:"id",
 		sortName:"createTime",
-		sortOrder:"asc",
+		sortOrder:"desc",
 		columns:[[{
-			title:"姓名",
+			title:"所属部门",
+			field:"deptName",
+			width:35,
+			align:"left",
+			sortable:true
+		},{
+			title:"员工姓名",
 			field:"employeeName",
 			width:20,
 			align:"left",
 			sortable:true
 		},{
-			title:"类型",
+			title:"报告类型",
 			field:"typeName",
-			width:20,
-			align:"left",
-			sortable:true
-		},{
-			title:"状态",
-			field:"status",
-			width:20,
-			align:"left",
-			formatter:function(value,row,index){
-				if(value == ${STATUS_NONE_VALUE}) return "${STATUS_NONE_NAME}";
-				if(value == ${STATUS_POST_VALUE}) return "${STATUS_POST_NAME}";
-				if(value == ${STATUS_AUDIT_VALUE}) return "${STATUS_AUDIT_NAME}";
-				if(value == ${STATUS_LATE_VALUE}) return "${STATUS_LATE_NAME}";
-				if(value == ${STATUS_LACK_VALUE}) return "${STATUS_LACK_NAME}";
-				return value;
-			},
-			sortable:true
-		},{
-			title:"创建时间",
-			field:"createTime",
-			width:30,
+			width:15,
 			align:"center",
 			sortable:true
 		},{
 			title:"提交时间",
 			field:"postTime",
-			width:30,
+			width:20,
+			align:"center",
+			sortable:true
+		},{
+			title:"报告状态",
+			field:"statusName",
+			width:15,
+			align:"center",
+			styler:function(value,row,index){
+				if(row.status == ${CURRENT_STATUS_NONE}) return "color:#7B7B7B;";
+				if(row.status == ${CURRENT_STATUS_POST}) return "color:#006000;";
+				if(row.status == ${CURRENT_STATUS_LACK}) return "color:#D94600;";
+				if(row.status == ${CURRENT_STATUS_LATE}) return "color:#977C00;";
+				if(row.status == ${CURRENT_STATUS_AUDIT}) return "color:#467500;";
+			},
+			sortable:true
+		},{
+			title:"创建时间",
+			field:"createTime",
+			width:20,
 			align:"center",
 			sortable:true
 		},{
 			title:"最后提交时间",
 			field:"lastPostTime",
-			width:30,
+			width:20,
 			align:"center",
 			sortable:true
 		}]],
@@ -70,55 +75,51 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑报告信息",rowIndex,rowData);
+			edit_window("提交"+ rowData.typeName +"报告",rowIndex,rowData);
 		}
 	});
-	var d;
-	function edit_window_btn_save(row,index){
-		if(!row || (row.status !=${STATUS_NONE_VALUE})) return null;
-		return {
-			text:"提交",
-			iconCls:"icon-save",
-			handler:function(){
-				$.messager.progress();
-				$("#${module}_edit_form").form("submit",{
-					url:"<@s.url '/plan/report/update'/>",
-					onSubmit: function(){
-						var isValid = $(this).form("validate");
-						if (!isValid)$.messager.progress("close");
-						return isValid;
-					},
-					onLoadError:function(e){
-						$.messager.progress("close");
-						<@error_dialog "e"/>
-					},
-					success:function(data){
-						$.messager.progress("close");
-						var data = $.parseJSON(data);
-						if(data.success){
-							dg.datagrid(row ? "updateRow" : "insertRow",{
-								index:index,
-								row:data.data
-							});
-							d.dialog("close");
-						}else{
-							$.messager.show({
-								title:"保存异常",
-								msg:data.msg
-							});
-						}
-					}
-				});
-			}
-		};
-	};
 	//edit
 	function edit_window(title,index,row){
-		var btns =[];
-		/* <shiro.hasPermission name="${PER_UPDATE}"> */
-		var save_btn_obj = edit_window_btn_save(row,index);
-		if(save_btn_obj != null) btns.push(save_btn_obj);
-		/*</shiro.hasPermission> */
+		var btns = [];
+		<@shiro.hasPermission name="${PER_UPDATE}">
+		if(row && (row.status == ${CURRENT_STATUS_NONE} || row.status == ${CURRENT_STATUS_POST})){
+			btns.push({
+				text:"提交",
+				iconCls:"icon-save",
+				handler:function(){
+					$.messager.progress();
+					$("#${module}_edit_form").form("submit",{
+						url:"<@s.url '/plan/report/update'/>",
+						onSubmit: function(){
+							var isValid = $(this).form("validate");
+							if (!isValid)$.messager.progress("close");
+							return isValid;
+						},
+						onLoadError:function(e){
+							$.messager.progress("close");
+							<@error_dialog "e"/>
+						},
+						success:function(data){
+							$.messager.progress("close");
+							var data = $.parseJSON(data);
+							if(data.success){
+								dg.datagrid(row ? "updateRow" : "insertRow",{
+									index:index,
+									row:data.data
+								});
+								d.dialog("close");
+							}else{
+								$.messager.show({
+									title:"保存异常",
+									msg:data.msg
+								});
+							}
+						}
+					});
+				}
+			});
+		}
+		</@shiro.hasPermission>
 		btns.push({
 			text:"关闭",
 			iconCls:"icon-cancel",
@@ -126,10 +127,11 @@ $(function(){
 				d.dialog("close");
 			}
 		});
-		d = $("<div/>").dialog({
+		//dialog
+		var d = $("<div/>").dialog({
 			title:title,
 			width:800,
-			height:643,
+			height:600,
 			href:"<@s.url '/plan/report/edit'/>",
 			modal:true,
 			buttons:btns,
@@ -139,28 +141,15 @@ $(function(){
 			onLoad:function(){
 				if(row){
 					$("#${module}_edit_form").form("load",row);
-					if(row.planDetail)$("#${module}_edit_form textarea[name='planDetail']").kindeditor("setValue",row.planDetail);
 					if(row.summaryDetail)$("#${module}_edit_form textarea[name='summaryDetail']").kindeditor("setValue",row.summaryDetail);
+					if(row.planDetail)$("#${module}_edit_form textarea[name='planDetail']").kindeditor("setValue",row.planDetail);
 					if(row.supportDetail)$("#${module}_edit_form textarea[name='supportDetail']").kindeditor("setValue",row.supportDetail);
-					if(row.suggetsionsDetail)$("#${module}_edit_form textarea[name='suggetsionsDetail']").kindeditor("setValue",row.suggetsionsDetail);
+					if(row.suggetsionDetail)$("#${module}_edit_form textarea[name='suggetsionDetail']").kindeditor("setValue",row.suggetsionDetail);
 				}
 			}
-	  });
-	};
-	//search
-	${dg}_search = function(){
-		dg.datagrid("load",{
-			employeeName:$("#${dg}_toobar input[name='name']").val(),
-			postTime:$("#${dg}_toobar input[name='postTime']").val()
 		});
 	};
 });
 //-->
 </script>
 <table id="${dg}"></table>
-<div id="${dg}_toobar">
-	<!-- </shiro.hasPermission> -->
-	<label>员工姓名：<input name="name" type="text" style="width:140px;"/></label>
-	<label>提交时间：<input name="postTime" type="text" class="easyui-datebox" required="required" style="width:140px;"/></label>
-	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
-</div>

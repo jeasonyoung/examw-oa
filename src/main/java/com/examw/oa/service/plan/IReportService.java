@@ -1,17 +1,15 @@
 package com.examw.oa.service.plan;
 
-import java.util.Map;
-
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
- * 计划总结服务接口。
+ * 员工报告服务接口。
  * @author lq
  * @since 2014-06-25.
  */
-public interface IReportService extends IBaseDataService<ReportInfo>{
+public interface IReportService extends IBaseDataService<ReportInfo>,IQuartzTask {
 	/**
-	 * 加载状态名称。
+	 * 加载报告状态名称。
 	 * @param status
 	 * 状态值。
 	 * @return
@@ -19,21 +17,11 @@ public interface IReportService extends IBaseDataService<ReportInfo>{
 	 */
 	String loadStatusName(Integer status);
 	/**
-	 * 日报任务
-	 */
-	void addTaskDaily();
-	/**
-	 * 周报任务
-	 */
-	void addTaskWeek();
-	/**
-	 * 月报任务
-	 */
-	void addTaskMonth();
-	/**
-	 * 取得状态映射
+	 * 加载报告明细类型名称。
+	 * @param type
+	 * 类型值。
 	 * @return
+	 * 类型名称。
 	 */
-	Map<String,String> getStatusMap();
-	
+	String loadDetailTypeName(Integer type);
 }

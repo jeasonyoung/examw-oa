@@ -5,16 +5,12 @@
 	<bean id="businessDao" class="com.examw.oa.dao.plan.impl.BusinessDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<!-- 员工计划总结Dao -->
+	<!-- 员工报告设置Dao -->
 	<bean id="settingsDao" class="com.examw.oa.dao.plan.impl.SettingsDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<!-- 员工报表Dao -->
+	<!-- 员工报告Dao -->
 	<bean id="reportDao" class="com.examw.oa.dao.plan.impl.ReportDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
-	<!-- 计划总结明细Dao -->
-	<bean id="detailDao" class="com.examw.oa.dao.plan.impl.DetailDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>

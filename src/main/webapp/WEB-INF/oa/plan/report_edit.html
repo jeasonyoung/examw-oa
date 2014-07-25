@@ -1,63 +1,109 @@
-<#--计划总结编辑-->
+<#--报告编辑-->
 <#include "ftl/comm.ftl"/>
 <#assign module="plan_report"/>
 <#assign form="${module}_edit_form"/>
-<form id="${form}" method="POST" class="easyui-tabs" style="padding:2px;"> 
-	<input type="hidden" name="id"/>
-	<div title="${TYPE_PLAN_NAME}" style="margin-top:2px;">
-		<div>
-		<label style="width:105px;font-size:18px;">业务系统：</label>
-		<#if business ??>
-			<ul style="list-style: none;font-size:15px;">
-				<#list business as b>
-					<input type="checkbox" name="businessId" value="${b.id}" />${b.name}
-				</#list>
-			</ul>
-		</#if>
+<form id="${form}" method="POST" class="easyui-layout" data-options="fit:true"> 
+	<div data-options="region:'north'" style="height:38px;">
+		<div style="float:left;margin-top:12px;width:100%;">
+			<div style="float:left;">
+				<label style="width:65px;">所属部门：</label>
+				<input type="text" name="deptName" style="border-style:none;border-bottom:solid 1px #ccc;width:90px;"/>
+				<input type="hidden" name="id" />
+			</div>
+			<div style="float:left;">
+				<label style="width:60px;">员工姓名：</label>
+				<input type="text" name="employeeName" style="border-style:none;border-bottom:solid 1px #ccc;width:70px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:60px;">所属岗位：</label>
+				<input type="text" name="postName" style="border-style:none;border-bottom:solid 1px #ccc;width:90px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:60px;">员工等级：</label>
+				<input type="text" name="rankName" style="border-style:none;border-bottom:solid 1px #ccc;width:70px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:40px;">类型：</label>
+				<input type="text" name="typeName" style="border-style:none;border-bottom:solid 1px #ccc;width:40px;"/>
+			</div>
+			<div style="float:left;">
+				<label style="width:40px;">状态：</label>
+				<input type="text" name="statusName" style="border-style:none;border-bottom:solid 1px #ccc;width:50px;"/>
+			</div>
 		</div>
-		<input type="hidden" name="planId"/>
-		<textarea name="planDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:770px;height:469px;"></textarea>
 	</div>
-	<div title="${TYPE_SUMMARY_NAME}" style="margin-top:2px;"> 
-		<div>
-		<label style="width:105px;font-size:18px ">业务系统：</label>
-		<#if business ??>
-			<ul style="list-style: none;font-size:15px;">
-				<#list business as b>
-					<input type="checkbox" name="businessId" value="${b.id}" />${b.name}
-				</#list>
-			</ul>
-		</#if>
+	<div  class="easyui-tabs" data-options="region:'center'">
+		<div title="${TYPE_SUMMARY_NAME}">
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<input type="text" name="summaryBusinessId" class="easyui-combobox" data-options="
+					url:'<@s.url '/plan/business/all'/>',
+					valueField:'id',
+					textField:'name',
+					multiple:true,
+					onLoadError:function(e){
+						<@error_dialog 'e'/>
+					}
+				" style="width:658px;">
+				<input type="hidden" name="summaryId" />
+			</div>
+			<div style="float:left;margin-top:5px;width:99%;">
+				<textarea name="summaryDetail"  rows="10" cols="10" class="easyui-kindeditor"  style="width:100%;height:400px;"/>
+			</div>
 		</div>
-		<input type="hidden" name="summaryId"/>
-		<textarea name="summaryDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:475px;"></textarea>
+		<div title="${TYPE_PLAN_NAME}">
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<input type="text" name="planBusinessId" class="easyui-combobox" data-options="
+					url:'<@s.url '/plan/business/all'/>',
+					valueField:'id',
+					textField:'name',
+					multiple:true,
+					onLoadError:function(e){
+						<@error_dialog 'e'/>
+					}
+				" style="width:658px;">
+				<input type="hidden" name="planId" />
+			</div>
+			<div style="float:left;margin-top:5px;width:99%;">
+				<textarea name="planDetail"  rows="10" cols="10" class="easyui-kindeditor"  style="width:100%;height:400px;"/>
+			</div>
+		</div>
+		<div title="${TYPE_SUPPORT_NAME}">
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<input type="text" name="supportBusinessId" class="easyui-combobox" data-options="
+					url:'<@s.url '/plan/business/all'/>',
+					valueField:'id',
+					textField:'name',
+					multiple:true,
+					onLoadError:function(e){
+						<@error_dialog 'e'/>
+					}
+				" style="width:658px;">
+				<input type="hidden" name="supportId" />
+			</div>
+			<div style="float:left;margin-top:5px;width:99%;">
+				<textarea name="supportDetail"  rows="10" cols="10" class="easyui-kindeditor"  style="width:100%;height:400px;"/>
+			</div>
+		</div>
+		<div title="${TYPE_SUGGESTION_NAME}">
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<input type="text" name="suggetsionBusinessId" class="easyui-combobox" data-options="
+					url:'<@s.url '/plan/business/all'/>',
+					valueField:'id',
+					textField:'name',
+					multiple:true,
+					onLoadError:function(e){
+						<@error_dialog 'e'/>
+					}
+				" style="width:658px;">
+				<input type="hidden" name="suggetsionId" />
+			</div>
+			<div style="float:left;margin-top:5px;width:99%;">
+				<textarea name="suggetsionDetail"  rows="10" cols="10" class="easyui-kindeditor"  style="width:100%;height:400px;"/>
+			</div>
+		</div>
 	</div>
-	<div title="${TYPE_SUPPORT_NAME}" style="margin-top:2px;">
-		<div>
-		<label style="width:105px;font-size:18px ">业务系统：</label>
-		<#if business ??>
-			<ul style="list-style: none;font-size:15px;">
-				<#list business as b>
-					<input type="checkbox" name="businessId" value="${b.id}" />${b.name}
-				</#list>
-			</ul>
-		</#if>
-		</div>
-		<input type="hidden" name="supportId"/>
-		<textarea name="supportDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:475px;"></textarea>
-	</div>
-	<div title="${TYPE_SUGGESTIONS_NAME}" style="margin-top:2px;">
-		<div>
-		<label style="width:105px;font-size:18px ">业务系统：</label>
-		<#if business ??>
-			<ul style="list-style: none;font-size:15px;">
-				<#list business as b>
-					<input type="checkbox" name="businessId" value="${b.id}" />${b.name}
-				</#list>
-			</ul>
-		</#if>
-		</div>
-		<input type="hidden" name="suggetsionsId"/>
-		<textarea name="suggetsionsDetail" class="easyui-kindeditor" rows="10" cols="20" style="width:761px;height:475px;"></textarea>
-	</div> 
 </form>

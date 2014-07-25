@@ -9,11 +9,11 @@
 		<property name="statusMap">
 			<map>
 				<!-- 停用 -->
-				<entry key="0" value="${STATUS_STOP}"/>
+				<entry key="0" value="${BUSINESS_STATUS_STOP}"/>
 				<!-- 正常 -->
-				<entry key="1" value="${STATUS_NORMAL}"/>
+				<entry key="1" value="${BUSINESS_STATUS_NORMAL}"/>
 				<!-- 测试 -->
-				<entry key="2" value="${STATUS_TEST}"/>
+				<entry key="2" value="${BUSINESS_STATUS_TEST}"/>
 			</map>
 		</property>
 	</bean>
@@ -27,55 +27,48 @@
 		<property name="typeMap">
 			<map>
 				<!-- 日报 -->
-				<entry key="1" value="${TYPE_DAY}"/>
+				<entry key="1" value="${SETTINGS_TYPE_DAY}"/>
 				<!-- 周报 -->
-				<entry key="2" value="${TYPE_WEEK}"/>
+				<entry key="2" value="${SETTINGS_TYPE_WEEK}"/>
 				<!-- 月报 -->
-				<entry key="4" value="${TYPE_MONTH}"/>
+				<entry key="4" value="${SETTINGS_TYPE_MONTH}"/>
 			</map>
 		</property>
 	</bean>
-	<!-- 员工报表信息 -->
+	<!-- 员工报告服务 -->
 	<bean id="reportSerivce" class="com.examw.oa.service.plan.impl.ReportServiceImpl">
-		<!--员工报表信息接口  -->
+		<!--员工报告数据接口  -->
 		<property name="reportDao" ref="reportDao"/>
-		<!--计划总结明细接口 -->
-		<property name="detailDao" ref="detailDao"/>
-		<!-- 业务系统信息接口 -->
+		<!-- 业务系统数据接口 -->
 		<property name="businessDao" ref="businessDao"/>
 		<!--员工报表设置服务接口 -->
 		<property name="settingsService" ref="settingsService" />
-		<!-- 报表状态集合 -->
+		<!-- 报告状态集合 -->
 		<property name="statusMap">
-				<map>
-					<!-- 未提交 -->
-					<entry key="0" value="${STATUS_NONE}"/>
-					<!-- 已提交 -->
-					<entry key="1" value="${STATUS_POST}"/>
-					<!-- 已审阅 -->
-					<entry key="2" value="${STATUS_AUDIT}"/>
-					<!-- 迟交 -->
-					<entry key="3" value="${STATUS_LATE}"/>
-					<!-- 缺交 -->
-					<entry key="4" value="${STATUS_LACK}"/>
-				</map>
-		</property>
-	</bean>
-	<!-- 计划总结明细 -->
-	<bean id="detailService" class="com.examw.oa.service.plan.impl.DetailServiceImpl">
-		<!--计划总结明细接口 -->
-		<property name="detailDao" ref="detailDao"/>
-		<!--计划总结明细类型集合 -->
-		<property name="typeMap">
 			<map>
-				<!--计划  -->
-				<entry key="1" value="${TYPE_PLAN}"/>
-				<!--总结 -->
-				<entry key="2" value="${TYPE_SUMMARY}"/>
-				<!--困难/支援 -->
-				<entry key="3" value="${TYPE_SUPPORT}"/>
-				<!--建议/意见 -->
-				<entry key="4" value="${TYPE_SUGGESTIONS}"/>
+				<!-- 未提交 -->
+				<entry key="0" value="${REPORT_STATUS_NONE}"/>
+				<!-- 已提交 -->
+				<entry key="1" value="${REPORT_STATUS_POST}"/>
+				<!-- 已审阅 -->
+				<entry key="2" value="${REPORT_STATUS_AUDIT}"/>
+				<!-- 迟交 -->
+				<entry key="-1" value="${REPORT_STATUS_LATE}"/>
+				<!-- 缺交 -->
+				<entry key="-2" value="${REPORT_STATUS_LACK}"/>
+			</map>
+		</property>
+		<!-- 报告明细类型集合 -->
+		<property name="detailTypeMap">
+			<map>
+				<!-- 计划 -->
+				<entry key="1" value="${REPORT_DETAIL_TYPE_PLAN}" />
+				<!-- 总结 -->
+				<entry key="2" value="${REPORT_DETAIL_TYPE_SUMMARY}" />
+				<!-- 困难/支援 -->
+				<entry key="3" value="${REPORT_DETAIL_TYPE_SUPPORT}" />
+				<!-- 建议/意见 -->
+				<entry key="4" value="${REPORT_DETAIL_TYPE_SUGGESTIONS}" />
 			</map>
 		</property>
 	</bean>

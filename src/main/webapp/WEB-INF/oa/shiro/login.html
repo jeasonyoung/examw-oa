@@ -46,8 +46,6 @@
 			<script type="text/javascript">
 			<!--
 			$(function(){
-				//render
-				$.parser.parse("#${module}_dialog");
 				//refresh
 				$("#${module}_dialog img").bind("click",function(){
 					 $(this).attr("src","<@s.url '/verifyCodeImage? _='/>"+ Math.random());
@@ -107,6 +105,8 @@
 						form_submit();
 					}
 				});
+				//render
+				$.parser.parse("#${module}_dialog");
 			});
 			//-->
 			</script>

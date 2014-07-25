@@ -8,9 +8,10 @@ import java.util.Set;
  * @author yangyong.
  * @since 2014-06-23.
  */
-public class Detail implements Serializable {
+public class ReportDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,content;
+	private Report report;
 	private Integer type;
 	private Set<Business> businesses;
 	private Date createTime;
@@ -29,7 +30,7 @@ public class Detail implements Serializable {
 	/**
 	 * 类型－建议/意见。
 	 */
-	public static final Integer TYPE_SUGGESTIONS = 4;
+	public static final Integer TYPE_SUGGESTION = 4;
 	/**
 	 * 获取明细ID。
 	 * @return 明细ID。
@@ -44,6 +45,21 @@ public class Detail implements Serializable {
 	 */
 	public void setId(String id) {
 		this.id = id;
+	}
+	/**
+	 * 获取所属报告。
+	 * @return 所属报告。
+	 */
+	public Report getReport() {
+		return report;
+	}
+	/**
+	 * 设置所属报告。
+	 * @param report
+	 * 所属报告。
+	 */
+	public void setReport(Report report) {
+		this.report = report;
 	}
 	/**
 	 * 获取明细类型。
