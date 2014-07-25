@@ -1,13 +1,13 @@
-<#--员工报告列表-->
+<#--业务系统列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="plan_report"/>
+<#assign module="plan_review"/>
 <#assign dg="${module}_list_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
 	//dg
 	var dg = $("#${dg}").datagrid({
-		url:"<@s.url '/plan/report/datagrid'/>",
+		url:"<@s.url '/plan/review/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -18,7 +18,7 @@ $(function(){
 		border:true,
 		striped:true,
 		idField:"id",
-		sortName:"createTime",
+		sortName:"postTime",
 		sortOrder:"desc",
 		columns:[[{
 			title:"所属部门",
@@ -75,27 +75,26 @@ $(function(){
 		},
 		toolbar:"#${dg}_toobar",
 		onDblClickRow:function(rowIndex,rowData){
-			if(rowData.status == ${CURRENT_STATUS_LACK}){
-				$.messager.alert("提示","您已缺交！");
+			if((rowData.status == ${CURRENT_STATUS_NONE}) || (rowData.status == ${CURRENT_STATUS_LACK})){
+				$.messager.alert("提示","没有报告！");
 				return;
 			}
-			edit_window("提交"+ rowData.typeName +"报告",rowIndex,rowData);
+			edit_window("审阅"+ rowData.typeName +"报告",rowIndex,rowData);
 		}
 	});
 	//edit
 	function edit_window(title,index,row){
 		var btns = [];
 		<@shiro.hasPermission name="${PER_UPDATE}">
-		if(row && (row.status == ${CURRENT_STATUS_NONE} || row.status == ${CURRENT_STATUS_POST})){
+		if(row && (row.status == ${CURRENT_STATUS_POST})){
 			btns.push({
-				text:"提交",
+				text:"审阅",
 				iconCls:"icon-save",
 				handler:function(){
-					$.messager.confirm("确认","您是否确认提交报告?",function(r){
-						if(!r)return;
+					$.messager.confirm("确认","您是否确认审阅报告?",function(r){
 						$.messager.progress();
 						$("#${module}_edit_form").form("submit",{
-							url:"<@s.url '/plan/report/update'/>",
+							url:"<@s.url '/plan/review/update'/>",
 							onSubmit: function(){
 								var isValid = $(this).form("validate");
 								if (!isValid)$.messager.progress("close");
@@ -139,7 +138,7 @@ $(function(){
 			title:title,
 			width:800,
 			height:600,
-			href:"<@s.url '/plan/report/edit'/>",
+			href:"<@s.url '/plan/review/edit'/>",
 			modal:true,
 			buttons:btns,
 			onClose:function(){
@@ -156,7 +155,17 @@ $(function(){
 			}
 		});
 	};
+	//search
+	${dg}_search = function(){
+		dg.datagrid("load",{
+			employeeName:$("#${dg}_toobar input[name='name']").val()
+		});
+	};
 });
 //-->
 </script>
 <table id="${dg}"></table>
+<div id="${dg}_toobar">
+	<label style="width:75px;">员工姓名：<input name="name" type="text" style="width:168px;"/></label>
+	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+</div>

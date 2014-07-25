@@ -18,9 +18,9 @@ public final class ModuleConstant {
 	 */
 	public static final String PLAN_REPORT = "EOA000303";
 	/**
-	 * 报告审阅ID。
+	 * 报告查阅ID。
 	 */
-	public static final String PLAN_APPROVAL = "EOA000403";
+	public static final String PLAN_REVIEW = "EOA000403";
 	/**
 	 * 报告查询ID。
 	 */

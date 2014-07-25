@@ -7,7 +7,7 @@ import com.examw.oa.service.IBaseDataService;
  * @author lq
  * @since 2014-06-25.
  */
-public interface IReportService extends IBaseDataService<ReportInfo>,IQuartzTask {
+public interface IReportService extends IBaseDataService<ReportInfo> {
 	/**
 	 * 加载报告状态名称。
 	 * @param status
