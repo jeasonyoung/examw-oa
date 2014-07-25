@@ -62,6 +62,22 @@ public class ReportReviewServiceImpl extends BaseDataServiceImpl<Report,ReportRe
 		return this.reportDao.findReports(info);
 	}
 	/*
+	 * 加载报告信息。
+	 * @see com.examw.oa.service.plan.IReportReviewService#loadReportReview(java.lang.String)
+	 */
+	@Override
+	public ReportReviewInfo loadReportReview(String id) {
+		if(logger.isDebugEnabled()) logger.debug("加载报告［id="+ id +"］信息...");
+		if(StringUtils.isEmpty(id)) return null;
+		Report data = this.reportDao.load(Report.class, id);
+		if(data == null){
+			String err = "未找到报告［id="+ id +"］数据！";
+			if(logger.isDebugEnabled()) logger.debug(err);
+			throw new RuntimeException(err);
+		}
+		return this.changeModel(data);
+	}
+	/*
 	 * 类型转换。.
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#changeModel(java.lang.Object)
 	 */
@@ -151,7 +167,8 @@ public class ReportReviewServiceImpl extends BaseDataServiceImpl<Report,ReportRe
 		}
 		if(data.getStatus() == Report.STATUS_POST){
 			data.setStatus(Report.STATUS_AUDIT);
-			info.setStatusName(this.reportService.loadStatusName(data.getStatus()));
+			BeanUtils.copyProperties(data, info);
+			info.setStatusName(this.reportService.loadStatusName(info.getStatus()));
 		}
 		return info;
 	}

@@ -94,20 +94,18 @@ $(function(){
 					$.messager.confirm("确认","您是否确认提交报告?",function(r){
 						if(!r)return;
 						$.messager.progress();
-						$("#${module}_edit_form").form("submit",{
+						var post = $("#${module}_edit_form").form("serialize");
+						$.ajax({
 							url:"<@s.url '/plan/report/update'/>",
-							onSubmit: function(){
-								var isValid = $(this).form("validate");
-								if (!isValid)$.messager.progress("close");
-								return isValid;
-							},
-							onLoadError:function(e){
+							type:"POST",
+							data:post,
+							dataType:"json",
+							error:function(e){
 								$.messager.progress("close");
 								<@error_dialog "e"/>
 							},
-							success:function(data){
+							success:function(data,textStatus){
 								$.messager.progress("close");
-								var data = $.parseJSON(data);
 								if(data.success){
 									dg.datagrid(row ? "updateRow" : "insertRow",{
 										index:index,
@@ -116,7 +114,7 @@ $(function(){
 									d.dialog("close");
 								}else{
 									$.messager.show({
-										title:"保存异常",
+										title:"提示",
 										msg:data.msg
 									});
 								}

@@ -1,4 +1,4 @@
-<#--业务系统列表-->
+<#--报告查阅列表-->
 <#include "ftl/comm.ftl"/>
 <#assign module="plan_review"/>
 <#assign dg="${module}_list_dg"/>
@@ -84,6 +84,10 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
+		if(!row || !row.id || $.trim(row.id) == ""){
+			$.messager.alert("提示","没有报告数据！");
+			return;
+		}
 		var btns = [];
 		<@shiro.hasPermission name="${PER_UPDATE}">
 		if(row && (row.status == ${CURRENT_STATUS_POST})){
@@ -138,20 +142,14 @@ $(function(){
 			title:title,
 			width:800,
 			height:600,
-			href:"<@s.url '/plan/review/edit'/>",
+			href:"<@s.url '/plan/review/edit/'/>" + row.id,
 			modal:true,
 			buttons:btns,
 			onClose:function(){
 				$(this).dialog("destroy");
 			},
 			onLoad:function(){
-				if(row){
-					$("#${module}_edit_form").form("load",row);
-					if(row.summaryDetail)$("#${module}_edit_form textarea[name='summaryDetail']").kindeditor("setValue",row.summaryDetail);
-					if(row.planDetail)$("#${module}_edit_form textarea[name='planDetail']").kindeditor("setValue",row.planDetail);
-					if(row.supportDetail)$("#${module}_edit_form textarea[name='supportDetail']").kindeditor("setValue",row.supportDetail);
-					if(row.suggetsionDetail)$("#${module}_edit_form textarea[name='suggetsionDetail']").kindeditor("setValue",row.suggetsionDetail);
-				}
+				if(row) $("#${module}_edit_form").form("load",row);
 			}
 		});
 	};

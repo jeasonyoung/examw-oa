@@ -8,5 +8,12 @@ import com.examw.oa.service.IBaseDataService;
  * @since 2014-07-25.
  */
 public interface IReportReviewService extends IBaseDataService<ReportReviewInfo> {
-
+	/**
+	 * 加载报告信息。
+	 * @param id
+	 * 报告ID。
+	 * @return
+	 * 报告信息。
+	 */
+	ReportReviewInfo loadReportReview(String id);
 }

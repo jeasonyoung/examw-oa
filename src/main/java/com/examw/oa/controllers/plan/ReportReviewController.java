@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,9 +15,11 @@ import com.examw.aware.IUserAware;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.oa.domain.plan.Report;
+import com.examw.oa.domain.plan.ReportDetail;
 import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.plan.ReportReviewInfo;
 import com.examw.oa.service.plan.IReportReviewService;
+import com.examw.oa.service.plan.IReportService;
 
 /**
  * 报告查阅控制器。
@@ -28,7 +31,10 @@ import com.examw.oa.service.plan.IReportReviewService;
 public class ReportReviewController implements IUserAware {
 	private static final Logger logger = Logger.getLogger(ReportReviewController.class);
 	private String current_user_id;
-	//注入报告查阅服务接口
+	//报告服务接口。
+	@Resource
+	private IReportService reportSerivce;
+	//报告查阅服务接口
 	@Resource
 	private IReportReviewService reportReviewService;
 	/*
@@ -77,9 +83,15 @@ public class ReportReviewController implements IUserAware {
 	 * @return
 	 */
 	@RequiresPermissions({ModuleConstant.PLAN_REVIEW + ":" + Right.UPDATE})
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String edit(Integer status,Model model){
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public String edit(@PathVariable String id,Model model){
 		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
+		model.addAttribute("TYPE_SUMMARY_NAME", this.reportSerivce.loadDetailTypeName(ReportDetail.TYPE_SUMMARY));
+		model.addAttribute("TYPE_PLAN_NAME", this.reportSerivce.loadDetailTypeName(ReportDetail.TYPE_PLAN));
+		model.addAttribute("TYPE_SUPPORT_NAME", this.reportSerivce.loadDetailTypeName(ReportDetail.TYPE_SUPPORT));
+		model.addAttribute("TYPE_SUGGESTION_NAME", this.reportSerivce.loadDetailTypeName(ReportDetail.TYPE_SUGGESTION));
+		
+		model.addAttribute("Review", this.reportReviewService.loadReportReview(id));
 		
 		return "plan/review_edit";
 	}
