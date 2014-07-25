@@ -208,7 +208,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		}
 		Set<ReportDetail> details = new HashSet<>();
 		ReportDetail planDetail = this.buildReportDetail(data, info.getPlanId(), ReportDetail.TYPE_PLAN, info.getPlanDetail(), info.getPlanBusinessId()),
-						summaryDetail = this.buildReportDetail(data, info.getSummaryId(), ReportDetail.TYPE_SUMMARY, info.getSummaryDetail(), info.getSuggetsionBusinessId()),
+						summaryDetail = this.buildReportDetail(data, info.getSummaryId(), ReportDetail.TYPE_SUMMARY, info.getSummaryDetail(), info.getSummaryBusinessId()),
 						supportDetail = this.buildReportDetail(data, info.getSupportId(), ReportDetail.TYPE_SUPPORT, info.getSupportDetail(), info.getSupportBusinessId()),
 						suggetsionDetail = this.buildReportDetail(data, info.getSuggetsionId(), ReportDetail.TYPE_SUGGESTION, info.getSuggetsionDetail(), info.getSuggetsionBusinessId());
 		if(planDetail != null) {
