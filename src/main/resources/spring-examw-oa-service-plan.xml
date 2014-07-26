@@ -37,11 +37,11 @@
 	</bean>
 	<!-- 员工报告服务 -->
 	<bean id="reportSerivce" class="com.examw.oa.service.plan.impl.ReportServiceImpl">
-		<!--员工报告数据接口  -->
+		<!-- 员工报告数据接口  -->
 		<property name="reportDao" ref="reportDao"/>
 		<!-- 业务系统数据接口 -->
 		<property name="businessDao" ref="businessDao"/>
-		<!--员工报表设置服务接口 -->
+		<!-- 员工报告设置服务接口 -->
 		<property name="settingsService" ref="settingsService" />
 		<!-- 报告状态集合 -->
 		<property name="statusMap">
@@ -71,5 +71,14 @@
 				<entry key="4" value="${REPORT_DETAIL_TYPE_SUGGESTIONS}" />
 			</map>
 		</property>
+	</bean>
+	<!-- 员工报告审阅服务 -->
+	<bean id="reportReviewService" class="com.examw.oa.service.plan.impl.ReportReviewServiceImpl">
+		<!-- 员工报告数据接口  -->
+		<property name="reportDao" ref="reportDao"/>
+		<!-- 员工报告服务 -->
+		<property name="reportService" ref="reportSerivce" />
+		<!-- 员工报告设置服务接口 -->
+		<property name="settingsService" ref="settingsService" />
 	</bean>
 </beans>

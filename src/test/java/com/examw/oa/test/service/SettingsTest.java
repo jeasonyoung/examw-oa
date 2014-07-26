@@ -7,19 +7,18 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.examw.oa.service.plan.IReportService;
+import com.examw.oa.service.plan.IQuartzTask;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring-examw-oa.xml"})
 public class SettingsTest {
 	@Resource
-	private IReportService reportService;
+	private IQuartzTask reportService;
 	 
 	@Test
 	public void testCreateReport(){
-		 //this.reportService.addTaskDaily();
-		this.reportService.addTaskWeek();
-		 //this.reportService.addTaskMonth();
-		 
+		 this.reportService.addTaskDaily();
+		 this.reportService.addTaskWeek();
+		 this.reportService.addTaskMonth();
 	}
 }

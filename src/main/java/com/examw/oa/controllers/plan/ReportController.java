@@ -41,6 +41,7 @@ public class ReportController implements IUserAware {
 	 */
 	@Override
 	public void setUserId(String userId) {
+		if(logger.isDebugEnabled()) logger.debug("注入当前用户：" + userId);
 		this.current_user_id = userId;
 	}
 	/*
@@ -76,7 +77,7 @@ public class ReportController implements IUserAware {
 		return "plan/report_list";
 	}
 	/**
-	 * 添加页面。
+	 * 编辑页面。
 	 * @return
 	 */
 	@RequiresPermissions({ModuleConstant.PLAN_REPORT + ":" + Right.UPDATE})
@@ -122,7 +123,7 @@ public class ReportController implements IUserAware {
 		} catch (Exception e) {
 			result.setSuccess(false);
 			result.setMsg(e.getMessage());
-			logger.error("更新员工报表信息数据发生异常", e);
+			logger.error("更新数据发生异常", e);
 		}
 		return result;
 	}

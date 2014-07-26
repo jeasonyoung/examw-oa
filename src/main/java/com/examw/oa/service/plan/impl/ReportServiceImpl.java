@@ -21,6 +21,7 @@ import com.examw.oa.domain.plan.ReportDetail;
 import com.examw.oa.domain.plan.Settings;
 import com.examw.oa.model.plan.ReportInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
+import com.examw.oa.service.plan.IQuartzTask;
 import com.examw.oa.service.plan.IReportService;
 import com.examw.oa.service.plan.ISettingsService;
 /**
@@ -28,7 +29,7 @@ import com.examw.oa.service.plan.ISettingsService;
  * @author lq.
  * @since 2014-07-02.
  */
-public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> implements IReportService {
+public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> implements IReportService,IQuartzTask {
 	private static final Logger logger = Logger.getLogger(ReportServiceImpl.class);
 	private IReportDao reportDao;
 	private IBusinessDao businessDao;
@@ -117,7 +118,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		ReportInfo info = new ReportInfo();
 		BeanUtils.copyProperties(data, info);
 		if(data.getEmployee() != null){
-			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
 			if(data.getEmployee().getDepartment() != null){
 				info.setDeptName(data.getEmployee().getDepartment().getName());
@@ -232,7 +232,6 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 		data.setStatus(data.getLastPostTime().getTime() - data.getPostTime().getTime() > 0 ? Report.STATUS_POST : Report.STATUS_LATE);
 		
 		if(data.getEmployee() != null){
-			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
 			if(data.getEmployee().getDepartment() != null){
 				info.setDeptName(data.getEmployee().getDepartment().getName());

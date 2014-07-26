@@ -1,0 +1,85 @@
+<#--报告查阅编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="plan_review"/>
+<#assign form="${module}_edit_form"/>
+<form id="${form}" method="POST" class="easyui-layout" data-options="fit:true,border:false"> 
+	<div data-options="region:'north',border:false" style="height:38px;">
+		<div style="float:left;margin-top:12px;width:100%;">
+			<div style="float:left;">
+				<label style="width:65px;">所属部门：</label>
+				<label style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:90px;">${Review.deptName}</label>
+				<input type="hidden" name="id" />
+			</div>
+			<div style="float:left;">
+				<label style="width:60px;">员工姓名：</label>
+				<label style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:70px;">${Review.employeeName}</label>
+			</div>
+			<div style="float:left;">
+				<label style="width:60px;">所属岗位：</label>
+				<label style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:90px;">${Review.postName}</label>
+			</div>
+			<div style="float:left;">
+				<label style="width:60px;">员工等级：</label>
+				<label style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:70px;">${Review.rankName}</label>
+			</div>
+			<div style="float:left;">
+				<label style="width:40px;">类型：</label>
+				<label style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:40px;">${Review.typeName}</label>
+			</div>
+			<div style="float:left;">
+				<label style="width:40px;">状态：</label>
+				<label style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:50px;">${Review.statusName}</label>
+			</div>
+		</div>
+	</div>
+	<div data-options="region:'center',border:false">
+		<#if (Review.summaryDetail?length > 0)>
+		<fieldset style="float:left;margin-top:5px;width:97%;border:solid 1px #ccc;">
+			<legend>${TYPE_SUMMARY_NAME}</legend>
+			<#if (Review.summaryBusiness?length > 0)>
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.summaryBusiness}</label>
+			</div>
+			</#if>
+			${Review.summaryDetail}
+		</fieldset>
+		</#if>
+		<#if (Review.planDetail?length > 0)>
+		<fieldset style="float:left;margin-top:5px;width:97%;border:solid 1px #ccc;">
+			<legend>${TYPE_PLAN_NAME}</legend>
+			<#if (Review.planBusiness?length > 0)>
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.planBusiness}</label>
+			</div>
+			</#if>
+			<pre>${Review.planDetail}</pre>
+		</fieldset>
+		</#if>
+		<#if (Review.supportDetail?length > 0)>
+		<fieldset style="float:left;margin-top:5px;width:97%;border:solid 1px #ccc;">
+			<legend>${TYPE_SUPPORT_NAME}</legend>
+			<#if (Review.supportBusiness?length > 0)>
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.supportBusiness}</label>
+			</div>
+			</#if>
+			<pre>${Review.supportDetail}</pre>
+		</fieldset>
+		</#if>
+		<#if (Review.suggetsionDetail?length > 0)>
+		<fieldset style="float:left;margin-top:5px;width:97%;border:solid 1px #ccc;">
+			<legend>${TYPE_SUGGESTION_NAME}</legend>
+			<#if (Review.suggetsionBusiness?length > 0)>
+			<div style="float:left;margin-top:12px;width:100%;">
+				<label style="width:100px;">关联业务系统：</label>
+				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.suggetsionBusiness}</label>
+			</div>
+			</#if>
+			<pre>${Review.suggetsionDetail}</pre>
+		</fieldset>
+		</#if>
+	</div>
+</form>
