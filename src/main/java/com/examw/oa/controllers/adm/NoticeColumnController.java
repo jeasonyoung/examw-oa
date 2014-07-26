@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -15,53 +16,53 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.examw.model.DataGrid;
 import com.examw.model.Json;
 import com.examw.model.TreeNode;
+import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.adm.NoticeColumnInfo;
 import com.examw.oa.service.adm.INoticeColumnService;
 /**
- * 栏目设置信息控制器。
+ * 栏目设置控制器。
  * @author lq.
  * @since 2014-07-14.
  */
 @Controller
-@RequestMapping(value = "/adm/noticeColumn")
+@RequestMapping(value = "/adm/column")
 public class NoticeColumnController {
-	private static Logger logger = Logger.getLogger(NoticeColumnController.class);
-	//通知公告栏目服务
+	private static final Logger logger = Logger.getLogger(NoticeColumnController.class);
+	//注入栏目服务接口。
 	@Resource
 	private INoticeColumnService noticeColumnService;
 	/**
-	 * 获取列表页面。
+	 * 列表页面。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.ADM_COLUMN + ":" + Right.VIEW})
 	@RequestMapping(value={"","/list"}, method = RequestMethod.GET)
 	public String list(Model model){
 		if(logger.isDebugEnabled())logger.debug("加载列表页面...");
-		//model.addAttribute("PER_UPDATE", ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE);
-		//model.addAttribute("PER_DELETE", ModuleConstant.SECURITY_ROLE + ":" + Right.DELETE);
-		return "adm/notc_list";
+		model.addAttribute("PER_UPDATE", ModuleConstant.ADM_COLUMN + ":" + Right.UPDATE);
+		model.addAttribute("PER_DELETE", ModuleConstant.ADM_COLUMN + ":" + Right.DELETE);
+		return "adm/notice_column_list";
 	}
 	/**
-	 * 获取编辑页面。
-	 * @return
 	 * 编辑页面。
+	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	@RequiresPermissions({ModuleConstant.ADM_COLUMN + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
-	public String edit(String id,String ignore,Model model){
+	public String edit(String ignore,Model model){
 		if(logger.isDebugEnabled())logger.debug("加载编辑页面...");
-		model.addAttribute("CURRENT_DEPT_ID", StringUtils.isEmpty(id) ? "" : id);
 		model.addAttribute("CURRENT_IGNORE", StringUtils.isEmpty(ignore) ? "" : ignore);
-		return "adm/notc_edit";
+		return "adm/notice_column_edit";
 	}
 	/**
 	 * 查询数据。
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.VIEW})
+	@RequiresPermissions({ModuleConstant.ADM_COLUMN + ":" + Right.VIEW})
 	@RequestMapping(value="/datagrid", method = RequestMethod.POST)
 	@ResponseBody
 	public DataGrid<NoticeColumnInfo> datagrid(NoticeColumnInfo info){
+		if(logger.isDebugEnabled()) logger.debug("加载列表数据...");
 		return this.noticeColumnService.datagrid(info);
 	}
 	/**
@@ -71,7 +72,7 @@ public class NoticeColumnController {
 	 * @return
 	 * 更新后数据。
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.UPDATE})
+	@RequiresPermissions({ModuleConstant.ADM_COLUMN + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Json update(NoticeColumnInfo info){
@@ -83,7 +84,7 @@ public class NoticeColumnController {
 		} catch (Exception e) {
 			result.setSuccess(false);
 			result.setMsg(e.getMessage());
-			logger.error("更新部门数据发生异常", e);
+			logger.error("更新数据发生异常", e);
 		}
 		return result;
 	}
@@ -92,7 +93,7 @@ public class NoticeColumnController {
 	 * @param id
 	 * @return
 	 */
-	//@RequiresPermissions({ModuleConstant.SECURITY_ROLE + ":" + Right.DELETE})
+	@RequiresPermissions({ModuleConstant.ADM_COLUMN + ":" + Right.DELETE})
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
 	@ResponseBody
 	public Json delete(String id){

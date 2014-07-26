@@ -21,15 +21,15 @@ import com.examw.oa.service.security.impl.MenuServiceImpl;
  * @since 2014-07-14
  */
 public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, NoticeColumnInfo> implements INoticeColumnService {
-	private static Logger logger = Logger.getLogger(MenuServiceImpl.class);
-	private INoticeColumnDao notcDao;
+	private static final Logger logger = Logger.getLogger(MenuServiceImpl.class);
+	private INoticeColumnDao noticeColumnDao;
 	/**
-	 * 设置栏目数据接口
+	 * 设置栏目数据接口。
 	 * @param noticeColumnDao
 	 */
-	public void setNotcDao(INoticeColumnDao notcDao) {
+	public void setNoticeColumnDao(INoticeColumnDao noticeColumnDao) {
 		if(logger.isDebugEnabled()) logger.debug("注入设置栏目数据接口...");
-		this.notcDao = notcDao;
+		this.noticeColumnDao = noticeColumnDao;
 	}
 	/*
 	 * 查询数据。
@@ -38,7 +38,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	@Override
 	protected List<NoticeColumn> find(NoticeColumnInfo info) {
 		if(logger.isDebugEnabled()) logger.debug("查询数据...");
-		return this.notcDao.findNoticeColumn(info);
+		return this.noticeColumnDao.findNoticeColumn(info);
 	}
 	/*
 	 * 类型转换。
@@ -54,10 +54,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 		if(data.getParent() != null)info.setPid(data.getParent().getId());
 		return info;
 	}
-	/*
-	 * 部门全称。
-	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#loadFullName(java.lang.Object)
-	 */
+	//菜单全称。
 	private String loadFullName(NoticeColumn data){
 		if(data == null) return null;
 		if(data.getParent() == null) return data.getName();
@@ -74,7 +71,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	@Override
 	protected Long total(NoticeColumnInfo info) {
 		if(logger.isDebugEnabled())logger.debug("查询数据统计...");
-		return this.notcDao.total(info);
+		return this.noticeColumnDao.total(info);
 	}
 	/*
 	 * 更新数据。
@@ -85,23 +82,20 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 		if(logger.isDebugEnabled())logger.debug("更新数据...");
 		if(info == null) return null;
 		boolean isAdded = false;
-		NoticeColumn data = StringUtils.isEmpty(info.getId()) ?  null : this.notcDao.load(NoticeColumn.class, info.getId());
+		NoticeColumn data = StringUtils.isEmpty(info.getId()) ?  null : this.noticeColumnDao.load(NoticeColumn.class, info.getId());
 		if(isAdded = (data == null)){
-			if(StringUtils.isEmpty(info.getId())){
-				info.setId(UUID.randomUUID().toString());
-				
-			}
+			if(StringUtils.isEmpty(info.getId())) info.setId(UUID.randomUUID().toString());
 			data = new NoticeColumn();
 		}
 		BeanUtils.copyProperties(info, data, new String[]{"children"});
 		if(!StringUtils.isEmpty(info.getPid()) && (data.getParent() == null || !data.getParent().getId().equalsIgnoreCase(info.getPid()))){
-			NoticeColumn parent = this.notcDao.load(NoticeColumn.class, info.getPid());
+			NoticeColumn parent = this.noticeColumnDao.load(NoticeColumn.class, info.getPid());
 			if(parent != null && !parent.getId().equalsIgnoreCase(data.getId())){
 				data.setParent(parent);
 			}
 		}
 		info.setFullName(this.loadFullName(data));
-		if(isAdded) this.notcDao.save(data);
+		if(isAdded) this.noticeColumnDao.save(data);
 		return info;
 	}
 	/*
@@ -113,10 +107,10 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 		if(logger.isDebugEnabled())logger.debug("删除数据...");
 		if(ids == null || ids.length == 0) return;
 		for(int i = 0; i < ids.length; i++){
-			NoticeColumn data = this.notcDao.load(NoticeColumn.class, ids[i]);
+			NoticeColumn data = this.noticeColumnDao.load(NoticeColumn.class, ids[i]);
 			if(data != null){
 				if(logger.isDebugEnabled())logger.debug("删除数据［"+ids[i]+"］");
-				this.notcDao.delete(data); 
+				this.noticeColumnDao.delete(data); 
 			}
 		}
 	}
@@ -128,7 +122,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 	public List<TreeNode> loadNoticeColumn(String ignore) {
 		if(logger.isDebugEnabled()) logger.debug("加载栏目数据树［ignore="+ignore+"］...");
 		List<TreeNode> treeNodes = new ArrayList<>();
-		List<NoticeColumn> list = this.notcDao.loadFristNoticeColumn();
+		List<NoticeColumn> list = this.noticeColumnDao.loadFristNoticeColumn();
 		if(list != null){
 			for(int i = 0; i < list.size(); i++){
 				TreeNode e = this.createTreeNode(list.get(i),ignore);
@@ -137,11 +131,7 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 		}
 		return treeNodes;
 	}
-	/**
-	 * 创建节点。
-	 * @param data
-	 * @return
-	 */
+	//创建节点。
 	private TreeNode createTreeNode(NoticeColumn data,String ignore){
 		if((data == null) || (!StringUtils.isEmpty(ignore) && data.getId().equalsIgnoreCase(ignore))) return null;
 		TreeNode node = new TreeNode();

@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	<!-- 栏目Dao -->
-	<bean id="notcDao" class="com.examw.oa.dao.adm.impl.NoticeColumnDaoImpl">
+	<bean id="noticeColumnDao" class="com.examw.oa.dao.adm.impl.NoticeColumnDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!-- 通告Dao -->

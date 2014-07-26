@@ -1,12 +1,12 @@
 package com.examw.oa.controllers.adm;
 /**
- * 计划总结模块菜单常量。
+ * 行政事务模块菜单常量。
  * @author yangyong.
  * @since 2014-07-21.
  */
 public final class ModuleConstant {
 	/**
-	 * "栏目设置ID。
+	 * 栏目设置ID。
 	 */
 	public static final String ADM_COLUMN = "EOA000104";
 	/**

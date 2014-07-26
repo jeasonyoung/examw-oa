@@ -17,7 +17,7 @@ import com.examw.oa.model.adm.NoticeColumnInfo;
  * @since 2014-07-14.
  */
 public class NoticeColumnDaoImpl extends BaseDaoImpl<NoticeColumn> implements INoticeColumnDao {
-	private static Logger logger = Logger.getLogger(NoticeColumnDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(NoticeColumnDaoImpl.class);
 	/*
 	 * 加载一级栏目数据集合
 	 * @see com.examw.oa.dao.adm.INoticeColumnDao#loadFristNoticeColumn()
@@ -56,7 +56,7 @@ public class NoticeColumnDaoImpl extends BaseDaoImpl<NoticeColumn> implements IN
 		return this.count(hql, parameters);
 	}
 	//条件查询
-	protected String addWhere(NoticeColumnInfo info, String hql, Map<String, Object> parameters){
+	private String addWhere(NoticeColumnInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getId())){
 			hql += " and (n.id = :id or n.parent.id = :id)";
 			parameters.put("id", info.getId());

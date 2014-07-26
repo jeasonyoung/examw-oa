@@ -1,0 +1,29 @@
+<#--栏目设置编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_notice_column"/>
+<#assign form="${module}_edit_form"/>
+<form id="${form}" method="POST" style="padding:10px;">
+	<div  style="float:left;margin-top:2px;width:100%;">
+		<label style="width:75px;">上级栏目：</label>
+		<input type="text" name="pid" class="easyui-combotree" data-options="
+			url:'<@s.url '/adm/column/tree?ignore=${CURRENT_IGNORE}'/>',
+			lines:true,
+			onLoadError:function(e){
+				<@error_dialog 'e'/>
+			}
+		" style="width:272px;"/>	
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">栏目名称：</label>
+		<input type="text" name="name" class="easyui-validatebox" data-options="required:true" style="width:268px;"/>
+		<input type="hidden" name="id"/>
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">栏目描述：</label>
+		<textarea type="text" name="description" row="10" cols="10" style="width:268px;height:90px" />
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">排序号：</label>
+		<input type="text" name="orderNo" class="easyui-numberspinner" data-options="required:true,value:1,editable:true" style="width:80px;" />
+	</div>
+</form>
