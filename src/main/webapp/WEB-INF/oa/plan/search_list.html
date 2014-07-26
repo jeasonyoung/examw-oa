@@ -1,13 +1,29 @@
-<#--报告查阅列表-->
+<#--员工报告查询列表-->
 <#include "ftl/comm.ftl"/>
-<#assign module="plan_report_review"/>
+<#assign module="plan_report_search"/>
 <#assign dg="${module}_list_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
+	var current_dept_id = "";
+	//dept tree
+	$("#${module}_dept_tree").tree({
+		url:"<@s.url '/org/dept/tree'/>",
+		lines:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onBeforeLoad:function(n,p){
+			current_dept_id = "";
+		},
+		onClick:function(node){
+			current_dept_id = node.id;
+			${dg}_search();
+		}
+	});
 	//dg
 	var dg = $("#${dg}").datagrid({
-		url:"<@s.url '/plan/review/datagrid'/>",
+		url:"<@s.url '/plan/search/datagrid'/>",
 		fit:true,
 		fitColumns:true,
 		rownumbers:true,
@@ -35,7 +51,7 @@ $(function(){
 		},{
 			title:"报告类型",
 			field:"typeName",
-			width:15,
+			width:10,
 			align:"center",
 			sortable:true
 		},{
@@ -47,7 +63,7 @@ $(function(){
 		},{
 			title:"报告状态",
 			field:"statusName",
-			width:15,
+			width:12,
 			align:"center",
 			styler:function(value,row,index){
 				if(row.status == ${CURRENT_STATUS_NONE}) return "color:#7B7B7B;";
@@ -79,7 +95,7 @@ $(function(){
 				$.messager.alert("提示","没有报告！");
 				return;
 			}
-			edit_window("审阅"+ rowData.typeName +"报告",rowIndex,rowData);
+			edit_window("查询"+ rowData.typeName +"报告",rowIndex,rowData);
 		}
 	});
 	//edit
@@ -98,7 +114,7 @@ $(function(){
 					$.messager.confirm("确认","您是否确认审阅报告?",function(r){
 						$.messager.progress();
 						$("#${module}_edit_form").form("submit",{
-							url:"<@s.url '/plan/review/update'/>",
+							url:"<@s.url '/plan/search/update'/>",
 							onSubmit: function(){
 								var isValid = $(this).form("validate");
 								if (!isValid)$.messager.progress("close");
@@ -142,7 +158,7 @@ $(function(){
 			title:title,
 			width:800,
 			height:600,
-			href:"<@s.url '/plan/review/edit/'/>" + row.id,
+			href:"<@s.url '/plan/search/edit/'/>" + row.id,
 			modal:true,
 			buttons:btns,
 			onClose:function(){
@@ -156,14 +172,40 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
+			deptId:current_dept_id,
+			status:$("#${dg}_toobar input[name='status']").val(),
+			type:$("#${dg}_toobar input[name='type']").val(),
 			employeeName:$("#${dg}_toobar input[name='name']").val()
 		});
 	};
 });
 //-->
 </script>
-<table id="${dg}"></table>
-<div id="${dg}_toobar">
-	<label style="width:75px;">员工姓名：<input name="name" type="text" style="width:168px;"/></label>
-	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+<div class="easyui-layout" data-options="fit:true,border:false">
+	 <div data-options="region:'west',title:'所属部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_dept_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+	 		<ul id="${module}_dept_tree"></ul>
+	 </div>
+	<div data-options="region:'center',title:'报告列表'">
+			<table id="${dg}"></table>
+			<div id="${dg}_toobar">
+				<label>员工姓名：<input name="name" type="text" style="width:168px;"/></label>
+				<label>报告类型：<select name="type" class="easyui-combobox" style="width:128px;">
+												<option value="">［全部］</option>
+											<#if ReportTypeMap??>
+												<#list ReportTypeMap?keys as key>
+												<option value="${key}">${ReportTypeMap[key]} </option>
+												</#list>
+											</#if>
+											</select></label>
+				<label>报告状态：<select name="status" class="easyui-combobox" style="width:128px;">
+												<option value="">［全部］</option>
+											<#if ReportStatusMap??>
+												<#list ReportStatusMap?keys as key>
+												<option value="${key}">${ReportStatusMap[key]} </option>
+												</#list>
+											</#if>
+											</select></label>
+				<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
+			</div>
+	</div>
 </div>

@@ -198,10 +198,10 @@ $(function(){
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-		 <div data-options="region:'west',title:'部门架构',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_dept_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+		 <div data-options="region:'west',title:'所属部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_dept_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
 		 	<ul id="${module}_dept_tree"></ul>
 		 </div>
-	<div data-options="region:'center',title:'岗位信息'">
+	<div data-options="region:'center',title:'岗位列表'">
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
 			<@shiro.hasPermission name="${PER_UPDATE}">

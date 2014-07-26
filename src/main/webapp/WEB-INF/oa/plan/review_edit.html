@@ -1,6 +1,6 @@
 <#--报告查阅编辑-->
 <#include "ftl/comm.ftl"/>
-<#assign module="plan_review"/>
+<#assign module="plan_report_review"/>
 <#assign form="${module}_edit_form"/>
 <form id="${form}" method="POST" class="easyui-layout" data-options="fit:true,border:false"> 
 	<div data-options="region:'north',border:false" style="height:38px;">
@@ -39,10 +39,12 @@
 			<#if (Review.summaryBusiness?length > 0)>
 			<div style="float:left;margin-top:12px;width:100%;">
 				<label style="width:100px;">关联业务系统：</label>
-				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.summaryBusiness}</label>
+				<label style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.summaryBusiness}</label>
 			</div>
 			</#if>
-			${Review.summaryDetail}
+			<div style="float:left;margin-top:5px;width:100%;">
+				${Review.summaryDetail}
+			</div>
 		</fieldset>
 		</#if>
 		<#if (Review.planDetail?length > 0)>
@@ -51,10 +53,12 @@
 			<#if (Review.planBusiness?length > 0)>
 			<div style="float:left;margin-top:12px;width:100%;">
 				<label style="width:100px;">关联业务系统：</label>
-				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.planBusiness}</label>
+				<label style="loat:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.planBusiness}</label>
 			</div>
 			</#if>
-			<pre>${Review.planDetail}</pre>
+			<div style="float:left;margin-top:5px;width:100%;">
+			 	${Review.planDetail}
+			</div>
 		</fieldset>
 		</#if>
 		<#if (Review.supportDetail?length > 0)>
@@ -63,10 +67,12 @@
 			<#if (Review.supportBusiness?length > 0)>
 			<div style="float:left;margin-top:12px;width:100%;">
 				<label style="width:100px;">关联业务系统：</label>
-				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.supportBusiness}</label>
+				<label style="loat:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.supportBusiness}</label>
 			</div>
 			</#if>
-			<pre>${Review.supportDetail}</pre>
+			<div style="float:left;margin-top:5px;width:100%;">
+				${Review.supportDetail}
+			</div>
 		</fieldset>
 		</#if>
 		<#if (Review.suggetsionDetail?length > 0)>
@@ -75,10 +81,12 @@
 			<#if (Review.suggetsionBusiness?length > 0)>
 			<div style="float:left;margin-top:12px;width:100%;">
 				<label style="width:100px;">关联业务系统：</label>
-				<label style="border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.suggetsionBusiness}</label>
+				<label style="loat:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:650px;">${Review.suggetsionBusiness}</label>
 			</div>
 			</#if>
-			<pre>${Review.suggetsionDetail}</pre>
+			<div style="float:left;margin-top:5px;width:100%;">
+				${Review.suggetsionDetail}
+			</div>
 		</fieldset>
 		</#if>
 	</div>
