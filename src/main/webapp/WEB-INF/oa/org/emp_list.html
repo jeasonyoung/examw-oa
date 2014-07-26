@@ -99,7 +99,7 @@ $(function(){
 			<@error_dialog "e"/>
 		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("编辑",rowIndex,rowData);
+			edit_window("修改员工信息",rowIndex,rowData);
 		}
 	});
 	//add
@@ -237,7 +237,7 @@ $(function(){
 			<@shiro.hasPermission name="${PER_DELETE}">
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="${dg}_delete()">删除</a>
 			</@shiro.hasPermission>
-			<label>部门名称：<input name="name" type="text" style="width:198px;"/></label>
+			<label>员工名称：<input name="name" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="${dg}_search()" style="margin-left:10px;">查询</a>
 		</div>
 	</div>
