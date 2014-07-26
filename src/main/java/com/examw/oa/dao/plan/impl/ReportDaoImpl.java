@@ -41,7 +41,6 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 	//查询数据。
 	private  List<Report> findReports(String hql, BaseReportInfo info){
 		if(logger.isDebugEnabled())logger.debug("查询数据...");
-		
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
@@ -85,12 +84,19 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 	}
 	//查询条件
 	private String addWhere(BaseReportInfo info, String hql, Map<String, Object> parameters){
+		if(info.getStatus() != null){
+			hql += " and (r.status = :status) ";
+			parameters.put("status", info.getStatus());
+		}
+		if(info.getType() != null){
+			hql += " and (r.type = :type) ";
+			parameters.put("type", info.getType());
+		}
 		if(info instanceof ReportInfo){
 			if(!StringUtils.isEmpty(info.getCurrentUserId())){
 				hql += " and (r.employee.id = :currentUserId)";
 				parameters.put("currentUserId", info.getCurrentUserId());
 			}
-			return hql;
 		}
 		if(info instanceof ReportReviewInfo){
 			if(!StringUtils.isEmpty(info.getCurrentUserId())){
@@ -98,14 +104,13 @@ public class ReportDaoImpl extends BaseDaoImpl<Report> implements IReportDao {
 				parameters.put("employeeId", info.getCurrentUserId());
 			}
 			if(!StringUtils.isEmpty(((ReportReviewInfo) info).getDeptId())){
-				hql += " and (r.employee.department.id = :deptId) ";
+				hql += " and (r.employee.department.id = :deptId or r.employee.department.parent.id = :deptId) ";
 				parameters.put("deptId", ((ReportReviewInfo) info).getDeptId());
 			}
-			if(!StringUtils.isEmpty(info.getEmployeeName())){
-				hql += " and (r.employee.name like :name or r.employee.code like :name) ";
-				parameters.put("name", "%"+ info.getEmployeeName() +"%");
-			}
-			return hql;
+		}
+		if(!StringUtils.isEmpty(info.getEmployeeName())){
+			hql += " and (r.employee.name like :name or r.employee.code like :name) ";
+			parameters.put("name", "%"+ info.getEmployeeName() +"%");
 		}
 		return hql;
 	}
