@@ -2,9 +2,6 @@ package com.examw.oa.domain.adm;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import com.examw.oa.domain.org.Department;
-
 /**
  * 通知公告。
  * @author yangyong.
@@ -14,17 +11,7 @@ public class Notice implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,title,content;
 	private NoticeColumn column;
-	private Department department;
-	private Integer type;
 	private Date createTime;
-	/**
-	 * 类型－通知公告。
-	 */
-	public static final Integer TYPE_NOTICE = 1;
-	/**
-	 * 类型－规章制度。
-	 */
-	public static final Integer TYPE_RULES = 2;
 	/**
 	 * 获取通知公告ID。
 	 * @return 通知公告ID。
@@ -56,21 +43,6 @@ public class Notice implements Serializable {
 		this.title = title;
 	}
 	/**
-	 *  获取通知公告类型。
-	 * @return 通知公告类型。
-	 */
-	public Integer getType() {
-		return type;
-	}
-	/**
-	 * 设置通知公告类型。
-	 * @param type
-	 * 通知公告类型。
-	 */
-	public void setType(Integer type) {
-		this.type = type;
-	}
-	/**
 	 * 获取所属栏目。
 	 * @return 所属栏目。
 	 */
@@ -84,21 +56,6 @@ public class Notice implements Serializable {
 	 */
 	public void setColumn(NoticeColumn column) {
 		this.column = column;
-	}
-	/**
-	 * 获取所属部门。
-	 * @return 所属部门。
-	 */
-	public Department getDepartment() {
-		return department;
-	}
-	/**
-	 * 设置所属部门。
-	 * @param department
-	 * 所属部门。
-	 */
-	public void setDepartment(Department department) {
-		this.department = department;
 	}
 	/**
 	 * 获取通知公告内容。

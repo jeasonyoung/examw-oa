@@ -27,10 +27,6 @@
 		<property name="title" type="string" length="512" />
 		<!-- 所属栏目 -->
 		<many-to-one name="column"  column="col_id"  class="NoticeColumn" />
-		<!-- 所属部门 -->
-		<many-to-one name="department" column="dept_id" class="com.examw.oa.domain.org.Department" />
-		<!-- 类型 -->
-		<property name="type" type="integer" />
 		<!-- 内容 -->
 		<property name="content" type="text" />
 		<!-- 创建时间 -->

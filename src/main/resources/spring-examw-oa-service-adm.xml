@@ -10,19 +10,10 @@
 	<bean id="noticeService" class="com.examw.oa.service.adm.impl.NoticeServiceImpl">
 		<!-- 通告数据接口 -->
 		<property name="noticeDao" ref="noticeDao"/>
-		<!-- 部门数据接口 -->
-		<property name="departmentDao" ref="departmentDao"/>
 		<!-- 栏目数据接口 -->
-		<property name="notcDao" ref="noticeColumnDao"/>
-		<!-- 通告设置类型集合 -->
-		<property name="typeMap">
-			<map>
-				<!-- 通知公告 -->
-				<entry key="1" value="${TYPE_NOTICE}"/>
-				<!-- 规章制度 -->
-				<entry key="2" value="${TYPE_RULES}"/>
-			</map>
-		</property>
+		<property name="noticeColumnDao" ref="noticeColumnDao" />
+		<!-- 栏目服务接口 -->
+		<property name="noticeColumnService" ref="noticeColumnService" />
 	</bean>
 	<!-- 请假信息 -->
 	<bean id="leaveService" class="com.examw.oa.service.adm.impl.LeaveServiceImpl">

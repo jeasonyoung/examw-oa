@@ -17,7 +17,7 @@ import com.examw.oa.model.adm.NoticeInfo;
  * @since 2014-07-15
  */
 public class NoticeDaoImpl extends BaseDaoImpl<Notice> implements INoticeDao {
-	private static Logger logger = Logger.getLogger(NoticeDaoImpl.class);
+	private static final Logger logger = Logger.getLogger(NoticeDaoImpl.class);
 	/*
 	 * 查询数据
 	 * @see com.examw.oa.dao.adm.INoticeDao#findNotices(com.examw.oa.model.adm.NoticeInfo)
@@ -29,9 +29,7 @@ public class NoticeDaoImpl extends BaseDaoImpl<Notice> implements INoticeDao {
 		Map<String, Object> parameters = new HashMap<>();
 		hql = this.addWhere(info, hql, parameters);
 		if(!StringUtils.isEmpty(info.getSort())){
-			if(info.getSort().equalsIgnoreCase("departmentName")){
-				info.setSort("department.name");
-			}else if(info.getSort().equalsIgnoreCase("columnName")){
+			if(info.getSort().equalsIgnoreCase("columnName")){
 				info.setSort("column.name");
 			}
 			hql += " order by n." + info.getSort() + " " + info.getOrder();
@@ -51,7 +49,7 @@ public class NoticeDaoImpl extends BaseDaoImpl<Notice> implements INoticeDao {
 		return this.count(hql, parameters);
 	}
 	//条件查询
-	protected String addWhere(NoticeInfo info, String hql, Map<String, Object> parameters){
+	private String addWhere(NoticeInfo info, String hql, Map<String, Object> parameters){
 		if(!StringUtils.isEmpty(info.getColumnId())){
 			hql += " and ((n.column.id = :columnId) or (n.column.parent.id = :columnId))";
 			parameters.put("columnId", info.getColumnId());
@@ -67,14 +65,11 @@ public class NoticeDaoImpl extends BaseDaoImpl<Notice> implements INoticeDao {
 	 * @see com.examw.oa.dao.adm.INoticeDao#loadNotice(java.lang.String)
 	 */
 	@Override
-	public List<Notice> loadNotice(String noticeColumnId) {
-		if(logger.isDebugEnabled())logger.debug("根据栏目ID查询通告信息...");
+	public List<Notice> loadNotice(String columnId) {
+		if(logger.isDebugEnabled())logger.debug("根据栏目［ID="+columnId+"］查询通告信息...");
+		final String hql = "from Notice n where n.column.id = :columnId ";
 		Map<String, Object> parameters = new HashMap<>();
-		String hql = "from Notice  where 1=1 ";
-		if(!StringUtils.isEmpty(noticeColumnId)){
-			hql +=" and (n.column.id = :columnId)";
-			parameters.put("columnId", noticeColumnId);
-		}
+		parameters.put("columnId", columnId);
 		return this.find(hql, parameters, null, null);
 	}
 }

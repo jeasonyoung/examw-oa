@@ -3,10 +3,9 @@ package com.examw.oa.model.adm;
 import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
-import com.examw.oa.support.CustomShortDateSerializer;
+import com.examw.oa.support.CustomDateSerializer;
 /**
  * 通知公告信息。
  * @author lq
@@ -14,8 +13,7 @@ import com.examw.oa.support.CustomShortDateSerializer;
  */
 public class NoticeInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,title,columnId,columnName,departmentId,departmentName,content;
-	private Integer type;
+	private String id,title,columnId,columnName,fullColumnName,content;
 	private Date createTime;
 	/**
 	 * 获取通知ID。
@@ -78,34 +76,19 @@ public class NoticeInfo extends Paging {
 		this.columnName = columnName;
 	}
 	/**
-	 * 获取部门ID。
-	 * @return 部门ID。
+	 * 获取所属目录。
+	 * @return 所属目录。
 	 */
-	public String getDepartmentId() {
-		return departmentId;
+	public String getFullColumnName() {
+		return fullColumnName;
 	}
 	/**
-	 * 设置部门ID。
-	 * @param departmentId
-	 * 部门ID。
+	 * 设置所属目录。
+	 * @param fullColumnName
+	 * 所属目录。
 	 */
-	public void setDepartmentId(String departmentId) {
-		this.departmentId = departmentId;
-	}
-	/**
-	 * 获取部门名称。
-	 * @return 部门名称。
-	 */
-	public String getDepartmentName() {
-		return departmentName;
-	}
-	/**
-	 * 设置部门名称。
-	 * @param departmentName
-	 * 部门名称。
-	 */
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
+	public void setFullColumnName(String fullColumnName) {
+		this.fullColumnName = fullColumnName;
 	}
 	/**
 	 * 获取通告内容。
@@ -123,25 +106,10 @@ public class NoticeInfo extends Paging {
 		this.content = content;
 	}
 	/**
-	 * 获取通告类型。
-	 * @return 通告类型。
-	 */
-	public Integer getType() {
-		return type;
-	}
-	/**
-	 * 设置通告类型。
-	 * @param type
-	 * 通告类型。
-	 */
-	public void setType(Integer type) {
-		this.type = type;
-	}
-	/**
 	 * 获取通告创建时间。
 	 * @return 通告创建时间。
 	 */
-	@JsonSerialize(using = CustomShortDateSerializer.class)
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -150,7 +118,6 @@ public class NoticeInfo extends Paging {
 	 * @param createTime
 	 * 通告创建时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}

@@ -1,0 +1,36 @@
+<#--通知公告编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_notice"/>
+<#assign form="${module}_edit_form"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	var column_cbt = $("#${form} input[name='columnId']").combotree({
+		url:"<@s.url '/adm/column/tree'/>",
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(n,d){
+			<#if (CURRENT_COLUMN_ID?length > 0)>
+			if(column_cbt)column_cbt.combotree("setValue","${CURRENT_COLUMN_ID}");
+			</#if>
+		}
+	});
+});
+//-->
+</script>
+<form id="${form}" method="POST" style="padding:10px;">
+		<div style="float:left; margin-top:2px; width:100%;">
+			<label style="width:75px;">所属栏目：</label>
+			<input type="text" name="columnId" style="width:472px;"/>
+		</div>
+		<div style="float:left;margin-top:12px; width:100%;">
+				<label style="width:75px;">标题：</label>
+				<input type="text" name="title" class="easyui-validatebox" data-options="required:true" style="width:468px;"/>
+				<input type="hidden" name="id"/>
+		</div>
+		<div style="float:left;margin-top:12px;width:100%;">
+				<textarea type="text" name="content" class="easyui-kindeditor"  row="10" cols="10" style="width:100%;height:230px" />
+	   </div>
+</form>

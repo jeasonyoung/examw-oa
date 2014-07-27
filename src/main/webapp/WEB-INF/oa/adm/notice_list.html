@@ -1,22 +1,22 @@
-<#--部门列表-->
+<#--通知公告列表-->
 <#include "ftl/comm.ftl"/>
 <#assign module="adm_notice"/>
 <#assign dg="${module}_dg"/>
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_notice_id = "";
+	var current_column_id = "";
 	//tree
-	var t = $("#${module}_list_tree").tree({
-		url:"<@s.url '/adm/noticeColumn/tree'/>",
+	var t = $("#${module}_column_tree").tree({
+		url:"<@s.url '/adm/column/tree'/>",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
 		onLoadSuccess:function(n,data){
-			current_notice_id = "";
+			current_column_id = "";
 		},
 		onClick:function(node){
-			current_notice_id = node.id;
+			current_column_id = node.id;
 			${dg}_search();
 		}
 	});
@@ -39,33 +39,16 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"所属部门",
-			field:"departmentName",
-			width:20,
-			align:"left",
-			sortable:true
-		},{
 			title:"所属栏目",
-			field:"columnName",
-			width:20,
+			field:"fullColumnName",
+			width:35,
 			align:"left",
 			sortable:true
 		},{
 			title:"标题",
 			field:"title",
-			width:15,
+			width:55,
 			align:"left",
-			sortable:true
-		},{
-			title:"类型",
-			field:"type",
-			width:20,
-			align:"center",
-			formatter:function(value,row,index){
-				if(value == ${TYPE_NOTICE_VALUE}) return "${TYPE_NOTICE_NAME}";
-				if(value == ${TYPE_RULES_VALUE}) return "${TYPE_RULES_NAME}";
-				return value;
-			},
 			sortable:true
 		},{
 			title:"创建时间",
@@ -84,51 +67,55 @@ $(function(){
 	});
 	//edit
 	function edit_window(title,index,row){
+		var column_id = current_column_id;
+		if(row && row.columnId){
+			column_id = row.columnId;
+		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:600,
-			height:500,
-			href:"<@s.url '/adm/notice/edit'/>?columnId=" + current_notice_id,
+			height:400,
+			href:"<@s.url '/adm/notice/edit'/>?columnId=" + column_id,
 			modal:true,
 			buttons:[
-			/* <shiro.hasPermission name="${PER_UPDATE}"> */
+			<@shiro.hasPermission name="${PER_UPDATE}">
 			{
 				text:"保存",
 				iconCls:"icon-save",
 				handler:function(){
-					$.messager.progress();
-					$("#${module}_edit_form").form("submit",{
-						url:"<@s.url '/adm/notice/update'/>",
-						onSubmit: function(){
-							var isValid = $(this).form("validate");
-							if (!isValid)$.messager.progress("close");
-							return isValid;
-						},
-						onLoadError:function(e){
-							$.messager.progress("close");
-							<@error_dialog "e"/>
-						},
-						success:function(data){
-							$.messager.progress("close");
-							var data = $.parseJSON(data);
-							if(data.success){
-								dg.datagrid(row ? "updateRow" : "insertRow",{
-									index:index,
-									row:data.data
-								});
-								t.tree("reload");
-								d.dialog("close");
-							}else{
-								$.messager.show({
-									title:"保存异常",
-									msg:data.msg
-								});
+					$.messager.confirm("确认","您是否确认保存通知公告?",function(r){
+						if(!r)return;
+						$.messager.progress();
+						var post = $("#${module}_edit_form").form("serialize");
+						$.ajax({
+							url:"<@s.url '/adm/notice/update'/>",
+							type:"POST",
+							data:post,
+							dataType:"json",
+							error:function(e){
+								$.messager.progress("close");
+								<@error_dialog "e"/>
+							},
+							success:function(data,textStatus){
+								$.messager.progress("close");
+								if(data.success){
+									dg.datagrid(row ? "updateRow" : "insertRow",{
+										index:index,
+										row:data.data
+									});
+									d.dialog("close");
+								}else{
+									$.messager.show({
+										title:"提示",
+										msg:data.msg
+									});
+								}
 							}
-						}
+						});
 					});
 				}
 			},
-			/* </shiro.hasPermission> */
+			</@shiro.hasPermission>
 			{
 				text:"关闭",
 				iconCls:"icon-cancel",
@@ -140,14 +127,17 @@ $(function(){
 				$(this).dialog("destroy");
 			},
 			onLoad:function(){
-				if(row) $("#${module}_edit_form").form("load",row);
+				if(row){
+					$("#${module}_edit_form").form("load",row);
+					if(row.content)$("#${module}_edit_form textarea[name='content']").kindeditor("setValue",row.content);
+				}
 			}
 	  });
 	};
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			columnId:current_notice_id,
+			columnId:current_column_id,
 			title:$("#${dg}_toobar input[name='title']").val()
 		});
 	};
@@ -155,7 +145,7 @@ $(function(){
 	${dg}_add = function(){
 		edit_window("新增通知公告",0,null);
 	};
-	/* <shiro.hasPermission name="${PER_DELETE}"> */
+	<@shiro.hasPermission name="${PER_DELETE}">
 	//delete
 	${dg}_delete = function(){
 		var rows = dg.datagrid("getChecked");
@@ -183,7 +173,6 @@ $(function(){
 						if(data.success){
 							dg.datagrid("load");
 							dg.datagrid("unselectAll");
-							t.tree("reload");
 						}else{
 							$.messager.show({
 								title:"提示",
@@ -197,24 +186,24 @@ $(function(){
 			$.messager.alert("提示","未选中须删除的数据！");
 		}
 	};
-	/* </shiro.hasPermission> */
+	</@shiro.hasPermission>
 });
 //-->
 </script>
 <div class="easyui-layout" data-options="fit:true">
-		 <div data-options="region:'west',title:'栏目',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_list_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-		 		<ul id="${module}_list_tree"></ul>
-		 </div>
-	 <div data-options="region:'center',title:'通知公告'">
+	 <div data-options="region:'west',title:'所属栏目',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_column_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
+	 		<ul id="${module}_column_tree"></ul>
+	 </div>
+	 <div data-options="region:'center',title:'通知公告列表'">
 		<table id="${dg}"></table>
 		<div id="${dg}_toobar">
-			<!-- <shiro.hasPermission name="${PER_UPDATE}"> -->
+			<@shiro.hasPermission name="${PER_UPDATE}">
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">添加</a>
-			<!-- </shiro.hasPermission> -->
+			</@shiro.hasPermission>
 			<span>|</span>
-			<!-- <shiro.hasPermission name="${PER_DELETE}"> -->
+			<@shiro.hasPermission name="${PER_DELETE}">
 			<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
-			<!-- </shiro.hasPermission> -->
+			</@shiro.hasPermission>
 			<label>标题：<input name="title" type="text" style="width:198px;"/></label>
 			<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 		</div>

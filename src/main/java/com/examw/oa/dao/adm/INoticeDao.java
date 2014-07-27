@@ -28,10 +28,10 @@ public interface INoticeDao extends IBaseDao<Notice>{
 	 */
 	 Long total(NoticeInfo info);
 	 /**
-	  * 加载栏目ID下的通告集合。
-	  * @param departmentId
-	  * 通告ID。
-	  * @return
+	  * 加载栏目ID下的通知公告集合。
+	  * @param columnId
+	  * 栏目ID。
+	  * @return 通知公告集合。
 	  */
-	 List<Notice> loadNotice(String noticeColumnId);
+	 List<Notice> loadNotice(String columnId);
 }

@@ -54,8 +54,11 @@ public class NoticeColumnServiceImpl extends BaseDataServiceImpl<NoticeColumn, N
 		if(data.getParent() != null)info.setPid(data.getParent().getId());
 		return info;
 	}
-	//菜单全称。
-	private String loadFullName(NoticeColumn data){
+	/*
+	 *  加载栏目全称名称。
+	 * @see com.examw.oa.service.adm.INoticeColumnService#loadFullName(com.examw.oa.domain.adm.NoticeColumn)
+	 */
+	public String loadFullName(NoticeColumn data){
 		if(data == null) return null;
 		if(data.getParent() == null) return data.getName();
 		StringBuilder sb = new StringBuilder(data.getName());
