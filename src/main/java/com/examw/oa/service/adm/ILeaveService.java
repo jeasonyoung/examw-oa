@@ -3,11 +3,19 @@ package com.examw.oa.service.adm;
 import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
- * 我要请假服务接口
+ * 请假条服务接口。
  * @author lq.
  * @since 2014-07-15.
  */
 public interface ILeaveService extends IBaseDataService<LeaveInfo>{
+	/**
+	 * 加载请假员工信息。
+	 * @param employeeId
+	 * 员工ID。
+	 * @return
+	 * 请假员工信息。
+	 */
+	LeaveInfo loadLeaveEmployee(String employeeId);
 	/**
 	 * 加载类型名称
 	 * @param type
@@ -24,4 +32,12 @@ public interface ILeaveService extends IBaseDataService<LeaveInfo>{
 	 * 状态名称
 	 */
 	String loadStatusName(Integer status);
+	/**
+	 * 加载审批结果名称。
+	 * @param approval
+	 * 审批结果值。
+	 * @return
+	 * 审批结果名称。
+	 */
+	String loadResultName(Integer result);
 }

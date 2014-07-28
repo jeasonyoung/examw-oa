@@ -3,6 +3,7 @@ package com.examw.oa.model.adm;
 import java.util.Date;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
@@ -11,6 +12,7 @@ import com.examw.oa.support.CustomDateSerializer;
  * @author lq
  * @since 2014-07-15
  */
+@JsonSerialize(include = Inclusion.NON_NULL)
 public class NoticeInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,title,columnId,columnName,fullColumnName,content;

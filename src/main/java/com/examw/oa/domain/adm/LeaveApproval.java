@@ -13,30 +13,10 @@ import com.examw.oa.domain.org.Employee;
 public class LeaveApproval implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String id,approval;
-	private Integer type,status;
+	private Integer type,result;
 	private Leave leave;
 	private Employee employee;
 	private Date createTime;
-	/**
-	 * 类型－部门经理（主管）意见。
-	 */
-	public static final Integer TYPE_LEADER = 1;
-	/**
-	 * 类型－行政人事部意见。
-	 */
-	public static final Integer TYPE_ADM = 2;
-	/**
-	 * 类型－公司总经理审批。
-	 */
-	public static final Integer TYPE_BOSS = 3;
-	/**
-	 * 审批结果－同意。
-	 */
-	public static final Integer STATUS_AGREE = 1;
-	/**
-	 * 审批结果－不同意。
-	 */
-	public static final Integer STATUS_DISAGREE = 2;
 	/**
 	 * 获取审批ID。
 	 * @return 审批ID。
@@ -68,6 +48,20 @@ public class LeaveApproval implements Serializable {
 		this.leave = leave;
 	}
 	/**
+	 *  获取审批用户。
+	 * @return 审批用户。
+	 */
+	public Employee getEmployee() {
+		return employee;
+	}
+	/**
+	 * 设置审批用户。
+	 * @param employee
+	 */
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+	/**
 	 * 获取审批类型。
 	 * @return 审批类型。
 	 */
@@ -83,33 +77,19 @@ public class LeaveApproval implements Serializable {
 		this.type = type;
 	}
 	/**
-	 *  获取审批用户。
-	 * @return 审批用户。
+	 *  获取审批结果。
+	 * @return 审批结果。
 	 */
-	public Employee getEmployee() {
-		return employee;
+	public Integer getResult() {
+		return result;
 	}
 	/**
-	 * 设置审批用户。
-	 * @param employee
+	 * 设置审批结果。
+	 * @param result
+	 * 审批结果。
 	 */
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
-	}
-	/**
-	 * 获取审批状态。
-	 * @return 审批状态。
-	 */
-	public Integer getStatus() {
-		return status;
-	}
-	/**
-	 * 设置审批状态。
-	 * @param status
-	 * 审批状态。
-	 */
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setResult(Integer result) {
+		this.result = result;
 	}
 	/**
 	 * 获取审批内容。

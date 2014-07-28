@@ -6,7 +6,7 @@ import com.examw.oa.dao.IBaseDao;
 import com.examw.oa.domain.adm.Leave;
 import com.examw.oa.model.adm.LeaveInfo;
 /**
- * 我要请假数据操作接口
+ * 请假条数据操作接口。
  * @author lq
  * @since 2014-07-15 
  */

@@ -38,8 +38,6 @@
 		<id name="id" type="string" length="64" />
 		<!-- 请假员工 -->
 		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee"/>
-		<!-- 所属部门 -->
-		<many-to-one name="department" column="dept_id"  class="com.examw.oa.domain.org.Department"  />
 		<!-- 部门 -->
 		<property name="deptName" type="string" length="32" />
 		<!-- 职务 -->
@@ -54,16 +52,18 @@
 		<property name="type" type="integer" />
 		<!-- 审核状态-->
 		<property name="status" type="integer" />
-		<!-- 是否补班 -->
-		<property name="isSup" type="boolean" />
+		<!-- 审核结果 -->
+		<property name="result"  type="integer" />
+		<!-- 补班类型（0-不补班，1-补班） -->
+		<property name="sup" type="integer" />
 		<!-- 补班日期 -->
 		<property name="supTime" type="date" />
 		<!-- 换班日期 -->
 		<property name="shiftTime" type="date" />
+		<!-- 换班员工 -->
+		<property name="shiftEmployee" type="string" length="32" />
 		<!-- 创建时间 -->
 		<property name="createTime" column="create_time"  type="timestamp" />
-		<!-- 换班员工 -->
-		<many-to-one name="shiftEmployee" column="shift_employee_id" class="com.examw.oa.domain.org.Employee" />
 		<!-- 审批意见集合 -->
 		<set name="approvals" inverse="false"  cascade="save-update"  order-by="createTime desc">
 			<key  column="leave_id" />
@@ -82,8 +82,8 @@
 		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee" />
 		<!-- 审批类型 -->
 		<property name="type" type="integer" />
-		<!-- 审批状态 -->
-		<property name="status" type="integer" />
+		<!-- 审批结果 -->
+		<property name="result" type="integer" />
 		<!-- 审批时间 -->
 		<property name="createTime" column="create_time" type="timestamp" />
 	</class>

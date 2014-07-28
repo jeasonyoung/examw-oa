@@ -21,14 +21,14 @@
   		<module id="EOA000303" icon="" name="我的报告" uri="/plan/report" order="3"/>
   		<module id="EOA000403" icon="" name="报告审阅" uri="/plan/review" order="4"/>
   		<module id="EOA000503" icon="" name="报告查询" uri="/plan/search" order="5"/>
-  		<!-- <module id="EOA000603" icon="" name="报告统计" uri="" order="6"/> -->
   	</module>
   	<module id="EOA000004"  icon="" name="行政事务" uri="" order="4">
   		<module id="EOA000104"  icon="" name="栏目设置" uri="/adm/column" order="1" />
   		<module id="EOA000204"  icon="" name="通知公告" uri="/adm/notice" order="2" />
   		<module id="EOA000304"  icon="" name="我要请假" uri="/adm/leave" order="3" />
-  		<module id="EOA000404"  icon="" name="请假审批" uri="/adm/approval" order="4" />
-  		<module id="EOA000504"  icon="" name="审批记录" uri="/adm/record" order="4" />
+  		<module id="EOA000404"  icon="" name="请假审批(部门)" uri="/adm/leave_dept_approval" order="4" />
+  		<module id="EOA000504"  icon="" name="请假审批(HR)" uri="/adm/leave_hr_approval" order="5" />
+  		<module id="EOA000604"  icon="" name="请假审批(总经理)" uri="/adm/leave_boss_approval" order="6" />
   	</module>
   </system>
 </ipower>

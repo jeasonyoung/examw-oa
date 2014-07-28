@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<!-- 栏目Dao -->
+	<!-- 通知公告栏目Dao -->
 	<bean id="noticeColumnDao" class="com.examw.oa.dao.adm.impl.NoticeColumnDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<!-- 通告Dao -->
+	<!-- 通知公告Dao -->
 	<bean id="noticeDao" class="com.examw.oa.dao.adm.impl.NoticeDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<!-- 请假Dao -->
+	<!-- 请假条Dao -->
 	<bean id="leaveDao" class="com.examw.oa.dao.adm.impl.LeaveDaoImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	<!-- 请假审核Dao -->
-	<bean id="approvalDao" class="com.examw.oa.dao.adm.impl.LeaveApprovalDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>

@@ -4,21 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-import com.examw.oa.domain.org.Department;
 import com.examw.oa.domain.org.Employee;
 /**
- * 请假记录。
+ * 请假条。
  * @author yangyong.
  * @since 2014-07-14.
  */
 public class Leave implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private String id,deptName,postName,resaon;
-	private Date startTime,endTime,supTime,shiftTime,createTime;
-	private Integer type,status;
-	private Boolean isSup;
-	private Employee employee,shiftEmployee;
-	private Department department;
+	private String id,deptName,postName,resaon,shiftEmployee;
+	private Employee employee;
+	private Date createTime,startTime,endTime,supTime,shiftTime;
+	private Integer sup,type,status,result;
 	private Set<LeaveApproval> approvals;
 	/**
 	 * 类型－休假。
@@ -40,14 +37,45 @@ public class Leave implements Serializable {
 	 * 类型－病假证明无。
 	 */
 	public static final Integer TYPE_SICK_NONPROVE = 5;
+	
 	/**
-	 * 状态－ 批准
+	 * 状态－部门经理（主管）审批。
 	 */
-	public static final Integer STATUS_PASS = 1;
+	public static final Integer STATUS_APPROVAL_DEPT = 1;
 	/**
-	 * 状态－未批准
+	 * 状态－行政人事部门审批。
 	 */
-	public static final Integer STATUS_NOPASS = 2;
+	public static final Integer STATUS_APPROVAL_HR = 2;
+	/**
+	 * 状态－公司总经理审批。
+	 */
+	public static final Integer STATUS_APPROVAL_BOSS = 3;
+	
+	/**
+	 * 审批结果－提交。
+	 */
+	public static final Integer RESULT_POST = -1;
+	/**
+	 * 审批结果－审批中
+	 */
+	public static final Integer RESULT_APPROVAL = 0;
+	/**
+	 * 审批结果－同意。
+	 */
+	public static final Integer RESULT_AGREE = 1;
+	/**
+	 * 审批结果－不同意。
+	 */
+	public static final Integer RESULT_DISAGREE = 2;
+	/**
+	 * 补班状态－补班。
+	 */
+	public static final Integer SUP_YES = 1;
+	/**
+	 * 补班状态－不补班。
+	 */
+	public static final Integer SUP_NO = 0;
+	
 	/**
 	 * 获取请假条ID。
 	 * @return 请假条ID。
@@ -169,19 +197,49 @@ public class Leave implements Serializable {
 		this.type = type;
 	}
 	/**
-	 *  获取是否补班。
-	 * @return 是否补班。
+	 * 获取请假条状态。
+	 * @return 请假条状态。
 	 */
-	public Boolean getIsSup() {
-		return isSup;
+	public Integer getStatus() {
+		return status;
 	}
 	/**
-	 * 设置是否补班。
-	 * @param isSup
-	 * 是否补班。
+	 * 设置请假条状态。
+	 * @param status
+	 * 请假条状态。
 	 */
-	public void setIsSup(Boolean isSup) {
-		this.isSup = isSup;
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	/**
+	 * 获取审批结果。
+	 * @return 审批结果。
+	 */
+	public Integer getResult() {
+		return result;
+	}
+	/**
+	 * 设置审批结果。
+	 * @param result
+	 * 审批结果。
+	 */
+	public void setResult(Integer result) {
+		this.result = result;
+	}
+	/**
+	 *  获取补班类型。
+	 * @return 补班类型（0-不补班，1-补班）。
+	 */
+	public Integer getSup() {
+		return sup;
+	}
+	/**
+	 * 设置补班类型。
+	 * @param sup
+	 * 补班类型（0-不补班，1-补班）。
+	 */
+	public void setSup(Integer sup) {
+		this.sup = sup;
 	}
 	/**
 	 * 获取补班日期。
@@ -217,7 +275,7 @@ public class Leave implements Serializable {
 	 * 获取换班员工。
 	 * @return 换班员工。
 	 */
-	public Employee getShiftEmployee() {
+	public String getShiftEmployee() {
 		return shiftEmployee;
 	}
 	/**
@@ -225,7 +283,7 @@ public class Leave implements Serializable {
 	 * @param shiftEmployee
 	 * 换班员工。
 	 */
-	public void setShiftEmployee(Employee shiftEmployee) {
+	public void setShiftEmployee(String shiftEmployee) {
 		this.shiftEmployee = shiftEmployee;
 	}
 	/**
@@ -257,17 +315,5 @@ public class Leave implements Serializable {
 	 */
 	public void setApprovals(Set<LeaveApproval> approvals) {
 		this.approvals = approvals;
-	}
-	public Department getDepartment() {
-		return department;
-	}
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
-	public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
 	}
 }
