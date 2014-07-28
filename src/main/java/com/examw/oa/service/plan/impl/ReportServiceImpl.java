@@ -420,8 +420,7 @@ public class ReportServiceImpl extends BaseDataServiceImpl<Report, ReportInfo> i
 					report.setType(type);
 					report.setCreateTime(createTime);
 					report.setPostTime(null);
-					if((type == Settings.TYPE_WEEKLY) && (data.getEmployee().getPost() != null  && 
-																					 data.getEmployee().getPost().getChildren() != null && data.getEmployee().getPost().getChildren().size() > 0)){
+					if((type == Settings.TYPE_WEEKLY) && (data.getEmployee().getPost() != null  && data.getEmployee().getPost().getChildren() != null && data.getEmployee().getPost().getChildren().size() > 0)){
 						lastPostTime = calendar.getTime();
 					}
 					report.setLastPostTime(lastPostTime);
