@@ -41,13 +41,16 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	 * 通知公告栏目数据接口。
 	 */
 	public void setNoticeColumnDao(INoticeColumnDao noticeColumnDao) {
+		if(logger.isDebugEnabled())logger.debug("注入通知公告栏目数据接口...");
 		this.noticeColumnDao = noticeColumnDao;
 	}
 	/**
 	 * 设置通知公告栏目服务接口。
 	 * @param noticeColumnService
+	 * 通知公告栏目服务接口。
 	 */
 	public void setNoticeColumnService(INoticeColumnService noticeColumnService) {
+		if(logger.isDebugEnabled())logger.debug("通知公告栏目服务接口...");
 		this.noticeColumnService = noticeColumnService;
 	}
 	/*
@@ -92,6 +95,7 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 	@Override
 	public NoticeInfo update(NoticeInfo info) {
 		if(logger.isDebugEnabled())logger.debug("更新数据...");
+		String err = null;
 		if(info == null) return null;
 		Boolean isAdded = false;
 		Notice data = StringUtils.isEmpty(info.getId()) ? null : this.noticeDao.load(Notice.class, info.getId());
@@ -99,6 +103,10 @@ public class NoticeServiceImpl extends BaseDataServiceImpl<Notice,NoticeInfo> im
 			if(StringUtils.isEmpty(info.getId())) info.setId(UUID.randomUUID().toString());
 			info.setCreateTime(new Date());
 			data = new Notice();
+		}
+		if(StringUtils.isEmpty(info.getColumnId()) || StringUtils.isEmpty(info.getTitle()) || StringUtils.isEmpty(info.getContent())){
+			logger.error(err = "所属栏目或标题或内容为空！");
+			throw new RuntimeException(err);
 		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);

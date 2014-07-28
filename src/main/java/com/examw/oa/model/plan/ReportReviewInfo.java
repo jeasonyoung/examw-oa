@@ -20,7 +20,7 @@ public class ReportReviewInfo extends BaseReportInfo {
 		return deptId;
 	}
 	/**
-	 *  设置部门ID。
+	 * 设置部门ID。
 	 * @param deptId
 	 * 部门ID。
 	 */
