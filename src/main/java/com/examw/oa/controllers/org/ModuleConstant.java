@@ -8,7 +8,7 @@ public final class ModuleConstant {
 	/**
 	 * 部门信息ID。
 	 */
-	public static final String ORG_DEPT = "EOA000101";
+	public static final String ORG_DEPT = "EOA000102";
 	/**
 	 * 部门岗位ID。
 	 */
