@@ -1,0 +1,73 @@
+<#--请假条显示-->
+<div style="float:left;margin-top:12px;width:100%;">
+	<div style="float:left;">
+		<label style="float:left;width:75px;">姓名：</label>
+		<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:128px;"><#if Leave ??>${Leave.employeeName}</#if><br/></div>
+	</div>
+	<div style="float:left;">
+		<label style="float:left;width:45px;">部门：</label>
+		<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:128px;"><#if Leave ??>${Leave.deptName}</#if><br/></div>
+	</div>
+	<div style="float:left;">
+		<label style="float:left;width:45px;">职务：</label>
+		<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:128px;"><#if Leave ??>${Leave.postName}</#if><br/></div>
+	</div>
+</div>
+<div style="float:left; margin-top:12px;width:100%;">
+	<label style="float:left;width:75px;">请假时间：</label>
+	<div style="float:left;margin-top:5px; text-align:right;padding-right:5px;width:20px;">自</div>
+	<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:138px;"><#if Leave ??>${Leave.startTime}</#if><br/></div>
+	<div style="float:left;margin-top:5px; text-align:right;padding-right:5px;width:50px;">始－至</div>
+	<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:138px;"><#if Leave ??>${Leave.endTime}</#if><br/></div>
+	<div style="float:left;margin-top:5px; padding-left:5px;width:30px;">止  共</div>
+	<div style="float:left;margin-top:5px; text-align:right;padding-right:5px;border-bottom:solid 1px #ccc;width:30px;"><#if Leave ??>${Leave.total}</#if><br/></div>
+	<div style="float:left;margin-top:5px; text-align:right;padding-right:5px;width:20px;">天</div>
+</div>
+<div style="float:left; margin-top:12px;width:100%;">
+	<label style="float:left;width:75px;">请假事由：</label>
+	<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:478px;"><#if Leave ??>${Leave.resaon}</#if><br/></div>
+</div>
+<div style="float:left; margin-top:12px;width:100%;">
+	<label style="float:left;width:75px;">请假类型：</label>
+	<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:478px;"><#if Leave ??>${Leave.typeName}</#if><br/></div>
+</div>
+<fieldset style="float:left; margin-top:10px;border:solid 1px #ccc;width:538px;">
+	<legend>因请假引发的反应措施</legend>
+	<div style="float:left; margin-top:2px; width:100%;">
+		<div style="float:left;">
+			<label style="float:left;width:45px;">补班：</label>
+			<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:128px;"><#if Leave ??>${Leave.supTime}</#if><br/></div>
+		</div>
+		<label style="float:left;margin-top:5px; margin-left:15px;text-align:left;border-bottom:solid 1px #ccc;width:65px;"><#if Leave ??>${Leave.supName}</#if><br/></label> 
+	</div>
+	<div style="float:left; margin-top:10px; width:100%;">
+		<div style="float:left;">
+			<label style="float:left;width:45px;">换班：</label>
+			<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:128px;"><#if Leave ??>${Leave.shiftTime}</#if><br/></div>
+		</div>
+		<div style="float:left;">
+			<label style="float:left;width:65px;">换班人：</label>
+			<div style="float:left;margin-top:5px; text-align:left;border-bottom:solid 1px #ccc;width:168px;"><#if Leave ??>${Leave.shiftEmployee}</#if><br/></div>
+		</div>
+	</div>
+</fieldset>
+<div style="float:left;margin-top:10px;width:100%;">
+	<fieldset style="float:left; margin-top:2px;border:solid 1px #ccc;width:167px;height:105px;">
+		<legend>${STATUS_APPROVAL_DEPT_NAME}</legend>
+		<div style="float:left;margin-top:12px;text-align:left;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.deptApprovalResultName}</#if><br/></div>
+		<div style="float:left;margin-top:12px;text-align:left;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.deptApproval}</#if><br/></div>
+		<div style="float:left;margin-top:12px;text-align:right;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.deptApprovalTime}</#if><br/></div>
+	</fieldset>
+	<fieldset style="float:left; margin-top:2px;border:solid 1px #ccc;width:167px;height:105px;">
+		<legend>${STATUS_APPROVAL_HR_NAME}</legend>
+		<div style="float:left;margin-top:12px;text-align:left;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.hrApprovalResultName}</#if><br/></div>
+		<div style="float:left;margin-top:12px;text-align:left;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.hrApproval}</#if><br/></div>
+		<div style="float:left;margin-top:12px;text-align:right;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.hrApprovalTime}</#if><br/></div>
+	</fieldset>
+	<fieldset style="float:left; margin-top:2px;border:solid 1px #ccc;width:167px;height:105px;">
+		<legend>${STATUS_APPROVAL_BOSS_NAME}</legend>
+		<div style="float:left;margin-top:12px;text-align:left;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.bossApprovalResultName}</#if><br/></div>
+		<div style="float:left;margin-top:12px;text-align:left;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.bossApproval}</#if><br/></div>
+		<div style="float:left;margin-top:12px;text-align:right;border-bottom:solid 1px #ccc;width:160px;"><#if Leave ??>${Leave.bossApprovalTime}</#if><br/></div>
+	</fieldset>
+</div>

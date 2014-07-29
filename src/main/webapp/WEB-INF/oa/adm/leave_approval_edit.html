@@ -1,0 +1,19 @@
+<#--请假条审批（部门）审批-->
+<#include "ftl/comm.ftl"/>
+<#assign module="adm_leave_approval"/>
+<#assign form="${module}_edit_form"/>
+<form id="${form}" method="POST" class="easyui-layout" data-options="fit:true,border:false" style="padding:0px;">
+	<div data-options="region:'center',href:'<@s.url '/adm/leave/approval/view/${CURRENT_LEAVE_ID}'/>',border:false"></div>
+	<div data-options="region:'south',title:'审批',split:true,collapsible:false,border:false" style="height:100px;">
+		<div style="float:left;margin-top:5px;width:100%;">
+			<label style="float:left;margin-top:5px;width:75px;">审批结果：</label>
+			<label style="float:left;padding-top:0px;"><input name="result" type="radio" checked="checked" value="${RESULT_AGREE_VALUE}"/>${RESULT_AGREE_NAME}</label>
+			<label style="float:left;padding-top:0px;"><input name="result" type="radio" value="${RESULT_DISAGREE_VALUE}"/>${RESULT_DISAGREE_NAME}</label>
+			<input name="id" type="hidden"/>
+		</div>
+		<div style="float:left;margin-top:5px;width:100%;">
+			<label style="float:left;width:75px;">审批意见：</label>
+			<input name="approval"  type="text" style="float:left;width:478px;"/>
+		</div>
+	</div>
+</form>

@@ -108,6 +108,7 @@ public class LeaveController implements IUserAware {
 	public DataGrid<LeaveInfo> datagrid(LeaveInfo info){
 		if(logger.isDebugEnabled())logger.debug("加载列表数据...");
 		info.setCurrentUserId(this.current_user_id);
+		//info.setStatus(Leave.STATUS_APPROVAL_DEPT);
 		return this.leaveService.datagrid(info);
 	}
 	/**

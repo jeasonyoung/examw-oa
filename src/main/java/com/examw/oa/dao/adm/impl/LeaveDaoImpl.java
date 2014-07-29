@@ -32,8 +32,6 @@ public class LeaveDaoImpl extends BaseDaoImpl<Leave> implements ILeaveDao {
 		if(!StringUtils.isEmpty(info.getSort())){
 			if(info.getSort().equalsIgnoreCase("employeeName")){
 				info.setSort("employee.name");
-			}else if(info.getSort().equalsIgnoreCase("shiftEmployeeName")){
-				info.setSort("shiftEmployee.name");
 			}
 			hql += " order by l." + info.getSort() + " " + info.getOrder();
 		}
@@ -55,6 +53,10 @@ public class LeaveDaoImpl extends BaseDaoImpl<Leave> implements ILeaveDao {
 	}
 	//条件查询
 	private String addWhere(LeaveInfo info, String hql, Map<String, Object> parameters){
+		if(info.getStatus() != null){
+			hql += " and (l.status = :status) ";
+			parameters.put("status", info.getStatus());
+		}
 		if(!StringUtils.isEmpty(info.getCurrentUserId())){
 			hql += " and (l.employee.id = :employeeId) ";
 			parameters.put("employeeId", info.getCurrentUserId());

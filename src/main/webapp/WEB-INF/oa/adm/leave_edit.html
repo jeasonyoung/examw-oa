@@ -6,18 +6,18 @@
 	<div style="float:left;margin-top:2px;width:100%;">
 		<div style="float:left;">
 			<label style="width:75px;">姓名：</label>
-			<input type="text" name="employeeName" value="<#if Leave ??>${Leave.employeeName}</#if>" style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:128px;"/>
+			<input type="text" name="employeeName" readonly="readonly"  value="<#if Leave ??>${Leave.employeeName}</#if>" style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:128px;"/>
 			<input type="hidden" name="employeeId" value="<#if Leave ??>${Leave.employeeId}</#if>"/>
 			<input type="hidden" name="id" />
 		</div>
 		<div style="float:left;">
 			<label style="width:45px;">部门：</label>
-			<input type="text" name="deptName" value="<#if Leave ??>${Leave.deptName}</#if>" style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:128px;"/>
+			<input type="text" name="deptName" readonly="readonly"  value="<#if Leave ??>${Leave.deptName}</#if>" style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:128px;"/>
 			<input type="hidden" name="deptId" value="<#if Leave ??>${Leave.deptId}</#if>"/>
 		</div>
 		<div style="float:left;">
 			<label style="width:45px;">职务：</label>
-			<input type="text" name="postName" value="<#if Leave ??>${Leave.postName}</#if>" style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:128px;"/>
+			<input type="text" name="postName" readonly="readonly"  value="<#if Leave ??>${Leave.postName}</#if>" style="float:left;text-align:left;border-style:none;border-bottom:solid 1px #ccc;width:128px;"/>
 		</div>
 	</div>
 	<div style="float:left; margin-top:12px;width:100%;">

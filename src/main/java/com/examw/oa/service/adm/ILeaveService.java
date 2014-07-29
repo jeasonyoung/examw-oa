@@ -1,5 +1,6 @@
 package com.examw.oa.service.adm;
 
+import com.examw.oa.domain.adm.Leave;
 import com.examw.oa.model.adm.LeaveInfo;
 import com.examw.oa.service.IBaseDataService;
 /**
@@ -16,6 +17,14 @@ public interface ILeaveService extends IBaseDataService<LeaveInfo>{
 	 * 请假员工信息。
 	 */
 	LeaveInfo loadLeaveEmployee(String employeeId);
+	/**
+	 * 加载补班类型名称。
+	 * @param sup
+	 * 补班类型值。
+	 * @return
+	 * 补班类型名称。
+	 */
+	String loadSupName(Integer sup);
 	/**
 	 * 加载类型名称
 	 * @param type
@@ -40,4 +49,12 @@ public interface ILeaveService extends IBaseDataService<LeaveInfo>{
 	 * 审批结果名称。
 	 */
 	String loadResultName(Integer result);
+	/**
+	 * 请假条类型转换。
+	 * @param data
+	 * 请假条对象。
+	 * @return
+	 * 请假条信息。
+	 */
+	LeaveInfo convert(Leave data);
 }

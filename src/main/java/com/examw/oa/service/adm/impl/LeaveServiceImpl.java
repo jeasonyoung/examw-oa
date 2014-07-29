@@ -26,7 +26,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	private static final Logger logger = Logger.getLogger(LeaveServiceImpl.class);
 	private ILeaveDao leaveDao;
 	private IEmployeeDao employeeDao;
-	private Map<Integer, String> typeMap,statusMap,resultMap;
+	private Map<Integer, String> typeMap,statusMap,resultMap,supMap;
 	/**
 	 * 设置请假条数据接口。
 	 * @param leaveDao
@@ -70,6 +70,24 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 	public void setResultMap(Map<Integer, String> resultMap) {
 		if(logger.isDebugEnabled()) logger.debug("注入审批结果集合...");
 		this.resultMap = resultMap;
+	}
+	/**
+	 * 设置补班集合。
+	 * @param supMap
+	 */
+	public void setSupMap(Map<Integer, String> supMap) {
+		if(logger.isDebugEnabled()) logger.debug("注入补班集合...");
+		this.supMap = supMap;
+	}
+	/*
+	 * 加载补班类型名称。
+	 * @see com.examw.oa.service.adm.ILeaveService#loadSupName(java.lang.Integer)
+	 */
+	@Override
+	public String loadSupName(Integer sup) {
+		if(logger.isDebugEnabled()) logger.debug("注入补班类型集合...");
+		if(sup == null || this.supMap == null || this.supMap.size() == 0) return null;
+		return this.supMap.get(sup);
 	}
 	/*
 	 * 加载类型名称。
@@ -131,6 +149,15 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 		return this.leaveDao.findLeaves(info);
 	}
 	/*
+	 * 请假条类型转换。
+	 * @see com.examw.oa.service.adm.ILeaveService#convert(com.examw.oa.domain.adm.Leave)
+	 */
+	@Override
+	public LeaveInfo convert(Leave data) {
+		if(logger.isDebugEnabled()) logger.debug("请假条类型转换...");
+		return this.changeModel(data);
+	}
+	/*
 	 * 类型转换
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#changeModel(java.lang.Object)
 	 */
@@ -145,10 +172,10 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 			info.setEmployeeId(data.getEmployee().getId());
 			info.setEmployeeName(data.getEmployee().getName());
 		}
+		info.setSupName(this.loadSupName(info.getSup()));
 		info.setTypeName(this.loadTypeName(info.getType()));
 		info.setStatusName(this.loadStatusName(info.getStatus()));
 		info.setResultName(this.loadResultName(info.getResult()));
-		
 		this.addApprovals(data, info);
 		
 		return info;
@@ -222,7 +249,7 @@ public class LeaveServiceImpl extends BaseDataServiceImpl<Leave, LeaveInfo> impl
 		} 
 		info.setDeptName(data.getDeptName());
 		info.setPostName(data.getPostName());
-		
+		info.setSupName(this.loadSupName(data.getSup()));
 		info.setTypeName(this.loadTypeName(data.getType()));
 		info.setStatusName(this.loadStatusName(data.getStatus()));
 		info.setResultName(this.loadResultName(data.getResult()));

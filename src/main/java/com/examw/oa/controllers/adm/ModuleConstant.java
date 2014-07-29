@@ -18,7 +18,15 @@ public final class ModuleConstant {
 	 */
 	public static final String ADM_LEAVE = "EOA000304";
 	/**
-	 * 报告审阅ID。
+	 * 请假审批（部门）ID。
 	 */
-	public static final String ADM_APPROVAL = "EOA000404";
+	public static final String ADM_LEAVE_DEPT_APPROVAL = "EOA000404";
+	/**
+	 * 请假审批（HR）ID。
+	 */
+	public static final String ADM_LEAVE_HR_APPROVAL = "EOA000504";
+	/**
+	 * 请假审批（总经理）ID。
+	 */
+	public static final String ADM_LEAVE_BOSS_APPROVAL = "EOA000604";
 }

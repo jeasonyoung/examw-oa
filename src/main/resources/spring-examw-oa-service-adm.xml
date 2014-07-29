@@ -60,5 +60,23 @@
 				<entry key="2" value="${LEAVE_RESULT_DISAGREE}" />
 			</map>
 		</property>
+		<!-- 补班类型集合 -->
+		<property name="supMap">
+			<map>
+				<!-- 不补班 -->
+				<entry key="0" value="${LEAVE_SUP_NO}" />
+				<!-- 补班 -->
+				<entry key="1" value="${LEAVE_SUP_YES}" />
+			</map>
+		</property>
+	</bean>
+	<!-- 请假条审批服务 -->
+	<bean id="leaveApprovalService" class="com.examw.oa.service.adm.impl.LeaveApprovalServiceImpl">
+		<!-- 请假条数据接口 -->
+		<property name="leaveDao" ref="leaveDao" />
+		<!-- 请假条服务接口 -->
+		<property name="leaveService" ref="leaveService" />
+		<!-- 员工数据接口 -->
+		<property name="employeeDao" ref="employeeDao" />
 	</bean>
 </beans>

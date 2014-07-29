@@ -19,7 +19,7 @@ import com.examw.oa.support.CustomShortDateSerializer;
 public class LeaveInfo extends Paging implements IUser{
 	private static final long serialVersionUID = 1L;
 	private String id,employeeId,employeeName,deptId,deptName,postName,resaon,
-		typeName,statusName,resultName,shiftEmployee,current_user_id,
+		supName,typeName,statusName,resultName,approval,shiftEmployee,current_user_id,
 		deptApprovalId,deptApproval,deptApprovalResultName,
 		hrApprovalId,hrApproval,hrApprovalResultName,
 		bossApprovalId,bossApproval,bossApprovalResultName;
@@ -167,6 +167,17 @@ public class LeaveInfo extends Paging implements IUser{
 		this.endTime = endTime;
 	}
 	/**
+	 *  获取请假天数。
+	 * @return
+	 */
+	public Long getTotal(){
+		if(this.getStartTime() != null && this.getEndTime() != null){
+			long dif = (this.getEndTime().getTime() - this.getStartTime().getTime()) / 1000;
+			return dif / 3600 / 24;
+		}
+		return 0L;
+	}
+	/**
 	 * 获取补班时间。
 	 * @return 补班时间。
 	 */
@@ -245,6 +256,21 @@ public class LeaveInfo extends Paging implements IUser{
 	 */
 	public void setSup(Integer sup) {
 		this.sup = sup;
+	}
+	/**
+	 * 获取补班类型名称。
+	 * @return 补班类型名称。
+	 */
+	public String getSupName() {
+		return supName;
+	}
+	/**
+	 * 设置补班类型名称。
+	 * @param supName
+	 * 补班类型名称。
+	 */
+	public void setSupName(String supName) {
+		this.supName = supName;
 	}
 	/**
 	 * 获取请假类型。
@@ -336,6 +362,21 @@ public class LeaveInfo extends Paging implements IUser{
 	 */
 	public void setResultName(String resultName) {
 		this.resultName = resultName;
+	}
+	/**
+	 * 获取请假条审批信息。
+	 * @return 请假条审批信息。
+	 */
+	public String getApproval() {
+		return approval;
+	}
+	/**
+	 * 设置请假条审批信息。
+	 * @param approval
+	 * 请假条审批信息。
+	 */
+	public void setApproval(String approval) {
+		this.approval = approval;
 	}
 	/*
 	 * 获取当前用户ID。

@@ -26,9 +26,9 @@
   		<module id="EOA000104"  icon="" name="栏目设置" uri="/adm/column" order="1" />
   		<module id="EOA000204"  icon="" name="通知公告" uri="/adm/notice" order="2" />
   		<module id="EOA000304"  icon="" name="我要请假" uri="/adm/leave" order="3" />
-  		<module id="EOA000404"  icon="" name="请假审批(部门)" uri="/adm/leave_dept_approval" order="4" />
-  		<module id="EOA000504"  icon="" name="请假审批(HR)" uri="/adm/leave_hr_approval" order="5" />
-  		<module id="EOA000604"  icon="" name="请假审批(总经理)" uri="/adm/leave_boss_approval" order="6" />
+  		<module id="EOA000404"  icon="" name="请假审批(部门)" uri="/adm/leave/approval/dept" order="4" />
+  		<module id="EOA000504"  icon="" name="请假审批(HR)" uri="/adm/leave/approval/hr" order="5" />
+  		<module id="EOA000604"  icon="" name="请假审批(总经理)" uri="/adm/leave/approval/boss" order="6" />
   	</module>
   </system>
 </ipower>
