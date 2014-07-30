@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.examw.oa.domain.check">
+	<!-- 奖惩类别 -->
+	<class name="Catalog" table="tbl_Examw_OA_Check_Catalogs">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
+		<!-- 类别ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 类别代码（2位） -->
+		<property name="code" type="string" length="10" not-null="true" unique="true"/>
+		<!-- 类别名称 -->
+		<property name="name" type="string" length="32" not-null="true" />
+		<!-- 所属奖惩条目集合 -->
+		<set name="entries" order-by="code asc">
+			<key column="catalog_id" />
+			<one-to-many class="Entry"/>
+		</set>
+		<!-- 描述 -->
+		<property name="description" type="string" length="1024" />
+	</class>
+	<!-- 奖惩条目 -->
+	<class name="Entry" table="tbl_Examw_OA_Check_Entries">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
+		<!-- 条目ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 条目代码（4位） -->
+		<property name="code" type="string" length="10" not-null="true"  unique="true" />
+		<!-- 条目名称 -->
+		<property name="name" type="string" length="32" not-null="true" />
+		<!-- 所属类别 -->
+		<many-to-one name="catalog"  column="catalog_id" class="Catalog" />
+		<!-- 奖惩类型（1-按次，2-按天，3-按月）-->
+		<property name="type" type="integer" not-null="true" />
+		<!-- 奖惩金额 (正数奖励，负数惩罚)-->
+		<property name="money" type="big_decimal" />
+		<!-- 描述 -->
+		<property name="description" type="string" length="1024" />
+	</class>
+</hibernate-mapping>

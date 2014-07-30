@@ -30,5 +30,9 @@
   		<module id="EOA000504"  icon="" name="请假审批(HR)" uri="/adm/leave/approval/hr" order="5" />
   		<module id="EOA000604"  icon="" name="请假审批(总经理)" uri="/adm/leave/approval/boss" order="6" />
   	</module>
+  	<module id="EOA000005" icon="" name="奖惩管理" uri="" order="4">
+  		<module id="EOA000105"  icon="" name="奖惩类别设置" uri="/check/catalog" order="1" />
+  		<module id="EOA000205"  icon="" name="奖惩条目设置" uri="/check/entry" order="2" />
+  	</module>
   </system>
 </ipower>

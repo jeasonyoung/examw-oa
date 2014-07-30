@@ -3,6 +3,8 @@
 <hibernate-mapping package="com.examw.oa.domain.org">
 	<!-- 部门数据 -->
 	<class name="Department"  table="tbl_Examw_OA_Org_Department">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!--部门ID -->
 		<id name="id"  type="string"  length="64" />
 		<!-- 部门编码 -->
@@ -23,6 +25,8 @@
 	</class>
 	<!-- 岗位信息 -->
 	<class name="Post"  table="tbl_Examw_OA_Org_Post">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 岗位ID -->
 		<id  name="id"  type="string"  length="64" />
 		<!-- 岗位编号 -->
@@ -41,6 +45,8 @@
 	</class>
 	<!-- 员工级别 -->
 	<class name="Rank" table="tbl_Examw_OA_Org_Rank">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 员工级别ID -->
 		<id name="id"  type="string"  length="64" />
 		<!--员工级别编码 -->
@@ -50,6 +56,8 @@
 	</class>
 	<!--员工信息 -->
 	<class name="Employee"  table="tbl_Examw_OA_Org_Employee">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 员工ID -->
 		<id  name="id"  type="string"  length="64" />
 		<!-- 员工名称 -->

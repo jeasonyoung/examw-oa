@@ -3,6 +3,8 @@
 <hibernate-mapping package="com.examw.oa.domain.adm">
 	<!-- 通知公告栏目 -->
 	<class name="NoticeColumn" table="tbl_Examw_OA_Adm_NoticeColumns">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 栏目ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 栏目名称 -->
@@ -21,6 +23,8 @@
 	</class>
 	<!-- 通知公告 -->
 	<class name="Notice" table="tbl_Examw_OA_Adm_Notices">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 标题 -->
@@ -34,6 +38,8 @@
 	</class>
 	<!-- 请假条 -->
 	<class name="Leave" table="tbl_Examw_OA_Adm_Leave">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 请假员工 -->
@@ -72,6 +78,8 @@
 	</class>
 	<!-- 请假条审批-->
 	<class name="LeaveApproval" table="tbl_Examw_OA_Adm_LeaveApprovals">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 审批ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 所属请假条 -->

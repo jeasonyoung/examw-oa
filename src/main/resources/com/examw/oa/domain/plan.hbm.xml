@@ -3,6 +3,8 @@
 <hibernate-mapping package="com.examw.oa.domain.plan">
 	<!-- 业务系统设置 -->
 	<class name="Business" table="tbl_Examw_OA_Plan_Business">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 业务系统ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 业务系统名称 -->
@@ -16,6 +18,8 @@
 	</class>
 	<!-- 员工报告设置 -->
 	<class name="Settings" table="tbl_Examw_OA_Plan_Settings">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 	   	<!-- 报告设置ID -->
 		<id name="id" column="employee_id">
 			<generator class="foreign">
@@ -31,6 +35,8 @@
 	</class>
 	<!-- 员工报告 -->
 	<class name="Report" table="tbl_Examw_OA_Plan_Report">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 报告ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 所属员工 -->
@@ -53,6 +59,8 @@
 	</class>
 	<!-- 员工报告明细 -->
 	<class name="ReportDetail" table="tbl_Examw_OA_Plan_ReportDetail">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
 		<!-- 明细ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 所属报告 -->
