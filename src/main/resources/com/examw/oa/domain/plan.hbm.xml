@@ -64,7 +64,7 @@
 		<!-- 明细ID -->
 		<id name="id" type="string" length="64" />
 		<!-- 所属报告 -->
-		<many-to-one name="report" column="report_id" />
+		<many-to-one name="report" column="report_id" class="Report"/>
 		<!-- 类型 -->
 		<property name="type" type="integer" />
 		<!-- 内容 -->
@@ -78,5 +78,64 @@
 		</set>
 		<!-- 创建时间 -->
 		<property name="createTime" column="create_time" type="timestamp" />
+	</class>
+	<!-- 部门计划 -->
+	<class name="DeptPlan" table="tbl_Examw_OA_Plan_DeptPlan">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
+		<!-- 计划ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 计划标题 -->
+		<property name="title" type="string" length="512" not-null="true"/>
+		<!-- 所属部门 -->
+		<many-to-one name="department" column="dept_id" class="com.examw.oa.domain.org.Department" />
+		<!-- 计划类型（1-周计划，2-月计划） -->
+		<property name="type" type="integer" />
+		<!-- 计划状态（0-未开始，1-开始，3-完成） -->
+		<property name="status" type="integer" />
+		<!-- 成员计划集合 -->
+		<set name="members" inverse="false"  cascade="save-update" order-by="startTime asc">
+			<key column="plan_id" />
+			<one-to-many class="DeptPlanMember" />
+		</set>
+		<!-- 创建时间 -->
+		<property name="createTime" column="create_time" type="timestamp"  />
+		<!-- 最后修改时间 -->
+		<property name="lastTime" column="last_time" type="timestamp"  />
+		<!-- 计划开始时间 -->
+		<property name="startTime" column="start_time" type="timestamp"  />
+		<!-- 计划结束时间 -->
+		<property name="endTime" column="end_time" type="timestamp"  />
+		<!-- 计划完成时间 -->
+		<property name="finishTime" column="finish_time" type="timestamp"  />
+	</class>
+	<!-- 部门计划成员 -->
+	<class name="DeptPlanMember" table="tbl_Examw_OA_Plan_DeptPlanMembers">
+		<!-- 启用二级缓存 -->
+		<cache usage="read-write"/>
+		<!-- 成员计划ID -->
+		<id name="id" type="string" length="64" />
+		<!-- 成员计划内容 -->
+		<property name="content" type="text" />
+		<!-- 所属部门计划 -->
+		<many-to-one name="plan" column="plan_id" class="DeptPlan" />
+		<!-- 成员计划所属部门员工 -->
+		<many-to-one name="employee" column="employee_id" class="com.examw.oa.domain.org.Employee" />
+		<!-- 成员计划所属奖惩条目 -->
+		<many-to-one name="entry" column="entry_id" class="com.examw.oa.domain.check.Entry" />
+		<!-- 成员计划状态(0-未开始，1-开始，2-确认请求，3-完成) -->
+		<property name="status" type="integer" />
+		<!-- 成员计划员工备注 -->
+		<property name="remarks" type="string" length="1024" />
+		<!-- 成员计划创建时间 -->
+		<property name="createTime" column="create_time" type="timestamp"  />
+		<!-- 成员计划最后修改时间 -->
+		<property name="lastTime" column="last_time" type="timestamp"  />
+		<!-- 成员计划开始时间 -->
+		<property name="startTime" column="start_time" type="timestamp"  />
+		<!-- 成员计划结束时间 -->
+		<property name="endTime" column="end_time" type="timestamp"  />
+		<!-- 成员计划完成时间 -->
+		<property name="finishTime" column="finish_time" type="timestamp"  />
 	</class>
 </hibernate-mapping>

@@ -21,6 +21,8 @@
   		<module id="EOA000303" icon="" name="我的报告" uri="/plan/report" order="3"/>
   		<module id="EOA000403" icon="" name="报告审阅" uri="/plan/review" order="4"/>
   		<module id="EOA000503" icon="" name="报告查询" uri="/plan/search" order="5"/>
+  		<module id="EOA000603" icon="" name="部门计划" uri="/plan/dept" order="6"/>
+  		<module id="EOA000703" icon="" name="查看我的计划" uri="/plan/dept/my" order="7"/>
   	</module>
   	<module id="EOA000004"  icon="" name="行政事务" uri="" order="4">
   		<module id="EOA000104"  icon="" name="栏目设置" uri="/adm/column" order="1" />

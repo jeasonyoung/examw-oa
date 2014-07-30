@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ehcache name="hibernate-ehcache">
+<ehcache name="hibernate-ehcache" updateCheck="false">
 	<diskStore path="java.io.tmpdir" />
 	<!-- 默认配置 -->
 	 <defaultCache
