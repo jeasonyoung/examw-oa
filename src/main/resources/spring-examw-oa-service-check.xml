@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<!-- 奖惩类别设置信息 -->
+	<bean id="catalogService" class="com.examw.oa.service.check.impl.CatalogSerivceImpl">
+		<!-- 奖惩类别设置数据接口 -->
+		<property name="catalogDao" ref="catalogDao"/>
+	</bean>
+	<!-- 奖惩条目设置信息 -->
+	<bean id="entryService" class="com.examw.oa.service.check.impl.EntryServiceImpl">
+		<!-- 奖惩条目设置数据接口 -->
+		<property name="entryDao" ref="entryDao"/>
+		<!-- 奖惩类型集合 -->
+		<property name="typeMap">
+			<map>
+				<!-- 按次考核-->
+				<entry key="1" value="${TYPE_TIMES}"/>
+				<!-- 按天考核 -->
+				<entry key="2" value="${TYPE_DAY}"/>
+				<!-- 按月考核 -->
+				<entry key="3" value="${TYPE_MONTH}"/>
+			</map>
+		</property>
+	</bean>
+</beans>

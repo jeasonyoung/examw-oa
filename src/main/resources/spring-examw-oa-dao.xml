@@ -10,4 +10,6 @@
 	<import resource="spring-examw-oa-dao-plan.xml"/>
 	<!--  行政事务  数据接口实现 -->
 	<import resource="spring-examw-oa-dao-adm.xml"/>
+	<!--  奖惩管理  数据接口实现 -->
+	<import resource="spring-examw-oa-dao-check.xml"/>
 </beans>

@@ -2,7 +2,6 @@ package com.examw.oa.domain.check;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-
 /**
  * 奖惩条目。
  * <p>

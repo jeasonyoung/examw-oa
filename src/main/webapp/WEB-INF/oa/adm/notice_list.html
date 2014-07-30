@@ -9,6 +9,7 @@ $(function(){
 	//tree
 	var t = $("#${module}_column_tree").tree({
 		url:"<@s.url '/adm/column/tree'/>",
+		lines:true,
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
