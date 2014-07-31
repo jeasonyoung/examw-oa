@@ -10,6 +10,8 @@
 	<bean id="entryService" class="com.examw.oa.service.check.impl.EntryServiceImpl">
 		<!-- 奖惩条目设置数据接口 -->
 		<property name="entryDao" ref="entryDao"/>
+		<!-- 奖惩类别设置数据接口 -->
+		<property name="catalogDao" ref="catalogDao"/>
 		<!-- 奖惩类型集合 -->
 		<property name="typeMap">
 			<map>

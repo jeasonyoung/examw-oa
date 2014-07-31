@@ -17,7 +17,7 @@ public interface IEntryDao extends IBaseDao<Entry>{
 	 * @return
 	 * 查询结果。
 	 */
-	 List<Entry> findCatalogs(EntryInfo info);
+	 List<Entry> findEntrys(EntryInfo info);
 	 /**
 	 * 查询数据总数。
 	 * @param info

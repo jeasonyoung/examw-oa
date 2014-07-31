@@ -1,7 +1,5 @@
 package com.examw.oa.model.check;
 
-import java.util.Set;
-
 import com.examw.model.Paging;
 /**
  * 奖惩类别设置信息
@@ -11,7 +9,6 @@ import com.examw.model.Paging;
 public class CatalogInfo extends Paging {
 	private static final long serialVersionUID = 1L;
 	private String id,code,name,description; 
-	private Set<EntryInfo> entries;
 	/**
 	 * 获取奖惩类别设置ID。
 	 * @return 奖惩类别设置ID。
@@ -71,20 +68,5 @@ public class CatalogInfo extends Paging {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	/**
-	 * 获取奖惩条目集合。
-	 * @return 奖惩条目集合。
-	 */
-	public Set<EntryInfo> getEntries() {
-		return entries;
-	}
-	/**
-	 * 设置奖惩条目集合。
-	 * @param entries
-	 * 奖惩条目集合。
-	 */
-	public void setEntries(Set<EntryInfo> entries) {
-		this.entries = entries;
 	}
 }

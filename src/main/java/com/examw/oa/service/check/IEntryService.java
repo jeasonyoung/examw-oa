@@ -16,4 +16,9 @@ public interface IEntryService extends IBaseDataService<EntryInfo>{
 	 * 类型名称。
 	 */
 	String loadTypeName(Integer type);
+	/**
+	 * 加载最大代码。
+	 * @return
+	 */
+	Integer loadMaxCodes();
 }

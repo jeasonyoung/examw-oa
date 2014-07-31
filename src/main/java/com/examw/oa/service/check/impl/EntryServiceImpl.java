@@ -58,7 +58,24 @@ public class EntryServiceImpl extends BaseDataServiceImpl<Entry, EntryInfo> impl
 	@Override
 	protected List<Entry> find(EntryInfo info) {
 		if(logger.isDebugEnabled())logger.debug("数据查询...");
-		return null;
+		return this.entryDao.findEntrys(info);
+	}
+	/*
+	 * 加载最大代码。
+	 * @see com.examw.oa.service.check.IEntryService#loadTypeCodes()
+	 */
+	@Override
+	public Integer loadMaxCodes() {
+		if(logger.isDebugEnabled())logger.debug("加载最大代码...");
+		List<Entry> list = this.entryDao.findEntrys(new EntryInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "code";}
+			@Override
+			public String getOrder(){return "desc";}
+		});
+		if(list == null || list.size() == 0) return null;
+		return new Integer(list.get(0).getCode());
 	}
 	/*
 	 * 类型转换。
@@ -74,6 +91,7 @@ public class EntryServiceImpl extends BaseDataServiceImpl<Entry, EntryInfo> impl
 			info.setCatalogId(data.getCatalog().getId());
 			info.setCatalogName(data.getCatalog().getName());
 		}
+		info.setTypeName(this.loadTypeName(info.getType()));
 		return info;
 	}
 	/*
@@ -83,7 +101,7 @@ public class EntryServiceImpl extends BaseDataServiceImpl<Entry, EntryInfo> impl
 	@Override
 	protected Long total(EntryInfo info) {
 		if(logger.isDebugEnabled())logger.debug("统计数据...");
-		return null;
+		return this.entryDao.total(info);
 	}
 	/*
 	 * 更新数据。
@@ -101,12 +119,11 @@ public class EntryServiceImpl extends BaseDataServiceImpl<Entry, EntryInfo> impl
 		}
 		BeanUtils.copyProperties(info, data);
 		if(!StringUtils.isEmpty(info.getCatalogId()) && (data.getCatalog() == null || !data.getCatalog().getId().equalsIgnoreCase(info.getCatalogId()))){
-			Catalog e = this.catalogDao.load(Catalog.class, info.getCatalogId());
-			if(e != null) data.setCatalog(e);	
+			Catalog c = this.catalogDao.load(Catalog.class, info.getCatalogId());
+			if(c != null) data.setCatalog(c);	
 		}
-		if(data.getCatalog() != null){
-			info.setCatalogName(data.getCatalog().getName());
-		}
+		if(data.getCatalog() != null)info.setCatalogName(data.getCatalog().getName());
+		info.setTypeName(this.loadTypeName(data.getType()));
 		if(isAdded)this.entryDao.save(data);
 		return info;
 	}
@@ -133,7 +150,7 @@ public class EntryServiceImpl extends BaseDataServiceImpl<Entry, EntryInfo> impl
 	 */
 	@Override
 	public String loadTypeName(Integer type) {
-		if(logger.isDebugEnabled()) logger.debug("加载报告类型［"+ type +"］名称...");
+		if(logger.isDebugEnabled()) logger.debug("加载条目类型［"+ type +"］名称...");
 		if(type == null  || this.typeMap == null || this.typeMap.size() == 0) return null;
 		return this.typeMap.get(type);
 	}

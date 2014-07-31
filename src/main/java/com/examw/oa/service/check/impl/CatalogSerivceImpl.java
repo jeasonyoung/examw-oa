@@ -1,8 +1,10 @@
 package com.examw.oa.service.check.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import com.examw.oa.dao.check.ICatalogDao;
@@ -28,6 +30,23 @@ public class CatalogSerivceImpl extends BaseDataServiceImpl<Catalog,CatalogInfo>
 		this.catalogDao = catalogDao;
 	}
 	/*
+	 * 加载最大的代码值。
+	 * @see com.examw.oa.service.check.ICatalogService#loadMaxCode()
+	 */
+	@Override
+	public Integer loadMaxCode() {
+		if(logger.isDebugEnabled())logger.debug("加载最大的代码值...");
+		List<Catalog> list = this.catalogDao.findCatalogs(new CatalogInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "code";}
+			@Override
+			public String getOrder(){return "desc";}
+		});
+		if(list == null || list.size() == 0) return null;
+		return new Integer(list.get(0).getCode());
+	}
+	/*
 	 * 查询数据。
 	 * @see com.examw.oa.service.impl.BaseDataServiceImpl#find(java.lang.Object)
 	 */
@@ -43,7 +62,10 @@ public class CatalogSerivceImpl extends BaseDataServiceImpl<Catalog,CatalogInfo>
 	@Override
 	protected CatalogInfo changeModel(Catalog data) {
 		if(logger.isDebugEnabled())logger.debug("类型转换...");
-		return null;
+		if(data == null) return null;
+		CatalogInfo info = new CatalogInfo();
+		BeanUtils.copyProperties(data, info);
+		return info;
 	}
 	/*
 	 * 统计数据。
@@ -60,8 +82,17 @@ public class CatalogSerivceImpl extends BaseDataServiceImpl<Catalog,CatalogInfo>
 	 */
 	@Override
 	public CatalogInfo update(CatalogInfo info) {
-		// TODO Auto-generated method stub
-		return null;
+		if(logger.isDebugEnabled())logger.debug("更新数据...");
+		if(info == null) return null;
+		boolean isAdded = false;
+		Catalog data = this.catalogDao.load(Catalog.class, info.getId());
+		if(isAdded = (data == null)){
+			if(StringUtils.isEmpty(info.getId())) info.setId(UUID.randomUUID().toString());
+			data = new Catalog();
+		}
+		BeanUtils.copyProperties(info, data);
+		if(isAdded) this.catalogDao.save(data);
+		return info;
 	}
 	/*
 	 * 删除数据

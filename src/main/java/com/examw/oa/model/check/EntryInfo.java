@@ -10,7 +10,7 @@ import com.examw.model.Paging;
  */
 public class EntryInfo extends Paging {
 	private static final long serialVersionUID = 1L;
-	private String id,code,name,description,catalogId,catalogName;
+	private String id,code,name,description,catalogId,catalogName,typeName;
 	private Integer type;
 	private BigDecimal money;
 	/**
@@ -90,7 +90,7 @@ public class EntryInfo extends Paging {
 	}
 	/**
 	 * 获取奖惩条目设置金额（正数为奖励 负数为惩罚）
-	 * @return
+	 * @return 奖惩条目设置金额。
 	 */
 	public BigDecimal getMoney() {
 		return money;
@@ -98,6 +98,7 @@ public class EntryInfo extends Paging {
 	/**
 	 * 设置奖惩条目设置金额（正数为奖励 负数为惩罚）
 	 * @param money
+	 * 奖惩条目设置金额。
 	 */
 	public void setMoney(BigDecimal money) {
 		this.money = money;
@@ -131,5 +132,20 @@ public class EntryInfo extends Paging {
 	 */
 	public void setCatalogName(String catalogName) {
 		this.catalogName = catalogName;
+	}
+	/**
+	 * 获取奖惩条目设置类型名称。
+	 * @return 奖惩条目设置类型名称。
+	 */
+	public String getTypeName() {
+		return typeName;
+	}
+	/**
+	 * 设置奖惩条目设置类型名称。
+	 * @param typeName
+	 * 奖惩条目设置类型名称。
+	 */
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
 }

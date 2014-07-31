@@ -1,0 +1,18 @@
+<#--奖惩类别设置编辑-->
+<#assign module="check_catalog"/>
+<#assign form="${module}_edit_form"/>
+<form id="${form}"  method="POST" style="padding:10px">
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:80px;">类别名称：</label>
+		<input type="text" name="name" class="easyui-validatebox"  data-options="required:true" style="width:320px;"/>
+		<input type="hidden" name="id"/>
+	</div>
+	<div style="float:left; margin-top:12px; width:100%;">
+			<label style="margin-top:5px;width:80px;">类别代码：</label>
+			<input type="text" name="code" class="easyui-validatebox"  data-options="required:true" style="width:320px;"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:80px;">类别描述：</label>
+		<textarea type="text" name="description" row="15" cols="20" style="width:320px;height:120px;" />
+	</div>
+</form>

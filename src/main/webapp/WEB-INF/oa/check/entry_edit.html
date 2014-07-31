@@ -1,0 +1,41 @@
+<#--奖惩条目设置编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="check_entry"/>
+<#assign form="${module}_edit_form"/>
+<form id="${form}"  method="POST" style="padding:10px">
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:80px;">所属条目：</label>
+		<input type="text" name="catalogId" class="easyui-combobox" data-options="
+			url:'<@s.url '/check/catalog/all'/>',
+			valueField:'id',
+			textField:'name',
+			multiple:false,
+			onLoadError:function(e){
+				<@error_dialog 'e'/>
+			}
+		" style="width:335px;">
+	</div>
+	<div style="float:left; margin-top:12px; width:100%;">
+		<label style="margin-top:5px;width:80px;">条目代码：</label>
+		<input type="text" name="code" class="easyui-validatebox"  data-options="required:true" style="width:335px;"/>
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:80px;">条目名称：</label>
+		<input type="text" name="name" class="easyui-validatebox"  data-options="required:true" style="width:335px;"/>
+		<input type="hidden" name="id"/>
+	</div>
+	<div style="float:left; margin-top:12px; width:100%;">
+		<label style="margin-top:5px;width:80px;">奖惩类型：</label>
+		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_TIMES_VALUE}" checked="true"/>${TYPE_TIMES_NAME}</label>
+		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_DAY_VALUE}"  />${TYPE_DAY_NAME}</label>
+		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_MONTH_VALUE}" />${TYPE_MONTH_NAME}</label>
+	</div>
+	<div style="float:left; margin-top:12px; width:100%;">
+		<label style="margin-top:5px;width:80px;">奖惩金额：</label>
+		<input type="text" name="money" class="easyui-validatebox" data-options="required:true" style="width:335px;"/>
+	</div>
+	<div style="float:left;margin-top:10px;width:100%;">
+		<label style="width:80px;">条目描述：</label>
+		<textarea type="text" name="description" row="15" cols="20" style="width:335px;height:120px;" />
+	</div>
+</form>

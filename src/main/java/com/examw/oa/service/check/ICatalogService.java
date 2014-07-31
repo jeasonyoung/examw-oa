@@ -8,5 +8,9 @@ import com.examw.oa.service.IBaseDataService;
  * @since 2014-07-30.
  */
 public interface ICatalogService extends IBaseDataService<CatalogInfo>{
-	
+	/**
+	 * 加载最大的代码值。
+	 * @return
+	 */
+	Integer loadMaxCode();
 }
