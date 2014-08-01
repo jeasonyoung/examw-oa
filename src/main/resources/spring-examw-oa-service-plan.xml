@@ -110,9 +110,5 @@
 			</map>
 		</property>
 	</bean>
-	<!-- 部门计划成员服务 -->
-	<bean id="deptPlanMenberService" class="com.examw.oa.service.plan.impl.DetpPlanMenberServiceImpl">
-		<!-- 部门计划成员数据接口  -->
-		<property name="deptPlanMenberDao" ref="deptPlanMenberDao"/>
-	</bean>
+	
 </beans>
