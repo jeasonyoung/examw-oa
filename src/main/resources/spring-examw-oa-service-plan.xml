@@ -81,4 +81,38 @@
 		<!-- 员工报告设置服务接口 -->
 		<property name="settingsService" ref="settingsService" />
 	</bean>
+	<!-- 部门计划服务 -->
+	<bean id="deptPlanService" class="com.examw.oa.service.plan.impl.DeptPlanServiceImpl">
+		<!-- 部门计划数据接口  -->
+		<property name="deptPlanDao" ref="deptPlanDao"/>
+		<!-- 部门数据接口 -->
+		<property name="departmentDao" ref="departmentDao" />
+		<!-- 部门计划状态集合 -->
+		<property name="typeMap">
+			<map>
+				<!-- 周计划 -->
+				<entry key="1" value="${TYPE_WEEK}"/>
+				<!-- 月计划 -->
+				<entry key="2" value="${TYPE_MONTH}"/>
+			</map>
+		</property>
+		<!-- 部门计划类型集合 -->
+		<property name="statusMap">
+			<map>
+				<!-- 未开始 -->
+				<entry key="0" value="${STATUS_NONE}"/>
+				<!-- 开始执行 -->
+				<entry key="1" value="${STATUS_START}"/>
+				<!-- 确认请求（由计划成员使用） -->
+				<entry key="2" value="${STATUS_FINISH_REQ}"/>
+				<!-- 执行完成 -->
+				<entry key="3" value="${STATUS_FINISHED}"/>
+			</map>
+		</property>
+	</bean>
+	<!-- 部门计划成员服务 -->
+	<bean id="deptPlanMenberService" class="com.examw.oa.service.plan.impl.DetpPlanMenberServiceImpl">
+		<!-- 部门计划成员数据接口  -->
+		<property name="deptPlanMenberDao" ref="deptPlanMenberDao"/>
+	</bean>
 </beans>

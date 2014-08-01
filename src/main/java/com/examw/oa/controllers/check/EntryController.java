@@ -65,7 +65,7 @@ public class EntryController {
 	public String[] loadMaxCode(){
 		Integer max = this.entryService.loadMaxCodes();
 		if(max == null) max = 0;
-		return new String[]{ String.format("%02d", max+1)};
+		return new String[]{ String.format("%04d", max+1)};
 	}
 	/**
 	 * 查询数据。

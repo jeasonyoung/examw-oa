@@ -13,4 +13,12 @@
 	<bean id="reportDao" class="com.examw.oa.dao.plan.impl.ReportDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!-- 部门计划Dao -->
+	<bean id="deptPlanDao" class="com.examw.oa.dao.plan.impl.DeptPlanDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!-- 部门计划成员Dao -->
+	<bean id="deptPlanMenberDao" class="com.examw.oa.dao.plan.impl.DeptPlanMenberDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

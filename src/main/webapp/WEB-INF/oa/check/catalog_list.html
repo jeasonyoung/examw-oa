@@ -24,15 +24,15 @@ $(function(){
 			field:"id",
 			checkbox:true
 		},{
-			title:"奖惩类别名称",
-			field:"name",
-			width:30,
-			align:"left",
-			sortable:true
-		},{
 			title:"奖惩类别代码",
 			field:"code",
 			width:20,
+			align:"left",
+			sortable:true
+		},{
+			title:"奖惩类别名称",
+			field:"name",
+			width:30,
 			align:"left",
 			sortable:true
 		}]],
@@ -173,6 +173,6 @@ $(function(){
 	<a href="#" class="easyui-linkbutton" onclick="${dg}_add()" data-options="iconCls:'icon-add',plain:true" style="float:left;">新增</a>
 	<span>|</span>
 	<a href="#" class="easyui-linkbutton" onclick="${dg}_delete()" data-options="iconCls:'icon-remove',plain:true">删除</a>
-	<label>名称：<input name="name" type="text" style="width:198px;"/></label>
+	<label>类别名称：<input name="name" type="text" style="width:198px;"/></label>
 	<a href="#" class="easyui-linkbutton" style="margin-left:10px;"  onclick="${dg}_search()" data-options="iconCls:'icon-search',plain:true">查询</a>
 </div>

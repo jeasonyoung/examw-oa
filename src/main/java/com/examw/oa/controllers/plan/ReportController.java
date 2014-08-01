@@ -32,7 +32,7 @@ public class ReportController implements IUserAware {
 	//报告服务接口。
 	@Resource
 	private IReportService reportSerivce;
-	//业务系统服务
+	//业务系统服务接口。
 	@Resource
 	private IBusinessService businessService;
 	/*

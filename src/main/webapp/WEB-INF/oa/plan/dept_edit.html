@@ -1,0 +1,38 @@
+<#--部门编辑-->
+<#include "ftl/comm.ftl"/>
+<#assign module="plan_dept"/>
+<#assign form="${module}_edit_form"/>
+<script type="text/javascript">
+<!--
+$(function(){
+	var p = $("#${form} input[name='deptId']").combotree({
+		url:"<@s.url '/org/dept/tree?ignore=${CURRENT_IGNORE}'/>",
+		lines:true,
+		onLoadError:function(e){
+			<@error_dialog "e"/>
+		},
+		onLoadSuccess:function(n,d){
+			<#if (CURRENT_PARENT_DEPT_ID?length > 0)>
+			p.combotree("setValue","${CURRENT_PARENT_DEPT_ID}");
+			</#if>
+		}
+	});
+});
+//-->
+</script>
+<form id="${form}" method="POST" style="padding:10px;" >
+	<div  style="float:left;margin-top:2px;width:90%;">
+		<label style="width:75px;">所属部门：</label>
+		<input type="text" name="deptId" data-options="required:true" style="width:252px;"/>	
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">计划标题：</label>
+		<input type="text" name="title" class="easyui-validatebox" data-options="required:true" style="width:248px;"/>
+		<input type="hidden" name="id"/>
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">计划类型：</label>
+		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_WEEK_VALUE}" checked="true"/>${TYPE_WEEK_NAME}</label>
+		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_MONTH_VALUE}"  />${TYPE_MONTH_NAME}</label>
+	</div>
+</form>
