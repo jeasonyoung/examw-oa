@@ -1,5 +1,7 @@
 package com.examw.oa.controllers.check;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
@@ -121,5 +123,20 @@ public class EntryController {
 			logger.error("删除数据["+id+"]时发生异常:", e);
 		}
 		return result;
+	}
+	/**
+	 * 加载全部数据。
+	 * @return
+	 */
+	@RequestMapping(value = "/all", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public List<EntryInfo> all(){
+		return this.entryService.datagrid(new EntryInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "name";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
 	}
 }

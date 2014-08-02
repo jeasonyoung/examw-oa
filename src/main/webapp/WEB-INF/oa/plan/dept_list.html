@@ -58,33 +58,25 @@ $(function(){
 			align:"left",
 			sortable:true
 		},{
-			title:"计划状态",
-			field:"statusName",
-			width:15,
-			align:"center",
-			sortable:true
-		},{
-			title:"开始时间",
-			field:"startTime",
-			width:10,
-			align:"right",
-			sortable:true
-		},{
-			title:"结束时间",
-			field:"endTime",
-			width:10,
-			align:"right",
-			sortable:true
-		},{
-			title:"完成时间",
-			field:"finishTime",
-			width:10,
-			align:"right",
-			sortable:true
+			title:"操作",
+			field:"opt",
+			width:30,
+			align:"left",
+			formatter:function(value,data,index){
+			
+				var href="";
+				
+					href += "<a class='plan-dept-opt-add' href='#' onclick='${dg}_dept_add(\""+ data.id+"\")'>添加计划成员</a>";
+				
+				return href;
+			}
 		}]],
 		toolbar:"#${dg}_toobar",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
+		},	
+		onLoadSuccess:function(data){
+			dg_fields_format();
 		},
 		onDblClickRow:function(rowIndex,rowData){
 			edit_window("修改部门计划信息",rowIndex,rowData);
@@ -92,7 +84,32 @@ $(function(){
 	});
 	//add
 	${dg}_add = function(){
-		edit_window("新增部门计划信息",0,null);
+		edit_window("新增部门计划",0,null);
+	};
+	//format datagrid display.
+	function dg_fields_format(){
+		$(".plan-dept-opt-add").linkbutton({text:"添加计划成员",plain:true,iconCls:"icon-add"});
+	};
+	//add
+	${dg}_dept_add = function(deptId){
+		if(!deptId || $.trim(deptId) == "") return;
+		var d = $("<div/>").dialog({
+			title:"添加计划成员",
+			width:800,
+			height:600,
+			href:"<@s.url '/plan/dept/add/'/>"+deptId,
+			modal:true,
+			buttons:[{
+				text:"关闭",
+				iconCls:"icon-cancel",
+				handler:function(){
+					d.dialog("close");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			}
+		});
 	};
 	//edit
 	function edit_window(title,index,row){

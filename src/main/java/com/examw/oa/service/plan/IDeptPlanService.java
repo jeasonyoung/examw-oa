@@ -1,5 +1,6 @@
 package com.examw.oa.service.plan;
 
+
 import com.examw.oa.model.plan.DeptPlanInfo;
 import com.examw.oa.service.IBaseDataService;
 
@@ -25,4 +26,5 @@ public interface IDeptPlanService extends IBaseDataService<DeptPlanInfo>{
 	 * 类型名称。
 	 */
 	String loadTypeName(Integer type);
+	
 }

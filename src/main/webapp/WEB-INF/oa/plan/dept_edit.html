@@ -18,21 +18,97 @@ $(function(){
 		}
 	});
 });
+//
+var dept_cbt = $("#${form} input[name='deptIds']").combotree({
+	url:"<@s.url '/org/dept/tree'/>",
+	required:true,
+	lines:true,
+	onLoadError:function(e){
+		<@error_dialog "e"/>
+	},
+	onLoadSuccess:function(n,d){
+		<#if (CURRENT_DEPT_ID?length > 0)>
+		if(dept_cbt)dept_cbt.combotree("setValue","${CURRENT_PARENT_DEPT_ID}");
+		</#if>
+	},
+	onChange:function(n,o){
+		if(emp_cbb){
+			emp_cbb.combobox("clear");
+			if($.trim(n) == "") return;
+			emp_cbb.combobox("reload","<@s.url '/org/emp/all?deptId='/>" + n);
+		}
+	}
+});
+//employee
+var emp_cbb = $("#${form} input[name='employeeId']").combobox({
+	<#if (CURRENT_PARENT_DEPT_ID?length > 0)>
+	url:"<@s.url '/org/emp/all?deptId=${CURRENT_PARENT_DEPT_ID}'/>",
+	</#if>
+	valueField:"id",
+	textField:"name",
+	required:true,
+	onLoadError:function(e){
+		<@error_dialog "e"/>
+	}
+});
 //-->
 </script>
 <form id="${form}" method="POST" style="padding:10px;" >
 	<div  style="float:left;margin-top:2px;width:90%;">
 		<label style="width:75px;">所属部门：</label>
-		<input type="text" name="deptId" data-options="required:true" style="width:252px;"/>	
+		<input type="text" name="deptId" data-options="required:true" style="width:370px;"/>	
 	</div>
 	<div style="float:left;margin-top:12px;width:100%;">
 		<label style="width:75px;">计划标题：</label>
-		<input type="text" name="title" class="easyui-validatebox" data-options="required:true" style="width:248px;"/>
+		<input type="text" name="title" class="easyui-validatebox" data-options="required:true" style="width:370px;"/>
 		<input type="hidden" name="id"/>
 	</div>
-	<div style="float:left;margin-top:12px;width:100%;">
-		<label style="width:75px;">计划类型：</label>
-		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_WEEK_VALUE}" checked="true"/>${TYPE_WEEK_NAME}</label>
-		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_MONTH_VALUE}"  />${TYPE_MONTH_NAME}</label>
+	<div style="float:left;">
+			<label style="width:75px;">计划类型：</label>
+			<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_WEEK_VALUE}" checked="true"/>${TYPE_WEEK_NAME}</label>
+			<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_MONTH_VALUE}"  />${TYPE_MONTH_NAME}</label>
+		</div>
+	<!--  <div style="float:left;margin-top:10px;width:90%;">
+		<div  style="float:left;">
+			<label style="width:75px;">开始时间：</label>
+			<input type="text" name="startTime"  class="easyui-datebox" data-options="required:true" style="width:150px;"/>	
+		</div>
+		<div  style="float:left;">
+			<label style="width:75px;">结束时间：</label>
+			<input type="text" name="endTime"  class="easyui-datebox" data-options="required:true" style="width:150px;"/>	
+		</div>
 	</div>
+	<div style="float:left;margin-top:10px;width:90%;">
+		<div  style="float:left;">
+			<label style="width:75px;">完成时间：</label>
+			<input type="text" name="finishTime"  class="easyui-datebox" data-options="required:true" style="width:150px;"/>	
+		</div>
+		
+	</div>
+	<div  style="float:left;margin-top:5px;width:90%;">
+		<label style="width:75px;">所属员工：</label>
+		<input type="text" name="deptIds" data-options="required:true" style="width:150px;"/>	
+		<input type="text" name="employeeId" data-options="required:true" style="width:150px;"/>	
+	</div>
+	<div style="float:left;margin-top:12px;width:100%;">
+		<label style="width:75px;">所属条目：</label>
+		<input type="text" name="entryId" class="easyui-combobox" data-options="
+			url:'<@s.url '/check/entry/all'/>',
+			valueField:'id',
+			textField:'name',
+			required:true,
+			onLoadError:function(e){
+				<@error_dialog 'e'/>
+			}
+		" style="width:370px;">
+	</div>
+	<div  style="float:left;margin-top:10px;width:90%;">
+		<label style="width:75px;">计划内容：</label>
+		<textarea type="text" name="content" row="15" cols="20" style="width:380px;height:120px;" />	
+	</div>
+	
+	<div  style="float:left;margin-top:5px;width:90%;">
+		<label style="width:75px;">员工备注：</label>
+		<textarea type="text" name="remarks" row="10" cols="15" style="width:380px;height:80px;" />	
+	</div>-->
 </form>

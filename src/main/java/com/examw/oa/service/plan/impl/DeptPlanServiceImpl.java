@@ -25,6 +25,7 @@ public class DeptPlanServiceImpl extends BaseDataServiceImpl<DeptPlan, DeptPlanI
 	private static final Logger logger = Logger.getLogger(DeptPlanServiceImpl.class);
 	private IDeptPlanDao deptPlanDao;
 	private IDepartmentDao departmentDao;
+	
 	private Map<Integer,String> typeMap,statusMap;
 	/**
 	 * 设置部门计划数据接口。
@@ -163,4 +164,5 @@ public class DeptPlanServiceImpl extends BaseDataServiceImpl<DeptPlan, DeptPlanI
 		if(type == null  || this.typeMap == null || this.typeMap.size() == 0) return null;
 		return this.typeMap.get(type);
 	}
+	
 }

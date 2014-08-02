@@ -1,12 +1,14 @@
 package com.examw.oa.controllers.plan;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +19,8 @@ import com.examw.oa.controllers.org.ModuleConstant;
 import com.examw.oa.domain.plan.DeptPlan;
 import com.examw.oa.domain.security.Right;
 import com.examw.oa.model.plan.DeptPlanInfo;
+import com.examw.oa.model.plan.DeptPlanMemberInfo;
+import com.examw.oa.service.plan.IDeptPlanMenberService;
 import com.examw.oa.service.plan.IDeptPlanService;
 /**
  * 部门计划控制器。
@@ -30,6 +34,8 @@ public class DeptPlanController {
 	//部门计划服务接口。
 	@Resource
 	private IDeptPlanService deptPlanService;
+	@Resource
+	private IDeptPlanMenberService menberService;
 	/**
 	 * 列表页面。
 	 * @return
@@ -61,6 +67,18 @@ public class DeptPlanController {
 		return "/plan/dept_edit";
 	}
 	/**
+	 * 获取添加页面。
+	 * @return
+	 * 添加页面。
+	 */
+	//@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
+	@RequestMapping(value="/add/{deptId}", method = RequestMethod.GET)
+	public String edit(@PathVariable String deptId,Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载添加页面...");
+		model.addAttribute("CURRENT_DEPT_ID", deptId);
+		return "/plan/dept_add";
+	}
+	/**
 	 * 查询数据。
 	 * @return
 	 */
@@ -81,7 +99,7 @@ public class DeptPlanController {
 	@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
-	public Json update(@RequestBody DeptPlanInfo info){
+	public Json update(DeptPlanInfo info){
 		if(logger.isDebugEnabled()) logger.debug("更新数据...");
 		Json result = new Json();
 		try {
@@ -114,5 +132,45 @@ public class DeptPlanController {
 			logger.error("删除数据["+id+"]时发生异常:", e);
 		}
 		return result;
+	}
+	/**
+	 * 加载全部数据。
+	 * @return
+	 */
+	@RequestMapping(value = "/all", method = {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public List<DeptPlanInfo> all(){
+		return this.deptPlanService.datagrid(new DeptPlanInfo(){
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String getSort(){return "id";}
+			@Override
+			public String getOrder(){return "asc";}
+		}).getRows();
+	}
+	/**
+	 * 数据列表。
+	 * @param info
+	 * @return
+	 */
+	//@RequiresPermissions({ModuleConstant.PAPERS_PAPER + ":" + Right.VIEW})
+	@RequestMapping(value="/{deptId}/datagrid", method = RequestMethod.POST)
+	@ResponseBody
+	public List<DeptPlanMemberInfo> deptPlanMembers(@PathVariable String deptId){
+		if(logger.isDebugEnabled()) logger.debug("加载［"+deptId+"］数据列表...");
+		return this.menberService.findDeptPlanMembers(deptId);
+	}
+	/**
+	 * 获取编辑页面。
+	 * @return
+	 * 编辑页面。
+	 */
+	//@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
+	@RequestMapping(value="/menber/edit", method = RequestMethod.GET)
+	public String menberEdit(String detpId,String menberId,Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
+		model.addAttribute("CURRENT_DEPT_ID", detpId);
+		model.addAttribute("CURRENT_MENBER_ID", menberId);
+		return "/plan/menber_edit";
 	}
 }
