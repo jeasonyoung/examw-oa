@@ -27,4 +27,12 @@ public interface IDeptPlanMenberDao extends IBaseDao<DeptPlanMember>{
 	 * 数据总数。
 	 */
 	Long total(DeptPlanMemberInfo info);
+	/**
+	 * 根据部门计划ID查询部门计划成员。
+	 * @param deptId
+	 * 查询条件。
+	 * @return
+	 * 结果数据。
+	 */
+	List<DeptPlanMember> loedDeptPlanMembers(String deptId);
 }

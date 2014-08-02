@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
-
 import com.examw.oa.dao.impl.BaseDaoImpl;
 import com.examw.oa.dao.plan.IDeptPlanMenberDao;
 import com.examw.oa.domain.plan.DeptPlanMember;
@@ -63,5 +62,17 @@ public class DeptPlanMenberDaoImpl extends BaseDaoImpl<DeptPlanMember> implement
 			parameters.put("name", "%" + info.getEmplName() + "%");
 		}
 		return hql;
+	}
+	/*
+	 * 根据部门计划ID查询计划部门成员ID.
+	 * @see com.examw.oa.dao.plan.IDeptPlanMenberDao#loedDeptPlanMembers(java.lang.String)
+	 */
+	@Override
+	public List<DeptPlanMember> loedDeptPlanMembers(String deptId) {
+		if(StringUtils.isEmpty(deptId))return null;
+		final String hql = "from DeptPlanMember d where d.plan.id =:deptId";
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("deptId", deptId);
+		return this.find(hql, parameters, null, null);
 	}
 }
