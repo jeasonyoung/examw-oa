@@ -63,11 +63,8 @@ $(function(){
 			width:30,
 			align:"left",
 			formatter:function(value,data,index){
-			
 				var href="";
-				
 					href += "<a class='plan-dept-opt-add' href='#' onclick='${dg}_dept_add(\""+ data.id+"\")'>添加计划成员</a>";
-				
 				return href;
 			}
 		}]],
@@ -79,7 +76,7 @@ $(function(){
 			dg_fields_format();
 		},
 		onDblClickRow:function(rowIndex,rowData){
-			edit_window("修改部门计划信息",rowIndex,rowData);
+			edit_window("修改部门计划",rowIndex,rowData);
 		}
 	});
 	//add
@@ -91,13 +88,13 @@ $(function(){
 		$(".plan-dept-opt-add").linkbutton({text:"添加计划成员",plain:true,iconCls:"icon-add"});
 	};
 	//add
-	${dg}_dept_add = function(deptId){
-		if(!deptId || $.trim(deptId) == "") return;
+	${dg}_dept_add = function(planDeptId){
+		if(!planDeptId || $.trim(planDeptId) == "") return;
 		var d = $("<div/>").dialog({
 			title:"添加计划成员",
 			width:800,
 			height:600,
-			href:"<@s.url '/plan/dept/add/'/>"+deptId,
+			href:"<@s.url '/plan/dept/add/'/>"+planDeptId,
 			modal:true,
 			buttons:[{
 				text:"关闭",
@@ -113,16 +110,11 @@ $(function(){
 	};
 	//edit
 	function edit_window(title,index,row){
-		var p_id = current_parent_dept_id, ignore_id = "";
-		if(row){
-			p_id = (row.pid) ? row.pid : "";
-			ignore_id = row.id;
-		}
 		var d = $("<div/>").dialog({
 			title:title,
 			width:500,
-			height:500,
-			href:"<@s.url '/plan/dept/edit'/>?ignore="+ignore_id+"&pid=" + p_id,
+			height:250,
+			href:"<@s.url '/plan/dept/edit'/>",
 			modal:true,
 			buttons:[
 		
@@ -181,7 +173,7 @@ $(function(){
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			  deptId:current_parent_dept_id,
+			deptId:current_parent_dept_id,
 			  name:$("#${dg}_toobar input[name='name']").val()
 		});
 	};

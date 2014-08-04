@@ -9,11 +9,18 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
+import com.examw.oa.dao.check.IEntryDao;
 import com.examw.oa.dao.org.IDepartmentDao;
+import com.examw.oa.dao.org.IEmployeeDao;
 import com.examw.oa.dao.plan.IDeptPlanDao;
+import com.examw.oa.dao.plan.IDeptPlanMenberDao;
+import com.examw.oa.domain.check.Entry;
 import com.examw.oa.domain.org.Department;
+import com.examw.oa.domain.org.Employee;
 import com.examw.oa.domain.plan.DeptPlan;
+import com.examw.oa.domain.plan.DeptPlanMember;
 import com.examw.oa.model.plan.DeptPlanInfo;
+import com.examw.oa.model.plan.DeptPlanMemberInfo;
 import com.examw.oa.service.impl.BaseDataServiceImpl;
 import com.examw.oa.service.plan.IDeptPlanService;
 /**
@@ -25,7 +32,9 @@ public class DeptPlanServiceImpl extends BaseDataServiceImpl<DeptPlan, DeptPlanI
 	private static final Logger logger = Logger.getLogger(DeptPlanServiceImpl.class);
 	private IDeptPlanDao deptPlanDao;
 	private IDepartmentDao departmentDao;
-	
+	private IDeptPlanMenberDao deptPlanMenberDao;
+	private IEntryDao entryDao;
+	private IEmployeeDao employeeDao;
 	private Map<Integer,String> typeMap,statusMap;
 	/**
 	 * 设置部门计划数据接口。
@@ -35,6 +44,30 @@ public class DeptPlanServiceImpl extends BaseDataServiceImpl<DeptPlan, DeptPlanI
 	public void setDeptPlanDao(IDeptPlanDao deptPlanDao){
 		if(logger.isDebugEnabled())logger.debug("注入部门计划数据接口...");
 		this.deptPlanDao = deptPlanDao;
+	}
+	/**
+	 * 设置员工信息数据接口。
+	 * @param employeeDao
+	 * 员工信息数据接口。
+	 */
+	public void setEmployeeDao(IEmployeeDao employeeDao) {
+		this.employeeDao = employeeDao;
+	}
+	/**
+	 * 设置部门计划成员数据接口。
+	 * @param deptPlanMenberDao
+	 * 部门计划成员数据接口。
+	 */
+	public void setDeptPlanMenberDao(IDeptPlanMenberDao deptPlanMenberDao) {
+		this.deptPlanMenberDao = deptPlanMenberDao;
+	}
+	/**
+	 * 设置奖惩条目数据接口。
+	 * @param entryDao
+	 * 奖惩条目数据接口。
+	 */
+	public void setEntryDao(IEntryDao entryDao) {
+		this.entryDao = entryDao;
 	}
 	/**
 	 * 设置部门计划数据接口。
@@ -114,9 +147,6 @@ public class DeptPlanServiceImpl extends BaseDataServiceImpl<DeptPlan, DeptPlanI
 			}
 			data = new DeptPlan();
 		}
-		if(info.getStartTime() == null){
-			info.setStatusName(this.loadStatusName(DeptPlan.STATUS_NONE));
-		}
 		if(!isAdded)info.setCreateTime(data.getCreateTime());
 		BeanUtils.copyProperties(info, data);
 		if(!StringUtils.isEmpty(info.getDeptId()) && (data.getDepartment() == null || !data.getDepartment().getId().equalsIgnoreCase(info.getDeptId()))){
@@ -164,5 +194,40 @@ public class DeptPlanServiceImpl extends BaseDataServiceImpl<DeptPlan, DeptPlanI
 		if(type == null  || this.typeMap == null || this.typeMap.size() == 0) return null;
 		return this.typeMap.get(type);
 	}
-	
+	/*
+	 * 更新计划成员。
+	 * @see com.examw.oa.service.plan.IDeptPlanService#updateDeptPlanMember(java.lang.String, com.examw.oa.model.plan.DeptPlanMemberInfo)
+	 */
+	@Override
+	public DeptPlanMemberInfo updateDeptPlanMember(String deptPlanId, DeptPlanMemberInfo info) {
+		if(logger.isDebugEnabled())logger.debug("更新计划成员数据...");
+		if(info == null) return null;
+		Boolean isAdded = false;
+		DeptPlanMember  data = StringUtils.isEmpty(info.getId()) ? null : this.deptPlanMenberDao.load(DeptPlanMember.class, info.getId());
+		if(isAdded = (data == null)){
+			if(StringUtils.isEmpty(info.getId())){
+				info.setId(UUID.randomUUID().toString());
+				info.setCreateTime(new Date());
+			}
+			data = new DeptPlanMember();
+		}
+		if(!isAdded)info.setCreateTime(data.getCreateTime());
+		BeanUtils.copyProperties(info, data);
+		if(!StringUtils.isEmpty(info.getEntryId()) && (data.getEntry() == null || !data.getEntry().getId().equalsIgnoreCase(info.getEntryId()))){
+			Entry e = this.entryDao.load(Entry.class, info.getEntryId());
+			if(e != null) data.setEntry(e);
+		}
+		if(!StringUtils.isEmpty(info.getEmplId()) && (data.getEmployee() == null || !data.getEmployee().getId().equalsIgnoreCase(info.getEntryId()))){
+			Employee e = this.employeeDao.load(Employee.class, info.getEmplId());
+			if(e != null) data.setEmployee(e);
+		}
+		if(data.getEntry() != null) info.setEntryName(data.getEntry().getName());
+		if(data.getEmployee() != null) info.setEmplName(data.getEmployee().getName());
+		DeptPlan plan=this.deptPlanDao.load(DeptPlan.class, deptPlanId);
+		if(plan !=null){
+			info.setDeptPlanId(deptPlanId);
+		}
+		if(isAdded)this.deptPlanMenberDao.save(data);
+		return info;
+	}
 }

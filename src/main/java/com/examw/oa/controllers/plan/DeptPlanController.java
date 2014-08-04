@@ -54,9 +54,9 @@ public class DeptPlanController {
 	 */
 	//@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
 	@RequestMapping(value="/edit", method = RequestMethod.GET)
-	public String edit(String pid,String ignore,Model model){
+	public String edit(String planId,String ignore,Model model){
 		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
-		model.addAttribute("CURRENT_PARENT_DEPT_ID", pid);
+		model.addAttribute("CURRENT_PARENT_DEPT_ID", planId);
 		model.addAttribute("CURRENT_IGNORE", ignore);
 		
 		model.addAttribute("TYPE_WEEK_VALUE", DeptPlan.TYPE_WEEK);
@@ -66,18 +66,7 @@ public class DeptPlanController {
 		model.addAttribute("TYPE_MONTH_NAME", this.deptPlanService.loadTypeName(DeptPlan.TYPE_MONTH));
 		return "/plan/dept_edit";
 	}
-	/**
-	 * 获取添加页面。
-	 * @return
-	 * 添加页面。
-	 */
-	//@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
-	@RequestMapping(value="/add/{deptId}", method = RequestMethod.GET)
-	public String edit(@PathVariable String deptId,Model model){
-		if(logger.isDebugEnabled()) logger.debug("加载添加页面...");
-		model.addAttribute("CURRENT_DEPT_ID", deptId);
-		return "/plan/dept_add";
-	}
+	
 	/**
 	 * 查询数据。
 	 * @return
@@ -115,7 +104,9 @@ public class DeptPlanController {
 	/**
 	 * 删除数据。
 	 * @param id
+	 * 删除条件
 	 * @return
+	 * 结果
 	 */
 	@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.DELETE})
 	@RequestMapping(value="/delete", method = RequestMethod.POST)
@@ -133,24 +124,10 @@ public class DeptPlanController {
 		}
 		return result;
 	}
+	
 	/**
-	 * 加载全部数据。
-	 * @return
-	 */
-	@RequestMapping(value = "/all", method = {RequestMethod.GET,RequestMethod.POST})
-	@ResponseBody
-	public List<DeptPlanInfo> all(){
-		return this.deptPlanService.datagrid(new DeptPlanInfo(){
-			private static final long serialVersionUID = 1L;
-			@Override
-			public String getSort(){return "id";}
-			@Override
-			public String getOrder(){return "asc";}
-		}).getRows();
-	}
-	/**
-	 * 数据列表。
-	 * @param info
+	 * 根据计划ID加载部门计划成员数据列表。
+	 * @param deptId
 	 * @return
 	 */
 	//@RequiresPermissions({ModuleConstant.PAPERS_PAPER + ":" + Right.VIEW})
@@ -167,10 +144,44 @@ public class DeptPlanController {
 	 */
 	//@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
 	@RequestMapping(value="/menber/edit", method = RequestMethod.GET)
-	public String menberEdit(String detpId,String menberId,Model model){
+	public String menberEdit(String planDetpId,Model model){
 		if(logger.isDebugEnabled()) logger.debug("加载编辑页面...");
-		model.addAttribute("CURRENT_DEPT_ID", detpId);
-		model.addAttribute("CURRENT_MENBER_ID", menberId);
+		model.addAttribute("CURRENT_PLAN_DEPT_ID", planDetpId);
 		return "/plan/menber_edit";
+	}
+	/**
+	 * 获取添加页面。
+	 * @return
+	 * 添加页面。
+	 */
+	//@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
+	@RequestMapping(value="/add/{planDeptId}", method = RequestMethod.GET)
+	public String edit(@PathVariable String planDeptId,Model model){
+		if(logger.isDebugEnabled()) logger.debug("加载添加页面...");
+		model.addAttribute("CURRENT_PLAN_DEPT_ID", planDeptId);
+		return "/plan/dept_add";
+	}
+	/**
+	 * 更新数据。
+	 * @param info
+	 * 更新源数据。
+	 * @return
+	 * 更新后数据。
+	 */
+	@RequiresPermissions({ModuleConstant.ORG_DEPT + ":" + Right.UPDATE})
+	@RequestMapping(value="/updateMenber", method = RequestMethod.POST)
+	@ResponseBody
+	public Json updateMenber(String deptPlanId,DeptPlanMemberInfo info){
+		if(logger.isDebugEnabled()) logger.debug("更新数据...");
+		Json result = new Json();
+		try {
+			result.setData(this.deptPlanService.updateDeptPlanMember(deptPlanId, info));
+			result.setSuccess(true);
+		} catch (Exception e) {
+			result.setSuccess(false);
+			result.setMsg(e.getMessage());
+			logger.error("更新部门计划成员数据发生异常", e);
+		}
+		return result;
 	}
 }

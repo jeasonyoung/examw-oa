@@ -85,9 +85,14 @@
 	<bean id="deptPlanService" class="com.examw.oa.service.plan.impl.DeptPlanServiceImpl">
 		<!-- 部门计划数据接口  -->
 		<property name="deptPlanDao" ref="deptPlanDao"/>
-		
+		<!-- 部门计划成员数据接口  -->
+		<property name="deptPlanMenberDao" ref="deptPlanMenberDao"/>
 		<!-- 部门数据接口 -->
 		<property name="departmentDao" ref="departmentDao" />
+		<!-- 员工数据接口 -->
+		<property name="employeeDao" ref="employeeDao" />
+		<!-- 奖惩条目设置数据接口 -->
+		<property name="entryDao" ref="entryDao"/>
 		<!-- 部门计划状态集合 -->
 		<property name="typeMap">
 			<map>

@@ -17,8 +17,6 @@ public class DeptPlanInfo extends Paging{
 	private String id,title,deptId,deptName,typeName,statusName;
 	private Integer type,status;
 	private Date createTime,lastTime,startTime,endTime,finishTime;
-	private String mId,mContent,mEmployeeId,mEmployeeName,mPlanId,ePlanName,mEntryId,mEntryName,mSatus,mRemarks;
-	private Date mCreateTime,mLastTime,mStartTime,mEndTime,mFinishTime;
 	/**
 	 * 获取部门计划ID。
 	 * @return 部门计划ID。
@@ -139,7 +137,7 @@ public class DeptPlanInfo extends Paging{
 	 * @param lastTime
 	 * 部门计划最后修改时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	public void setLastTime(Date lastTime) {
 		this.lastTime = lastTime;
 	}
@@ -156,7 +154,7 @@ public class DeptPlanInfo extends Paging{
 	 * @param startTime
 	 * 部门计划开始时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
@@ -173,7 +171,7 @@ public class DeptPlanInfo extends Paging{
 	 * @param endTime
 	 * 部门计划结束时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
@@ -190,110 +188,38 @@ public class DeptPlanInfo extends Paging{
 	 * @param finishTime
 	 * 部门计划完成时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
 	}
+	/**
+	 * 获取部门计划类型名称。
+	 * @return 部门计划类型名称。
+	 */
 	public String getTypeName() {
 		return typeName;
 	}
+	/**
+	 * 设置部门计划类型名称。
+	 * @param typeName
+	 * 部门计划类型名称。
+	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
 	}
+	/**
+	 * 获取部门计划状态名称。
+	 * @return 部门计划状态名称。
+	 */
 	public String getStatusName() {
 		return statusName;
 	}
+	/**
+	 * 设置部门计划状态名称。
+	 * @param statusName
+	 * 部门计划状态名称。
+	 */
 	public void setStatusName(String statusName) {
 		this.statusName = statusName;
-	}
-	public String getmId() {
-		return mId;
-	}
-	public void setmId(String mId) {
-		this.mId = mId;
-	}
-	public String getmContent() {
-		return mContent;
-	}
-	public void setmContent(String mContent) {
-		this.mContent = mContent;
-	}
-	public String getmEmployeeId() {
-		return mEmployeeId;
-	}
-	public void setmEmployeeId(String mEmployeeId) {
-		this.mEmployeeId = mEmployeeId;
-	}
-	public String getmEmployeeName() {
-		return mEmployeeName;
-	}
-	public void setmEmployeeName(String mEmployeeName) {
-		this.mEmployeeName = mEmployeeName;
-	}
-	public String getmPlanId() {
-		return mPlanId;
-	}
-	public void setmPlanId(String mPlanId) {
-		this.mPlanId = mPlanId;
-	}
-	public String getePlanName() {
-		return ePlanName;
-	}
-	public void setePlanName(String ePlanName) {
-		this.ePlanName = ePlanName;
-	}
-	public String getmEntryId() {
-		return mEntryId;
-	}
-	public void setmEntryId(String mEntryId) {
-		this.mEntryId = mEntryId;
-	}
-	public String getmEntryName() {
-		return mEntryName;
-	}
-	public void setmEntryName(String mEntryName) {
-		this.mEntryName = mEntryName;
-	}
-	public String getmSatus() {
-		return mSatus;
-	}
-	public void setmSatus(String mSatus) {
-		this.mSatus = mSatus;
-	}
-	public String getmRemarks() {
-		return mRemarks;
-	}
-	public void setmRemarks(String mRemarks) {
-		this.mRemarks = mRemarks;
-	}
-	public Date getmCreateTime() {
-		return mCreateTime;
-	}
-	public void setmCreateTime(Date mCreateTime) {
-		this.mCreateTime = mCreateTime;
-	}
-	public Date getmLastTime() {
-		return mLastTime;
-	}
-	public void setmLastTime(Date mLastTime) {
-		this.mLastTime = mLastTime;
-	}
-	public Date getmStartTime() {
-		return mStartTime;
-	}
-	public void setmStartTime(Date mStartTime) {
-		this.mStartTime = mStartTime;
-	}
-	public Date getmEndTime() {
-		return mEndTime;
-	}
-	public void setmEndTime(Date mEndTime) {
-		this.mEndTime = mEndTime;
-	}
-	public Date getmFinishTime() {
-		return mFinishTime;
-	}
-	public void setmFinishTime(Date mFinishTime) {
-		this.mFinishTime = mFinishTime;
 	}
 }

@@ -58,7 +58,7 @@ $(function(){
 	});
 	//add
 	var isAdd = false;
-	${dg}_add = function(){
+	${dg}_add = function(data){
 		if(isAdd)return;
 		isAdd = true;
 		$.getJSON("<@s.url '/check/entry/code'/>",function(data,row){
