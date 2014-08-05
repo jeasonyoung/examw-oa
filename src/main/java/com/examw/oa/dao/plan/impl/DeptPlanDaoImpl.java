@@ -32,6 +32,12 @@ public class DeptPlanDaoImpl extends BaseDaoImpl<DeptPlan> implements IDeptPlanD
 			if(info.getSort().equalsIgnoreCase("deptName")){
 				info.setSort("department.name");
 			}
+			if(info.getSort().equalsIgnoreCase("typeName")){
+				info.setSort("type");
+			}
+			if(info.getSort().equalsIgnoreCase("statusName")){
+				info.setSort("status");
+			}
 			hql += " order by d." + info.getSort() + " " + info.getOrder();
 		}
 		if(logger.isDebugEnabled()) logger.debug(hql);

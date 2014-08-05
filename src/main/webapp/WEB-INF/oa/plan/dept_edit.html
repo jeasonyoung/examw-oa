@@ -5,54 +5,212 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var p = $("#${form} input[name='deptId']").combotree({
-		url:"<@s.url '/org/dept/tree?ignore=${CURRENT_IGNORE}'/>",
-		lines:true,
+	//members_dg
+	var dg = $("#${form}_dg").datagrid({
+		fit:true,
+		fitColumns:true,
+		rownumbers:true,
+		border:true,
+		striped:true,
+		idField:"id",
+		columns:[[{
+			field:"id",
+			checkbox:true
+		},{
+			title:"所属员工",
+			field:"empName",
+			width:15,
+			align:"left"
+		},{
+			title:"计划内容",
+			field:"content",
+			width:40,
+			align:"left"
+		},{
+			title:"适用奖惩",
+			field:"entryName",
+			width:20,
+			align:"left"
+		},{
+			title:"开始时间",
+			field:"startTime",
+			width:10,
+			align:"left"
+		},{
+			title:"结束时间",
+			field:"endTime",
+			width:10,
+			align:"center"
+		},{
+			title:"完成时间",
+			field:"finishTime",
+			width:10,
+			align:"center"
+		}]],
 		onLoadError:function(e){
 			<@error_dialog "e"/>
 		},
-		onLoadSuccess:function(n,d){
-			<#if (CURRENT_PARENT_DEPT_ID?length > 0)>
-			p.combotree("setValue","${CURRENT_PARENT_DEPT_ID}");
-			</#if>
+		toolbar:[{
+			iconCls:"icon-add",
+			text:"新增成员计划",
+			handler:function(){
+				var dept_id=$("#${form} input[name='deptId']").val();
+				if(!dept_id && $.trim(dept_id) == ""){
+					$.messager.alert("警告","请先选择【所属部门】!");
+					return;
+				}
+				edit_window("新增成员计划",0,null);
+			}
+		},{
+			iconCls:"icon-remove",
+			text:"删除成员计划",
+			handler:function(){
+				var rows = dg.datagrid("getChecked");
+				if(rows && rows.length > 0){
+					$.messager.confirm("确认","您是否确认删除选中的数据?",function(r){
+						if(!r)return;
+						for(var i = 0; i < rows.length; i++){
+							var index = dg.datagrid("getRowIndex",rows[i]);
+							if(index > -1){
+								dg.datagrid("deleteRow",index);
+							}
+						}
+					});
+				}
+			}
+		}],
+		onDblClickRow:function(rowIndex,rowData){
+			edit_window("修改成员计划",rowIndex,rowData);
 		}
 	});
+	//edit
+	function edit_window(title,index,row){
+		var dept_id=$("#${form} input[name='deptId']").val();
+		var d = $("<div/>").dialog({
+			title:title,
+			width:550,
+			height:400,
+			href:"<@s.url '/plan/dept/menber/edit'/>?deptId="+dept_id,
+			modal:true,
+			buttons:[
+			{
+				text:"保存",
+				iconCls:"icon-save",
+				handler:function(){
+					var valid = $("#${module}_member_form").form("validate");
+					if(!valid)return;
+					var data = $("#${module}_member_form").form("serialize");
+					if($.trim(data["content"]) == ""){
+						$.messager.alert("警告","请输入计划内容！");
+						return;
+					}
+					if(!row) {
+						dg.datagrid("appendRow",data);
+					}else{
+						dg.datagrid("updateRow",{
+							index:index,
+							row:data
+						});
+					}
+					d.dialog("close");
+				}
+			},
+			{
+				text:"关闭",
+				iconCls:"icon-cancel",
+				handler:function(){
+					d.dialog("close");
+				}
+			}],
+			onClose:function(){
+				$(this).dialog("destroy");
+			},
+			onLoad:function(){
+				if(row){
+					$("#${module}_member_form").form("load",row);
+					if(row.content)$("#${module}_member_form textarea").kindeditor("setValue",row.content);
+				}
+			}
+	  });
+	};
+	//valid
+	${form}_valid = function(){
+		var valid = $("#${form}").form("validate");
+		if(valid){
+			var rows = dg.datagrid("getRows");
+			if(!rows || rows.length == 0){
+				$.messager.alert("警告","请输入成员计划！");
+				return false;
+			}
+		}
+		return valid;
+	};
+	//save
+	${form}_save = function(){
+		var post= $("#${form}").form("serialize");
+		var rows = dg.datagrid("getRows");
+		if(rows){
+			post["members"] = [];
+			$.each(rows,function(i,n){
+				if(n){
+					post["members"].push(n);
+				}
+			});
+		}
+		return post;
+	};
+	//load
+	${form}_load = function(row){
+		if(row){
+			$("#${form}").form("load",row);
+			if(row.members){
+				$.each(row.members,function(i,n){
+					dg.datagrid("appendRow",n);
+				});
+			}
+		}
+	};
 });
 //-->
 </script>
-<form id="${form}" method="POST" style="padding:10px;" >
-	<div  style="float:left;margin-top:2px;width:90%;">
-		<label style="width:75px;">所属部门：</label>
-		<input type="text" name="deptId" data-options="required:true" style="width:330px;"/>	
-	</div>
-	<div style="float:left;margin-top:12px;width:100%;">
-		<label style="width:75px;">计划标题：</label>
-		<input type="text" name="title" class="easyui-validatebox" data-options="required:true" style="width:330px;"/>
-		<input type="hidden" name="id"/>
-	</div>
-	<div style="float:left;margin-top:12px;width:100%;">
-		<label style="width:75px;">计划类型：</label>
-		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_WEEK_VALUE}" checked="true"/>${TYPE_WEEK_NAME}</label>
-		<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_MONTH_VALUE}"  />${TYPE_MONTH_NAME}</label>
-	</div>
-	<div style="float:left;margin-top:10px;width:90%;">
-		<div  style="float:left;">
-			<label style="width:75px;">开始时间：</label>
-			<input type="text" name="startTime"  class="easyui-datebox" data-options="required:true" style="width:130px;"/>	
+<form id="${form}" method="POST" class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'north',border:false" style="height:100px;">
+		<div style="float:left;margin-top:8px;width:100%;">
+			<label style="width:75px;">所属部门：</label>
+			<input type="text" name="deptId" class="easyui-combotree" data-options="
+				url:'<@s.url '/org/dept/tree'/>',
+				valueField:'id',
+				textField:'name',
+				required:true,
+				lines:true,
+				onLoadError:function(e){
+					<@error_dialog 'e'/>
+				}" style="width:642px;"/>	
 		</div>
-		<div  style="float:left;">
-			<label style="width:75px;">结束时间：</label>
-			<input type="text" name="endTime"  class="easyui-datebox" data-options="required:true" style="width:130px;"/>	
+		<div style="float:left;margin-top:5px;width:100%;">
+			<label style="width:75px;">计划标题：</label>
+			<input type="text" name="title" class="easyui-validatebox" data-options="required:true" style="width:638px;"/>
+			<input type="hidden" name="id"/>
+		</div>
+		<div style="float:left;margin-top:2px;width:100%;">
+			<div style="float:left;">
+				<label style="margin-top:5px;width:75px;">计划类型：</label>
+				<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_WEEK_VALUE}" checked="true"/>${TYPE_WEEK_NAME}</label>
+				<label style="padding-top:0px;"><input type="radio" name="type" value="${TYPE_MONTH_VALUE}"/>${TYPE_MONTH_NAME}</label>
+			</div>
+			<div style="float:right;margin-top:5px;margin-right:68px;">
+				<div style="float:left;">
+					<label style="width:75px;">开始时间：</label>
+					<input type="text" name="startTime" class="easyui-datebox" data-options="required:true" style="width:128px;"/>
+				</div>
+				<div style="float:left;">
+					<label style="width:75px;">结束时间：</label>
+					<input type="text" name="endTime" class="easyui-datebox" data-options="required:true" style="width:128px;"/>
+				</div>
+			</div>
 		</div>
 	</div>
-	<div style="float:left;margin-top:10px;width:90%;">
-		<div  style="float:left;">
-			<label style="width:75px;">修改时间：</label>
-			<input type="text" name="lastTime"  class="easyui-datebox" data-options="required:false" style="width:130px;"/>	
-		</div>
-		<div  style="float:left;">
-			<label style="width:75px;">完成时间：</label>
-			<input type="text" name="finishTime"  class="easyui-datebox" data-options="required:false" style="width:130px;"/>	
-		</div>
+	<div data-options="region:'center',border:false">
+		<table id="${form}_dg"/>
 	</div>
 </form>

@@ -5,22 +5,6 @@
 <script type="text/javascript">
 <!--
 $(function(){
-	var current_parent_dept_id = "";
-	//dept_tree
-	var dept_tree = $("#${module}_dept_tree").tree({
-		url:"<@s.url '/org/dept/tree'/>",
-		lines:true,
-		onLoadError:function(e){
-			<@error_dialog "e"/>
-		},
-		onBeforeLoad:function(n,p){
-			current_parent_dept_id = "";
-		},
-		onClick:function(node){
-			current_parent_dept_id = node.id;
-			${dg}_search();
-		}
-	});
 	//dg
 	var dg=$("#${dg}").datagrid({
 		url:"<@s.url '/plan/dept/datagrid'/>",
@@ -42,38 +26,49 @@ $(function(){
 		},{
 			title:"所属部门",
 			field:"deptName",
-			width:15,
-			align:"left",
-			sortable:true
-		},{
-			title:"计划标题",
-			field:"title",
 			width:20,
 			align:"left",
 			sortable:true
 		},{
 			title:"计划类型",
 			field:"typeName",
-			width:45,
+			width:15,
+			align:"center",
+			sortable:true
+		},{
+			title:"计划标题",
+			field:"title",
+			width:80,
 			align:"left",
 			sortable:true
 		},{
-			title:"操作",
-			field:"opt",
-			width:30,
-			align:"left",
-			formatter:function(value,data,index){
-				var href="";
-					href += "<a class='plan-dept-opt-add' href='#' onclick='${dg}_dept_add(\""+ data.id+"\")'>添加计划成员</a>";
-				return href;
-			}
+			title:"状态",
+			field:"statusName",
+			width:15,
+			align:"center",
+			sortable:true
+		},{
+			title:"开始时间",
+			field:"startTime",
+			width:15,
+			align:"center",
+			sortable:true
+		},{
+			title:"结束时间",
+			field:"endTime",
+			width:15,
+			align:"center",
+			sortable:true
+		},{
+			title:"完成时间",
+			field:"finishTime",
+			width:15,
+			align:"center",
+			sortable:true
 		}]],
 		toolbar:"#${dg}_toobar",
 		onLoadError:function(e){
 			<@error_dialog "e"/>
-		},	
-		onLoadSuccess:function(data){
-			dg_fields_format();
 		},
 		onDblClickRow:function(rowIndex,rowData){
 			edit_window("修改部门计划",rowIndex,rowData);
@@ -83,78 +78,57 @@ $(function(){
 	${dg}_add = function(){
 		edit_window("新增部门计划",0,null);
 	};
-	//format datagrid display.
-	function dg_fields_format(){
-		$(".plan-dept-opt-add").linkbutton({text:"添加计划成员",plain:true,iconCls:"icon-add"});
-	};
-	//add
-	${dg}_dept_add = function(planDeptId){
-		if(!planDeptId || $.trim(planDeptId) == "") return;
-		var d = $("<div/>").dialog({
-			title:"添加计划成员",
-			width:800,
-			height:600,
-			href:"<@s.url '/plan/dept/add/'/>"+planDeptId,
-			modal:true,
-			buttons:[{
-				text:"关闭",
-				iconCls:"icon-cancel",
-				handler:function(){
-					d.dialog("close");
-				}
-			}],
-			onClose:function(){
-				$(this).dialog("destroy");
-			}
-		});
-	};
 	//edit
 	function edit_window(title,index,row){
 		var d = $("<div/>").dialog({
 			title:title,
-			width:500,
-			height:250,
+			width:800,
+			height:600,
 			href:"<@s.url '/plan/dept/edit'/>",
 			modal:true,
 			buttons:[
-		
 			{
 				text:"保存",
 				iconCls:"icon-save",
 				handler:function(){
 					$.messager.progress();
-					$("#${module}_edit_form").form("submit",{
+					var isValid = ${module}_edit_form_valid();
+					if (!isValid){
+						$.messager.progress("close");
+						return;
+					}
+					var post = ${module}_edit_form_save();
+					if(!post){
+						$.messager.progress("close");
+						$.messager.alert("提示","获取数据失败！");
+						return;
+					}
+					$.ajax({
 						url:"<@s.url '/plan/dept/update'/>",
-						onSubmit: function(){
-							var isValid = $(this).form("validate");
-							if (!isValid)$.messager.progress("close");
-							return isValid;
-						},
-						onLoadError:function(e){
+						type:"POST",
+						data:JSON.stringify(post),
+						dataType:"json",
+						contentType:"application/json;charset=UTF-8",
+						error:function(e){
 							$.messager.progress("close");
 							<@error_dialog "e"/>
 						},
-						success:function(data){
+						success:function(data,textStatus){
 							$.messager.progress("close");
-							var data = $.parseJSON(data);
 							if(data.success){
-								dg.datagrid(row ? "updateRow" : "insertRow",{
-									index:index,
-									row:data.data
-								});
-								if(dept_tree)dept_tree.tree("reload");
-								d.dialog("close");
+								dg.datagrid("load");
+								dg.datagrid("unselectAll");
 							}else{
 								$.messager.show({
-									title:"保存异常",
+									title:"提示",
 									msg:data.msg
 								});
 							}
+							d.dialog("close");
 						}
 					});
 				}
 			},
-			
 			{
 				text:"关闭",
 				iconCls:"icon-cancel",
@@ -166,18 +140,16 @@ $(function(){
 				$(this).dialog("destroy");
 			},
 			onLoad:function(){
-				if(row) $("#${module}_edit_form").form("load",row);
+				if(row)${module}_edit_form_load(row);
 			}
 	  });
 	};
 	//search
 	${dg}_search = function(){
 		dg.datagrid("load",{
-			deptId:current_parent_dept_id,
-			  name:$("#${dg}_toobar input[name='name']").val()
+			title:$("#${dg}_toobar input[name='title']").val()
 		});
 	};
-	
 	//delete
 	${dg}_delete = function(){
 		var rows = dg.datagrid("getChecked");
@@ -205,7 +177,6 @@ $(function(){
 						if(data.success){
 							dg.datagrid("load");
 							dg.datagrid("unselectAll");
-							if(dept_tree)dept_tree.tree("reload");
 						}else{
 							$.messager.show({
 								title:"提示",
@@ -219,26 +190,14 @@ $(function(){
 			$.messager.alert("提示","未选中须删除的数据！");
 		}
 	};
-	
 });
 //-->
 </script>
-<div class="easyui-layout" data-options="fit:true">
-	 <div data-options="region:'west',title:'所属部门',split:true,tools: [{iconCls:'icon-reload',handler:function(){$('#${module}_dept_tree').tree('reload');${dg}_search();}}]" style="padding:5px;width:190px;">
-	 	<ul id="${module}_dept_tree"></ul>
-	 </div>
-	<div data-options="region:'center',title:'部门计划列表'">
-		<table id="${dg}"></table>
-		<div id="${dg}_toobar">
-			
-			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="${dg}_add()" style="float:left;">新增</a>
-			
-			<span>|</span>
-			
-			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="${dg}_delete()">删除</a>
-		
-			<label>计划标题：<input name="name" type="text" style="width:198px;"/></label>
-			<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="${dg}_search()" style="margin-left:10px;">查询</a>
-		</div>
-	</div>
+<table id="${dg}"></table>
+<div id="${dg}_toobar">
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="${dg}_add()" style="float:left;">新增</a>
+	<span>|</span>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" onclick="${dg}_delete()">删除</a>
+	<label>计划标题：<input name="title" type="text" style="width:198px;"/></label>
+	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" onclick="${dg}_search()" style="margin-left:10px;">查询</a>
 </div>

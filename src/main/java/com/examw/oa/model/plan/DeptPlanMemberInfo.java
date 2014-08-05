@@ -1,12 +1,12 @@
 package com.examw.oa.model.plan;
 
 import java.util.Date;
-
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
+import com.examw.oa.support.CustomShortDateSerializer;
 /**
  * 部门计划成员信息。
  * @author lq.
@@ -14,7 +14,7 @@ import com.examw.oa.support.CustomDateSerializer;
  */
 public class DeptPlanMemberInfo extends Paging{
 	private static final long serialVersionUID = 1L;
-	private String id,content,remarks,deptPlanId,deptPlanName,emplId,emplName,entryId,entryName;
+	private String id,content,remarks,planId,empId,empName,entryId,entryName;
 	private Integer status;
 	private Date createTime,lastTime,startTime,endTime,finishTime;
 	/**
@@ -66,61 +66,46 @@ public class DeptPlanMemberInfo extends Paging{
 	 * 获取所属部门计划ID。
 	 * @return 所属部门计划ID。
 	 */
-	public String getDeptPlanId() {
-		return deptPlanId;
+	public String getPlanId() {
+		return planId;
 	}
 	/**
 	 * 设置所属部门计划ID。
-	 * @param deptPlanId
+	 * @param planId
 	 * 所属部门计划ID。
 	 */
-	public void setDeptPlanId(String deptPlanId) {
-		this.deptPlanId = deptPlanId;
-	}
-	/**
-	 * 获取所属部门计划名称。
-	 * @return 所属部门计划名称。
-	 */
-	public String getDeptPlanName() {
-		return deptPlanName;
-	}
-	/**
-	 * 设置所属部门计划名称。
-	 * @param deptPlanName
-	 * 所属部门计划名称。
-	 */
-	public void setDeptPlanName(String deptPlanName) {
-		this.deptPlanName = deptPlanName;
+	public void setPlanId(String planId) {
+		this.planId = planId;
 	}
 	/**
 	 * 获取所属员工ID。
 	 * @return 所属员工ID。
 	 */
-	public String getEmplId() {
-		return emplId;
+	public String getEmpId() {
+		return empId;
 	}
 	/**
 	 * 设置所属员工ID。
-	 * @param emplId
+	 * @param empId
 	 * 所属员工ID。
 	 */
-	public void setEmplId(String emplId) {
-		this.emplId = emplId;
+	public void setEmpId(String empId) {
+		this.empId = empId;
 	}
 	/**
 	 * 获取所属员工名称。
 	 * @return 所属员工名称。
 	 */
-	public String getEmplName() {
-		return emplName;
+	public String getEmpName() {
+		return empName;
 	}
 	/**
 	 * 设置所属员工名称。
-	 * @param emplName
+	 * @param empName
 	 * 所属以名称。
 	 */
-	public void setEmplName(String emplName) {
-		this.emplName = emplName;
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 	/**
 	 * 获取所属奖惩条目ID。
@@ -180,7 +165,6 @@ public class DeptPlanMemberInfo extends Paging{
 	 * @param createTime
 	 * 部门计划成员创建时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
@@ -197,7 +181,6 @@ public class DeptPlanMemberInfo extends Paging{
 	 * @param lastTime
 	 * 部门计划成员最后修改时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public void setLastTime(Date lastTime) {
 		this.lastTime = lastTime;
 	}
@@ -205,7 +188,7 @@ public class DeptPlanMemberInfo extends Paging{
 	 * 获取部门计划成员开始时间。
 	 * @return 部门计划成员开始时间。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -214,7 +197,7 @@ public class DeptPlanMemberInfo extends Paging{
 	 * @param startTime
 	 * 部门计划成员开始时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
@@ -222,7 +205,7 @@ public class DeptPlanMemberInfo extends Paging{
 	 * 获取部门计划成员结束时间。
 	 * @return 部门计划成员结束时间。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -231,7 +214,7 @@ public class DeptPlanMemberInfo extends Paging{
 	 * @param endTime
 	 * 部门计划成员结束时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
@@ -248,7 +231,6 @@ public class DeptPlanMemberInfo extends Paging{
 	 * @param finishTime
 	 * 部门计划成员完成时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
 	}

@@ -1,12 +1,14 @@
 package com.examw.oa.model.plan;
 
 import java.util.Date;
+import java.util.Set;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.examw.model.Paging;
 import com.examw.oa.support.CustomDateSerializer;
+import com.examw.oa.support.CustomShortDateSerializer;
 /**
  * 部门计划信息。
  * @author lq.
@@ -17,6 +19,7 @@ public class DeptPlanInfo extends Paging{
 	private String id,title,deptId,deptName,typeName,statusName;
 	private Integer type,status;
 	private Date createTime,lastTime,startTime,endTime,finishTime;
+	private Set<DeptPlanMemberInfo> members;
 	/**
 	 * 获取部门计划ID。
 	 * @return 部门计划ID。
@@ -120,7 +123,6 @@ public class DeptPlanInfo extends Paging{
 	 * @param createTime
 	 * 部门计划创建时间。
 	 */
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
@@ -137,7 +139,6 @@ public class DeptPlanInfo extends Paging{
 	 * @param lastTime
 	 * 部门计划最后修改时间。
 	 */
-	
 	public void setLastTime(Date lastTime) {
 		this.lastTime = lastTime;
 	}
@@ -145,7 +146,7 @@ public class DeptPlanInfo extends Paging{
 	 * 获取部门计划开始时间。
 	 * @return 部门计划开始时间。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -154,7 +155,7 @@ public class DeptPlanInfo extends Paging{
 	 * @param startTime
 	 * 部门计划开始时间。
 	 */
-	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
@@ -162,7 +163,7 @@ public class DeptPlanInfo extends Paging{
 	 * 获取部门计划结束时间。
 	 * @return 部门计划结束时间。
 	 */
-	@JsonSerialize(using = CustomDateSerializer.class)
+	@JsonSerialize(using = CustomShortDateSerializer.class)
 	public Date getEndTime() {
 		return endTime;
 	}
@@ -171,7 +172,7 @@ public class DeptPlanInfo extends Paging{
 	 * @param endTime
 	 * 部门计划结束时间。
 	 */
-	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
 	}
@@ -188,7 +189,6 @@ public class DeptPlanInfo extends Paging{
 	 * @param finishTime
 	 * 部门计划完成时间。
 	 */
-
 	public void setFinishTime(Date finishTime) {
 		this.finishTime = finishTime;
 	}
@@ -221,5 +221,11 @@ public class DeptPlanInfo extends Paging{
 	 */
 	public void setStatusName(String statusName) {
 		this.statusName = statusName;
+	}
+	public Set<DeptPlanMemberInfo> getMembers() {
+		return members;
+	}
+	public void setMembers(Set<DeptPlanMemberInfo> members) {
+		this.members = members;
 	}
 }

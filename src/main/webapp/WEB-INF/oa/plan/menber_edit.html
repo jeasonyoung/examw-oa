@@ -1,98 +1,27 @@
 <#--部门计划成员编辑-->
 <#include "ftl/comm.ftl"/>
-<#assign module="plan_menber"/>
-<#assign form="${module}_edit_form"/>
-<script type="text/javascript">
-<!--
-$(function(){
-	var dept_cbt = $("#${form} input[name='deptIds']").combotree({
-		url:"<@s.url '/org/dept/tree'/>",
-		required:true,
-		lines:true,
-		onLoadError:function(e){
-			<@error_dialog "e"/>
-		},
-		onLoadSuccess:function(n,d){
-			<#if (CURRENT_DEPT_ID?length > 0)>
-			if(dept_cbt)dept_cbt.combotree("setValue","${CURRENT_DEPT_ID}");
-			</#if>
-		},
-		onChange:function(n,o){
-			if(emp_cbb){
-				emp_cbb.combobox("clear");
-				if($.trim(n) == "") return;
-				emp_cbb.combobox("reload","<@s.url '/org/emp/all?deptId='/>" + n);
-			}
-		}
-	});
-	//employee
-	var emp_cbb = $("#${form} input[name='emplId']").combobox({
-		<#if (CURRENT_DEPT_ID?length > 0)>
-		url:"<@s.url '/org/emp/all?deptId=${CURRENT_DEPT_ID}'/>",
-		</#if>
-		valueField:"id",
-		textField:"name",
-		required:true,
-		onLoadError:function(e){
-			<@error_dialog "e"/>
-		}
-	});
-	var post = {};
-	//validate
-	${module}_validate = function(){
-		post ={};
-		if($("#${form}").form("validate")){
-			post["mId"] = $("#${form} input[name='mId']").val();
-			post["mEmployeeId"] =$("#${form} input[name='mEmployeeId']").val();
-			post["mPlanId"] = "${CURRENT_PLAN_DEPT_ID}";
-			post["mEntryId"] = $("#${form} input[name='mEntryId']").val();
-			post["mContent"] = $.trim($("#${form} textarea[name='mContent']").val());
-			post["mStartTime"] = $.trim($("#${form} input[name='mStartTime']").val());
-			post["mEndTime"] = $.trim($("#${form} input[name='mEndTime']").val());
-			post["mFinishTime"] = $.trim($("#${form} input[name='mFinishTime']").val());
-			post["mLastTime"] = $.trim($("#${form} input[name='mLastTime']").val());
-			post["mRemarks"] = $.trim($("#${form} textarea[name='mRemarks']").val());
-			if($.trim(post["mContent"]) == ""){
-				$.messager.alert("警告","请输入内容！");
-				return false;
-			}
-		}
-		return false;
-	};
-	//save
-	${module}_update = function(){
-		post["members"] = [];
-		var rows = dg.datagrid("getRows");
-		if(rows){
-			$.each(rows,function(i,n){
-				n["orderNo"] = i + 1;
-				post["members"].push(n);
-			});
-		}
-		return post;
-	};
-	//load
-	${module}_load = function(data){
-		if(data){
-			 $("#${form}").form("load",data);
-			if(data.members){
-				$("#${form} input[name='eId']").val(data.members.id);
-				if(data.members.mContent) $("#${form} textarea[name='mContent']").kindeditor("setValue",data.members.content);
-				if(data.members.mRemarks)$("#${form} textarea[name='mRemarks']").kindeditor("setValue",data.members.remarks);
-			}
-		}
-	};
-});
-//-->
-</script>
+<#assign module="plan_dept"/>
+<#assign form="${module}_member_form"/>
 <form id="${form}" method="POST" style="padding:10px;" >
-	<div  style="float:left;margin-top:0px;width:90%;">
-		<label style="width:75px;">所属员工：</label>
-		<input type="text" name="deptIds" data-options="required:true" style="width:170px;"/>	
-		<input type="text" name="emplId" data-options="required:true" style="width:170px;"/>	
+	<div  style="float:left;margin-top:2px;width:100%;">
+		<label style="width:60px;">所属员工：</label>
+		<input type="text" name="empId" class="easyui-combobox" data-options="
+		url:'<@s.url '/org/emp/all?deptId=${CURRENT_DEPT_ID}'/>',
+		valueField:'id',
+		textField:'name',
+		required:true,
+		onLoadError:function(e){
+			<@error_dialog 'e'/>
+		},
+		onSelect:function(record){
+			$('#${form} input[name=empName]').val((record && record.name) ? record.name : '');
+		}
+		" style="width:439px;"/>
+		<input type="hidden" name="empName">
+		<input type="hidden" name="id">
 	</div>
 	<div style="float:left;margin-top:12px;width:100%;">
-		<label style="width:75px;">所属条目：</label>
+		<label style="width:60px;">所属条目：</label>
 		<input type="text" name="entryId" class="easyui-combobox" data-options="
 			url:'<@s.url '/check/entry/all'/>',
 			valueField:'id',
@@ -100,36 +29,27 @@ $(function(){
 			required:true,
 			onLoadError:function(e){
 				<@error_dialog 'e'/>
+			},
+			onSelect:function(record){
+				$('#${form} input[name=entryName]').val((record && record.name) ? record.name : '');
+			},
+			formatter:function(row){
+				return row.name + '['+row.typeName+','+row.money+']';
 			}
-		" style="width:370px;">
+		" style="width:439px;">
+		<input type="hidden" name="entryName">
 	</div>
-	<div  style="float:left;margin-top:10px;width:90%;">
-		<label style="width:75px;">计划内容：</label>
-		<textarea type="text" name="content" row="15" cols="20" style="width:380px;height:120px;" />
-		<input type="hidden" name="id">
+	<div style="float:left;margin-top:12px;width:100%;">
+		<textarea type="text" name="content" class="easyui-kindeditor" data-options="minWidth:510,minHeight:160" row="15" cols="20"/>
 	</div>
-	<div style="float:left;margin-top:10px;width:90%;">
+	<div style="float:left;margin-top:12px;width:100%;">
 		<div  style="float:left;">
-			<label style="width:75px;">开始时间：</label>
+			<label style="width:60px;">开始时间：</label>
 			<input type="text" name="startTime"  class="easyui-datebox" data-options="required:true" style="width:150px;"/>	
 		</div>
 		<div  style="float:left;">
 			<label style="width:75px;">结束时间：</label>
 			<input type="text" name="endTime"  class="easyui-datebox" data-options="required:true" style="width:150px;"/>	
 		</div>
-	</div>
-	<div style="float:left;margin-top:10px;width:90%;">
-		<div style="float:left;">
-			<label style="width:75px;">完成时间：</label>
-			<input type="text" name="finishTime"  class="easyui-datebox" data-options="required:false" style="width:150px;"/>	
-		</div>
-		<div style="float:left;">
-			<label style="width:75px;">修改时间：</label>
-			<input type="text" name="mLastTime"  class="easyui-datebox" data-options="required:false" style="width:150px;"/>	
-		</div>
-	</div>
-	<div  style="float:left;margin-top:5px;width:90%;">
-		<label style="width:75px;">员工备注：</label>
-		<textarea type="text" name="mRemarks" row="10" cols="15" style="width:380px;height:80px;" />	
 	</div>
 </form>

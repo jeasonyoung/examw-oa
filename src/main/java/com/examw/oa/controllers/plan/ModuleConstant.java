@@ -25,4 +25,8 @@ public final class ModuleConstant {
 	 * 报告查询ID。
 	 */
 	public static final String PLAN_SEARCH= "EOA000503";
+	/**
+	 * 部门计划ID。
+	 */
+	public static final String PLAN_DEPT = "EOA000603";
 }
